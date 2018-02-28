@@ -1,0 +1,78 @@
+{
+	"info": {
+		"name": "SDA-CONTEST",
+		"_postman_id": "c497a633-975a-9f9d-a93f-de2dcc48521e",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "last contest",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "44r97rXg|{{oid}}"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "{{language}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adtoken}}",
+						"disabled": true
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/{{version}}/contest/last",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{version}}",
+						"contest",
+						"last"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "info",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "44r97rXg|{{oid}}"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "{{language}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adtoken}}",
+						"disabled": true
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/info",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"info"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		}
+	]
+}
