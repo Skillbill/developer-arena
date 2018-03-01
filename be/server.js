@@ -1,6 +1,8 @@
+const logger = require('./lib/logger');
+
 require('./config').init()
   .then(() => {
-    console.log('starting');
+    logger.info('starting server');
 
     try {
 
@@ -15,7 +17,7 @@ require('./config').init()
 
       const app = express();
 
-      console.log('[I] APP starting');
+      logger.info('starting api');
       //app.set('creds', config);
       i18n.configure(Object.assign({}, {directory: __dirname + '/locales', updateFiles: false}, config.i18n));
       app.disable('x-powered-by');
@@ -24,7 +26,6 @@ require('./config').init()
       app.use(i18n.init);
       app.use(fileUpload());
       app.use(cors());
-
 
       app.use(express.static('public'));
       app.use('/info', require('./routers/info'));
@@ -36,21 +37,17 @@ require('./config').init()
       const port = process.env.PORT || 3000;
 
       app.listen(port, function() {
-        console.log(`app running on port ${port}`);
+        logger.log(`server listening on ${port}`);
       })
-
-
     } catch (error) {
-      console.log('can\'t start app !!!!', error);
-
+      logger.error('could not start the server:', error);
     }
-
   })
   .catch((error) => {
-    console.log("PANIC. Can't load configuration", error);
+    logger.error("could not load configuration:", error);
   });
 
-//for DOCKER
-process.on('SIGINT', function() {
+process.on('SIGINT', () => {
+  logger.log("got SIGINT: exit");
   process.exit();
 });
