@@ -5,6 +5,13 @@ const defaults = {
   i18n: {
     locales: ['en', 'it'],
     defaultLocale: 'en'
+  },
+  db: {
+    host: 'localhost',
+    port: 5432,
+    database: 'sda-contest',
+    user: 'postgres',
+    password: '1234'
   }
 };
 

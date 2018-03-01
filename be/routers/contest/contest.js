@@ -4,19 +4,53 @@ const logger = require('../../lib/logger');
 const express = require('express');
 const router = express.Router({mergeParams: true});
 
+router.get('/', (req, res) => getContestList(req, res));
 router.get('/:contestId', (req, res) => getContest(req, res));
 
-const getContest = (req, res) => {
-  const id = req.params.contestId;
-  if (id === undefined || id == '') {
-    return res.status(lk.http.badRequest).send({error: "id not set"});
+function pubfmt(contest) {
+  if (contest.state == lk.contest.state.draft) {
+    console.warn(`unexpected draft passed to pubfmt: ${contest.toJSON()}`);
+    return null;
   }
+  let obj = contest.toJSON();
+  obj.state = (() => {
+    const now = new Date();
+    if (contest.state == lk.contest.state.past) {
+      return contest.publicState.past;
+    } else if (contest.endVoting > now) {
+      return lk.contest.publicState.closed;
+    } else if (contest.endApplying > now) {
+      return lk.contest.publicState.voting;
+    } else if (contest.endPresentation > now) {
+      return lk.contest.publicState.applying;
+    } else {
+      return lk.contest.publicState.presentation;
+    }
+  })()
+  return obj;
+};
+
+const getContestList = (req, res) => {
+  const isAdmin = false;
+  persistence.getAllContests().then(lst => {
+    res.status(lk.http.ok).send({
+      contests: isAdmin? lst : lst.filter(contest => contest.state != lk.contest.state.draft).map(pubfmt)
+    });
+  }).catch(err => {
+    logger.error(err);
+    res.status(lk.http.internalError).send({error: err});
+  });
+};
+
+const getContest = (req, res) => {
+  const isAdmin = false;
+  const id = req.params.contestId;
   ((id == "last") ? persistence.getLastContest() : persistence.getContestById(id))
-    .then((contest) => {
-      if (!contest) {
+    .then(contest => {
+      if (!contest || !isAdmin && contest.state == lk.contest.state.draft) {
         return res.status(lk.http.notFound).send({error: "contest not found"});
       }
-      res.status(lk.http.ok).send({contest: contest});
+      res.status(lk.http.ok).send({contest: pubfmt(contest)});
     }).catch(err => {
       logger.error(err);
       res.status(lk.http.internalError).send({error: err});

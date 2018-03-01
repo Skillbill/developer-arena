@@ -1,4 +1,3 @@
-
 module.exports = {
   http: {
     ok: 200,
@@ -6,12 +5,18 @@ module.exports = {
     notFound: 404,
     internalError: 500,
   },
-  contestStates: {
-    draft: 'DRAFT',
-    presentation: 'PRESENTATION',
-    applying: 'APPLYING',
-    voting: 'VOTING',
-    closed: 'CLOSED',
-    past: 'PAST'
+  contest: {
+    state: {
+      draft: 'DRAFT',
+      active: 'ACTIVE',
+      past: 'PAST',
+    },
+    publicState: {
+      presentation: 'PRESENTATION',
+      applying: 'APPLYING',
+      voting: 'VOTING',
+      closed: 'CLOSED',
+      past: 'PAST'
+    }
   }
 };
