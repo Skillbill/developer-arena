@@ -1,11 +1,48 @@
 {
 	"info": {
 		"name": "SDA-CONTEST",
-		"_postman_id": "c497a633-975a-9f9d-a93f-de2dcc48521e",
+		"_postman_id": "76d29e2a-1014-bba5-71e9-192ca789352e",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "contest list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "44r97rXg|{{oid}}"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "{{language}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adtoken}}",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/{{version}}/contest/last",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{version}}",
+						"contest",
+						"last"
+					]
+				}
+			},
+			"response": []
+		},
 		{
 			"name": "last contest",
 			"request": {
@@ -25,7 +62,10 @@
 						"disabled": true
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{host}}/{{version}}/contest/last",
 					"host": [
@@ -36,8 +76,41 @@
 						"contest",
 						"last"
 					]
-				},
-				"description": null
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "contest id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "44r97rXg|{{oid}}"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "{{language}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adtoken}}",
+						"disabled": true
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/{{version}}/contest/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{version}}",
+						"contest",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -60,7 +133,10 @@
 						"disabled": true
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{host}}/info",
 					"host": [
@@ -69,8 +145,7 @@
 					"path": [
 						"info"
 					]
-				},
-				"description": null
+				}
 			},
 			"response": []
 		}
