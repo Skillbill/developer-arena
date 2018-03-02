@@ -28,4 +28,8 @@ docker run -p 3000:3000 sda-contest-be
 
 ## frontend
 
-TODO
+##### docker:
+```
+docker build -t sda-contest-fe fe/
+docker run -p 8080:8080 sda-contest-fe
+```
