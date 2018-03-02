@@ -3,6 +3,8 @@ const lk = require('../lib/lookups');
 const sql = require('../lib/sql');
 const model = require('./contest');
 
+const Op = require('sequelize').Op
+
 const getAllContests = () => {
   return sql.getContestTable().findAll({
     attributes: [
@@ -22,7 +24,7 @@ const getLastContest = () => {
     order: [['id', 'DESC']],
     where:{
       [model.state.field]: {
-        $ne: lk.contest.state.draft
+        [Op.ne]: lk.contest.state.draft
       },
     }
   });

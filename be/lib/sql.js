@@ -6,6 +6,7 @@ const contestModel = require('../model/contest');
 
 const sqlUri = `postgresql://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/sda-contest`
 const sequelize = new Sequelize(sqlUri, {
+  operatorsAliases: Sequelize.Op,
   define: {
     timestamps: false
   }
