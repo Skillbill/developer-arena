@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "SDA-CONTEST",
-		"_postman_id": "76d29e2a-1014-bba5-71e9-192ca789352e",
+		"_postman_id": "bcf22d64-0796-48e2-aec5-2976be68a14f",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -30,16 +30,16 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{host}}/{{version}}/contest/last",
+					"raw": "{{host}}/{{version}}/contest",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
 						"{{version}}",
-						"contest",
-						"last"
+						"contest"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -76,7 +76,8 @@
 						"contest",
 						"last"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -99,7 +100,10 @@
 						"disabled": true
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{host}}/{{version}}/contest/1",
 					"host": [
@@ -110,7 +114,8 @@
 						"contest",
 						"1"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -145,7 +150,8 @@
 					"path": [
 						"info"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		}

@@ -1,7 +1,7 @@
 # sda-contest
 ## backend
 
-### hot to run
+### how to run
 #### database:
 ```
 docker build -t sda-contest-db db/
