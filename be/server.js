@@ -47,7 +47,7 @@ require('./config').init()
     logger.error("could not load configuration:", error);
   });
 
-process.on('SIGINT', () => {
-  logger.log("got SIGINT: exit");
+process.on('SIGTERM', () => {
+  logger.log("got SIGTERM: exit");
   process.exit();
 });
