@@ -25,7 +25,7 @@ export default {
     }
   },
   created: function () {
-    axios.get('http://127.0.0.1:3000/1.0/contest/last')
+    axios.get(process.env.SERVER_HOST + process.env.API_VERSION + '/contest/last')
       .then(response => {
         this.contest = response.data.contest
       })
