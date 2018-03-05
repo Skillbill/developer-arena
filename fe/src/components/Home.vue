@@ -25,7 +25,8 @@ export default {
     }
   },
   created: function () {
-    axios.get(process.env.SERVER_HOST + process.env.API_VERSION + '/contest/last')
+    /* global configuration */
+    axios.get(configuration.SERVER_HOST + configuration.API_VERSION + '/contest/last')
       .then(response => {
         this.contest = response.data.contest
       })
