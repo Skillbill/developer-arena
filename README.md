@@ -1,14 +1,24 @@
 # sda-contest
+
+## Run the demo:
+```
+scripts/demo.sh
+```
+
+When you finished, shutdown the containers with:
+```
+scripts/stopall.sh
+```
+
 ## backend
 
 ### how to run
 #### database:
 ```
-docker build -t sda-contest-db db/
-docker run -p 5432:5432 sda-contest-db
+scripts/run_db.sh -B
 ````
 
-#### backend:
+#### api server:
 
 ##### dev mode:
 ```
@@ -18,8 +28,7 @@ node be/server.js
 
 ##### docker:
 ```
-docker build -t sda-contest-be be/
-docker run -p 3000:3000 sda-contest-be
+scripts/run_be.sh -B
 ```
 
 ### api doc
@@ -28,8 +37,13 @@ docker run -p 3000:3000 sda-contest-be
 
 ## frontend
 
+#### dev mode:
+```
+npm install
+npm run dev
+```
+
 ##### docker:
 ```
-docker build -t sda-contest-fe fe/
-docker run -p 8080:8080 sda-contest-fe
+scripts/run_fe.sh -B
 ```
