@@ -4,27 +4,28 @@
 . "$LIB/color.sh"
 
 docker_run() {
-	local args=$@
-	trace "$docker $docker_run_args $args" || {
+	trace $docker $docker_run_args $@ || {
 		err "docker run failed"
 		return 1
 	}
 }
 
 docker_build() {
-	local args=$@
-	trace "$docker $docker_build_args $args" || {
+	trace $docker $docker_build_args $@ || {
 		err "docker build failed"
 		return 1
 	}
 }
 
 trace() {
-	printf ${_dim}
-	sh -x -c "$@"
-	local r=$?
-	printf ${_reset}
-	return $r
+	(
+		command=$@
+		printf ${_dim}
+		sh -x -c "$command"
+		res=$?
+		printf ${_reset}
+		return $res
+	)
 }
 
 _print() {
