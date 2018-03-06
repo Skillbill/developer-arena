@@ -6,10 +6,19 @@ import router from './router'
 
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+var firebase = require('firebase/app')
+require('firebase/auth')
+
+firebase.initializeApp(configuration.firebase)
+let app
+firebase.auth().onAuthStateChanged(user => {
+  if (!app) {
+    /* eslint-disable no-new */
+    app = new Vue({
+      el: '#app',
+      router,
+      components: { App },
+      template: '<App/>'
+    })
+  }
 })
