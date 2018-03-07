@@ -16,7 +16,7 @@ let router = new Router({
     },
     {
       path: '/sign-up',
-      name: 'sing-up',
+      name: 'sign-up',
       component: SignUp
     },
     {
