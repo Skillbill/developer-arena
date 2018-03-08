@@ -16,9 +16,6 @@ const i18n = new VueI18n({
   locale: 'en',
   messages
 })
-//        setTimeout(() => {
-//          this.$i18n.locale = 'it'
-//        }, 1000)
 
 var firebase = require('firebase/app')
 require('firebase/auth')
