@@ -25,7 +25,7 @@ export default {
     }
   },
   created: function () {
-    axios.get(configuration.serverHost + configuration.apiVersion + '/contest/last')
+    axios.get(configuration.serverAddress + '/' + configuration.apiVersion + '/contest/last')
       .then(response => {
         this.contest = response.data.contest
       })

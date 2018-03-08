@@ -7,8 +7,10 @@ RUN npm install
 RUN npm run build
 
 RUN mv dist /app
+RUN mv dynconfig.js /app
 RUN rm -rf /tmp/app
 
 WORKDIR /app
 RUN npm -g install http-server
-CMD [ "http-server" ]
+
+CMD (node ./dynconfig) && http-server
