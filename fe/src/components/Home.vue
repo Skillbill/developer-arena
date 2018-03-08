@@ -25,7 +25,11 @@ export default {
     }
   },
   created: function () {
-    axios.get(configuration.serverHost + configuration.apiVersion + '/contest/last')
+    axios({
+      method: 'get',
+      url: configuration.serverHost + configuration.apiVersion + '/contest/last',
+      headers: {'Accept-Language': this.$i18n.locale}
+    })
       .then(response => {
         this.contest = response.data.contest
       })

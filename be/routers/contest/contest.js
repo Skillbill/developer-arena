@@ -27,6 +27,12 @@ function pubfmt(contest) {
       return lk.contest.publicState.presentation;
     }
   })()
+  if(obj.i18n) {
+    obj.i18n.forEach(i18n => {
+      obj[i18n.entityAttribute] = i18n.translation
+    })
+    delete obj.i18n
+  }
   return obj;
 };
 
@@ -45,7 +51,7 @@ const getContestList = (req, res) => {
 const getContest = (req, res) => {
   const isAdmin = false;
   const id = req.params.contestId;
-  ((id == "last") ? persistence.getLastContest() : persistence.getContestById(id))
+  ((id == "last") ? persistence.getLastContest(req.language) : persistence.getContestById(id))
     .then(contest => {
       if (!contest || !isAdmin && contest.state == lk.contest.state.draft) {
         return res.status(lk.http.notFound).send({error: "contest not found"});
