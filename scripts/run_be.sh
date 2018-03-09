@@ -15,7 +15,7 @@ root="$LIB/../../"
 img="$DOCKER_IMG_BE"
 
 usage() {
-	echo "usage: $CMD [-B] [-t tag] [-l port] [-a host[:port]] [-u user] [-i | -p passwd]"
+	echo "usage: $CMD [-B | -P] [-t tag] [-l port] [-a host[:port]] [-u user] [-i | -p passwd]"
 }
 
 help() {
@@ -25,6 +25,8 @@ help() {
 Start the backend linked to the given database
 
     -B			call docker build first
+    -P			call docker pull first
+
     -t TAG		docker tag (default: $TAG)
     -l PORT		listen port (default: $BE_PORT)
     -a ADDRESS		database address (default $DB_ADDR)
@@ -35,10 +37,13 @@ Start the backend linked to the given database
 EOF
 }
 
-while getopts Bt:l:a:u:p:ih arg; do
+while getopts BPt:l:a:u:p:ih arg; do
 	case $arg in
 		B)
 			build=1
+			;;
+		P)
+			pull=1
 			;;
 		t)
 			tag="$OPTARG"
@@ -90,6 +95,8 @@ fi
 
 if [ $build ]; then
 	docker_build -t $DOCKER_IMG_BE "$root/be/" || exit 1
+elif [ $pull ]; then
+	docker_pull ${DOCKER_IMG_NS}/${DOCKER_IMG_BE}:${TAG} || exit 1
 fi
 
 docker_run -p ${listen}:${BE_PORT} \

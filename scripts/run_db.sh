@@ -16,7 +16,7 @@ img="$DOCKER_IMG_DB"
 storage_path=/var/lib/postgresql/data
 
 usage() {
-	echo "usage: $CMD [-B] [-t tag] [-l port] [-b path] [-u user] [-i | -p passwd]"
+	echo "usage: $CMD [-B | -P] [-t tag] [-l port] [-b path] [-u user] [-i | -p passwd]"
 }
 
 help() {
@@ -26,6 +26,8 @@ help() {
 Start the database
 
     -B			call docker build first
+    -P			call docker pull first
+
     -t TAG		docker tag (default: $TAG)
     -l PORT		listen port (default: $DB_PORT)
     -b PATH		path to bind to $storage_path
@@ -36,10 +38,13 @@ Start the database
 EOF
 }
 
-while getopts Bt:l:b:u:p:ih arg; do
+while getopts BPt:l:b:u:p:ih arg; do
 	case $arg in
 		B)
 			build=1
+			;;
+		P)
+			pull=1
 			;;
 		t)
 			tag="$OPTARG"
@@ -91,6 +96,8 @@ fi
 
 if [ $build ]; then
 	docker_build -t $DOCKER_IMG_DB "$root/db/" || exit 1
+elif [ $pull ]; then
+	docker_pull ${DOCKER_IMG_NS}/${DOCKER_IMG_DB}:${TAG} || exit 1
 fi
 
 docker_run -p ${listen}:${DB_PORT} ${bind_args} \

@@ -17,6 +17,13 @@ docker_build() {
 	}
 }
 
+docker_pull() {
+    trace $docker $docker_pull_args $@ || {
+	err "docker pull failed"
+	return 1
+    }
+}
+
 trace() {
 	(
 		command=$@

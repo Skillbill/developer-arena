@@ -1,5 +1,7 @@
 TAG=${TAG:-latest}
 
+DOCKER_IMG_NS=skillbillsrl
+
 DOCKER_IMG_FE=${DOCKER_IMG_FE:-sda-contest-fe}
 FE_PORT=${FE_PORT:-8080}
 FE_HOST=${FE_HOST:-localhost}

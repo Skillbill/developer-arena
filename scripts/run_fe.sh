@@ -15,7 +15,7 @@ root="$LIB/../../"
 img="$DOCKER_IMG_FE"
 
 usage() {
-	echo "usage: $CMD [-B] [-t tag] [-l port] [-a host[:port]]"
+	echo "usage: $CMD [-B | -P] [-t tag] [-l port] [-a host[:port]]"
 }
 
 help() {
@@ -25,6 +25,8 @@ help() {
 Start the frontend linked to the given backend
 
     -B			call docker build first
+    -P			call docker pull first
+
     -t TAG		docker tag (default: $TAG)
     -l PORT		listen port (default: $FE_PORT)
     -a ADDRESS		backend address (default $BE_ADDR)
@@ -32,10 +34,13 @@ Start the frontend linked to the given backend
 EOF
 }
 
-while getopts Bt:l:a:h arg; do
+while getopts BPt:l:a:h arg; do
 	case $arg in
 		B)
 			build=1
+			;;
+		P)
+			pull=1
 			;;
 		t)
 			tag="$OPTARG"
@@ -71,6 +76,8 @@ portscan $host $port || warn "backend unreachable"
 
 if [ $build ]; then
 	docker_build -t $DOCKER_IMG_FE "$root/fe/" || exit 1
+elif [ $pull ]; then
+	docker_pull ${DOCKER_IMG_NS}/${DOCKER_IMG_FE}:${TAG} || exit 1
 fi
 
 docker_run -p ${listen}:${FE_PORT} \
