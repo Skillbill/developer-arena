@@ -35,7 +35,12 @@ router.beforeEach((to, from, next) => {
   let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
   if (requiresAuth && !currentUser) {
-    next('sign-up')
+    next({
+      path: 'sign-up',
+      query: {
+        redirect: to.fullPath
+      }
+    })
   } else {
     next()
   }
