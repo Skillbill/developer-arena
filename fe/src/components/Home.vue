@@ -5,7 +5,7 @@
       <li>id {{ contest.id }}</li>
       <li>title {{ contest.title }}</li>
       <li>description {{ contest.description }}</li>
-      <li>endPresentation {{ contest.endPresentation }}</li>
+      <li>end-presentation {{ contest.endPresentation }}</li>
       <li>endApplying {{ contest.endApplying }}</li>
       <li>endVoting {{ contest.endVoting }}</li>
       <li>state {{ contest.state }}</li>
