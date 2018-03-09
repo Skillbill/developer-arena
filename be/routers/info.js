@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router({mergeParams: true});
 
-router.get('/', function(req, res) {
+router.get('/', (req, res) => {
   res.send({
     welcome: res.__('welcome')
   });

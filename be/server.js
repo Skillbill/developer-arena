@@ -32,10 +32,11 @@ require('./config').init()
 
       const mainRouter = express.Router();
       app.use(`/1.0`, mainRouter);
+
+      mainRouter.use('/contest/:contestId/project/', require('./routers/contest/project'));
       mainRouter.use('/contest', require('./routers/contest/contest'));
 
       const port = process.env.PORT || 3000;
-
       app.listen(port, function() {
         logger.log(`server listening on ${port}`);
       })

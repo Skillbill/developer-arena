@@ -1,8 +1,10 @@
 const lk = require('../../lib/lookups');
+const libContest = require('../../lib/contest');
 const persistence = require('../../lib/persistence');
 const logger = require('../../lib/logger');
 const express = require('express');
 const router = express.Router({mergeParams: true});
+
 
 router.get('/', (req, res) => getContestList(req, res));
 router.get('/:contestId', (req, res) => getContest(req, res));
@@ -13,20 +15,7 @@ function pubfmt(contest) {
     return null;
   }
   let obj = contest.toJSON();
-  obj.state = (() => {
-    const now = new Date();
-    if (contest.state == lk.contest.state.past) {
-      return contest.publicState.past;
-    } else if (contest.endVoting > now) {
-      return lk.contest.publicState.closed;
-    } else if (contest.endApplying > now) {
-      return lk.contest.publicState.voting;
-    } else if (contest.endPresentation > now) {
-      return lk.contest.publicState.applying;
-    } else {
-      return lk.contest.publicState.presentation;
-    }
-  })()
+  obj.state = libContest.getPublicState(contest);
   if(obj.i18n) {
     obj.i18n.forEach(i18n => {
       obj[i18n.entityAttribute] = i18n.translation

@@ -4,7 +4,7 @@ INSERT INTO "public" . contest(
        end_voting,
        state
 ) VALUES(
-  '2018-04-01',
+  '2018-03-01',
   '2018-04-15',
   '2018-05-01',
   'ACTIVE'
