@@ -1,5 +1,5 @@
 <template>
-  <div class="contest">
+  <div class="contest" v-if="contest">
     <h1>{{ $t("contest") }}</h1>
     <ul>
       <li>id {{ contest.id }}</li>
@@ -10,6 +10,12 @@
       <li>endVoting {{ contest.endVoting }}</li>
       <li>state {{ contest.state }}</li>
     </ul>
+    <template v-if="contest.state === 'APPLYING'">
+      <router-link to="/submit-entry">{{ $t('applyContest') }}</router-link>
+    </template>
+    <template v-else>
+      {{ $t('applyContestSince', { date: new Date(this.contest.endPresentation).toLocaleDateString(this.$i18n.locale) }) }}
+    </template>
   </div>
 </template>
 
