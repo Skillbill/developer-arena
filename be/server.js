@@ -47,7 +47,16 @@ require('./config').init()
     logger.error("could not load configuration:", error);
   });
 
-process.on('SIGTERM', () => {
-  logger.log("got SIGTERM: exit");
-  process.exit();
-});
+if (process.pid == 1) { // docker
+  // allow ^C on a foreground instance to stop the container
+  process.on('SIGINT', () => {
+    logger.log("got SIGINT: exit");
+    process.exit();
+  });
+
+  // promptly shutdown on docker stop */
+  process.on('SIGTERM', () => {
+    logger.log("got SIGTERM: exit");
+    process.exit();
+  });
+}
