@@ -2,7 +2,7 @@
   <div id="app">
     <img v-on:click="changeLanguage('en')" src="./assets/en.png" class="lang-flag">
     <img v-on:click="changeLanguage('it')" src="./assets/it.png" class="lang-flag">
-    <router-view/>
+    <router-view :key="$i18n.locale"/>
   </div>
 </template>
 

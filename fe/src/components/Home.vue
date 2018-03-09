@@ -20,7 +20,7 @@ export default {
   name: 'Home',
   data: function () {
     return {
-      'contest': {},
+      contest: {},
       errors: []
     }
   },
