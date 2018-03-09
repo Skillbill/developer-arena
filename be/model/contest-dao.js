@@ -6,13 +6,7 @@ const model = require('./contest');
 const Op = require('sequelize').Op
 
 const getAllContests = () => {
-  return sql.getContestTable().findAll({
-    attributes: [
-      'id',
-      model.title.field,
-      model.state.field
-    ]
-  })
+  return sql.getContestTable().findAll({})
 };
 
 const getContestById = (id) => {
