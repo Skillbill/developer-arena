@@ -1,16 +1,22 @@
 FROM node:carbon
 
-RUN mkdir -p /tmp/app
-ADD . /tmp/app
-WORKDIR /tmp/app
-RUN npm install
+ENV TMPDIR=/tmp/app
+ENV APPDIR=/app
+
+## stuff that can be cached:
+RUN mkdir -p $TMPDIR
+ADD package.json $TMPDIR
+RUN cd $TMPDIR && npm install
+RUN npm -g install http-server
+
+ADD . $TMPDIR
+WORKDIR $TMPDIR
 RUN npm run build
 
-RUN mv dist /app
-RUN mv dynconfig.js /app
-RUN rm -rf /tmp/app
+RUN mv dist $APPDIR
+RUN mv dynconfig.js $APPDIR
+RUN rm -rf $TMPDIR
 
-WORKDIR /app
-RUN npm -g install http-server
+WORKDIR $APPDIR
 
 CMD (node ./dynconfig) && http-server
