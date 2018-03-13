@@ -1,11 +1,201 @@
 {
 	"info": {
 		"name": "SDA-CONTEST",
-		"_postman_id": "bcf22d64-0796-48e2-aec5-2976be68a14f",
+		"_postman_id": "8e342fc4-56e2-4057-afc0-60a03d3b3da8",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "project",
+			"description": "",
+			"item": [
+				{
+					"name": "contest project",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "44r97rXg|{{oid}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adtoken}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1/project/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1",
+								"project",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get deliverable",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "44r97rXg|{{oid}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adtoken}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1/project/1/deliverable/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1",
+								"project",
+								"1",
+								"deliverable",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "submit contest project",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "44r97rXg|{{oid}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adtoken}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "my nice little project",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "medium long description of my little project",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "repoURL",
+									"value": "github.com/username/little-project",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "deliverable",
+									"description": "",
+									"type": "file",
+									"src": "chrome51.zip"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1/project/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1",
+								"project",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "contest projects list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "44r97rXg|{{oid}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adtoken}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1/project/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1",
+								"project",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "contest list",
 			"request": {
@@ -38,8 +228,7 @@
 						"{{version}}",
 						"contest"
 					]
-				},
-				"description": null
+				}
 			},
 			"response": []
 		},
@@ -76,8 +265,7 @@
 						"contest",
 						"last"
 					]
-				},
-				"description": null
+				}
 			},
 			"response": []
 		},
@@ -114,8 +302,7 @@
 						"contest",
 						"1"
 					]
-				},
-				"description": null
+				}
 			},
 			"response": []
 		},
@@ -150,8 +337,7 @@
 					"path": [
 						"info"
 					]
-				},
-				"description": null
+				}
 			},
 			"response": []
 		}
