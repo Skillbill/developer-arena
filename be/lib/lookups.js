@@ -1,9 +1,13 @@
 module.exports = {
   http: {
     ok: 200,
+    created: 201,
     badRequest: 400,
     notFound: 404,
-    internalError: 500,
+    preconditionFailed: 412,
+    unsupportedType: 415,
+    unprocessableEntity: 422,
+    internalError: 500
   },
   contest: {
     state: {

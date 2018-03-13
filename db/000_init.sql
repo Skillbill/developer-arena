@@ -11,9 +11,9 @@ CREATE TYPE language_code AS ENUM (
 
 CREATE TABLE IF NOT EXISTS contest (
        id serial NOT NULL PRIMARY KEY,
-       end_presentation date NOT NULL,
-       end_applying date NOT NULL,
-       end_voting date NOT NULL,
+       end_presentation timestamp NOT NULL,
+       end_applying timestamp NOT NULL,
+       end_voting timestamp NOT NULL,
        state contest_status NOT NULL
 );
 
@@ -23,4 +23,21 @@ CREATE TABLE IF NOT EXISTS contest_i18n (
        entity_attribute varchar(20) not null,
        language language_code not null,
        translation text not null
+);
+
+CREATE TABLE IF NOT EXISTS project (
+       id serial NOT NULL PRIMARY KEY,
+       contest_id int REFERENCES contest(id) NOT NULL,
+       submitted timestamp NOT NULL,
+       title varchar(50) NOT NULL,
+       description text NOT NULL,
+       repo_url varchar(100),
+       filename varchar(100)
+);
+
+CREATE TABLE IF NOT EXISTS deliverable (
+       id serial NOT NULL PRIMARY KEY,
+       project_id int REFERENCES project(id) NOT NULL,
+       mimetype varchar(32) NOT NULL,
+       data bytea NOT NULL
 );
