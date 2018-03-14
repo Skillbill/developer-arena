@@ -11,8 +11,11 @@ require('./config').init()
             const i18n = require('i18n')
             const fileUpload = require('express-fileupload')
             const config = require('./config').get()
+            const auth = require('./lib/auth')
             const cors = require('cors')
             const app = express()
+
+            auth.init(config.firebase)
 
             logger.info('starting api')
             //app.set('creds', config);

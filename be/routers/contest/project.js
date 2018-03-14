@@ -5,10 +5,15 @@ const logger = require('../../lib/logger')
 const persistence = require('../../lib/persistence')
 const router = express.Router({mergeParams: true})
 
+const middleware = {
+    auth: require('../../lib//auth').middleware,
+    validateDeliverable: require('../middleware/validate-deliverable')
+}
+
 router.get('/', (req, res) => getProjectList(req, res))
 router.get('/:projectId', (req, res) => getProject(req, res))
 router.get('/:projectId/deliverable', (req, res) => getDeliverable(req, res))
-router.post('/', require('./middleware').validateDeliverable)
+router.post('/', middleware.auth, middleware.validateDeliverable)
 router.post('/', (req, res) => submitProject(req, res))
 
 const missingParam = (res, param) => {
@@ -65,8 +70,8 @@ const getDeliverable = (req, res) => {
     })
 }
 
-// TODO: user profiling
 const submitProject = (req, res) => {
+    logger.debug('submit project request from:', req.user)
     persistence.getContestById(req.params.contestId).then(contest => {
         if (!contest || contest.state == lk.contest.state.draft) {
             return res.status(lk.http.notFound).send({error: 'contest not found'})
@@ -76,6 +81,7 @@ const submitProject = (req, res) => {
         }
         const p = {
             contestId: req.params.contestId,
+            userId: req.user.uid,
             submitted: new Date(),
             title: req.body.title,
             description: req.body.description
@@ -99,6 +105,9 @@ const submitProject = (req, res) => {
         persistence.submitProject(p).then(project => {
             res.status(lk.http.created).send({project: project})
         }).catch(err => {
+            if (err === lk.error.alreadyExists) {
+                return res.status(lk.http.badRequest).send({error: 'user already submitted a project for this contest'})
+            }
             logger.error(err)
             res.status(lk.http.internalError).send({error: err})
         })

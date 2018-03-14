@@ -28,6 +28,4 @@ const validateDeliverable = (req, res, next) => {
     next()
 }
 
-module.exports = {
-    validateDeliverable
-}
+module.exports = validateDeliverable

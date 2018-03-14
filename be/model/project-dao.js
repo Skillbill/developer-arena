@@ -1,4 +1,5 @@
 const sql = require('../lib/sql')
+const lk = require('../lib/lookups')
 
 const model = {
     project: require('./project'),
@@ -44,7 +45,7 @@ const submit = (project) => {
                 data: project.deliverable.data
             }).then(() => resolve(created))
         }).catch (err => {
-            reject(err)
+            reject(err.name && err.name === 'SequelizeUniqueConstraintError' ? lk.error.alreadyExists : err)
         })
     })
 }

@@ -1,12 +1,20 @@
 const moment = require('moment')
-const out = console;
+const colors = require('colors/safe')
+const out = console
 
-(() => {
-    ['log', 'trace', 'info', 'debug', 'warn', 'error'].forEach(kind => {
-        module.exports[kind] = (...args) => {
-            const now = moment(new Date()).format()
-            args.unshift(`[${now}]`)
-            out[kind](...args)
-        }
-    })
-})()
+const theme = {
+    log: 'white',
+    trace: 'grey',
+    info: 'grey',
+    debug: 'cyan',
+    warn: 'yellow',
+    error: 'red'
+}
+
+colors.setTheme(theme)
+Object.keys(theme).forEach(kind => {
+    module.exports[kind] = (...args) => {
+        const now = moment(new Date()).format()
+        out[kind](colors[theme[kind]](`${now}`, ...args.map(e => typeof e == 'object' ? JSON.stringify(e) : e)))
+    }
+})

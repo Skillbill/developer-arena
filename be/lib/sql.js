@@ -13,7 +13,8 @@ const sequelize = new Sequelize(sqlUri, {
     operatorsAliases: Sequelize.Op,
     define: {
         timestamps: false
-    }
+    },
+    logging: null && require('../lib/logger/').debug
 })
 
 const getContestTable = () => {

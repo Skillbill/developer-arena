@@ -28,11 +28,13 @@ CREATE TABLE IF NOT EXISTS contest_i18n (
 CREATE TABLE IF NOT EXISTS project (
        id serial NOT NULL PRIMARY KEY,
        contest_id int REFERENCES contest(id) NOT NULL,
+       user_id varchar(32) NOT NULL,
        submitted timestamp NOT NULL,
        title varchar(50) NOT NULL,
        description text NOT NULL,
        repo_url varchar(100),
-       filename varchar(100)
+       filename varchar(100),
+       UNIQUE(contest_id, user_id)
 );
 
 CREATE TABLE IF NOT EXISTS deliverable (

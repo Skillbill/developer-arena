@@ -11,6 +11,10 @@ const defaults = {
         database: 'sda-contest',
         user: 'postgres',
         password: '1234'
+    },
+    firebase: {
+        keyPath: '../keys/firebase.json',
+        databaseURL: 'https://sda-contest-dev.firebaseio.com',
     }
 }
 
