@@ -50,9 +50,22 @@ const submit = (project) => {
     })
 }
 
+const vote = (project, voterId) => {
+    return new Promise((resolve, reject) => {
+        sql.getVoteTable().create({
+            contestId: project.contestId,
+            projectId: project.id,
+            voterId: voterId
+        }).then(resolve).catch(err => {
+            reject(err.name && err.name === 'SequelizeUniqueConstraintError' ? lk.error.alreadyExists : err)
+        })
+    })
+}
+
 module.exports = {
     getProjectById,
     getProjectsByContest,
     getWithDeliverable,
-    submit
+    submit,
+    vote
 }

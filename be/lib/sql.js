@@ -5,7 +5,8 @@ const model = {
     contest: require('../model/contest'),
     contestI18n: require('../model/contest-i18n'),
     project: require('../model/project'),
-    deliverable: require('../model/deliverable')
+    deliverable: require('../model/deliverable'),
+    vote: require('../model/vote')
 }
 
 const sqlUri = `postgresql://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/sda-contest`
@@ -33,9 +34,14 @@ const getDeliverableTable = () => {
     return sequelize.define('deliverable', model.deliverable, {freezeTableName: true})
 }
 
+const getVoteTable = () => {
+    return sequelize.define('vote', model.vote, {freezeTableName: true})
+}
+
 module.exports = {
     getContestTable,
     getContestI18nTable,
     getProjectTable,
-    getDeliverableTable
+    getDeliverableTable,
+    getVoteTable
 }

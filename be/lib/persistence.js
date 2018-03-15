@@ -10,6 +10,8 @@ const getProjectsByContest = (contestId) => projectDao.getProjectsByContest(cont
 const getProjectWithDeliverable = (projectId) => projectDao.getWithDeliverable(projectId)
 const submitProject = (project) => projectDao.submit(project)
 
+const voteProject = (project, userId) => projectDao.vote(project, userId)
+
 module.exports = {
     getAllContests,
     getLastContest,
@@ -19,4 +21,5 @@ module.exports = {
     getProjectsByContest,
     getProjectWithDeliverable,
     submitProject,
+    voteProject
 }

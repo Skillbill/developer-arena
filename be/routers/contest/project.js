@@ -5,7 +5,7 @@ const logger = require('../../lib/logger')
 const persistence = require('../../lib/persistence')
 const router = express.Router({mergeParams: true})
 
-const middleware = {
+const mw = {
     auth: require('../../lib//auth').middleware,
     validateDeliverable: require('../middleware/validate-deliverable')
 }
@@ -13,8 +13,11 @@ const middleware = {
 router.get('/', (req, res) => getProjectList(req, res))
 router.get('/:projectId', (req, res) => getProject(req, res))
 router.get('/:projectId/deliverable', (req, res) => getDeliverable(req, res))
-router.post('/', middleware.auth, middleware.validateDeliverable)
-router.post('/', (req, res) => submitProject(req, res))
+
+router.post('*', mw.auth)
+router.put('*', mw.auth)
+router.post('/', mw.validateDeliverable, (req, res) => submitProject(req, res))
+router.put('/:projectId/vote', (req, res) => voteProject(req, res))
 
 const missingParam = (res, param) => {
     if (!param) {
@@ -106,7 +109,31 @@ const submitProject = (req, res) => {
             res.status(lk.http.created).send({project: project})
         }).catch(err => {
             if (err === lk.error.alreadyExists) {
-                return res.status(lk.http.badRequest).send({error: 'user already submitted a project for this contest'})
+                return res.status(lk.http.preconditionFailed).send({error: 'user already submitted a project for this contest'})
+            }
+            logger.error(err)
+            res.status(lk.http.internalError).send({error: err})
+        })
+    }).catch(err => {
+        logger.error(err)
+        res.status(lk.http.internalError).send({error: err})
+    })
+}
+
+const voteProject = (req, res) => {
+    const contestId = req.params.contestId
+    const projectId = req.params.projectId
+    const uid = req.user.uid
+
+    persistence.getProjectById(projectId).then(project => {
+        if (!project || project.contestId != contestId) {
+            return res.status(lk.http.notFound).send({error: 'project not found'})
+        }
+        persistence.voteProject(project, uid).then(() => {
+            res.status(lk.http.ok).send()
+        }).catch(err => {
+            if (err === lk.error.alreadyExists) {
+                return res.status(lk.http.preconditionFailed).send({error: 'already voted for this project'})
             }
             logger.error(err)
             res.status(lk.http.internalError).send({error: err})

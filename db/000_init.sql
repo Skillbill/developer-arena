@@ -9,6 +9,8 @@ CREATE TYPE language_code AS ENUM (
        'it'
 );
 
+CREATE DOMAIN userid AS varchar(32);
+
 CREATE TABLE IF NOT EXISTS contest (
        id serial NOT NULL PRIMARY KEY,
        end_presentation timestamp NOT NULL,
@@ -27,8 +29,8 @@ CREATE TABLE IF NOT EXISTS contest_i18n (
 
 CREATE TABLE IF NOT EXISTS project (
        id serial NOT NULL PRIMARY KEY,
-       contest_id int REFERENCES contest(id) NOT NULL,
-       user_id varchar(32) NOT NULL,
+       contest_id int REFERENCES contest(id) ON DELETE CASCADE,
+       user_id userid NOT NULL,
        submitted timestamp NOT NULL,
        title varchar(50) NOT NULL,
        description text NOT NULL,
@@ -39,7 +41,15 @@ CREATE TABLE IF NOT EXISTS project (
 
 CREATE TABLE IF NOT EXISTS deliverable (
        id serial NOT NULL PRIMARY KEY,
-       project_id int REFERENCES project(id) NOT NULL,
+       project_id int REFERENCES project(id) ON DELETE CASCADE,
        mimetype varchar(32) NOT NULL,
        data bytea NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS vote (
+       id serial NOT NULL,
+       contest_id int REFERENCES contest(id) ON DELETE CASCADE,
+       project_id int REFERENCES project(id) ON DELETE CASCADE,
+       voter_id userid NOT NULL,
+       UNIQUE(contest_id, project_id, voter_id)
 );
