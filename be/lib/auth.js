@@ -2,6 +2,8 @@ const lk = require('./lookups')
 const logger = require('./logger')
 const firebase = require('firebase-admin')
 
+let fakeAuthEnabled = false
+
 const firebase_auth_mw = (req, res, next) => {
     const token = extractToken(req)
     if (!token) {
@@ -30,7 +32,7 @@ const fake_auth_mw = (req, res, next) => {
     next()
 }
 
-let middleware = firebase_auth_mw
+const middleware = (req, res, next) => (fakeAuthEnabled ? fake_auth_mw : firebase_auth_mw)(req, res, next)
 
 const init = (cfg) => {
     try {
@@ -45,7 +47,7 @@ const init = (cfg) => {
         if (err.code && err.code == 'MODULE_NOT_FOUND') {
             logger.error(`could not load firebase service account "${cfg.keyPath}"`)
             logger.warn('firebase is DISABLED: use fake auth middleware instead (dev mode)')
-            middleware = fake_auth_mw
+            fakeAuthEnabled = true
         } else {
             logger.error('could not initialize firebase:', JSON.stringify(err))
             throw 'failed to initialize auth lib'
