@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>SDA Contest</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="main-header">
+      <h1>
+        <a href="#">
+          <img src="assets/logo.svg" alt="Logo">
+          <span>SDA Contest</span>
+        </a>
+      </h1>
+      <nav class="main-nav">
+        <ul>
+          <li>
+            <a href="#">Home</a>
+          </li>
+          <li>
+            <a href="#">Projects</a>
+          </li>
+          <li>
+            <a href="#">About</a>
+          </li>
+          <li>
+            <a href="#">Login</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="submit">
+      <section>
+        <h2>Submit your project</h2>
+        <form action="#" method="post" class="submit-project">
+          <fieldset>
+            <legend>Personal Data</legend>
+            
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="john.doe@email.com" required>
+            
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" placeholder="John Doe" required>
+
+            <label for="job">Your Job</label>
+            <select name="job" id="job" required>
+              <option value="developer">Developer</option>
+              <option value="student">Student</option>
+            </select>
+
+          </fieldset>
+          <fieldset>
+            <legend>Your Project</legend>
+
+            <label for="project-name">Project Name</label>
+            <input type="text" name="project-name" id="project-name" placeholder="Awesome Project" required>
+
+            <label for="project-description">Description</label>
+            <textarea type="text" name="project-description" id="project-description" placeholder="Project description..." required rows="5"></textarea>
+
+            <label for="project-file">File</label>
+            <input type="file" name="project-file" id="project-file" required>
+
+          </fieldset>
+          <button type="submit">Send!</button>
+        </form>
+        <p class="feedback ok">Your project has been submitted! Thanks.</p>
+        <p class="feedback ko">Oops! An error has occurred, please try again later</p>
+      </section>
+    </main>
+    <footer role="contentinfo">
+      <div class="footer-info">
+        <p>Skillbill Developer Arena Contest <br> &copy; <a href="http://www.skillbill.it/">Skillbill</a> 2018</p>
+        <img class="logo" src="assets/logo-skillbill.png" alt="Logo Skillbill">
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

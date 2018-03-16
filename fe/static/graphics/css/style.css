@@ -88,30 +88,56 @@ main p {
 
 fieldset {
   border: 0.2rem solid #fa6603;
-  padding: 0.6rem;
+  padding: 1rem;
   margin-bottom: 0.5rem;
 }
 
 legend {
-  padding: 0.5rem;
+  padding: 0 0.5rem;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   width: 100%;
   border: 0.1rem solid #ffce31;
   padding: 0.6rem;
+  background-color: #fefefe;
 }
 
-input:focus {
+input:focus,
+textarea:focus,
+select:focus {
   border: 0.1rem solid #003363;
 }
 
-label + input {
+label + input,
+textarea + input,
+select + input {
   margin-bottom: 0.5rem;
 }
 
 form label {
   cursor: pointer;
+}
+
+.feedback {
+  margin: 0.4rem 0;
+  padding: 1rem 1rem 1rem 5rem;
+  background-color: #4a921a;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 2% center;
+  color: #fefefe;
+}
+
+.feedback.ok {
+  background-image: url("icons/ok.svg");
+}
+
+.feedback.ko {
+  background-color: #b82626;
+  background-image: url("icons/ko.svg");
 }
 
 /*** molecules ***/
@@ -195,6 +221,7 @@ form label {
   width: 100%;
   padding: 1rem;
   font-size: 150%;  
+  margin-bottom: 0.2rem;
 }
 
 /* footer-info */
