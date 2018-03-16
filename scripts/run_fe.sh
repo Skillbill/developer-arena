@@ -30,11 +30,12 @@ Start the frontend linked to the given backend
     -t TAG		docker tag (default: $TAG)
     -l PORT		listen port (default: $FE_PORT)
     -a ADDRESS		backend address (default $BE_ADDR)
+    -s                  use https (default: no)
     -h			print this help end exit
 EOF
 }
 
-while getopts BPt:l:a:h arg; do
+while getopts BPt:l:a:sh arg; do
 	case $arg in
 		B)
 			build=1
@@ -50,6 +51,9 @@ while getopts BPt:l:a:h arg; do
 			;;
 		a)
 			addr="$OPTARG"
+			;;
+		s)
+		        proto=https
 			;;
 		h)
 			help
@@ -68,6 +72,7 @@ addr=${addr:-$BE_ADDR}
 
 split_addr $addr host port
 port=${port:-$BE_PORT}
+proto=${proto:-http}
 
 echo "docker: ${img}:${tag}"
 echo "backend: ${host}:${port}"
@@ -82,6 +87,7 @@ elif [ $pull ]; then
 fi
 
 docker_run -p ${listen}:${FE_PORT} \
+       -e BE_PROTO=$proto \
        -e BE_HOST=$host	\
        -e BE_PORT=$port	\
        ${img}:${tag}
