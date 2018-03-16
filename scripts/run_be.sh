@@ -96,7 +96,8 @@ fi
 if [ $build ]; then
 	docker_build -t $DOCKER_IMG_BE "$root/be/" || exit 1
 elif [ $pull ]; then
-	docker_pull ${DOCKER_IMG_NS}/${DOCKER_IMG_BE}:${TAG} || exit 1
+        img=${DOCKER_IMG_NS}/${img}
+	docker_pull ${img}:${TAG} || exit 1
 fi
 
 docker_run -p ${listen}:${BE_PORT} \
