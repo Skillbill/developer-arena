@@ -272,7 +272,6 @@ div.progress::after {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  align-items: center;
 }
 
 .footer-info img {
@@ -330,6 +329,20 @@ div.progress::after {
 .card button {
   width: 100%;
   margin-bottom: 0.2rem;
+}
+
+/* footer-links */
+
+.footer-links {
+  padding: 0 2rem;
+}
+
+.footer-links h4 {
+  color: #f0f0f0;
+}
+
+.footer-links ul {
+  list-style: none;
 }
 
 /*** organisms ***/
