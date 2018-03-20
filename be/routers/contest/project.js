@@ -7,16 +7,17 @@ const router = express.Router({mergeParams: true})
 
 const mw = {
     auth: require('../../lib//auth').middleware,
-    validateDeliverable: require('../middleware/validate-deliverable')
+    validateFile: require('../middleware/validate-file')
 }
 
 router.post('*', mw.auth)
 router.put('*', mw.auth)
 
 router.get('/', getProjectList)
-router.post('/', mw.validateDeliverable, submitProject)
+router.post('/', mw.validateFile.image, mw.validateFile.deliverable, submitProject)
 
 router.get('/:projectId', getProject)
+router.get('/:projectId/image', getImage)
 router.get('/:projectId/deliverable', getDeliverable)
 router.put('/:projectId/vote', voteProject)
 
@@ -58,16 +59,35 @@ function getProject(req, res) {
     })
 }
 
-const getDeliverable = (req, res) => {
+const sendfile = (res, file) => {
+    res.set('Content-Type', file.mimetype)
+    res.set('Last-Modified', file.mtime)
+    res.set('Content-Disposition', `attachment; filename="${file.name}"`)
+    res.status(lk.http.ok).send(file.data)
+}
+
+function getImage(req, res) {
+    const contestId = req.params.contestId
+    const projectId = req.params.projectId
+    persistence.getProjectWithImage(projectId).then(project => {
+        if (!project || project.contestId != contestId) {
+            return res.status(lk.http.notFound).send({error: 'image not found'})
+        }
+        sendfile(res, project.image)
+    }).catch(err => {
+        logger.error(err)
+        res.status(lk.http.internalError).send({error: err})
+    })
+}
+
+function getDeliverable(req, res) {
     const contestId = req.params.contestId
     const projectId = req.params.projectId
     persistence.getProjectWithDeliverable(projectId).then(project => {
         if (!project || project.contestId != contestId) {
             return res.status(lk.http.notFound).send({error: 'deliverable not found'})
         }
-        res.set('Content-Type', project.deliverable.mimetype)
-        res.set('Content-Disposition', `attachment; filename="${project.deliverable.name}"`)
-        res.status(lk.http.ok).send(project.deliverable.data)
+        sendfile(res, project.deliverable)
     }).catch(err => {
         logger.error(err)
         res.status(lk.http.internalError).send({error: err})
@@ -93,8 +113,15 @@ function submitProject(req, res) {
         if (req.body.repoURL) {
             p.repoURL = req.body.repoURL
         }
-        if (req.files && req.files.deliverable) {
-            p.deliverable = req.files.deliverable
+        if (req.files) {
+            if (req.files.deliverable) {
+                p.deliverable = req.files.deliverable
+                p.deliverable.mtime = new Date()
+            }
+            if (req.files.image) {
+                p.image = req.files.image
+                p.image.mtime = new Date()
+            }
         }
         if (!p.contestId) {
             return missingParam(res, 'contest id')

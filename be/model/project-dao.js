@@ -3,22 +3,30 @@ const lk = require('../lib/lookups')
 
 const model = {
     project: require('./project'),
-    deliverable: require('./deliverable')
+    file: require('./file')
+}
+
+const fileKind = {
+    deliverable: 'DELIVERABLE',
+    image: 'IMAGE'
 }
 
 const getProjectById = (id) => {
     const projectTable = sql.getProjectTable()
-    const delivTable = sql.getDeliverableTable()
-    projectTable.hasOne(delivTable, {as: 'deliverable', foreignKey: model.deliverable.projectId})
+    const fileTable = sql.getFileTable()
+    projectTable.hasOne(fileTable, {as: 'deliverable', foreignKey: model.file.projectId})
     return projectTable.findOne({
         where: {
             id: id
         },
         include: [{
-            model: delivTable,
+            model: fileTable,
             required: false,            
             as: 'deliverable',
-            attributes: [model.deliverable.name.field]
+            attributes: [model.file.name.field],
+            where: {
+                kind: fileKind.deliverable
+            }
         }]
     })
 }
@@ -33,30 +41,58 @@ const getProjectsByContest = (contestId) => {
 
 const getWithDeliverable = (projectId) => {
     const projectTable = sql.getProjectTable()
-    const delivTable = sql.getDeliverableTable()
-    projectTable.hasOne(delivTable, {as: 'deliverable', foreignKey: model.deliverable.projectId})
+    const fileTable = sql.getFileTable()
+    projectTable.hasOne(fileTable, {as: 'deliverable', foreignKey: model.file.projectId})
     return projectTable.findOne({
         where: {
             id: projectId
         },
         include: [{
-            model: delivTable,
-            as: 'deliverable'
+            model: fileTable,
+            as: 'deliverable',
+            where: {
+                kind: fileKind.deliverable
+            }
         }]
     })
 }
 
+const getWithImage = (projectId) => {
+    const projectTable = sql.getProjectTable()
+    const fileTable = sql.getFileTable()
+    projectTable.hasOne(fileTable, {as: 'image', foreignKey: model.file.projectId})
+    return projectTable.findOne({
+        where: {
+            id: projectId
+        },
+        include: [{
+            model: fileTable,
+            as: 'image',
+            where: {
+                kind: fileKind.image
+            }
+        }]
+    })
+}
+
+const createFile = (projectId, kind, file) => {
+    return sql.getFileTable().create({
+        projectId: projectId,
+        mimetype: file.mimetype,
+        kind: kind,
+        mtime: file.mtime,
+        name: file.name,
+        data: file.data
+    })
+}
+
 const submit = (project) => {
-    if (!project.deliverable) {
-        return sql.getProjectTable().create(project)
-    }
     return new Promise((resolve, reject) => {
         sql.getProjectTable().create(project).then(created => {
-            sql.getDeliverableTable().create({
-                projectId: created.id,
-                mimetype: project.deliverable.mimetype,
-                data: project.deliverable.data
-            }).then(() => resolve(created))
+            return Promise.all([
+                project.deliverable ? createFile(created.id, fileKind.deliverable, project.deliverable) : Promise.resolve(),
+                project.image ? createFile(created.id, fileKind.image, project.image) : Promise.resolve()
+            ]).then(() =>  resolve(created))
         }).catch (err => {
             reject(err.name && err.name === 'SequelizeUniqueConstraintError' ? lk.error.alreadyExists : err)
         })
@@ -79,6 +115,7 @@ module.exports = {
     getProjectById,
     getProjectsByContest,
     getWithDeliverable,
+    getWithImage,
     submit,
     vote
 }
