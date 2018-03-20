@@ -3,6 +3,7 @@ const lk = require('../lib/lookups')
 
 const model = {
     project: require('./project'),
+    vote: require('./vote'),
     file: require('./file')
 }
 
@@ -14,20 +15,33 @@ const fileKind = {
 const getProjectById = (id) => {
     const projectTable = sql.getProjectTable()
     const fileTable = sql.getFileTable()
+    const voteTable = sql.getVoteTable()
     projectTable.hasOne(fileTable, {as: 'deliverable', foreignKey: model.file.projectId})
+    projectTable.hasMany(voteTable, {as: 'votes', foreignKey: model.file.projectId})
     return projectTable.findOne({
         where: {
             id: id
         },
-        include: [{
-            model: fileTable,
-            required: false,            
-            as: 'deliverable',
-            attributes: [model.file.name.field],
-            where: {
-                kind: fileKind.deliverable
+        include: [
+            {
+                model: fileTable,
+                required: false,
+                as: 'deliverable',
+                attributes: [model.file.name.field],
+                where: {
+                    kind: fileKind.deliverable
+                }
+            },
+            {
+                model: voteTable,
+                required: false,
+                as: 'votes',
+                attributes: [[model.vote.voterId.field, 'userId']],
+                where: {
+                    [model.vote.projectId.field]: id
+                }
             }
-        }]
+        ]
     })
 }
 

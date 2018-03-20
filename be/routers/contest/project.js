@@ -44,12 +44,12 @@ function getProjectList(req, res) {
 
 function getProject(req, res) {
     const id = req.params.projectId
-    const contestId = req.params.projectId
+    const contestId = req.params.contestId
     if (!contestId) {
         return missingParam(res, 'contest id')
     }
     persistence.getProjectById(id).then(project => {
-        if (!project) {
+        if (!project || project.contestId != contestId) {
             return res.status(lk.http.notFound).send({error: 'project not found'})
         }
         res.status(lk.http.ok).send({project: project})
@@ -152,9 +152,18 @@ function voteProject(req, res) {
     const projectId = req.params.projectId
     const uid = req.user.uid
 
-    persistence.getProjectById(projectId).then(project => {
+    Promise.all([
+        persistence.getContestById(contestId),
+        persistence.getProjectById(projectId)
+    ]).then(([contest, project]) => {
         if (!project || project.contestId != contestId) {
             return res.status(lk.http.notFound).send({error: 'project not found'})
+        }
+        if (libContest.getPublicState(contest) != lk.contest.publicState.voting) {
+            return res.status(lk.http.preconditionFailed).send({error: 'contest is not open for voting'})
+        }
+        if (project.votes.map(vote => vote.userId).includes(uid)) {
+            return res.status(lk.http.preconditionFailed).send({error: 'already voted for this project'})
         }
         persistence.voteProject(project, uid).then(() => {
             res.status(lk.http.ok).send()
