@@ -7,17 +7,19 @@ const router = express.Router({mergeParams: true})
 
 const mw = {
     auth: require('../../lib//auth').middleware,
-    validateDeliverable: require('../middleware/validate-deliverable')
+    validateFile: require('../middleware/validate-file')
 }
-
-router.get('/', (req, res) => getProjectList(req, res))
-router.get('/:projectId', (req, res) => getProject(req, res))
-router.get('/:projectId/deliverable', (req, res) => getDeliverable(req, res))
 
 router.post('*', mw.auth)
 router.put('*', mw.auth)
-router.post('/', mw.validateDeliverable, (req, res) => submitProject(req, res))
-router.put('/:projectId/vote', (req, res) => voteProject(req, res))
+
+router.get('/', getProjectList)
+router.post('/', mw.validateFile.image, mw.validateFile.deliverable, submitProject)
+
+router.get('/:projectId', getProject)
+router.get('/:projectId/image', getImage)
+router.get('/:projectId/deliverable', getDeliverable)
+router.put('/:projectId/vote', voteProject)
 
 const missingParam = (res, param) => {
     if (!param) {
@@ -26,7 +28,7 @@ const missingParam = (res, param) => {
     res.status(lk.http.badRequest).send({error: `missing ${param}`})
 }
 
-const getProjectList = (req, res) => {
+function getProjectList(req, res) {
     const contestId = req.params.contestId
     if (!contestId) {
         return missingParam(res, 'contest id'
@@ -40,7 +42,7 @@ const getProjectList = (req, res) => {
     })
 }
 
-const getProject = (req, res) => {
+function getProject(req, res) {
     const id = req.params.projectId
     const contestId = req.params.projectId
     if (!contestId) {
@@ -57,23 +59,42 @@ const getProject = (req, res) => {
     })
 }
 
-const getDeliverable = (req, res) => {
+const sendfile = (res, file) => {
+    res.set('Content-Type', file.mimetype)
+    res.set('Last-Modified', file.mtime)
+    res.set('Content-Disposition', `attachment; filename="${file.name}"`)
+    res.status(lk.http.ok).send(file.data)
+}
+
+function getImage(req, res) {
     const contestId = req.params.contestId
     const projectId = req.params.projectId
-    persistence.getProjectWithDeliverable(projectId).then(project => {
+    persistence.getProjectWithImage(projectId).then(project => {
         if (!project || project.contestId != contestId) {
-            return res.status(lk.http.notFound).send({error: 'deliverable not found'})
+            return res.status(lk.http.notFound).send({error: 'image not found'})
         }
-        res.set('Content-Type', project.deliverable.mimetype)
-        res.set('Content-Disposition', `attachment; filename="${project.filename}"`)
-        res.status(lk.http.ok).send(project.deliverable.data)
+        sendfile(res, project.image)
     }).catch(err => {
         logger.error(err)
         res.status(lk.http.internalError).send({error: err})
     })
 }
 
-const submitProject = (req, res) => {
+function getDeliverable(req, res) {
+    const contestId = req.params.contestId
+    const projectId = req.params.projectId
+    persistence.getProjectWithDeliverable(projectId).then(project => {
+        if (!project || project.contestId != contestId) {
+            return res.status(lk.http.notFound).send({error: 'deliverable not found'})
+        }
+        sendfile(res, project.deliverable)
+    }).catch(err => {
+        logger.error(err)
+        res.status(lk.http.internalError).send({error: err})
+    })
+}
+
+function submitProject(req, res) {
     logger.debug('submit project request from:', req.user)
     persistence.getContestById(req.params.contestId).then(contest => {
         if (!contest || contest.state == lk.contest.state.draft) {
@@ -92,9 +113,15 @@ const submitProject = (req, res) => {
         if (req.body.repoURL) {
             p.repoURL = req.body.repoURL
         }
-        if (req.files && req.files.deliverable) {
-            p.deliverable = req.files.deliverable
-            p.filename = p.deliverable.name
+        if (req.files) {
+            if (req.files.deliverable) {
+                p.deliverable = req.files.deliverable
+                p.deliverable.mtime = new Date()
+            }
+            if (req.files.image) {
+                p.image = req.files.image
+                p.image.mtime = new Date()
+            }
         }
         if (!p.contestId) {
             return missingParam(res, 'contest id')
@@ -120,7 +147,7 @@ const submitProject = (req, res) => {
     })
 }
 
-const voteProject = (req, res) => {
+function voteProject(req, res) {
     const contestId = req.params.contestId
     const projectId = req.params.projectId
     const uid = req.user.uid

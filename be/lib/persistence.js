@@ -8,8 +8,8 @@ const getLastContest = (language) => contestDao.getLastContest(language)
 const getProjectById = (id) => projectDao.getProjectById(id)
 const getProjectsByContest = (contestId) => projectDao.getProjectsByContest(contestId)
 const getProjectWithDeliverable = (projectId) => projectDao.getWithDeliverable(projectId)
+const getProjectWithImage = (projectId) => projectDao.getWithImage(projectId)
 const submitProject = (project) => projectDao.submit(project)
-
 const voteProject = (project, userId) => projectDao.vote(project, userId)
 
 module.exports = {
@@ -20,6 +20,7 @@ module.exports = {
     getProjectById,
     getProjectsByContest,
     getProjectWithDeliverable,
+    getProjectWithImage,
     submitProject,
     voteProject
 }

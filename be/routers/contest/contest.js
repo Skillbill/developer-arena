@@ -5,11 +5,11 @@ const logger = require('../../lib/logger')
 const express = require('express')
 const router = express.Router({mergeParams: true})
 
+router.get('/', getContestList)
+router.get('/:contestId', getContest)
+router.use('/:contestId/project/', require('./project'))
 
-router.get('/', (req, res) => getContestList(req, res))
-router.get('/:contestId', (req, res) => getContest(req, res))
-
-function pubfmt(contest) {
+const pubfmt = (contest) => {
     if (contest.state == lk.contest.state.draft) {
         logger.warn(`unexpected draft passed to pubfmt: ${contest.toJSON()}`)
         return null
@@ -25,7 +25,7 @@ function pubfmt(contest) {
     return obj
 }
 
-const getContestList = (req, res) => {
+function getContestList(req, res) {
     const isAdmin = false
     persistence.getAllContests().then(lst => {
         res.status(lk.http.ok).send({
@@ -37,7 +37,7 @@ const getContestList = (req, res) => {
     })
 }
 
-const getContest = (req, res) => {
+function getContest(req, res) {
     const isAdmin = false
     const id = req.params.contestId;
     ((id == 'last') ? persistence.getLastContest(req.language) : persistence.getContestById(id))
