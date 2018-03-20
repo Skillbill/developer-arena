@@ -11,7 +11,7 @@
   <div class="container">
     <header class="main-header">
       <h1>
-        <a href="#">
+        <a href="index.html">
           <img src="assets/logo.svg" alt="Logo">
           <span>SDA Contest</span>
         </a>
@@ -19,13 +19,13 @@
       <nav class="main-nav">
         <ul>
           <li>
-            <a href="#">Home</a>
+            <a href="index.html">Home</a>
           </li>
           <li>
-            <a href="#">Projects</a>
+            <a href="projects.html">Projects</a>
           </li>
           <li>
-            <a href="#">About</a>
+            <a href="about.html">About</a>
           </li>
           <li>
             <a href="#">Login</a>
@@ -55,6 +55,7 @@
           </fieldset>
           <fieldset>
             <legend>Your Project</legend>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima magnam veritatis sunt dignissimos dolore totam possimus obcaecati beatae explicabo voluptas delectus deserunt animi quaerat quae nesciunt voluptates, nobis eaque doloremque!</p>
 
             <label for="project-name">Project Name</label>
             <input type="text" name="project-name" id="project-name" placeholder="Awesome Project" required>
@@ -62,12 +63,19 @@
             <label for="project-description">Description</label>
             <textarea type="text" name="project-description" id="project-description" placeholder="Project description..." required rows="5"></textarea>
 
+            <label for="project-repository">Project Repository</label>
+            <input type="url" name="project-repository" id="project-repository" placeholder="http://github.com/...">
+
+            <label for="project-thumbnail">Thumbnail</label>
+            <input type="file" name="project-thumbnail" id="project-thumbnail">
+
             <label for="project-file">File</label>
-            <input type="file" name="project-file" id="project-file" required>
+            <input type="file" name="project-file" id="project-file">
 
           </fieldset>
           <button type="submit">Send!</button>
         </form>
+        <div class="progress"></div>
         <p class="feedback ok">Your project has been submitted! Thanks.</p>
         <p class="feedback ko">Oops! An error has occurred, please try again later</p>
       </section>
