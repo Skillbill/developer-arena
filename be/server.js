@@ -27,24 +27,20 @@ require('./config').init()
             app.use(fileUpload())
             app.use(cors())
 
-            app.use(express.static('public'))
             app.use('/info', require('./routers/info'))
 
             const mainRouter = express.Router()
             app.use('/1.0', mainRouter)
-
-            mainRouter.use('/contest/:contestId/project/', require('./routers/contest/project'))
             mainRouter.use('/contest', require('./routers/contest/contest'))
 
-            const port = process.env.PORT || 3000
-            app.listen(port, function() {
+            const port = process.env.BE_PORT || 3000
+            app.listen(port, () => {
                 logger.log(`server listening on ${port}`)
             })
         } catch (error) {
             logger.error('could not start the server:', error)
         }
-    })
-    .catch((error) => {
+    }).catch((error) => {
         logger.error('could not load configuration:', error)
     })
 

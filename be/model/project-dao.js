@@ -7,7 +7,20 @@ const model = {
 }
 
 const getProjectById = (id) => {
-    return sql.getProjectTable().findById(id)
+    const projectTable = sql.getProjectTable()
+    const delivTable = sql.getDeliverableTable()
+    projectTable.hasOne(delivTable, {as: 'deliverable', foreignKey: model.deliverable.projectId})
+    return projectTable.findOne({
+        where: {
+            id: id
+        },
+        include: [{
+            model: delivTable,
+            required: false,            
+            as: 'deliverable',
+            attributes: [model.deliverable.name.field]
+        }]
+    })
 }
 
 const getProjectsByContest = (contestId) => {

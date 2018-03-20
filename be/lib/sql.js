@@ -15,7 +15,7 @@ const sequelize = new Sequelize(sqlUri, {
     define: {
         timestamps: false
     },
-    logging: null && require('../lib/logger/').debug
+    logging: false
 })
 
 const getContestTable = () => {

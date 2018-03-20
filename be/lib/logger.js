@@ -12,9 +12,12 @@ const theme = {
 }
 
 colors.setTheme(theme)
+
+const fmt = (o) => typeof o == 'object' && !(o instanceof Error) ? JSON.stringify(o) : o
+
 Object.keys(theme).forEach(kind => {
     module.exports[kind] = (...args) => {
         const now = moment(new Date()).format()
-        out[kind](colors[theme[kind]](`${now}`, ...args.map(e => typeof e == 'object' ? JSON.stringify(e) : e)))
+        out[kind](colors[theme[kind]](`${now}`, ...args.map(fmt)))
     }
 })

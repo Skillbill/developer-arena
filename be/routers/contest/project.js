@@ -10,14 +10,15 @@ const mw = {
     validateDeliverable: require('../middleware/validate-deliverable')
 }
 
-router.get('/', (req, res) => getProjectList(req, res))
-router.get('/:projectId', (req, res) => getProject(req, res))
-router.get('/:projectId/deliverable', (req, res) => getDeliverable(req, res))
-
 router.post('*', mw.auth)
 router.put('*', mw.auth)
-router.post('/', mw.validateDeliverable, (req, res) => submitProject(req, res))
-router.put('/:projectId/vote', (req, res) => voteProject(req, res))
+
+router.get('/', getProjectList)
+router.post('/', mw.validateDeliverable, submitProject)
+
+router.get('/:projectId', getProject)
+router.get('/:projectId/deliverable', getDeliverable)
+router.put('/:projectId/vote', voteProject)
 
 const missingParam = (res, param) => {
     if (!param) {
@@ -26,7 +27,7 @@ const missingParam = (res, param) => {
     res.status(lk.http.badRequest).send({error: `missing ${param}`})
 }
 
-const getProjectList = (req, res) => {
+function getProjectList(req, res) {
     const contestId = req.params.contestId
     if (!contestId) {
         return missingParam(res, 'contest id'
@@ -40,7 +41,7 @@ const getProjectList = (req, res) => {
     })
 }
 
-const getProject = (req, res) => {
+function getProject(req, res) {
     const id = req.params.projectId
     const contestId = req.params.projectId
     if (!contestId) {
@@ -65,7 +66,7 @@ const getDeliverable = (req, res) => {
             return res.status(lk.http.notFound).send({error: 'deliverable not found'})
         }
         res.set('Content-Type', project.deliverable.mimetype)
-        res.set('Content-Disposition', `attachment; filename="${project.filename}"`)
+        res.set('Content-Disposition', `attachment; filename="${project.deliverable.name}"`)
         res.status(lk.http.ok).send(project.deliverable.data)
     }).catch(err => {
         logger.error(err)
@@ -73,7 +74,7 @@ const getDeliverable = (req, res) => {
     })
 }
 
-const submitProject = (req, res) => {
+function submitProject(req, res) {
     logger.debug('submit project request from:', req.user)
     persistence.getContestById(req.params.contestId).then(contest => {
         if (!contest || contest.state == lk.contest.state.draft) {
@@ -94,7 +95,6 @@ const submitProject = (req, res) => {
         }
         if (req.files && req.files.deliverable) {
             p.deliverable = req.files.deliverable
-            p.filename = p.deliverable.name
         }
         if (!p.contestId) {
             return missingParam(res, 'contest id')
@@ -120,7 +120,7 @@ const submitProject = (req, res) => {
     })
 }
 
-const voteProject = (req, res) => {
+function voteProject(req, res) {
     const contestId = req.params.contestId
     const projectId = req.params.projectId
     const uid = req.user.uid
