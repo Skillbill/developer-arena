@@ -1,10 +1,10 @@
 <template>
   <header class="main-header">
     <h1>
-      <a href="#/">
+      <router-link to="/">
         <img src="static/graphics/assets/logo.svg" alt="Logo">
         <span>{{$t("siteName")}}</span>
-      </a>
+      </router-link>
     </h1>
     <nav class="main-nav">
       <ul>
