@@ -9,6 +9,7 @@
   font-size: 20px;
   box-sizing: border-box;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 body {
@@ -150,6 +151,38 @@ form label {
 .feedback.ko {
   background-color: #b82626;
   background-image: url("icons/ko.svg");
+}
+
+a.github-link {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  height: 3rem;
+  width: 3rem;
+  background-image: url("icons/github-octocat.svg");
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 3rem;
+  color: #f0f0f0;
+  overflow: hidden;
+  text-indent: -15rem;
+  transform: rotate(45deg);
+  transition: all 0.5s ease;
+  text-decoration: none;
+  font-size: 70%;
+  padding: 0.2rem;
+}
+
+.github-link:hover,
+.github-link:focus {
+  transform: rotate(0deg) translateX(-0.5rem) translateY(0.5rem);
+  text-indent: 0;
+  width: 4rem;
+  background-color: #003363;
+  background-size: 1rem;
+  background-position: 100% 65%
 }
 
 div.progress {
