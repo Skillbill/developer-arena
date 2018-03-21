@@ -9,16 +9,16 @@
     <nav class="main-nav">
       <ul>
         <li>
-          <a href="#/">{{$t("home")}}</a>
+          <router-link to="/">{{$t("menu.home")}}</router-link>
         </li>
         <li>
-          <a href="#/projects">{{$t("projects")}}</a>
+          <router-link to="/projects">{{$t("menu.projects")}}</router-link>
         </li>
         <li>
-          <a href="#/about">{{$t("about")}}</a>
+          <router-link to="/about">{{$t("menu.about")}}</router-link>
         </li>
         <li>
-          <a href="#/login">{{$t("login")}}</a>
+          <router-link to="/login">{{$t("menu.login")}}</router-link>
         </li>
       </ul>
     </nav>

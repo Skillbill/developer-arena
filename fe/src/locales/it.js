@@ -1,10 +1,12 @@
 module.exports = {
   siteName: 'SDA Contest',
   siteFullName: 'Skillbill Developer Arena Contest',
-  home: 'Home',
-  projects: 'Progetti',
-  about: 'About',
-  login: 'Accedi',
+  menu: {
+    home: 'Home',
+    projects: 'Progetti',
+    about: 'About',
+    login: 'Accedi'
+  },
   viewGitHub: 'Vedi su GitHub',
   contest: 'Il contest',
   contestStarts: 'inizierà il',
