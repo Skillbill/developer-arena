@@ -7,6 +7,11 @@ module.exports = {
     about: 'About',
     login: 'Accedi'
   },
+  footer: {
+    languages: 'Lingue',
+    it: 'Italiano',
+    en: 'English'
+  },
   viewGitHub: 'Vedi su GitHub',
   contest: 'Il contest',
   contestStarts: 'inizierà il',

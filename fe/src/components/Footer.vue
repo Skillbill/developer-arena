@@ -1,13 +1,13 @@
 <template>
   <footer role="contentinfo">
     <div class="footer-links">
-      <h4>Languages</h4>
+      <h4>{{$t('footer.languages')}}</h4>
       <ul>
         <li>
-          <a href="#" v-on:click="changeLanguage('it')">Italiano</a>
+          <a href="#" v-on:click.prevent="changeLanguage('it')">{{$t('footer.it')}}</a>
         </li>
         <li>
-          <a href="#" v-on:click="changeLanguage('en')">English</a>
+          <a href="#" v-on:click.prevent="changeLanguage('en')">{{$t('footer.en')}}</a>
         </li>
       </ul>
     </div>
@@ -21,7 +21,7 @@
 <script>
 export default {
   methods: {
-    changeLanguage: function (lang) {
+    changeLanguage: function (lang, e) {
       this.$store.dispatch('chooseLanguage', lang);
     }
   }

@@ -27,5 +27,4 @@ firebase.auth().onAuthStateChanged(user => {
   }
 })
 
-store.dispatch('loadLastContest');
 store.dispatch('chooseLanguage', localStorage.getItem('language'));
