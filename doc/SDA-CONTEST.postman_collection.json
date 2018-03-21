@@ -11,22 +11,13 @@
 			"description": "",
 			"item": [
 				{
-					"name": "contest project",
+					"name": "project",
 					"request": {
 						"method": "GET",
 						"header": [
 							{
-								"key": "Authorization",
-								"value": "44r97rXg|{{oid}}"
-							},
-							{
 								"key": "Accept-Language",
 								"value": "{{language}}"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adtoken}}",
-								"disabled": true
 							}
 						],
 						"body": {
@@ -50,24 +41,10 @@
 					"response": []
 				},
 				{
-					"name": "get deliverable",
+					"name": "project deliverable",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "44r97rXg|{{oid}}"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adtoken}}",
-								"disabled": true
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -91,13 +68,40 @@
 					"response": []
 				},
 				{
-					"name": "submit contest project",
+					"name": "project image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1/project/1/image/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1",
+								"project",
+								"1",
+								"image",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "submit project",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "44r97rXg|{{oid}}"
+								"value": "userid"
 							},
 							{
 								"key": "Accept-Language",
@@ -133,9 +137,15 @@
 								},
 								{
 									"key": "deliverable",
+									"value": "",
 									"description": "",
-									"type": "file",
-									"src": "chrome51.zip"
+									"type": "file"
+								},
+								{
+									"key": "image",
+									"value": "",
+									"description": "",
+									"type": "file"
 								}
 							]
 						},
@@ -156,13 +166,13 @@
 					"response": []
 				},
 				{
-					"name": "contest projects list",
+					"name": "vote project",
 					"request": {
-						"method": "GET",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "44r97rXg|{{oid}}"
+								"value": "userid"
 							},
 							{
 								"key": "Accept-Language",
@@ -174,12 +184,9 @@
 								"disabled": true
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"url": {
-							"raw": "{{host}}/{{version}}/contest/1/project/",
+							"raw": "{{host}}/{{version}}/contest/1/project/1/vote",
 							"host": [
 								"{{host}}"
 							],
@@ -188,7 +195,8 @@
 								"contest",
 								"1",
 								"project",
-								""
+								"1",
+								"vote"
 							]
 						}
 					},
@@ -197,22 +205,43 @@
 			]
 		},
 		{
+			"name": "contest projects list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "{{language}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/{{version}}/contest/1/project/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{version}}",
+						"contest",
+						"1",
+						"project",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "contest list",
 			"request": {
 				"method": "GET",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "44r97rXg|{{oid}}"
-					},
-					{
 						"key": "Accept-Language",
 						"value": "{{language}}"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{adtoken}}",
-						"disabled": true
 					}
 				],
 				"body": {
@@ -228,7 +257,8 @@
 						"{{version}}",
 						"contest"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -238,17 +268,8 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "44r97rXg|{{oid}}"
-					},
-					{
 						"key": "Accept-Language",
 						"value": "{{language}}"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{adtoken}}",
-						"disabled": true
 					}
 				],
 				"body": {
@@ -265,7 +286,8 @@
 						"contest",
 						"last"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -275,17 +297,8 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "44r97rXg|{{oid}}"
-					},
-					{
 						"key": "Accept-Language",
 						"value": "{{language}}"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{adtoken}}",
-						"disabled": true
 					}
 				],
 				"body": {
@@ -302,7 +315,8 @@
 						"contest",
 						"1"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		},
@@ -312,17 +326,8 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "44r97rXg|{{oid}}"
-					},
-					{
 						"key": "Accept-Language",
 						"value": "{{language}}"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{adtoken}}",
-						"disabled": true
 					}
 				],
 				"body": {
@@ -337,7 +342,8 @@
 					"path": [
 						"info"
 					]
-				}
+				},
+				"description": null
 			},
 			"response": []
 		}

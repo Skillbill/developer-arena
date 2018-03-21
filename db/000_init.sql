@@ -35,14 +35,21 @@ CREATE TABLE IF NOT EXISTS project (
        title varchar(50) NOT NULL,
        description text NOT NULL,
        repo_url varchar(100),
-       filename varchar(100),
        UNIQUE(contest_id, user_id)
 );
 
-CREATE TABLE IF NOT EXISTS deliverable (
+CREATE TYPE file_kind AS ENUM (
+       'IMAGE',
+       'DELIVERABLE'
+);
+
+CREATE TABLE IF NOT EXISTS file (
        id serial NOT NULL PRIMARY KEY,
        project_id int REFERENCES project(id) ON DELETE CASCADE,
+       kind file_kind NOT NULL,
        mimetype varchar(32) NOT NULL,
+       mtime timestamp NOT NULL,
+       name varchar(100) NOT NULL,
        data bytea NOT NULL
 );
 
