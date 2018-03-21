@@ -4,17 +4,17 @@
 . "$LIB/color.sh"
 
 docker_run() {
-	trace $docker $docker_run_args $@ || {
-		err "docker run failed"
-		return 1
-	}
+    trace $docker $docker_run_args $@ || {
+	err "docker run failed"
+	return 1
+    }
 }
 
 docker_build() {
-	trace $docker $docker_build_args $@ || {
-		err "docker build failed"
-		return 1
-	}
+    trace $docker $docker_build_args $@ || {
+	err "docker build failed"
+	return 1
+    }
 }
 
 docker_pull() {
@@ -25,21 +25,17 @@ docker_pull() {
 }
 
 trace() {
-	(
-		command=$@
-		printf ${_dim}
-		sh -x -c "$command"
-		res=$?
-		printf ${_reset}
-		return $res
-	)
+    trap 'echo -ne ${_reset}' RETURN
+    local command=$@
+    echo -ne ${_dim}
+    sh -x -c "$command"
 }
 
 _print() {
-	printf "$1"
+	echo -ne "$1"
 	shift
 	echo -n $@
-	printf "${_reset}\n"
+	echo -ne "${_reset}\n"
 }
 
 msg() {
