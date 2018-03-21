@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS project (
        contest_id int REFERENCES contest(id) ON DELETE CASCADE,
        user_id userid NOT NULL,
        submitted timestamp NOT NULL,
+       updated timestamp NOT NULL,
        title varchar(50) NOT NULL,
        description text NOT NULL,
        repo_url varchar(100),

@@ -5,6 +5,7 @@ module.exports = {
     contestId: { type: Sequelize.INTEGER, field: 'contest_id'},
     userId: { type: Sequelize.STRING, field: 'user_id'},
     submitted: { type:Sequelize.DATE, field: 'submitted'},
+    updated: { type:Sequelize.DATE, field: 'updated'},
     title: {type: Sequelize.STRING, field: 'title'},
     description: {type: Sequelize.STRING, field: 'description'},
     repoURL: {type: Sequelize.STRING, field: 'repo_url'},

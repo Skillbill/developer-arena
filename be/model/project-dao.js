@@ -121,6 +121,19 @@ const submit = (project) => {
     })
 }
 
+const update = (projectId, data) => {
+    return new Promise((resolve, reject) => {
+        sql.getProjectTable().update(data, {
+            fields: ['title', 'description', 'updated'],
+            returning: true,
+            limit: 1,
+            where: {
+                id: projectId
+            }
+        }).then(row => resolve(row[0] == 1 ? row[1][0] : row)).catch(reject)
+    })
+}
+
 const vote = (project, voterId) => {
     return new Promise((resolve, reject) => {
         sql.getVoteTable().create({
@@ -139,5 +152,6 @@ module.exports = {
     getWithDeliverable,
     getWithImage,
     submit,
+    update,
     vote
 }

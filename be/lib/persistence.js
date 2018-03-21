@@ -10,6 +10,7 @@ const getProjectsByContest = (contestId) => projectDao.getProjectsByContest(cont
 const getProjectWithDeliverable = (projectId) => projectDao.getWithDeliverable(projectId)
 const getProjectWithImage = (projectId) => projectDao.getWithImage(projectId)
 const submitProject = (project) => projectDao.submit(project)
+const updateProject = (projectId, data) => projectDao.update(projectId, data)
 const voteProject = (project, userId) => projectDao.vote(project, userId)
 
 module.exports = {
@@ -22,5 +23,6 @@ module.exports = {
     getProjectWithDeliverable,
     getProjectWithImage,
     submitProject,
+    updateProject,
     voteProject
 }

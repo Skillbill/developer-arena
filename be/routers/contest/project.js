@@ -14,9 +14,10 @@ router.post('*', mw.auth)
 router.put('*', mw.auth)
 
 router.get('/', getProjectList)
-router.post('/', mw.validateFile.image, mw.validateFile.deliverable, submitProject)
+router.post('/', mw.validateFile.image, mw.validateFile.deliverable, prepareProject, submitProject)
 
 router.get('/:projectId', getProject)
+router.put('/:projectId', prepareProject, updateProject)
 router.get('/:projectId/image', getImage)
 router.get('/:projectId/deliverable', getDeliverable)
 router.put('/:projectId/vote', voteProject)
@@ -94,8 +95,33 @@ function getDeliverable(req, res) {
     })
 }
 
+function prepareProject(req, res, next) {
+    req.project = {
+        contestId: req.params.contestId,
+        userId: req.user.uid,
+        updated: new Date(),
+        title: req.body.title,
+        description: req.body.description
+    }
+    if (req.body.repoURL) {
+        req.project.repoURL = req.body.repoURL
+    }
+    if (req.files) {
+        if (req.files.deliverable) {
+            req.project.deliverable = req.files.deliverable
+            req.project.deliverable.mtime = new Date()
+        }
+        if (req.files.image) {
+            req.project.image = req.files.image
+            req.project.image.mtime = new Date()
+        }
+    }
+    next()
+}
+
 function submitProject(req, res) {
     logger.debug('submit project request from:', req.user)
+    const newProject = req.project
     persistence.getContestById(req.params.contestId).then(contest => {
         if (!contest || contest.state == lk.contest.state.draft) {
             return res.status(lk.http.notFound).send({error: 'contest not found'})
@@ -103,41 +129,49 @@ function submitProject(req, res) {
         if (libContest.getPublicState(contest) != lk.contest.publicState.applying) {
             return res.status(lk.http.preconditionFailed).send({error: 'contest is not open for submissions'})
         }
-        const p = {
-            contestId: req.params.contestId,
-            userId: req.user.uid,
-            submitted: new Date(),
-            title: req.body.title,
-            description: req.body.description
-        }
-        if (req.body.repoURL) {
-            p.repoURL = req.body.repoURL
-        }
-        if (req.files) {
-            if (req.files.deliverable) {
-                p.deliverable = req.files.deliverable
-                p.deliverable.mtime = new Date()
-            }
-            if (req.files.image) {
-                p.image = req.files.image
-                p.image.mtime = new Date()
-            }
-        }
-        if (!p.contestId) {
+        if (!newProject.contestId) {
             return missingParam(res, 'contest id')
         }
-        if (!p.title || !p.description) {
+        if (!newProject.title || !newProject.description) {
             return missingParam(res)
         }
-        if (!p.repoURL && !p.deliverable) {
+        if (!newProject.repoURL && !newProject.deliverable) {
             return missingParam(res, 'repoURL and deliverable')
         }
-        persistence.submitProject(p).then(project => {
+        newProject.submitted = newProject.updated
+        persistence.submitProject(newProject).then(project => {
             res.status(lk.http.created).send({project: project})
         }).catch(err => {
             if (err === lk.error.alreadyExists) {
                 return res.status(lk.http.preconditionFailed).send({error: 'user already submitted a project for this contest'})
             }
+            logger.error(err)
+            res.status(lk.http.internalError).send({error: err})
+        })
+    }).catch(err => {
+        logger.error(err)
+        res.status(lk.http.internalError).send({error: err})
+    })
+}
+
+function updateProject(req, res) {
+    const contestId = req.params.contestId
+    const projectId = req.params.projectId
+    const newProject = req.project
+
+    if (!newProject.title || !newProject.description) {
+        return missingParam(res)
+    }
+    persistence.getProjectById(projectId).then(currentProject => {
+        if (!currentProject || currentProject.contestId != contestId) {
+            return res.status(lk.http.notFound).send({error: 'project not found'})
+        }
+        if (currentProject.userId != newProject.userId) {
+            return res.status(lk.http.unauthorized).send({error: 'req uid does not match project uid'})
+        }
+        persistence.updateProject(projectId, newProject).then(project => {
+            res.status(lk.http.ok).send({project: project})
+        }).catch(err => {
             logger.error(err)
             res.status(lk.http.internalError).send({error: err})
         })
