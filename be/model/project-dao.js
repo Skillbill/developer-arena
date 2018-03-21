@@ -89,7 +89,7 @@ const getWithImage = (projectId) => {
     })
 }
 
-const createFile = (projectId, kind, file) => {
+const createFile = (projectId, kind, file, tx) => {
     return sql.getFileTable().create({
         projectId: projectId,
         mimetype: file.mimetype,
@@ -97,18 +97,26 @@ const createFile = (projectId, kind, file) => {
         mtime: file.mtime,
         name: file.name,
         data: file.data
-    })
+    }, {transaction: tx})
 }
 
 const submit = (project) => {
+    let newProject = null
     return new Promise((resolve, reject) => {
-        sql.getProjectTable().create(project).then(created => {
-            return Promise.all([
-                project.deliverable ? createFile(created.id, fileKind.deliverable, project.deliverable) : Promise.resolve(),
-                project.image ? createFile(created.id, fileKind.image, project.image) : Promise.resolve()
-            ]).then(() =>  resolve(created))
-        }).catch (err => {
-            reject(err.name && err.name === 'SequelizeUniqueConstraintError' ? lk.error.alreadyExists : err)
+        sql.transaction().then(tx => {
+            return sql.getProjectTable().create(project, {transaction: tx}).then(created => {
+                newProject = created
+                return Promise.all([
+                    project.deliverable ? createFile(created.id, fileKind.deliverable, project.deliverable, tx) : Promise.resolve(),
+                    project.image ? createFile(created.id, fileKind.image, project.image, tx) : Promise.resolve()
+                ])
+            }).then(() => {
+                tx.commit()
+                resolve(newProject)
+            }).catch (err => {
+                tx.rollback()
+                reject(err.name && err.name === 'SequelizeUniqueConstraintError' ? lk.error.alreadyExists : err)
+            })
         })
     })
 }

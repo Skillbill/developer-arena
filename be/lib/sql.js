@@ -39,6 +39,7 @@ const getVoteTable = () => {
 }
 
 module.exports = {
+    transaction: sequelize.transaction.bind(sequelize),
     getContestTable,
     getContestI18nTable,
     getProjectTable,
