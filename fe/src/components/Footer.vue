@@ -12,7 +12,7 @@
       </ul>
     </div>
     <div class="footer-info">
-      <p>Skillbill Developer Arena Contest <br> &copy; <a href="http://www.skillbill.it/">Skillbill</a> 2018</p>
+      <p>{{$t("siteFullName")}} <br> &copy; <a href="http://www.skillbill.it/">Skillbill</a> {{new Date().getFullYear()}}</p>
       <img class="logo" src="static/graphics/assets/logo-skillbill.png" alt="Logo Skillbill">
     </div>
   </footer>
