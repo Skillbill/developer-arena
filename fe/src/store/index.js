@@ -28,16 +28,13 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    chooseLanguage ({commit, dispatch}, language) {
+    chooseLanguage ({commit, dispatch, state}, language) {
+      if (state.language === language) {
+        return;
+      }
       localStorage.setItem('language', language);
       i18n.locale = language;
       commit('setLanguage', language);
-      window.router = router
-      if (router.currentRoute.path === '/') {
-        dispatch('loadLastContest');
-      } else {
-        router.push({ path: '/' });
-      }
     },
     loadLastContest ({commit}) {
       axios({
