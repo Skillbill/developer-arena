@@ -18,7 +18,6 @@ const i18n = new VueI18n({
 })
 
 var firebase = require('firebase/app')
-require('firebase/auth')
 
 firebase.initializeApp(configuration.firebase)
 let app
