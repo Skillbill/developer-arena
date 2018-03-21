@@ -4,10 +4,10 @@
       <h4>Languages</h4>
       <ul>
         <li>
-          <a href="#">Italiano</a>
+          <a href="#" v-on:click="changeLanguage('it')">Italiano</a>
         </li>
         <li>
-          <a href="#">English</a>
+          <a href="#" v-on:click="changeLanguage('en')">English</a>
         </li>
       </ul>
     </div>
@@ -20,5 +20,10 @@
 
 <script>
 export default {
+  methods: {
+    changeLanguage: function (lang) {
+      this.$i18n.locale = lang
+    }
+  }
 }
 </script>
