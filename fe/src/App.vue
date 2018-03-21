@@ -1,5 +1,6 @@
 <template>
-  <div id="app">
+  <div class="container">
+    <Header/>
     <img v-on:click="changeLanguage('en')" src="./assets/en.png" class="lang-flag">
     <img v-on:click="changeLanguage('it')" src="./assets/it.png" class="lang-flag">
     <router-view :key="$i18n.locale"/>
@@ -7,12 +8,17 @@
 </template>
 
 <script>
+import Header from '@/components/Header.vue'
+
 export default {
   name: 'App',
   methods: {
     changeLanguage: function (lang) {
       this.$i18n.locale = lang
     }
+  },
+  components: {
+    Header
   }
 }
 </script>
