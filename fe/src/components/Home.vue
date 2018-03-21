@@ -25,28 +25,15 @@
 </template>
 
 <script>
-var axios = require('axios')
-
 export default {
   name: 'Home',
-  data: function () {
-    return {
-      contest: null,
-      errors: []
+  computed: {
+    contest () {
+      return this.$store.state.contest;
     }
   },
-  created: function () {
-    axios({
-      method: 'get',
-      url: configuration.serverAddress + '/' + configuration.apiVersion + '/contest/last',
-      headers: {'Accept-Language': this.$i18n.locale}
-    })
-      .then(response => {
-        this.contest = response.data.contest
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
+  created () {
+    this.$store.dispatch('loadLastContest');
   }
 }
 </script>

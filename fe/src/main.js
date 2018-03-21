@@ -3,25 +3,17 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import VueI18n from 'vue-i18n'
+import store from './store'
+import i18n from './i18n'
 
 Vue.config.productionTip = false
-Vue.use(VueI18n)
 
-const messages = {
-  en: require('./locales/en'),
-  it: require('./locales/it')
-}
-const i18n = new VueI18n({
-  locale: 'en',
-  messages
-})
-
-var firebase = require('firebase/app')
+const firebase = require('firebase/app')
 
 firebase.initializeApp(configuration.firebase)
 let app
 firebase.auth().onAuthStateChanged(user => {
+  store.commit('setUser', user);
   if (!app) {
     /* eslint-disable no-new */
     app = new Vue({
@@ -29,7 +21,11 @@ firebase.auth().onAuthStateChanged(user => {
       el: '#app',
       router,
       components: { App },
-      template: '<App/>'
+      template: '<App/>',
+      store
     })
   }
 })
+
+store.dispatch('loadLastContest');
+store.dispatch('chooseLanguage', localStorage.getItem('language'));

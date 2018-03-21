@@ -22,7 +22,7 @@
 export default {
   methods: {
     changeLanguage: function (lang) {
-      this.$i18n.locale = lang
+      this.$store.dispatch('chooseLanguage', lang);
     }
   }
 }
