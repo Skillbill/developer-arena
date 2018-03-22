@@ -17,8 +17,11 @@
         <li>
           <router-link to="/about">{{$t("menu.about")}}</router-link>
         </li>
-        <li>
-          <router-link to="/login">{{$t("menu.login")}}</router-link>
+        <li v-if="user">
+          <a href="#" v-on:click.prevent="signOut">{{$t("menu.logout")}}</a>
+        </li>
+        <li v-else>
+          <router-link to="/sign-in">{{$t("menu.login")}}</router-link>
         </li>
       </ul>
     </nav>
@@ -27,7 +30,18 @@
 </template>
 
 <script>
-export default {
+import firebase from 'firebase'
 
+export default {
+  computed: {
+    user() {
+      return this.$store.state.user;
+    }
+  },
+  methods: {
+    signOut() {
+      firebase.auth().signOut();
+    }
+  }
 }
 </script>

@@ -4,13 +4,10 @@
       <h2>{{ $t('signUp') }}</h2>
       <form>
         <fieldset>
-          
           <label for="email">{{$t('email')}}</label>
           <input type="email" id="email" v-model="email" v-bind:placeholder="$t('email')"><br>
-
           <label for="password">{{$t('password')}}</label>
           <input type="password" id="password" v-model="password" v-bind:placeholder="$t('password')"><br>
-          
           <button v-on:click="signUp">{{ $t('submit') }}</button>
         </fieldset>
       </form>
@@ -19,8 +16,7 @@
 </template>
 
 <script>
-var firebase = require('firebase/app')
-require('firebase/auth')
+import firebase from 'firebase'
 
 export default {
   name: 'SignUp',

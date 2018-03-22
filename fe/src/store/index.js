@@ -9,7 +9,7 @@ const store = new Vuex.Store({
   state: {
     user: null,
     contest: null,
-    error: null,
+    feedback: null,
     language: null
   },
   mutations: {
@@ -19,8 +19,14 @@ const store = new Vuex.Store({
     setContest (state, contest) {
       state.contest = contest;
     },
-    setError (state, error) {
-      state.error = error;
+    setFeedbackOk (state, message) {
+      state.feedback = {type: 'ok', message};
+    },
+    setFeedbackError (state, message) {
+      state.feedback = {type: 'ko', message};
+    },
+    removeFeedback (state, message) {
+      state.feedback = null;
     },
     setLanguage (state, language) {
       state.language = language;
@@ -43,7 +49,7 @@ const store = new Vuex.Store({
       }).then(response => {
         commit('setContest', response.data.contest);
       }).catch(e => {
-        commit('setError', e);
+        commit('setFeedbackError', e.message);
       })
     }
   }

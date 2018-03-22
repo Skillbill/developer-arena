@@ -5,10 +5,9 @@ import App from './App'
 import router from './router'
 import store from './store'
 import i18n from './i18n'
+import firebase from 'firebase'
 
 Vue.config.productionTip = false
-
-const firebase = require('firebase/app')
 
 firebase.initializeApp(configuration.firebase)
 let app

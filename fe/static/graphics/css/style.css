@@ -380,6 +380,23 @@ div.progress::after {
   list-style: none;
 }
 
+/* feedback-message */
+.feedback-message {
+  margin: auto;
+  width: 40rem;
+  max-width: 100%;
+}
+
+.feedback-message p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.feedback-message button {
+  height: 2.3rem;
+}
+
 /*** organisms ***/
 
 /* main-header */

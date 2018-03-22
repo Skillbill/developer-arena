@@ -5,7 +5,8 @@ module.exports = {
     home: 'Home',
     projects: 'Projects',
     about: 'About',
-    login: 'Login'
+    login: 'Login',
+    logout: 'Logout'
   },
   footer: {
     languages: 'Languages',
@@ -18,7 +19,10 @@ module.exports = {
   applyContest: 'APPLY TO THE CONTEST',
   applyContestSince: 'THE CONTEST WILL START ON {date}',
   signUp: 'Sign Up',
+  signIn: 'Login',
+  loggedInAs: 'Logged in as {name}',
   email: 'Email',
   password: 'Password',
-  submit: 'Submit'
+  submit: 'Submit',
+  close: 'Close'
 }
