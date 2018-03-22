@@ -6,14 +6,26 @@
       </template>
       <template v-else>
         <h2>{{$t('signIn')}}</h2>
-        <div class="social-buttons" v-if="!user">
-          <button class="github" v-on:click="signIn('GithubAuthProvider')">GitHub</button>
-          <button class="twitter" v-on:click="signIn('TwitterAuthProvider')">Twitter</button>
-          <button class="google" v-on:click="signIn('GoogleAuthProvider')">Google</button>
-          <button class="facebook" v-on:click="signIn('FacebookAuthProvider')">Facebook</button>
+        <div v-if="!user">
+          <div class="social-buttons">
+            <button class="github" v-on:click="signIn('GithubAuthProvider')">GitHub</button>
+            <button class="twitter" v-on:click="signIn('TwitterAuthProvider')">Twitter</button>
+            <button class="google" v-on:click="signIn('GoogleAuthProvider')">Google</button>
+            <button class="facebook" v-on:click="signIn('FacebookAuthProvider')">Facebook</button>
+          </div>
+          <form v-on:submit="signIn('email')">
+            <fieldset>
+              <label for="login-email">{{$t('email')}}</label>
+              <input type="email" id="login-email" v-model="email" required><br>
+              <label for="login-password">{{$t('password')}}</label>
+              <input type="password" id="login-password" v-model="password" required><br>
+              <button>{{ $t('submit') }}</button>
+            </fieldset>
+            <router-link to="/sign-up">{{$t('signUp')}}</router-link>
+          </form>
         </div>
         <div v-else>
-          <p>{{$t('loggedInAs', {name: user.displayName || user.email})}}</p>
+          <p>{{$t('signedInAs', {name: user.displayName || user.email})}}</p>
         </div>
       </template>
     </section>
@@ -26,7 +38,9 @@ import firebase from 'firebase'
 export default {
   data() {
     return {
-      loading: false
+      loading: false,
+      email: null,
+      password: null
     }
   },
   computed: {
@@ -36,9 +50,16 @@ export default {
   },
   methods: {
     signIn(providerName) {
-      var provider = new firebase.auth[providerName]();
+      let signInFn;
+      this.$store.commit('removeFeedback');
       this.loading = true;
-      firebase.auth().signInWithPopup(provider).then((result) => {
+      if(providerName === 'email') {
+        signInFn = firebase.auth().signInWithEmailAndPassword(this.email, this.password);
+      } else {
+        const provider = new firebase.auth[providerName]();
+        signInFn = firebase.auth().signInWithPopup(provider);
+      }
+      signInFn.then((result) => {
         console.log('auth result', result);
         this.loading = false;
         if(this.$route.query.redirect) {

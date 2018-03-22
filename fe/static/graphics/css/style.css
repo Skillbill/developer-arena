@@ -392,6 +392,8 @@ div.progress::after {
   margin: auto;
   width: 40rem;
   max-width: 100%;
+  position: sticky;
+  top: -0.5rem;
 }
 
 .feedback-message p {
@@ -410,6 +412,7 @@ div.progress::after {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
   grid-gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 /*** organisms ***/

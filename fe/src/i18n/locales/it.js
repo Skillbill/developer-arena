@@ -5,8 +5,8 @@ module.exports = {
     home: 'Home',
     projects: 'Progetti',
     about: 'About',
-    login: 'Accedi',
-    logout: 'Esci'
+    signIn: 'Accedi',
+    signOut: 'Esci'
   },
   footer: {
     languages: 'Lingue',
@@ -20,9 +20,12 @@ module.exports = {
   applyContestSince: 'LA COMPETIZIONE INIZIERÀ IL {date}',
   signUp: 'Registrati',
   signIn: 'Accedi',
-  loggedInAs: 'Hai effettuato l\'accesso come {name}',
+  signedInAs: 'Hai effettuato l\'accesso come {name}',
   email: 'Email',
   password: 'Password',
+  passwordConfirm: 'Conferma la password',
+  wrongPasswordConfirm: 'La password non coincide',
+  accountCreated: 'Account creato con successo',
   submit: 'Invia',
   close: 'Chiudi'
 }

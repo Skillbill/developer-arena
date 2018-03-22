@@ -18,10 +18,10 @@
           <router-link to="/about">{{$t("menu.about")}}</router-link>
         </li>
         <li v-if="user">
-          <a href="#" v-bind:class="{'user-photo': user && user.photoURL}" v-on:click.prevent="signOut" v-bind:style="{backgroundImage: `url('${user.photoURL}')`}">{{$t("menu.logout")}}</a>
+          <a href="#" v-bind:class="{'user-photo': user && user.photoURL}" v-on:click.prevent="signOut" v-bind:style="{backgroundImage: `url('${user.photoURL}')`}">{{$t("menu.signOut")}}</a>
         </li>
         <li v-else>
-          <router-link to="/sign-in">{{$t("menu.login")}}</router-link>
+          <router-link to="/sign-in">{{$t("menu.signIn")}}</router-link>
         </li>
       </ul>
     </nav>
