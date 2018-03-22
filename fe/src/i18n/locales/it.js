@@ -19,7 +19,8 @@ module.exports = {
     'auth-email-already-in-use': 'Email già in uso',
     'auth-wrong-password': 'Password sbagliata',
     'auth-user-not-found': 'Utente non trovato',
-    'auth-weak-password': 'Password debole, Usare almeno 6 caratteri'
+    'auth-weak-password': 'Password debole, Usare almeno 6 caratteri',
+    'auth-invalid-email': 'Email non valida'
   },
   viewGitHub: 'Vedi su GitHub',
   contest: 'Il contest',
