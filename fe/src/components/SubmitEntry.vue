@@ -6,7 +6,6 @@
 
 <script>
 export default {
-  name: 'SubmitEntry',
   data: function () {
     return {
     }

@@ -26,7 +26,6 @@
 
 <script>
 export default {
-  name: 'Home',
   computed: {
     contest () {
       return this.$store.state.contest;

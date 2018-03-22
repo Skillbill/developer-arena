@@ -13,7 +13,6 @@ import Footer from '@/components/Footer.vue'
 import Feedback from '@/components/Feedback.vue'
 
 export default {
-  name: 'App',
   components: {
     Header,
     Feedback,

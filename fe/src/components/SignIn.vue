@@ -24,7 +24,6 @@
 import firebase from 'firebase'
 
 export default {
-  name: 'SignIn',
   data() {
     return {
       loading: false
