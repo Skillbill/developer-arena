@@ -1,7 +1,7 @@
 <template>
   <div class="feedback-message" v-if="message">
     <p class="feedback" :class="type">
-      {{message}}
+      {{$t(message)}}
       <button v-on:click="removeFeedback">{{$t('close')}}</button>
     </p>
   </div>

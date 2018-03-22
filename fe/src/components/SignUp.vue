@@ -39,21 +39,26 @@ export default {
     signUp () {
       this.$store.commit('removeFeedback');
       if(this.password !== this.passwordConfirm) {
-        this.$store.commit('setFeedbackError', this.$i18n.t('wrongPasswordConfirm'));
+        this.$store.commit('setFeedbackError', 'wrongPasswordConfirm');
         this.$el.querySelector('#signup-password-confirm').focus();
         return;
       }
       this.loading = true;
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(user => {
-        this.$store.commit('setFeedbackOk', this.$i18n.t('accountCreated'));
+        this.$store.commit('setFeedbackOk', 'accountCreated');
         if(this.$route.query.redirect) {
           this.$router.replace(this.$route.query.redirect);
         } else {
           this.$router.replace('sign-in');
         }
         this.loading = false;
-      }).catch(e => {
-        this.$store.commit('setFeedbackError', e.message);
+      }).catch(error => {
+        console.error(error, error.message);
+        let errorMessage = `firebase.${error.code.replace('/', '-')}`;
+        if(!this.$i18n.te(errorMessage)) {
+          errorMessage = 'firebase.generic-error';
+        }
+        this.$store.commit('setFeedbackError', errorMessage);
         this.loading = false;
       });
     }

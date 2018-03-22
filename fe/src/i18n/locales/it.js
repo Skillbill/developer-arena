@@ -13,6 +13,14 @@ module.exports = {
     it: 'Italiano',
     en: 'English'
   },
+  firebase: {
+    'generic-error': 'Oops.. si è verificato un errore, riprova più tardi',
+    'auth-user-disabled': 'Utente disabilitato',
+    'auth-email-already-in-use': 'Email già in uso',
+    'auth-wrong-password': 'Password sbagliata',
+    'auth-user-not-found': 'Utente non trovato',
+    'auth-weak-password': 'Password debole, Usare almeno 6 caratteri'
+  },
   viewGitHub: 'Vedi su GitHub',
   contest: 'Il contest',
   contestStarts: 'inizierà il',

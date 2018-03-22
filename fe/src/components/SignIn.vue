@@ -60,14 +60,17 @@ export default {
         signInFn = firebase.auth().signInWithPopup(provider);
       }
       signInFn.then((result) => {
-        console.log('auth result', result);
         this.loading = false;
         if(this.$route.query.redirect) {
           this.$router.replace(this.$route.query.redirect);
         }
       }).catch((error) => {
-        console.error('auth error', error);
-        this.$store.commit('setFeedbackError', error.message || error);
+        console.error(error, error.message);
+        let errorMessage = `firebase.${error.code.replace('/', '-')}`;
+        if(!this.$i18n.te(errorMessage)) {
+          errorMessage = 'firebase.generic-error';
+        }
+        this.$store.commit('setFeedbackError', errorMessage);
         this.loading = false;
       });
     }
