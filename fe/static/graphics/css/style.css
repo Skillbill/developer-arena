@@ -290,6 +290,13 @@ div.progress::after {
   background: #222;
 }
 
+.main-nav a.user-photo {
+  padding-left: 2rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+
 /* submit-project */
 
 .submit-project button[type='submit'] {
@@ -395,6 +402,14 @@ div.progress::after {
 
 .feedback-message button {
   height: 2.3rem;
+}
+
+/* social-buttons */
+
+.social-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  grid-gap: 0.5rem;
 }
 
 /*** organisms ***/
@@ -518,6 +533,7 @@ main {
   flex-grow: 1;
   padding: 1rem;
   width: 40rem;
+  max-width: 100%;
   margin: auto;
 }
 

@@ -42,7 +42,7 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth && !currentUser) {
     next({
-      path: 'sign-up',
+      path: 'sign-in',
       query: {
         redirect: to.fullPath
       }
