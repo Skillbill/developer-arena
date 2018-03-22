@@ -46,6 +46,7 @@ export default {
       this.loading = true;
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(user => {
         this.$store.commit('setFeedbackOk', 'accountCreated');
+        user.sendEmailVerification();
         if(this.$route.query.redirect) {
           this.$router.replace(this.$route.query.redirect);
         } else {
