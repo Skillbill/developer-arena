@@ -1,10 +1,21 @@
 <template>
-  <div class="sign-up">
-    <h1>{{ $t('signUp') }}</h1>
-    <input type="text" v-model="email" v-bind:placeholder="$t('email')"><br>
-    <input type="password" v-model="password" v-bind:placeholder="$t('password')"><br>
-    <button v-on:click="signUp">{{ $t('submit') }}</button>
-  </div>
+  <main class="sign-up">
+    <section>
+      <h2>{{ $t('signUp') }}</h2>
+      <form>
+        <fieldset>
+          
+          <label for="email">{{$t('email')}}</label>
+          <input type="email" id="email" v-model="email" v-bind:placeholder="$t('email')"><br>
+
+          <label for="password">{{$t('password')}}</label>
+          <input type="password" id="password" v-model="password" v-bind:placeholder="$t('password')"><br>
+          
+          <button v-on:click="signUp">{{ $t('submit') }}</button>
+        </fieldset>
+      </form>
+    </section>
+  </main>
 </template>
 
 <script>
