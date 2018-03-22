@@ -43,6 +43,7 @@ export default {
         this.$el.querySelector('#signup-password-confirm').focus();
         return;
       }
+      this.loading = true;
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(user => {
         this.$store.commit('setFeedbackOk', this.$i18n.t('accountCreated'));
         if(this.$route.query.redirect) {
@@ -50,8 +51,10 @@ export default {
         } else {
           this.$router.replace('sign-in');
         }
+        this.loading = false;
       }).catch(e => {
         this.$store.commit('setFeedbackError', e.message);
+        this.loading = false;
       });
     }
   }
