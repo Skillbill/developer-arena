@@ -24,7 +24,7 @@
         <h2>{{contest.title}}</h2>
         {{contest.description}}
         <template v-if="contest.state === 'APPLYING'">
-          <form action="#" class="submit-project">
+          <form action="#" class="submit-project" v-on:submit.prevent="applyContest">
             <button type="submit">{{ $t('applyContest') }}</button>
           </form>
         </template>
@@ -47,6 +47,11 @@ export default {
   },
   components: {
     Countdown
+  },
+  methods: {
+    applyContest() {
+      this.$router.push('submit-entry');
+    }
   }
 }
 </script>
