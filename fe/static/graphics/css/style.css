@@ -81,7 +81,7 @@ img {
   object-fit: contain;
 }
 
-.highlight {
+strong {
   padding: 0.2rem 0.5rem;
   background: #ffce31;
   color: #222;
