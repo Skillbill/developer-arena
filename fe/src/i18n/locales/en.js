@@ -22,11 +22,19 @@ module.exports = {
     'auth-weak-password': 'Weak password, please use at least 6 characters',
     'auth-invalid-email': 'Invalid email'
   },
+  contestBanner: {
+    contest: 'Contest',
+    presentation: 'starts in',
+    applying: 'is live!',
+    voting: 'is in voting phase',
+    closed: 'is closed',
+    past: 'is end'
+  },
+  countdown: {
+    days: 'days'
+  },
   viewGitHub: 'View on GitHub',
-  contest: 'Contest',
-  contestStarts: 'will start on',
-  applyContest: 'APPLY TO THE CONTEST',
-  applyContestSince: 'THE CONTEST WILL START ON {date}',
+  applyContest: 'Submit your project',
   signUp: 'Sign Up',
   signIn: 'Sign In',
   signedInAs: 'Signed in in as {name}',

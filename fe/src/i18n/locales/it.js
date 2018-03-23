@@ -22,11 +22,19 @@ module.exports = {
     'auth-weak-password': 'Password debole, Usare almeno 6 caratteri',
     'auth-invalid-email': 'Email non valida'
   },
+  contestBanner: {
+    contest: 'Il Contest',
+    presentation: 'comincierà tra',
+    applying: 'è iniziato!',
+    voting: 'è in votazione',
+    closed: 'è chiuso',
+    past: 'è terminato'
+  },
+  countdown: {
+    days: 'giorni'
+  },
   viewGitHub: 'Vedi su GitHub',
-  contest: 'Il contest',
-  contestStarts: 'inizierà il',
-  applyContest: 'PARTECIPA ALLA COMPETIZIONE',
-  applyContestSince: 'LA COMPETIZIONE INIZIERÀ IL {date}',
+  applyContest: 'Invia il tuo progetto',
   signUp: 'Registrati',
   signIn: 'Accedi',
   signedInAs: 'Hai effettuato l\'accesso come {name}',

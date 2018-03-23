@@ -2,9 +2,23 @@
   <main class="home">
     <section>
       <h2 class="main-info" v-if="contest">
-        {{$t("contest")}} <span class="highlight">#{{contest.id}}</span>
-        {{$t("contestStarts")}}
-        <span class="alt">{{new Date(this.contest.endPresentation).toLocaleDateString(this.$i18n.locale)}}</span>
+        {{$t("contestBanner.contest")}} <span class="highlight">#{{contest.id}}</span>
+        <template v-if="contest.state === 'PRESENTATION'">
+          {{$t("contestBanner.presentation")}}
+          <Countdown :date="this.contest.endPresentation"></Countdown>
+        </template>
+        <template v-if="contest.state === 'APPLYING'">
+          {{$t("contestBanner.applying")}}
+        </template>
+        <template v-if="contest.state === 'VOTING'">
+          {{$t("contestBanner.voting")}}
+        </template>
+        <template v-if="contest.state === 'CLOSED'">
+          {{$t("contestBanner.closed")}}
+        </template>
+        <template v-if="contest.state === 'PAST'">
+          {{$t("contestBanner.past")}}
+        </template>
       </h2>
       <div class="contest" v-if="contest">
         <h2>{{contest.title}}</h2>
@@ -14,17 +28,14 @@
             <button type="submit">{{ $t('applyContest') }}</button>
           </form>
         </template>
-        <template v-else>
-          <p>
-            {{ $t('applyContestSince', { date: new Date(this.contest.endPresentation).toLocaleDateString(this.$i18n.locale) }) }}
-          </p>
-        </template>
       </div>
     </section>
   </main>
 </template>
 
 <script>
+import Countdown from '@/components/Countdown'
+
 export default {
   computed: {
     contest () {
@@ -33,6 +44,9 @@ export default {
   },
   created () {
     this.$store.dispatch('loadLastContest');
+  },
+  components: {
+    Countdown
   }
 }
 </script>
