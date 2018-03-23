@@ -22,7 +22,9 @@
       </h2>
       <div class="contest" v-if="contest">
         <h2>{{contest.title}}</h2>
-        {{contest.description}}
+        <div v-md="contest.description"></div>
+        <h3>{{$t('rules')}}</h3>
+        <div v-md="contest.rules"></div>
         <template v-if="contest.state === 'APPLYING'">
           <form action="#" class="submit-project" v-on:submit.prevent="applyContest">
             <button type="submit">{{ $t('applyContest') }}</button>

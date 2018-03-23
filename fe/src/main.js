@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 import i18n from './i18n'
 import firebase from 'firebase'
+import {register as registerDirectives} from './directives'
 
 Vue.config.productionTip = false
 
@@ -25,5 +26,7 @@ firebase.auth().onAuthStateChanged(user => {
     })
   }
 })
+
+registerDirectives();
 
 store.dispatch('chooseLanguage', localStorage.getItem('language'));

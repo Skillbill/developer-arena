@@ -44,5 +44,6 @@ module.exports = {
   wrongPasswordConfirm: 'Your password didn\'t match',
   accountCreated: 'Account successful created',
   submit: 'Submit',
-  close: 'Close'
+  close: 'Close',
+  rules: 'Rules'
 }
