@@ -5,7 +5,7 @@
         <div class="progress"></div>
       </template>
       <template v-else>
-        <h2 v-if="singIn">{{$t('signIn')}}</h2>
+        <h2 v-if="signInSection">{{$t('signIn')}}</h2>
         <h2 v-else>{{$t('signUp')}}</h2>
         <div v-if="!user">
           <div class="social-buttons">
@@ -14,7 +14,7 @@
             <button class="google" v-on:click="signIn('GoogleAuthProvider')">Google</button>
             <button class="facebook" v-on:click="signIn('FacebookAuthProvider')">Facebook</button>
           </div>
-          <form v-if="singIn" v-on:submit="signIn('email')">
+          <form v-if="signInSection" v-on:submit="signIn('email')">
             <fieldset>
               <label for="login-email">{{$t('email')}}</label>
               <input type="email" id="login-email" v-model="email" required><br>
@@ -34,11 +34,12 @@
               <button>{{ $t('submit') }}</button>
             </fieldset>
           </form>
-          <button v-if="singIn" v-on:click="switchToSignUp()">{{$t('signUp')}}</button>
+          <button v-if="signInSection" v-on:click="switchToSignUp()">{{$t('signUp')}}</button>
           <button v-else v-on:click="switchToSignIn()">{{$t('signIn')}}</button>
         </div>
         <div v-else>
-          <p>{{$t('signedInAs', {name: user.displayName || user.email})}}</p>
+          <p v-if="providerPassword && !emailVerified">{{$t('signedInAsAndVerifyEmail', {name: user.displayName || user.email})}}</p>
+          <p v-else>{{$t('signedInAs', {name: user.displayName || user.email})}}</p>
         </div>
       </template>
     </section>
@@ -55,12 +56,18 @@ export default {
       email: null,
       password: null,
       passwordConfirm: null,
-      singIn: true
+      signInSection: true
     }
   },
   computed: {
     user() {
       return this.$store.state.user;
+    },
+    providerPassword() {
+      return this.user && this.user.providerData[0].providerId === 'password'
+    },
+    emailVerified() {
+      return this.user && this.user.emailVerified === true
     }
   },
   created () {
@@ -116,7 +123,7 @@ export default {
         } else {
           this.$router.replace('sign-in');
         }
-        this.singIn = true;
+        this.signInSection = true;
         this.loading = false;
       }).catch(error => {
         console.error(error, error.message);
@@ -129,10 +136,10 @@ export default {
       });
     },
     switchToSignUp() {
-      this.singIn = false;
+      this.signInSection = false;
     },
     switchToSignIn() {
-      this.singIn = true;
+      this.signInSection = true;
     }
   }
 }

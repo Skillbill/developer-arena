@@ -31,10 +31,12 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  let currentUser = firebase.auth().currentUser
-  let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const currentUser = firebase.auth().currentUser
+  const providerPassword = currentUser && currentUser.providerData[0].providerId === 'password'
+  const emailVerified = currentUser && currentUser.emailVerified === true
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
-  if (requiresAuth && !currentUser) {
+  if (requiresAuth && (!currentUser || (currentUser && providerPassword && !emailVerified))) {
     next({
       path: 'sign-in',
       query: {

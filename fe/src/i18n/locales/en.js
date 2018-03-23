@@ -43,6 +43,7 @@ module.exports = {
   signUp: 'Sign Up',
   signIn: 'Sign In',
   signedInAs: 'Signed in in as {name}',
+  signedInAsAndVerifyEmail: 'Signed in in as {name}, please verify your email before proceeding',
   email: 'Email',
   password: 'Password',
   passwordConfirm: 'Confirm your password',
