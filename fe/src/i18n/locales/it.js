@@ -20,7 +20,12 @@ module.exports = {
     'auth-wrong-password': 'Password sbagliata',
     'auth-user-not-found': 'Utente non trovato',
     'auth-weak-password': 'Password debole, Usare almeno 6 caratteri',
-    'auth-invalid-email': 'Email non valida'
+    'auth-invalid-email': 'Email non valida',
+    'auth-account-exists-with-different-credential': 'Account esiste con credenziali differenti',
+    'auth-credential-already-in-use': 'Credentiali già in uso',
+    'auth-operation-not-allowed': 'Operazione non permessa',
+    'auth-operation-not-supported-in-this-environment': 'Operazione non supportata in questo ambiente',
+    'auth-timeout': 'Timeout'
   },
   contestBanner: {
     contest: 'Il Contest',
