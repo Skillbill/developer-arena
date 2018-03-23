@@ -63,6 +63,17 @@ export default {
       return this.$store.state.user;
     }
   },
+  created () {
+    const instance = this;
+    firebase.auth().getRedirectResult().catch(function(error) {
+      console.error(error, error.message);
+      let errorMessage = `firebase.${error.code.replace('/', '-')}`;
+      if(!instance.$i18n.te(errorMessage)) {
+        errorMessage = 'firebase.generic-error';
+      }
+      instance.$store.commit('setFeedbackError', errorMessage);
+    });
+  },
   methods: {
     signIn(providerName) {
       let signInFn;
@@ -72,7 +83,7 @@ export default {
         signInFn = firebase.auth().signInWithEmailAndPassword(this.email, this.password);
       } else {
         const provider = new firebase.auth[providerName]();
-        signInFn = firebase.auth().signInWithPopup(provider);
+        signInFn = firebase.auth().signInWithRedirect(provider);
       }
       signInFn.then((result) => {
         this.loading = false;
@@ -105,6 +116,7 @@ export default {
         } else {
           this.$router.replace('sign-in');
         }
+        this.singIn = true;
         this.loading = false;
       }).catch(error => {
         console.error(error, error.message);

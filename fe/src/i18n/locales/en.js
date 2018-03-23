@@ -20,7 +20,12 @@ module.exports = {
     'auth-wrong-password': 'Wrong credentials',
     'auth-user-not-found': 'User not found',
     'auth-weak-password': 'Weak password, please use at least 6 characters',
-    'auth-invalid-email': 'Invalid email'
+    'auth-invalid-email': 'Invalid email',
+    'auth-account-exists-with-different-credential': 'Account exists with different credential',
+    'auth-credential-already-in-use': 'Credential already in use',
+    'auth-operation-not-allowed': 'Operation not allowed',
+    'auth-operation-not-supported-in-this-environment': 'Operation not supported in this environment',
+    'auth-timeout': 'Timeout'
   },
   contestBanner: {
     contest: 'Contest',
