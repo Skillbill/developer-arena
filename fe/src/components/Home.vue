@@ -31,6 +31,7 @@
           </form>
         </template>
       </div>
+      <div v-else class="progress"></div>
     </section>
   </main>
 </template>

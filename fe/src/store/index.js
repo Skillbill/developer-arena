@@ -42,6 +42,7 @@ const store = new Vuex.Store({
       commit('setLanguage', language);
     },
     loadLastContest ({commit}) {
+      commit('setContest', null);
       axios({
         method: 'get',
         url: configuration.serverAddress + '/' + configuration.apiVersion + '/contest/last',
