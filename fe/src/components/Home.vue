@@ -2,7 +2,7 @@
   <main class="home">
     <section>
       <h2 class="main-info" v-if="contest">
-        {{$t("contestBanner.contest")}} <span class="highlight">#{{contest.id}}</span>
+        {{$t("contestBanner.contest")}} <strong>#{{contest.id}}</strong>
         <template v-if="contest.state === 'PRESENTATION'">
           {{$t("contestBanner.presentation")}}
           <Countdown :date="this.contest.endPresentation"></Countdown>
