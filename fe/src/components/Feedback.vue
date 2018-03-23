@@ -1,5 +1,5 @@
 <template>
-  <div class="feedback-message" v-if="message">
+  <div class="feedback-message" v-if="message" v-on:click="removeFeedback">
     <p class="feedback" :class="type">
       {{$t(message)}}
       <button v-on:click="removeFeedback">{{$t('close')}}</button>
