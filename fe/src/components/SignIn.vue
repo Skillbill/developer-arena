@@ -5,7 +5,8 @@
         <div class="progress"></div>
       </template>
       <template v-else>
-        <h2 v-if="signInSection">{{$t('signIn')}}</h2>
+        <h2 v-if="signInSection === 'signIn'">{{$t('signIn')}}</h2>
+        <h2 v-else-if="signInSection === 'passwordLost'">{{$t('resetPassword')}}</h2>
         <h2 v-else>{{$t('signUp')}}</h2>
         <div v-if="!user">
           <div class="social-buttons">
@@ -14,13 +15,22 @@
             <button class="google" v-on:click="signIn('GoogleAuthProvider')">Google</button>
             <button class="facebook" v-on:click="signIn('FacebookAuthProvider')">Facebook</button>
           </div>
-          <form v-if="signInSection" v-on:submit="signIn('email')">
+          <form v-if="signInSection === 'signIn'" v-on:submit="signIn('email')">
             <fieldset>
               <label for="login-email">{{$t('email')}}</label>
               <input type="email" id="login-email" v-model="email" required><br>
               <label for="login-password">{{$t('password')}}</label>
               <input type="password" id="login-password" v-model="password" required><br>
               <button>{{ $t('submit') }}</button>
+              <label class="small-right" v-on:click="switchToPasswordLost()">{{ $t('passwordLost') }}</label>
+            </fieldset>
+          </form>
+          <form v-else-if="signInSection === 'passwordLost'" v-on:submit="resetPassword">
+            <fieldset>
+              <label for="login-email">{{$t('email')}}</label>
+              <input type="email" id="login-email" v-model="email" required><br>
+              <button>{{ $t('submit') }}</button>
+              <label class="small-right" v-on:click="switchToSignIn()">{{ $t('back') }}</label>
             </fieldset>
           </form>
           <form v-else v-on:submit="signUp">
@@ -34,7 +44,7 @@
               <button>{{ $t('submit') }}</button>
             </fieldset>
           </form>
-          <button v-if="signInSection" v-on:click="switchToSignUp()">{{$t('signUp')}}</button>
+          <button v-if="signInSection !== 'signUp'" v-on:click="switchToSignUp()">{{$t('signUp')}}</button>
           <button v-else v-on:click="switchToSignIn()">{{$t('signIn')}}</button>
         </div>
         <div v-else>
@@ -46,6 +56,13 @@
   </main>
 </template>
 
+<style scoped>
+  .small-right {
+    float: right;
+    font-size: 80%;
+  }
+</style>
+
 <script>
 import firebase from 'firebase'
 
@@ -56,7 +73,7 @@ export default {
       email: null,
       password: null,
       passwordConfirm: null,
-      signInSection: true
+      signInSection: 'signIn'
     }
   },
   computed: {
@@ -107,6 +124,18 @@ export default {
         this.loading = false;
       });
     },
+    resetPassword () {
+      firebase.auth().sendPasswordResetEmail(this.email, {url: document.location.href}).then(() => {
+        this.$store.commit('setFeedbackOk', 'resetEmailSent');
+      }).catch(error => {
+        console.error(error, error.message);
+        let errorMessage = `firebase.${error.code.replace('/', '-')}`;
+        if(!this.$i18n.te(errorMessage)) {
+          errorMessage = 'firebase.generic-error';
+        }
+        this.$store.commit('setFeedbackError', errorMessage);
+      });
+    },
     signUp () {
       this.$store.commit('removeFeedback');
       if(this.password !== this.passwordConfirm) {
@@ -124,7 +153,7 @@ export default {
           continueUrl = a.protocol + '//' + a.host + a.pathname + a.search + a.hash;
         }
         user.sendEmailVerification({url: continueUrl});
-        this.signInSection = true;
+        this.signInSection = 'signIn';
         this.loading = false;
       }).catch(error => {
         console.error(error, error.message);
@@ -137,10 +166,13 @@ export default {
       });
     },
     switchToSignUp() {
-      this.signInSection = false;
+      this.signInSection = 'signUp';
+    },
+    switchToPasswordLost() {
+      this.signInSection = 'passwordLost';
     },
     switchToSignIn() {
-      this.signInSection = true;
+      this.signInSection = 'signIn';
     }
   }
 }
