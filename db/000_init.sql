@@ -59,5 +59,6 @@ CREATE TABLE IF NOT EXISTS vote (
        contest_id int REFERENCES contest(id) ON DELETE CASCADE,
        project_id int REFERENCES project(id) ON DELETE CASCADE,
        voter_id userid NOT NULL,
+       ts timestamp NOT NULL,
        UNIQUE(contest_id, project_id, voter_id)
 );

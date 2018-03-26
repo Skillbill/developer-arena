@@ -12,7 +12,7 @@ const fileKind = {
     image: 'IMAGE'
 }
 
-const getProjectById = (id) => {
+const findById = (id) => {
     const projectTable = sql.getProjectTable()
     const fileTable = sql.getFileTable()
     const voteTable = sql.getVoteTable()
@@ -38,14 +38,14 @@ const getProjectById = (id) => {
                 as: 'votes',
                 attributes: [[model.vote.voterId.field, 'userId']],
                 where: {
-                    [model.vote.projectId.field]: id
+                    projectId: id
                 }
             }
         ]
     })
 }
 
-const getProjectByUser = (contestId, userId) => {
+const findByUser = (contestId, userId) => {
     return sql.getProjectTable().findOne({
         where: {
             contestId: contestId,
@@ -54,15 +54,15 @@ const getProjectByUser = (contestId, userId) => {
     })
 }
 
-const getProjectsByContest = (contestId) => {
+const findAllByContest = (contestId) => {
     return sql.getProjectTable().findAll({
         where: {
-            [model.project.contestId.field]: contestId
+            contestId: contestId
         }
     })
 }
 
-const getWithDeliverable = (projectId) => {
+const findWithDeliverable = (projectId) => {
     const projectTable = sql.getProjectTable()
     const fileTable = sql.getFileTable()
     projectTable.hasOne(fileTable, {as: 'deliverable', foreignKey: model.file.projectId})
@@ -80,7 +80,7 @@ const getWithDeliverable = (projectId) => {
     })
 }
 
-const getWithImage = (projectId) => {
+const findWithImage = (projectId) => {
     const projectTable = sql.getProjectTable()
     const fileTable = sql.getFileTable()
     projectTable.hasOne(fileTable, {as: 'image', foreignKey: model.file.projectId})
@@ -148,7 +148,8 @@ const vote = (project, voterId) => {
         sql.getVoteTable().create({
             contestId: project.contestId,
             projectId: project.id,
-            voterId: voterId
+            voterId: voterId,
+            ts: new Date()
         }).then(resolve).catch(err => {
             reject(err.name && err.name === 'SequelizeUniqueConstraintError' ? lk.error.alreadyExists : err)
         })
@@ -156,11 +157,11 @@ const vote = (project, voterId) => {
 }
 
 module.exports = {
-    getProjectById,
-    getProjectByUser,
-    getProjectsByContest,
-    getWithDeliverable,
-    getWithImage,
+    findById,
+    findByUser,
+    findAllByContest,
+    findWithDeliverable,
+    findWithImage,
     submit,
     update,
     vote
