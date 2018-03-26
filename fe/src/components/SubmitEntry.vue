@@ -1,15 +1,15 @@
 <template>
   <main class="submit">
     <section>
-      <template v-if="!loading && contest">
-        <template v-if="!project || edit">
+      <div v-show="!loading">
+        <div v-show="!project || edit">
           <h2>{{$t('project.submit')}}</h2>
           <form action="#" method="post" class="submit-project" enctype="multipart/form-data" v-on:submit.prevent="submit">
             <fieldset>
               <label for="project-name">{{$t('project.title')}}</label>
-              <input type="text" name="title" id="project-name" placeholder="Awesome Project" required>
+              <input type="text" name="title" id="project-name" required>
               <label for="project-description">{{$t('project.description')}}</label>
-              <textarea type="text" name="description" id="project-description" placeholder="Project description..." required rows="5"></textarea>
+              <textarea type="text" name="description" id="project-description" required rows="5"></textarea>
               <label for="project-repository">{{$t('project.repo')}}</label>
               <input type="url" name="repoURL" id="project-repository" placeholder="https://github.com/yourname/yourproject">
               <label for="project-thumbnail">{{$t('project.thumb')}}</label>
@@ -19,13 +19,13 @@
             </fieldset>
             <button type="submit">{{$t('project.send')}}</button>
           </form>
-        </template>
-        <template v-else>
+        </div>
+        <div v-show="project && !edit">
           <p>{{$t('project.submitted')}}</p>
           <button v-on:click="editProject">{{$t('project.edit')}}</button>
-        </template>
-      </template>
-      <div class="progress" v-else></div>
+        </div>
+      </div>
+      <div class="progress" v-show="loading"></div>
     </section>
   </main>
 </template>
@@ -39,16 +39,16 @@ export default {
     }
   },
   computed: {
-    contest () {
-      return this.$store.state.contest;
-    },
     project () {
       return this.$store.state.project;
     }
   },
   created() {
     if(!this.$store.state.contest) {
-      this.$store.dispatch('loadLastContest');
+      this.loading = true;
+      this.$store.dispatch('loadLastContest').then(() => {
+        this.loading = false;
+      })
     }
   },
   methods: {
