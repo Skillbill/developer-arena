@@ -45,6 +45,15 @@ const getProjectById = (id) => {
     })
 }
 
+const getProjectByUser = (contestId, userId) => {
+    return sql.getProjectTable().findOne({
+        where: {
+            contestId: contestId,
+            userId: userId,
+        }
+    })
+}
+
 const getProjectsByContest = (contestId) => {
     return sql.getProjectTable().findAll({
         where: {
@@ -148,6 +157,7 @@ const vote = (project, voterId) => {
 
 module.exports = {
     getProjectById,
+    getProjectByUser,
     getProjectsByContest,
     getWithDeliverable,
     getWithImage,

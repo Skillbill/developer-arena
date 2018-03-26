@@ -13,10 +13,10 @@ const mw = {
 router.post('*', mw.auth)
 router.put('*', mw.auth)
 
-router.get('/', getProjectList)
+router.get('/', getProjectByQuery)
 router.post('/', mw.validateFile.image, mw.validateFile.deliverable, prepareProject, submitProject)
 
-router.get('/:projectId', getProject)
+router.get('/:projectId', getProjectById)
 router.put('/:projectId', prepareProject, updateProject)
 router.get('/:projectId/image', getImage)
 router.get('/:projectId/deliverable', getDeliverable)
@@ -29,21 +29,33 @@ const missingParam = (res, param) => {
     res.status(lk.http.badRequest).send({error: `missing ${param}`})
 }
 
-function getProjectList(req, res) {
+function getProjectByQuery(req, res) {
     const contestId = req.params.contestId
     if (!contestId) {
-        return missingParam(res, 'contest id'
-        )
+        return missingParam(res, 'contest id')
     }
-    persistence.getProjectsByContest(contestId).then(lst => {
-        res.status(lk.http.ok).send({projects: lst})
-    }).catch(err => {
-        logger.error(err)
-        res.status(lk.http.internalError).send({error: err})
-    })
+    if (req.query && req.query.user) {
+        const userId = req.query.user
+        persistence.getProjectByUser(contestId, userId).then(project => {
+            if (!project) {
+                return res.status(lk.http.notFound).send({error: 'project not found'})
+            }
+            res.status(lk.http.ok).send({project: project})
+        }).catch(err => {
+            logger.error(err)
+            res.status(lk.http.internalError).send({error: err})
+        })
+    } else { // list projects from given contest
+        persistence.getProjectsByContest(contestId).then(lst => {
+            res.status(lk.http.ok).send({projects: lst})
+        }).catch(err => {
+            logger.error(err)
+            res.status(lk.http.internalError).send({error: err})
+        })
+    }
 }
 
-function getProject(req, res) {
+function getProjectById(req, res) {
     const id = req.params.projectId
     const contestId = req.params.contestId
     if (!contestId) {

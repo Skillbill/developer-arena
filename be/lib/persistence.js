@@ -6,6 +6,7 @@ const getContestById = (id) => contestDao.getContestById(id)
 const getLastContest = (language) => contestDao.getLastContest(language)
 
 const getProjectById = (id) => projectDao.getProjectById(id)
+const getProjectByUser = (contestId, userId) => projectDao.getProjectByUser(contestId, userId)
 const getProjectsByContest = (contestId) => projectDao.getProjectsByContest(contestId)
 const getProjectWithDeliverable = (projectId) => projectDao.getWithDeliverable(projectId)
 const getProjectWithImage = (projectId) => projectDao.getWithImage(projectId)
@@ -17,9 +18,10 @@ module.exports = {
     getAllContests,
     getLastContest,
     getContestById,
-  
+
     getProjectById,
     getProjectsByContest,
+    getProjectByUser,
     getProjectWithDeliverable,
     getProjectWithImage,
     submitProject,
