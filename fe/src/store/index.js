@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import i18n from '../i18n'
+import * as utils from '../utils'
 
 Vue.use(Vuex)
 
@@ -10,7 +11,8 @@ const store = new Vuex.Store({
     user: null,
     contest: null,
     feedback: null,
-    language: null
+    language: null,
+    project: null
   },
   mutations: {
     setUser (state, user) {
@@ -30,6 +32,9 @@ const store = new Vuex.Store({
     },
     setLanguage (state, language) {
       state.language = language;
+    },
+    setProject (state, project) {
+      state.project = project;
     }
   },
   actions: {
@@ -41,16 +46,33 @@ const store = new Vuex.Store({
       i18n.locale = language;
       commit('setLanguage', language);
     },
-    loadLastContest ({commit}) {
+    async loadLastContest ({commit}) {
       commit('setContest', null);
-      axios({
+      const headers = await utils.getDefaultHeaders();
+      return axios({
         method: 'get',
-        url: configuration.serverAddress + '/' + configuration.apiVersion + '/contest/last',
-        headers: {'Accept-Language': this.state.language}
+        url: utils.getApiUrl('/contest/last'),
+        headers
       }).then(response => {
         commit('setContest', response.data.contest);
       }).catch(e => {
-        commit('setFeedbackError', e.message);
+        console.error(e);
+        commit('setFeedbackError', utils.getApiErrorMessage(e));
+      })
+    },
+    async submitProject ({commit}, projectFormData) {
+      commit('setProject', null);
+      const headers = await utils.getDefaultHeaders({auth: true});
+      return axios({
+        method: 'post',
+        url: utils.getApiUrl(`/contest/${this.state.contest.id}/project`),
+        headers,
+        data: projectFormData
+      }).then(response => {
+        commit('setProject', response.data.project);
+      }).catch(e => {
+        console.error(e);
+        commit('setFeedbackError', utils.getApiErrorMessage(e));
       })
     }
   }

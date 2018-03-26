@@ -38,6 +38,22 @@ module.exports = {
   countdown: {
     days: 'days'
   },
+  api: {
+    errors: {
+      generic: 'Oops.. an error occurred, please try again later'
+    }
+  },
+  project: {
+    submit: 'Submit your project',
+    title: 'Title',
+    description: 'Description',
+    repo: 'Repository URL',
+    thumb: 'Thumbnail',
+    file: 'File',
+    send: 'Send!',
+    submitted: 'Your project has been submitted',
+    edit: 'Edit your project'
+  },
   viewGitHub: 'View on GitHub',
   applyContest: 'Submit your project',
   signUp: 'Sign Up',
