@@ -117,12 +117,13 @@ export default {
       this.loading = true;
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(user => {
         this.$store.commit('setFeedbackOk', 'accountCreated');
-        user.sendEmailVerification();
+        let continueUrl = document.location.href;
         if(this.$route.query.redirect) {
-          this.$router.replace(this.$route.query.redirect);
-        } else {
-          this.$router.replace('sign-in');
+          const a = document.createElement('a');
+          a.href = this.$router.resolve(this.$route.query.redirect).href;
+          continueUrl = a.protocol + '//' + a.host + a.pathname + a.search + a.hash;
         }
+        user.sendEmailVerification({url: continueUrl});
         this.signInSection = true;
         this.loading = false;
       }).catch(error => {
