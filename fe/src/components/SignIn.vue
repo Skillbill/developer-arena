@@ -22,7 +22,7 @@
               <label for="login-password">{{$t('password')}}</label>
               <input type="password" id="login-password" v-model="password" required><br>
               <button>{{ $t('submit') }}</button>
-              <label class="small-right" v-on:click="switchToPasswordLost()">{{ $t('passwordLost') }}</label>
+              <a class="small-right" v-on:click="switchToPasswordLost()">{{ $t('passwordLost') }}</a>
             </fieldset>
           </form>
           <form v-else-if="signInSection === 'passwordLost'" v-on:submit="resetPassword">
@@ -30,7 +30,7 @@
               <label for="login-email">{{$t('email')}}</label>
               <input type="email" id="login-email" v-model="email" required><br>
               <button>{{ $t('submit') }}</button>
-              <label class="small-right" v-on:click="switchToSignIn()">{{ $t('back') }}</label>
+              <a class="small-right" v-on:click="switchToSignIn()">{{ $t('back') }}</a>
             </fieldset>
           </form>
           <form v-else v-on:submit="signUp">
@@ -58,6 +58,7 @@
 
 <style scoped>
   .small-right {
+    cursor: pointer;
     float: right;
     font-size: 80%;
   }
