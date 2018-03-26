@@ -46,7 +46,7 @@ module.exports = {
   project: {
     submit: 'Invia il tuo progetto',
     title: 'Titolo',
-    description: 'Descrizion',
+    description: 'Descrizione',
     repo: 'Repository URL',
     thumb: 'Immagine di anteprima',
     file: 'File',
