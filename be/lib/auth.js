@@ -15,7 +15,7 @@ const firebase_auth_mw = (req, res, next) => {
             provider: decodedToken.firebase.sign_in_provider,
             email: decodedToken.email
         }
-        if (req.user.provider == 'password' && !decodedToken.firebase.email_verified) {
+        if (req.user.provider == 'password' && !decodedToken.email_verified) {
             return res.status(lk.http.unauthorized).send({error: 'email not verified'})
         }
         next()
