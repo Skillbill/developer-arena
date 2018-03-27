@@ -12,7 +12,7 @@
           <div class="social-buttons">
             <button class="github" v-on:click="signIn('GithubAuthProvider')">GitHub</button>
             <button class="twitter" v-on:click="signIn('TwitterAuthProvider')">Twitter</button>
-            <button class="google" v-on:click="signIn('GoogleAuthProvider')">Google</button>
+            <button class="google" v-on:click="signIn('GoogleAuthProvider', ['https://www.googleapis.com/auth/userinfo.email'])">Google</button>
             <button class="facebook" v-on:click="signIn('FacebookAuthProvider')">Facebook</button>
           </div>
           <form v-if="signInSection === 'signIn'" v-on:submit="signIn('email')">
@@ -100,7 +100,7 @@ export default {
     });
   },
   methods: {
-    signIn(providerName) {
+    signIn(providerName, scopes = []) {
       let signInFn;
       this.$store.commit('removeFeedback');
       this.loading = true;
@@ -108,6 +108,9 @@ export default {
         signInFn = firebase.auth().signInWithEmailAndPassword(this.email, this.password);
       } else {
         const provider = new firebase.auth[providerName]();
+        scopes.forEach((scope) => {
+          provider.addScope(scope);
+        });
         signInFn = firebase.auth().signInWithRedirect(provider);
       }
       signInFn.then((result) => {
