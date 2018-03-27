@@ -67,6 +67,14 @@
 <script>
 import firebase from 'firebase'
 
+function showFirebaseErroMessage(error) {
+  let errorMessage = `firebase.${error.code.replace('/', '-')}`;
+  if(!this.$i18n.te(errorMessage)) {
+    errorMessage = 'firebase.generic-error';
+  }
+  this.$store.commit('setFeedbackError', errorMessage);
+}
+
 export default {
   data() {
     return {
@@ -89,14 +97,20 @@ export default {
     }
   },
   created () {
-    const instance = this;
-    firebase.auth().getRedirectResult().catch(function(error) {
+    firebase.auth().getRedirectResult().catch((error) => {
       console.error(error, error.message);
-      let errorMessage = `firebase.${error.code.replace('/', '-')}`;
-      if(!instance.$i18n.te(errorMessage)) {
-        errorMessage = 'firebase.generic-error';
+      if(error.email && error.code === 'auth/account-exists-with-different-credential') {
+        firebase.auth().fetchProvidersForEmail(error.email).then(providers => {
+          if(providers[0] && providers[0] !== 'password') {
+            let message = this.$i18n.t('proceedWithProvider', {provider: providers[0], email: error.email});
+            this.$store.commit('setFeedbackError', message);
+          } else {
+            showFirebaseErroMessage.apply(this, [error]);
+          }
+        });
+        return;
       }
-      instance.$store.commit('setFeedbackError', errorMessage);
+      showFirebaseErroMessage.apply(this, [error]);
     });
   },
   methods: {
@@ -120,11 +134,7 @@ export default {
         }
       }).catch((error) => {
         console.error(error, error.message);
-        let errorMessage = `firebase.${error.code.replace('/', '-')}`;
-        if(!this.$i18n.te(errorMessage)) {
-          errorMessage = 'firebase.generic-error';
-        }
-        this.$store.commit('setFeedbackError', errorMessage);
+        showFirebaseErroMessage.apply(this, [error]);
         this.loading = false;
       });
     },
@@ -133,11 +143,7 @@ export default {
         this.$store.commit('setFeedbackOk', 'resetEmailSent');
       }).catch(error => {
         console.error(error, error.message);
-        let errorMessage = `firebase.${error.code.replace('/', '-')}`;
-        if(!this.$i18n.te(errorMessage)) {
-          errorMessage = 'firebase.generic-error';
-        }
-        this.$store.commit('setFeedbackError', errorMessage);
+        showFirebaseErroMessage.apply(this, [error]);
       });
     },
     signUp () {
@@ -161,11 +167,7 @@ export default {
         this.loading = false;
       }).catch(error => {
         console.error(error, error.message);
-        let errorMessage = `firebase.${error.code.replace('/', '-')}`;
-        if(!this.$i18n.te(errorMessage)) {
-          errorMessage = 'firebase.generic-error';
-        }
-        this.$store.commit('setFeedbackError', errorMessage);
+        showFirebaseErroMessage.apply(this, [error]);
         this.loading = false;
       });
     },

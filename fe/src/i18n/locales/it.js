@@ -76,5 +76,6 @@ module.exports = {
   accountCreated: 'Account creato con successo',
   submit: 'Invia',
   close: 'Chiudi',
-  rules: 'Regolamento'
+  rules: 'Regolamento',
+  proceedWithProvider: 'Hai già effettuato l\'accesso con {email}, usa {provider} per accedere.'
 }
