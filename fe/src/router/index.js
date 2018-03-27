@@ -4,6 +4,7 @@ import firebase from 'firebase'
 import Home from '@/components/Home'
 import SignIn from '@/components/SignIn'
 import SubmitEntry from '@/components/SubmitEntry'
+import Projects from '@/components/Projects'
 
 Vue.use(Router)
 
@@ -26,6 +27,11 @@ let router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/projects',
+      name: 'Projects',
+      component: Projects
     }
   ]
 })
