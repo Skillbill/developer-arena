@@ -12,53 +12,60 @@ const fileKind = {
     image: 'IMAGE'
 }
 
-const findById = (id) => {
-    const projectTable = sql.getProjectTable()
+const getFullTable = (includes) => {
+    const table = sql.getProjectTable()
     const fileTable = sql.getFileTable()
     const voteTable = sql.getVoteTable()
-    projectTable.hasOne(fileTable, {as: 'deliverable', foreignKey: model.file.projectId})
-    projectTable.hasMany(voteTable, {as: 'votes', foreignKey: model.file.projectId})
-    return projectTable.findOne({
+    table.hasOne(fileTable, {as: 'deliverable', foreignKey: model.file.projectId})
+    table.hasMany(voteTable, {as: 'votes', foreignKey: model.file.projectId})
+    includes.push(...[
+        {
+            model: fileTable,
+            required: false,
+            as: 'deliverable',
+            attributes: [model.file.name.field],
+            where: {
+                kind: fileKind.deliverable
+            }
+        },
+        {
+            model: voteTable,
+            required: false,
+            as: 'votes',
+            attributes: [[model.vote.voterId.field, 'userId'], 'ts']
+        }
+    ])
+    return table
+}
+
+const findById = (id) => {
+    let includes = []
+    return getFullTable(includes).findOne({
         where: {
             id: id
         },
-        include: [
-            {
-                model: fileTable,
-                required: false,
-                as: 'deliverable',
-                attributes: [model.file.name.field],
-                where: {
-                    kind: fileKind.deliverable
-                }
-            },
-            {
-                model: voteTable,
-                required: false,
-                as: 'votes',
-                attributes: [[model.vote.voterId.field, 'userId']],
-                where: {
-                    projectId: id
-                }
-            }
-        ]
+        include: includes
     })
 }
 
 const findByUser = (contestId, userId) => {
-    return sql.getProjectTable().findOne({
+    let includes = []
+    return getFullTable(includes).findOne({
         where: {
             contestId: contestId,
             userId: userId,
-        }
+        },
+        include: includes
     })
 }
 
 const findAllByContest = (contestId) => {
-    return sql.getProjectTable().findAll({
+    let includes = []
+    return getFullTable(includes).findAll({
         where: {
             contestId: contestId
-        }
+        },
+        include: includes
     })
 }
 

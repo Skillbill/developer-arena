@@ -29,6 +29,14 @@ const missingParam = (res, param) => {
     res.status(lk.http.badRequest).send({error: `missing ${param}`})
 }
 
+const voteTime = (vote) => new Date(vote.ts).getTime()
+
+const sortingModes = { // all descending
+    trend: (a, b) => Math.max(...b.votes.map(voteTime)) - Math.max(...a.votes.map(voteTime)),
+    date:  (a, b) => new Date(b.submitted).getTime() - new Date(a.submitted).getTime(),
+    rank:  (a, b) => b.votes.length - a.votes.length
+}
+
 function getProjectByQuery(req, res) {
     const contestId = req.params.contestId
     if (!contestId) {
@@ -46,8 +54,9 @@ function getProjectByQuery(req, res) {
             res.status(lk.http.internalError).send({error: err})
         })
     } else { // list projects from given contest
+        const cmp = req.query ? sortingModes[req.query.sort] : undefined
         persistence.getProjectsByContest(contestId).then(lst => {
-            res.status(lk.http.ok).send({projects: lst})
+            res.status(lk.http.ok).send({projects: cmp ? lst.sort(cmp) : lst})
         }).catch(err => {
             logger.error(err)
             res.status(lk.http.internalError).send({error: err})
