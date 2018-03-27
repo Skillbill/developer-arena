@@ -1,14 +1,13 @@
 {
 	"info": {
 		"name": "SDA-CONTEST",
-		"_postman_id": "8e342fc4-56e2-4057-afc0-60a03d3b3da8",
+		"_postman_id": "f5071916-a60d-bdea-3585-72ee69f4945c",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "project",
-			"description": "",
 			"item": [
 				{
 					"name": "project",
@@ -119,12 +118,78 @@
 								{
 									"key": "title",
 									"value": "my nice little project",
-									"description": "",
 									"type": "text"
 								},
 								{
 									"key": "description",
 									"value": "medium long description of my little project",
+									"type": "text"
+								},
+								{
+									"key": "repoURL",
+									"value": "github.com/username/little-project",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "deliverable",
+									"value": "",
+									"type": "file"
+								},
+								{
+									"key": "image",
+									"value": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1/project/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1",
+								"project",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update project",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "userid"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adtoken}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "my very nice little project",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "more accurate description",
 									"description": "",
 									"type": "text"
 								},
@@ -150,7 +215,7 @@
 							]
 						},
 						"url": {
-							"raw": "{{host}}/{{version}}/contest/1/project/",
+							"raw": "{{host}}/{{version}}/contest/1/project/1",
 							"host": [
 								"{{host}}"
 							],
@@ -159,7 +224,7 @@
 								"contest",
 								"1",
 								"project",
-								""
+								"1"
 							]
 						}
 					},
@@ -184,7 +249,10 @@
 								"disabled": true
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{host}}/{{version}}/contest/1/project/1/vote",
 							"host": [
@@ -201,38 +269,142 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "contest projects list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1/project/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1",
+								"project",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "contest projects list (by trend)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1/project/?sort=trend",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1",
+								"project",
+								""
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "trend",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "contest projects list (by date)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1/project/?sort=date",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1",
+								"project",
+								""
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "date",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "contest projects list (by rank)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1/project/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1",
+								"project",
+								""
+							]
+						}
+					},
+					"response": []
 				}
 			]
-		},
-		{
-			"name": "contest projects list",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept-Language",
-						"value": "{{language}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{host}}/{{version}}/contest/1/project/",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"{{version}}",
-						"contest",
-						"1",
-						"project",
-						""
-					]
-				}
-			},
-			"response": []
 		},
 		{
 			"name": "contest list",
@@ -257,8 +429,7 @@
 						"{{version}}",
 						"contest"
 					]
-				},
-				"description": null
+				}
 			},
 			"response": []
 		},
@@ -286,8 +457,7 @@
 						"contest",
 						"last"
 					]
-				},
-				"description": null
+				}
 			},
 			"response": []
 		},
@@ -315,8 +485,7 @@
 						"contest",
 						"1"
 					]
-				},
-				"description": null
+				}
 			},
 			"response": []
 		},
@@ -342,8 +511,7 @@
 					"path": [
 						"info"
 					]
-				},
-				"description": null
+				}
 			},
 			"response": []
 		}
