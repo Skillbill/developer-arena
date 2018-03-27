@@ -35,6 +35,9 @@ const store = new Vuex.Store({
     },
     setProject (state, project) {
       state.project = project;
+    },
+    setProjects (state, projects) {
+      state.projects = projects;
     }
   },
   actions: {
@@ -91,6 +94,19 @@ const store = new Vuex.Store({
       }).then(response => {
         commit('setProject', response.data.project);
         store.commit('setFeedbackOk', edit ? 'project.editOk' : 'project.submitOk');
+      }).catch(e => {
+        console.error(e);
+        commit('setFeedbackError', utils.getApiErrorMessage(e));
+      })
+    },
+    async loadProjects ({commit}) {
+      const headers = await utils.getDefaultHeaders();
+      return axios({
+        method: 'get',
+        url: utils.getApiUrl(`/contest/${this.state.contest.id}/project`),
+        headers
+      }).then(response => {
+        commit('setProjects', response.data.projects);
       }).catch(e => {
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));
