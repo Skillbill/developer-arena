@@ -174,7 +174,16 @@ function updateProject(req, res) {
     if (!newProject.title || !newProject.description) {
         return missingParam(res)
     }
-    persistence.getProjectById(projectId).then(currentProject => {
+    Promise.all([
+        persistence.getContestById(contestId),
+        persistence.getProjectById(projectId)
+    ]).then(([contest, currentProject]) => {
+        if (!contest || contest.state == lk.contest.state.draft) {
+            return res.status(lk.http.notFound).send({error: 'contest not found'})
+        }
+        if (libContest.getPublicState(contest) != lk.contest.publicState.applying) {
+            return res.status(lk.http.preconditionFailed).send({error: 'contest is not open for submissions'})
+        }
         if (!currentProject || currentProject.contestId != contestId) {
             return res.status(lk.http.notFound).send({error: 'project not found'})
         }
