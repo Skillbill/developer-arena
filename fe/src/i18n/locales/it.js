@@ -52,7 +52,9 @@ module.exports = {
     file: 'File',
     send: 'Invia!',
     submitted: 'Il tuo progetto è stato inviato',
-    edit: 'Modifica il tuo progetto'
+    edit: 'Modifica il tuo progetto',
+    submitOk: 'Progetto inviato con successo',
+    editOk: 'Progetto modificato con successo'
   },
   viewGitHub: 'Vedi su GitHub',
   applyContest: 'Invia il tuo progetto',

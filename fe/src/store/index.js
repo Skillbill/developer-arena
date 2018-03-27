@@ -60,16 +60,36 @@ const store = new Vuex.Store({
         commit('setFeedbackError', utils.getApiErrorMessage(e));
       })
     },
-    async submitProject ({commit}, projectFormData) {
-      commit('setProject', null);
+    async loadLastUserProject ({commit}) {
+      const headers = await utils.getDefaultHeaders();
+      return axios({
+        method: 'get',
+        url: utils.getApiUrl(`/contest/${this.state.contest.id}/project`),
+        params: {
+          user: this.state.user.uid
+        },
+        headers
+      }).then(response => {
+        commit('setProject', response.data.project);
+      }).catch(e => {
+        if(e.response.status === 404) {
+          return;
+        }
+        console.error(e);
+        commit('setFeedbackError', utils.getApiErrorMessage(e));
+      })
+    },
+    async submitProject ({commit}, {projectFormData, edit}) {
+      let url = `/contest/${this.state.contest.id}/project` + (edit && this.state.project ? `/${this.state.project.id}` : '');
       const headers = await utils.getDefaultHeaders({auth: true});
       return axios({
-        method: 'post',
-        url: utils.getApiUrl(`/contest/${this.state.contest.id}/project`),
+        method: edit ? 'put' : 'post',
+        url: utils.getApiUrl(url),
         headers,
         data: projectFormData
       }).then(response => {
         commit('setProject', response.data.project);
+        store.commit('setFeedbackOk', edit ? 'project.editOk' : 'project.submitOk');
       }).catch(e => {
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));
