@@ -19,9 +19,12 @@ export function getDefaultHeaders({auth} = {}) {
 }
 
 export function getApiErrorMessage(error) {
-  if(error && error.response && error.response.data && error.response.data.message) {
+  if(!error.response) {
+    return 'api.errors.network';
+  } else if(error.response.data.error) {
     // TODO get message based on server error code
-    return error.response.data.message;
+    return error.response.data.error;
   }
+
   return 'api.errors.generic';
 }

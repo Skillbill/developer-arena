@@ -40,7 +40,8 @@ module.exports = {
   },
   api: {
     errors: {
-      generic: 'Oops.. an error occurred, please try again later'
+      generic: 'Oops.. an error occurred, please try again later',
+      network: 'The service could not be reached'
     }
   },
   project: {
