@@ -1,7 +1,7 @@
 <template>
   <main class="submit">
     <section>
-      <div v-show="!loading">
+      <div v-show="!loading && !uploading">
         <div v-show="!project || edit">
           <h2>{{$t(edit ? 'project.edit' : 'project.submit')}}</h2>
           <form action="#" method="post" class="submit-project" enctype="multipart/form-data" v-on:submit.prevent="submit">
@@ -22,24 +22,32 @@
             <button type="submit">{{$t('project.send')}}</button>
           </form>
         </div>
-        <div v-show="project && !edit">
+        <div v-show="project && !edit" class="card">
           <p>{{$t('project.submitted')}}</p>
           <button v-on:click="editProject">{{$t('project.edit')}}</button>
         </div>
       </div>
-      <div class="progress" v-show="loading"></div>
+      <div class="progress" v-if="loading"></div>
+      <ProgressBar v-if="uploading" :progress=progress :label="$t('project.uploading')"></ProgressBar>
     </section>
   </main>
 </template>
 
 <script>
+import ProgressBar from '@/components/ProgressBar'
+
 export default {
+  components: {
+    ProgressBar
+  },
   data() {
     return {
       loading: false,
       edit: false,
       title: null,
-      description: null
+      description: null,
+      uploading: false,
+      progress: 0
     }
   },
   computed: {
@@ -61,11 +69,15 @@ export default {
   },
   methods: {
     submit(event) {
+      this.$store.commit('removeFeedback');
       let form = this.$el.querySelector('form');
       let projectFormData = new FormData(form);
-      this.loading = true;
-      this.$store.dispatch('submitProject', {projectFormData, edit: this.edit}).then(() => {
-        this.loading = false;
+      this.uploading = true;
+      const onUploadProgress = (status) => {
+        this.progress = Math.round(status.loaded / status.total * 100);
+      }
+      this.$store.dispatch('submitProject', {projectFormData, edit: this.edit, onUploadProgress}).then(() => {
+        this.uploading = false;
         this.edit = false;
       });
     },

@@ -79,14 +79,15 @@ const store = new Vuex.Store({
         commit('setFeedbackError', utils.getApiErrorMessage(e));
       })
     },
-    async submitProject ({commit}, {projectFormData, edit}) {
+    async submitProject ({commit}, {projectFormData, edit, onUploadProgress}) {
       let url = `/contest/${this.state.contest.id}/project` + (edit && this.state.project ? `/${this.state.project.id}` : '');
       const headers = await utils.getDefaultHeaders({auth: true});
       return axios({
         method: edit ? 'put' : 'post',
         url: utils.getApiUrl(url),
         headers,
-        data: projectFormData
+        data: projectFormData,
+        onUploadProgress
       }).then(response => {
         commit('setProject', response.data.project);
         store.commit('setFeedbackOk', edit ? 'project.editOk' : 'project.submitOk');
