@@ -56,7 +56,8 @@ module.exports = {
     edit: 'Edit your project',
     submitOk: 'Project successfully sent',
     editOk: 'Project successfully modified',
-    uploading: 'Uploading...'
+    uploading: 'Uploading...',
+    requiredFields: 'Required fileds'
   },
   viewGitHub: 'View on GitHub',
   applyContest: 'Submit your project',

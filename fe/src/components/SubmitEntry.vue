@@ -6,18 +6,17 @@
           <h2>{{$t(edit ? 'project.edit' : 'project.submit')}}</h2>
           <form action="#" method="post" class="submit-project" enctype="multipart/form-data" v-on:submit.prevent="submit">
             <fieldset>
-              <label for="project-name">{{$t('project.title')}}</label>
+              <label for="project-name">{{$t('project.title')}} *</label>
               <input type="text" name="title" id="project-name" required v-model="title" maxlength="50">
-              <label for="project-description">{{$t('project.description')}}</label>
+              <label for="project-description">{{$t('project.description')}} *</label>
               <textarea type="text" name="description" id="project-description" required rows="5" v-model="description"></textarea>
-              <template v-if="!edit">
-                <label for="project-repository">{{$t('project.repo')}}</label>
-                <input type="url" name="repoURL" id="project-repository" placeholder="https://github.com/yourname/yourproject">
-                <label for="project-thumbnail">{{$t('project.thumb')}}</label>
-                <input type="file" name="image" id="project-thumbnail">
-                <label for="project-file">{{$t('project.file')}}</label>
-                <input type="file" name="deliverable" id="project-file">
-              </template>
+              <label for="project-repository">{{$t('project.repo')}}</label>
+              <input type="url" name="repoURL" id="project-repository" placeholder="https://github.com/yourname/yourproject">
+              <label for="project-thumbnail">{{$t('project.thumb')}}</label>
+              <input type="file" name="image" id="project-thumbnail">
+              <label for="project-file">{{$t('project.file')}} {{edit? '' : '*'}}</label>
+              <input type="file" name="deliverable" id="project-file" :required=!edit>
+              <p class="text-align-right">* {{$t('project.requiredFields')}}</p>
             </fieldset>
             <button type="submit">{{$t('project.send')}}</button>
           </form>

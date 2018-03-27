@@ -215,6 +215,10 @@ div.progress::after {
   }
 }
 
+.text-align-right {
+  text-align: right;
+}
+
 /*** molecules ***/
 
 /* main-info */
