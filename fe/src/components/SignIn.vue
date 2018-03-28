@@ -97,7 +97,11 @@ export default {
     }
   },
   created () {
-    firebase.auth().getRedirectResult().catch((error) => {
+    firebase.auth().getRedirectResult().then(() => {
+      if(this.$route.query.redirect) {
+        this.$router.replace(this.$route.query.redirect);
+      }
+    }).catch((error) => {
       console.error(error, error.message);
       if(error.email && error.code === 'auth/account-exists-with-different-credential') {
         firebase.auth().fetchProvidersForEmail(error.email).then(providers => {
