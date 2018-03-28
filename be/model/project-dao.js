@@ -1,5 +1,4 @@
 const sql = require('../lib/sql')
-const lk = require('../lib/lookups')
 
 const model = {
     project: require('./project'),
@@ -116,22 +115,50 @@ const createFile = (projectId, kind, file, tx) => {
     }, {transaction: tx})
 }
 
+const replaceFile = (projectId, userId, kind, file, tx) => {
+    const table = sql.getFileTable()
+    const projectTable = sql.getProjectTable()
+    table.hasMany(projectTable, {as: 'project', foreignKey: model.file.projectId})
+    return new Promise((resolve, reject) => {
+        table.destroy({
+            where: {
+                projectId: projectId,
+                kind: kind
+            },
+            include: [{
+                model: projectTable,
+                as: 'project',
+                attributes: [[model.project.userId.field, 'userId']],
+                where: {
+                    userId: userId
+                }
+            }],
+            transaction: tx
+        }).then(() => {
+            return createFile(projectId, kind, file, tx)
+        }).then(() => {
+            resolve()
+        }).catch(err => {
+            reject(err)
+        })
+    })
+}
+
 const submit = (project) => {
-    let newProject = null
     return new Promise((resolve, reject) => {
         sql.transaction().then(tx => {
             return sql.getProjectTable().create(project, {transaction: tx}).then(created => {
-                newProject = created
                 return Promise.all([
+                    Promise.resolve(created),
                     project.deliverable ? createFile(created.id, fileKind.deliverable, project.deliverable, tx) : Promise.resolve(),
                     project.image ? createFile(created.id, fileKind.image, project.image, tx) : Promise.resolve()
                 ])
-            }).then(() => {
+            }).then(([newProject]) => {
                 tx.commit()
                 resolve(newProject)
             }).catch (err => {
                 tx.rollback()
-                reject(err.name && err.name === 'SequelizeUniqueConstraintError' ? lk.error.alreadyExists : err)
+                reject(err)
             })
         })
     })
@@ -139,14 +166,28 @@ const submit = (project) => {
 
 const update = (projectId, data) => {
     return new Promise((resolve, reject) => {
-        sql.getProjectTable().update(data, {
-            fields: ['title', 'description', 'updated'],
-            returning: true,
-            limit: 1,
-            where: {
-                id: projectId
-            }
-        }).then(row => resolve(row[0] == 1 ? row[1][0] : row)).catch(reject)
+        sql.transaction().then(tx => {
+            return sql.getProjectTable().update(data, {
+                fields: ['title', 'description', 'updated', 'repoURL'],
+                returning: true,
+                limit: 1,
+                where: {
+                    id: projectId
+                }
+            }).then(row => {
+                return Promise.all([
+                    Promise.resolve(row[1][0]),
+                    data.deliverable ? replaceFile(projectId, data.userId, fileKind.deliverable, data.deliverable, tx) : Promise.resolve(),
+                    data.image ? replaceFile(projectId, data.userId, fileKind.image, data.image, tx) : Promise.resolve()
+                ])
+            }).then(([project]) => {
+                tx.commit()
+                resolve(project)
+            }).catch (err => {
+                tx.rollback()
+                reject(err)
+            })
+        })
     })
 }
 
@@ -158,7 +199,7 @@ const vote = (project, voterId) => {
             voterId: voterId,
             ts: new Date()
         }).then(resolve).catch(err => {
-            reject(err.name && err.name === 'SequelizeUniqueConstraintError' ? lk.error.alreadyExists : err)
+            reject(err)
         })
     })
 }
