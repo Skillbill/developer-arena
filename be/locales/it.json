@@ -1,3 +1,22 @@
 {
-  "welcome": "Benvenuto"
+    "welcome": "Benvenuto",
+    "contest": "contest",
+    "title": "titolo",
+    "description": "descrizione",
+    "deliverable": "deliverable",
+    "image": "immagine",
+    "internal_server_error": "Errore interno del server: {{cause}}",
+    "contest_not_found": "Contest non trovato",
+    "project_not_found": "Progetto non trovato",
+    "image_not_found": "Immagine non trovata",
+    "deliverable_not_found": "Deliverable non trovato",
+    "contest_not_open_for_submission": "Il contest non è aperto a sottomissioni",
+    "contest_not_open_for_voting": "Il contest non è aperto a votazioni",
+    "missing_parameter": "Parametro obbligatorio mancante: {{parameter}}",
+    "already_submitted_project": "Hai già sottoposto un progetto per questo contest",
+    "already_voted_project": "Hai già votato per questo progetto",
+    "uidMismatch": "Non sei l'autore di questo progetto",
+    "file_too_big": "{{file}} non valido: troppo grande",
+    "file_no_name": "{{file}} deve avere un nome",
+    "file_invalid_type": "il tipo {{type}} non è supportato per il file {{file}}"
 }

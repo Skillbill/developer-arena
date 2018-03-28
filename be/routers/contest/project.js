@@ -2,6 +2,7 @@ const express = require('express')
 const lk = require('../../lib/lookups')
 const libContest = require('../../lib/contest')
 const logger = require('../../lib/logger')
+const error = require('../../lib/error')
 const persistence = require('../../lib/persistence')
 const router = express.Router({mergeParams: true})
 
@@ -37,7 +38,7 @@ const sortingModes = { // all descending
     rank:  (a, b) => b.votes.length - a.votes.length
 }
 
-function getProjectByQuery(req, res) {
+function getProjectByQuery(req, res, next) {
     const contestId = req.params.contestId
     if (!contestId) {
         return missingParam(res, 'contest id')
@@ -46,25 +47,23 @@ function getProjectByQuery(req, res) {
         const userId = req.query.user
         persistence.getProjectByUser(contestId, userId).then(project => {
             if (!project) {
-                return res.status(lk.http.notFound).send({error: 'project not found'})
+                return next(error.projectNotFound)
             }
             res.status(lk.http.ok).send({project: project})
         }).catch(err => {
-            logger.error(err)
-            res.status(lk.http.internalError).send({error: err})
+            return next(error.new(error.internalError, {cause: err}))
         })
     } else { // list projects from given contest
         const cmp = req.query ? sortingModes[req.query.sort] : undefined
         persistence.getProjectsByContest(contestId).then(lst => {
             res.status(lk.http.ok).send({projects: cmp ? lst.sort(cmp) : lst})
         }).catch(err => {
-            logger.error(err)
-            res.status(lk.http.internalError).send({error: err})
+            next(error.new(error.internalError, {cause: err}))
         })
     }
 }
 
-function getProjectById(req, res) {
+function getProjectById(req, res, next) {
     const id = req.params.projectId
     const contestId = req.params.contestId
     if (!contestId) {
@@ -72,12 +71,11 @@ function getProjectById(req, res) {
     }
     persistence.getProjectById(id).then(project => {
         if (!project || project.contestId != contestId) {
-            return res.status(lk.http.notFound).send({error: 'project not found'})
+            return next(error.projectNotFound)
         }
         res.status(lk.http.ok).send({project: project})
     }).catch(err => {
-        logger.error(err)
-        res.status(lk.http.internalError).send({error: err})
+        next(error.new(error.internalError, {cause: err}))
     })
 }
 
@@ -88,31 +86,29 @@ const sendfile = (res, file) => {
     res.status(lk.http.ok).send(file.data)
 }
 
-function getImage(req, res) {
+function getImage(req, res, next) {
     const contestId = req.params.contestId
     const projectId = req.params.projectId
     persistence.getProjectWithImage(projectId).then(project => {
         if (!project || project.contestId != contestId) {
-            return res.status(lk.http.notFound).send({error: 'image not found'})
+            return next(error.imageNotFound)
         }
         sendfile(res, project.image)
     }).catch(err => {
-        logger.error(err)
-        res.status(lk.http.internalError).send({error: err})
+        next(error.new(error.internalError, {cause: err}))
     })
 }
 
-function getDeliverable(req, res) {
+function getDeliverable(req, res, next) {
     const contestId = req.params.contestId
     const projectId = req.params.projectId
     persistence.getProjectWithDeliverable(projectId).then(project => {
         if (!project || project.contestId != contestId) {
-            return res.status(lk.http.notFound).send({error: 'deliverable not found'})
+            return next(error.deliverableNotFound)
         }
         sendfile(res, project.deliverable)
     }).catch(err => {
-        logger.error(err)
-        res.status(lk.http.internalError).send({error: err})
+        next(error.new(error.internalError, {cause: err}))
     })
 }
 
@@ -140,42 +136,44 @@ function prepareProject(req, res, next) {
     next()
 }
 
-function submitProject(req, res) {
+function submitProject(req, res, next) {
     logger.debug('submit project request from:', req.user)
     const newProject = req.project
     persistence.getContestById(req.params.contestId).then(contest => {
         if (!contest || contest.state == lk.contest.state.draft) {
-            return res.status(lk.http.notFound).send({error: 'contest not found'})
+            return next(error.contestNotFound)
         }
         if (libContest.getPublicState(contest) != lk.contest.publicState.applying) {
-            return res.status(lk.http.preconditionFailed).send({error: 'contest is not open for submissions'})
+            return next(error.contestNotOpenForSubmission)
         }
         if (!newProject.contestId) {
-            return missingParam(res, 'contest id')
+            return next(error.new(error.missingParameter, {parameter: 'contest'}))
         }
-        if (!newProject.title || !newProject.description) {
-            return missingParam(res)
+        if (!newProject.title) {
+            return next(error.new(error.missingParameter, {parameter: 'title'}))
+        }
+        if (!newProject.description) {
+            return next(error.new(error.missingParameter, {parameter: 'description'}))
         }
         if (!newProject.deliverable) {
-            return missingParam(res, 'deliverable')
+            return next(error.new(error.missingParameter, {parameter: 'deliverable'}))
         }
         newProject.submitted = newProject.updated
         persistence.submitProject(newProject).then(project => {
             res.status(lk.http.created).send({project: project})
         }).catch(err => {
             if (err.name && err.name === 'SequelizeUniqueConstraintError') {
-                return res.status(lk.http.preconditionFailed).send({error: 'user already submitted a project for this contest'})
+                next(error.alreadySubmittedProject)
+            } else {
+                next(error.new(error.internalError, {cause: err}))
             }
-            logger.error(err)
-            res.status(lk.http.internalError).send({error: err})
         })
     }).catch(err => {
-        logger.error(err)
-        res.status(lk.http.internalError).send({error: err})
+        next(error.new(error.internalError, {cause: err}))
     })
 }
 
-function updateProject(req, res) {
+function updateProject(req, res, next) {
     const contestId = req.params.contestId
     const projectId = req.params.projectId
     const newProject = req.project
@@ -188,30 +186,28 @@ function updateProject(req, res) {
         persistence.getProjectById(projectId)
     ]).then(([contest, currentProject]) => {
         if (!contest || contest.state == lk.contest.state.draft) {
-            return res.status(lk.http.notFound).send({error: 'contest not found'})
+            return next(error.contestNotFound)
         }
         if (libContest.getPublicState(contest) != lk.contest.publicState.applying) {
-            return res.status(lk.http.preconditionFailed).send({error: 'contest is not open for submissions'})
+            return next(error.contestNotOpenForSubmission)
         }
         if (!currentProject || currentProject.contestId != contestId) {
-            return res.status(lk.http.notFound).send({error: 'project not found'})
+            return next(error.projectNotFound)
         }
         if (currentProject.userId != newProject.userId) {
-            return res.status(lk.http.unauthorized).send({error: 'req uid does not match project uid'})
+            return next(error.uidMismatch)
         }
         persistence.updateProject(projectId, newProject).then(project => {
             res.status(lk.http.ok).send({project: project})
         }).catch(err => {
-            logger.error(err)
-            res.status(lk.http.internalError).send({error: err})
+            next(error.new(error.internalError, {cause: err}))
         })
     }).catch(err => {
-        logger.error(err)
-        res.status(lk.http.internalError).send({error: err})
+        next(error.new(error.internalError, {cause: err}))
     })
 }
 
-function voteProject(req, res) {
+function voteProject(req, res, next) {
     const contestId = req.params.contestId
     const projectId = req.params.projectId
     const uid = req.user.uid
@@ -221,23 +217,21 @@ function voteProject(req, res) {
         persistence.getProjectById(projectId)
     ]).then(([contest, project]) => {
         if (!project || project.contestId != contestId) {
-            return res.status(lk.http.notFound).send({error: 'project not found'})
+            return next(error.projectNotFound)
         }
         if (libContest.getPublicState(contest) != lk.contest.publicState.voting) {
-            return res.status(lk.http.preconditionFailed).send({error: 'contest is not open for voting'})
+            return next(error.contestNotOpenForVoting)
         }
         if (project.votes.map(vote => vote.userId).includes(uid)) {
-            return res.status(lk.http.preconditionFailed).send({error: 'already voted for this project'})
+            return next(error.alreadyVotedProject)
         }
         persistence.voteProject(project, uid).then(() => {
             res.status(lk.http.ok).send()
         }).catch(err => {
-            logger.error(err)
-            res.status(lk.http.internalError).send({error: err})
+            next(error.new(error.internalError, {cause: err}))
         })
     }).catch(err => {
-        logger.error(err)
-        res.status(lk.http.internalError).send({error: err})
+        next(error.new(error.internalError, {cause: err}))
     })
 }
 

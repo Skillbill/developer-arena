@@ -33,6 +33,10 @@ require('./config').init()
             app.use('/1.0', mainRouter)
             mainRouter.use('/contest', require('./routers/contest/contest'))
 
+            const errorMW = require('./routers/middleware/error')
+            app.use(function(err, req, res, next) {
+                errorMW(err, req, res, next)
+            })
             const port = process.env.BE_PORT || 3000
             app.listen(port, () => {
                 logger.log(`server listening on ${port}`)
