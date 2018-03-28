@@ -21,11 +21,11 @@ const store = new Vuex.Store({
     setContest (state, contest) {
       state.contest = contest;
     },
-    setFeedbackOk (state, message) {
-      state.feedback = {type: 'ok', message};
+    setFeedbackOk (state, data) {
+      state.feedback = utils.getFeedback(data, 'ok');
     },
-    setFeedbackError (state, message) {
-      state.feedback = {type: 'ko', message};
+    setFeedbackError (state, data) {
+      state.feedback = utils.getFeedback(data, 'ko');
     },
     removeFeedback (state, message) {
       state.feedback = null;

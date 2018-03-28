@@ -28,3 +28,15 @@ export function getApiErrorMessage(error) {
 
   return 'api.errors.generic';
 }
+
+export function getFeedback(data, type = 'ok') {
+  let message = '';
+  let args = null;
+  if(typeof data === 'string') {
+    message = data;
+  } else {
+    message = data.message;
+    args = data.args;
+  }
+  return {message, args, type};
+}

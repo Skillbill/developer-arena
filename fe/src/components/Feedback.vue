@@ -1,7 +1,12 @@
 <template>
   <div class="feedback-message" v-if="message" v-on:click="removeFeedback">
     <p class="feedback" :class="type">
-      {{$t(message)}}
+      <template v-if="$te(message)">
+        {{$t(message, args)}}
+      </template>
+      <template v-else>
+        {{message}}
+      </template>
       <button v-on:click="removeFeedback">{{$t('close')}}</button>
     </p>
   </div>
@@ -15,6 +20,9 @@ export default {
     },
     type() {
       return this.$store.state.feedback && this.$store.state.feedback.type;
+    },
+    args() {
+      return this.$store.state.feedback && this.$store.state.feedback.args;
     }
   },
   methods: {
