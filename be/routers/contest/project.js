@@ -17,7 +17,7 @@ router.get('/', getProjectByQuery)
 router.post('/', mw.validateFile.image, mw.validateFile.deliverable, prepareProject, submitProject)
 
 router.get('/:projectId', getProjectById)
-router.put('/:projectId', prepareProject, updateProject)
+router.put('/:projectId', mw.validateFile.image, mw.validateFile.deliverable, prepareProject, updateProject)
 router.get('/:projectId/image', getImage)
 router.get('/:projectId/deliverable', getDeliverable)
 router.put('/:projectId/vote', voteProject)
@@ -156,14 +156,14 @@ function submitProject(req, res) {
         if (!newProject.title || !newProject.description) {
             return missingParam(res)
         }
-        if (!newProject.repoURL && !newProject.deliverable) {
-            return missingParam(res, 'repoURL and deliverable')
+        if (!newProject.deliverable) {
+            return missingParam(res, 'deliverable')
         }
         newProject.submitted = newProject.updated
         persistence.submitProject(newProject).then(project => {
             res.status(lk.http.created).send({project: project})
         }).catch(err => {
-            if (err === lk.error.alreadyExists) {
+            if (err.name && err.name === 'SequelizeUniqueConstraintError') {
                 return res.status(lk.http.preconditionFailed).send({error: 'user already submitted a project for this contest'})
             }
             logger.error(err)
@@ -232,9 +232,6 @@ function voteProject(req, res) {
         persistence.voteProject(project, uid).then(() => {
             res.status(lk.http.ok).send()
         }).catch(err => {
-            if (err === lk.error.alreadyExists) {
-                return res.status(lk.http.preconditionFailed).send({error: 'already voted for this project'})
-            }
             logger.error(err)
             res.status(lk.http.internalError).send({error: err})
         })

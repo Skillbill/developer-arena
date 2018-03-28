@@ -11,9 +11,6 @@ module.exports = {
         unprocessableEntity: 422,
         internalError: 500
     },
-    error: {
-        alreadyExists: 'ALREADY_EXISTS'
-    },
     contest: {
         state: {
             draft: 'DRAFT',
