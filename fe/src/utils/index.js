@@ -21,11 +21,9 @@ export function getDefaultHeaders({auth} = {}) {
 export function getApiErrorMessage(error) {
   if(!error.response) {
     return 'api.errors.network';
-  } else if(error.response.data.error) {
-    // TODO get message based on server error code
-    return error.response.data.error;
+  } else if(error.response.data && error.response.data.error && error.response.data.error.msg) {
+    return error.response.data.error.msg;
   }
-
   return 'api.errors.generic';
 }
 
