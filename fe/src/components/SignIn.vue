@@ -56,13 +56,13 @@
                 </form>
               </transition>
               <ul class="no-list-style">
-                <li v-if="signInSection !== 'passwordLost'">
+                <li v-if="signInSection !== 'passwordLost'" key="pwd-lost-link">
                   <a v-on:click.prevent="switchToPasswordLost()" href="#">{{ $t('passwordLost') }}</a>
                 </li>
-                <li v-if="signInSection !== 'signIn'">
+                <li v-if="signInSection !== 'signIn'" key="sign-in-link">
                   <a v-on:click.prevent="switchToSignIn()" href="#">{{ $t('signInEmail') }}</a>
                 </li>
-                <li v-if="signInSection !== 'signUp'">
+                <li v-if="signInSection !== 'signUp'" key="sign-up-link">
                   <a v-on:click.prevent="switchToSignUp()" href="#">{{$t('signUp')}}</a>
                 </li>
               </ul>
