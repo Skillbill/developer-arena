@@ -425,6 +425,30 @@ ol.no-list-style {
   margin: 0.7rem 0;
 }
 
+.social-buttons button {
+  background-position: 1rem center;
+  background-size: 1rem;
+  background-repeat: no-repeat;
+  text-align: left;
+  padding-left: 3rem;
+}
+
+.social-buttons .facebook {
+  background-image: url("social-icons/facebook_buttn.svg");
+}
+
+.social-buttons .twitter {
+  background-image: url("social-icons/twitter_buttn.svg");
+}
+
+.social-buttons .google {
+  background-image: url("social-icons/google_buttn.svg");
+}
+
+.social-buttons .github {
+  background-image: url("social-icons/github_buttn.svg");
+}
+
 /* progressbar */
 
 div.progressbar {
