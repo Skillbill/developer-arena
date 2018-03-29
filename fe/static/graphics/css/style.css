@@ -219,6 +219,12 @@ div.progress::after {
   text-align: right;
 }
 
+ul.no-list-style,
+ol.no-list-style {
+  list-style: none;
+  padding-left: 0;
+}
+
 /*** molecules ***/
 
 /* main-info */
@@ -414,9 +420,9 @@ div.progress::after {
 
 .social-buttons {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  grid-template-columns: 1fr;
   grid-gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin: 0.7rem 0;
 }
 
 /* progressbar */
@@ -444,6 +450,29 @@ div.progressbar span.bar {
   background-color: #fa6603;
   height: 20%;
   bottom: 0;
+}
+
+/* buttons */
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+.buttons button {
+  margin: 0 0.2rem;
+}
+
+.buttons button:first-child {
+  margin-left: 0rem;
+}
+
+.buttons button:last-child {
+  margin-right: 0rem;
+}
+
+.buttons.end {
+  justify-content: flex-end;
 }
 
 
@@ -603,6 +632,38 @@ main.project section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
   grid-gap: 1rem;
+}
+
+/* sign-in */
+
+main.sign-in .sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-gap: 1rem;
+}
+
+main.sign-in section.email {
+  position: relative;
+}
+
+/** vue amonations **/
+
+/* fade */
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+/* switch-form */
+
+.switch-form-enter, .switch-form-leave-to {
+  transition: all 0.2s ease-out;
+  transform: scale(0);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 @media screen and (max-width: 799px) {

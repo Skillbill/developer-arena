@@ -11,7 +11,7 @@
               <label for="project-description">{{$t('project.description')}} *</label>
               <textarea type="text" name="description" id="project-description" required rows="5" v-model="description"></textarea>
               <label for="project-repository">{{$t('project.repo')}}</label>
-              <input type="url" name="repoURL" id="project-repository" placeholder="https://github.com/yourname/yourproject">
+              <input type="url" name="repoURL" id="project-repository" placeholder="https://github.com/yourname/yourproject" v-model="repoURL">
               <label for="project-thumbnail">{{$t('project.thumb')}}</label>
               <input type="file" name="image" id="project-thumbnail">
               <label for="project-file">{{$t('project.file')}} {{edit? '' : '*'}}</label>
@@ -45,6 +45,7 @@ export default {
       edit: false,
       title: null,
       description: null,
+      repoURL: null,
       uploading: false,
       progress: 0
     }
@@ -61,6 +62,7 @@ export default {
         if(this.$store.state.project) {
           this.title = this.$store.state.project.title;
           this.description = this.$store.state.project.description;
+          this.repoURL = this.$store.state.project.repoURL;
         }
         this.loading = false;
       })

@@ -5,48 +5,70 @@
         <div class="progress"></div>
       </template>
       <template v-else>
-        <h2 v-if="signInSection === 'signIn'">{{$t('signIn')}}</h2>
-        <h2 v-else-if="signInSection === 'passwordLost'">{{$t('resetPassword')}}</h2>
-        <h2 v-else>{{$t('signUp')}}</h2>
-        <div v-if="!user">
-          <div class="social-buttons">
-            <button class="github" v-on:click="signIn('GithubAuthProvider')">GitHub</button>
-            <button class="twitter" v-on:click="signIn('TwitterAuthProvider')">Twitter</button>
-            <button class="google" v-on:click="signIn('GoogleAuthProvider', ['https://www.googleapis.com/auth/userinfo.email'])">Google</button>
-            <button class="facebook" v-on:click="signIn('FacebookAuthProvider')">Facebook</button>
+        <template v-if="!user">
+          <h2>{{$t('signIn')}}</h2>
+          <div class="sections">
+            <section class="social">
+              <div class="social-buttons">
+                <button class="github" v-on:click="signIn('GithubAuthProvider')">GitHub</button>
+                <button class="twitter" v-on:click="signIn('TwitterAuthProvider')">Twitter</button>
+                <button class="google" v-on:click="signIn('GoogleAuthProvider', ['https://www.googleapis.com/auth/userinfo.email'])">Google</button>
+                <button class="facebook" v-on:click="signIn('FacebookAuthProvider')">Facebook</button>
+              </div>
+            </section>
+            <section class="email">
+              <transition name="switch-form">
+                <form v-if="signInSection === 'signIn'" v-on:submit="signIn('email')" key="sign-in-form">
+                  <fieldset>
+                    <legend>{{$t('signInEmail')}}</legend>
+                    <label for="login-email">{{$t('email')}}</label>
+                    <input type="email" id="login-email" v-model="email" required>
+                    <label for="login-password">{{$t('password')}}</label>
+                    <input type="password" id="login-password" v-model="password" required>
+                    <div class="buttons end">
+                      <button type="submit">{{ $t('submit') }}</button>
+                    </div>
+                  </fieldset>
+                </form>
+                <form v-if="signInSection === 'passwordLost'" v-on:submit="resetPassword" key="pwd-lost-form">
+                  <fieldset>
+                    <legend>{{$t('resetPassword')}}</legend>
+                    <label for="login-email">{{$t('email')}}</label>
+                    <input type="email" id="login-email" v-model="email" required>
+                    <div class="buttons end">
+                      <button type="submit">{{ $t('submit') }}</button>
+                    </div>
+                  </fieldset>
+                </form>
+                <form v-if="signInSection === 'signUp'" v-on:submit="signUp" key="sign-up-form">
+                  <fieldset>
+                    <legend>{{$t('signUp')}}</legend>
+                    <label for="signup-email">{{$t('email')}}</label>
+                    <input type="email" id="signup-email" v-model="email" required>
+                    <label for="signup-password">{{$t('password')}}</label>
+                    <input type="password" id="signup-password" v-model="password" required>
+                    <label for="signup-password-confirm">{{$t('passwordConfirm')}}</label>
+                    <input type="password" id="signup-password-confirm" v-model="passwordConfirm" required>
+                    <div class="buttons end">
+                      <button type="submit">{{ $t('submit') }}</button>
+                    </div>
+                  </fieldset>
+                </form>
+              </transition>
+              <ul class="no-list-style">
+                <li v-if="signInSection !== 'passwordLost'">
+                  <a v-on:click.prevent="switchToPasswordLost()" href="#">{{ $t('passwordLost') }}</a>
+                </li>
+                <li v-if="signInSection !== 'signIn'">
+                  <a v-on:click.prevent="switchToSignIn()" href="#">{{ $t('signInEmail') }}</a>
+                </li>
+                <li v-if="signInSection !== 'signUp'">
+                  <a v-on:click.prevent="switchToSignUp()" href="#">{{$t('signUp')}}</a>
+                </li>
+              </ul>
+            </section>
           </div>
-          <form v-if="signInSection === 'signIn'" v-on:submit="signIn('email')">
-            <fieldset>
-              <label for="login-email">{{$t('email')}}</label>
-              <input type="email" id="login-email" v-model="email" required><br>
-              <label for="login-password">{{$t('password')}}</label>
-              <input type="password" id="login-password" v-model="password" required><br>
-              <button>{{ $t('submit') }}</button>
-              <a class="small-right" v-on:click.prevent="switchToPasswordLost()" href="#">{{ $t('passwordLost') }}</a>
-            </fieldset>
-          </form>
-          <form v-else-if="signInSection === 'passwordLost'" v-on:submit="resetPassword">
-            <fieldset>
-              <label for="login-email">{{$t('email')}}</label>
-              <input type="email" id="login-email" v-model="email" required><br>
-              <button>{{ $t('submit') }}</button>
-              <a class="small-right" v-on:click.prevent="switchToSignIn()" href="#">{{ $t('back') }}</a>
-            </fieldset>
-          </form>
-          <form v-else v-on:submit="signUp">
-            <fieldset>
-              <label for="signup-email">{{$t('email')}}</label>
-              <input type="email" id="signup-email" v-model="email" required><br>
-              <label for="signup-password">{{$t('password')}}</label>
-              <input type="password" id="signup-password" v-model="password" required><br>
-              <label for="signup-password-confirm">{{$t('passwordConfirm')}}</label>
-              <input type="password" id="signup-password-confirm" v-model="passwordConfirm" required><br>
-              <button>{{ $t('submit') }}</button>
-            </fieldset>
-          </form>
-          <button v-if="signInSection !== 'signUp'" v-on:click="switchToSignUp()">{{$t('signUp')}}</button>
-          <button v-else v-on:click="switchToSignIn()">{{$t('signIn')}}</button>
-        </div>
+        </template>
         <div v-else>
           <p v-if="providerPassword && !emailVerified">{{$t('signedInAsAndVerifyEmail', {name: user.displayName || user.email})}}</p>
           <p v-else>{{$t('signedInAs', {name: user.displayName || user.email})}}</p>
@@ -55,14 +77,6 @@
     </section>
   </main>
 </template>
-
-<style scoped>
-  .small-right {
-    cursor: pointer;
-    float: right;
-    font-size: 80%;
-  }
-</style>
 
 <script>
 import firebase from 'firebase'
@@ -143,11 +157,14 @@ export default {
       });
     },
     resetPassword () {
+      this.loading = true;
       firebase.auth().sendPasswordResetEmail(this.email, {url: document.location.href}).then(() => {
         this.$store.commit('setFeedbackOk', 'resetEmailSent');
+        this.loading = false;
       }).catch(error => {
         console.error(error, error.message);
         showFirebaseErroMessage.apply(this, [error]);
+        this.loading = false;
       });
     },
     signUp () {
