@@ -9,4 +9,5 @@ module.exports = {
     title: {type: Sequelize.STRING, field: 'title'},
     description: {type: Sequelize.STRING, field: 'description'},
     repoURL: {type: Sequelize.STRING, field: 'repo_url'},
+    video: {type: Sequelize.STRING, field: 'video'}
 }

@@ -122,10 +122,9 @@ function prepareProject(req, res, next) {
         userId: req.user.uid,
         updated: new Date(),
         title: req.body.title,
-        description: req.body.description
-    }
-    if (req.body.repoURL) {
-        req.project.repoURL = req.body.repoURL
+        description: req.body.description,
+        repoURL: req.body.repoURL || null,
+        video: req.body.video || null
     }
     if (req.files) {
         if (req.files.deliverable) {

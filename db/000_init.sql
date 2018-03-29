@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS project (
        title varchar(50) NOT NULL,
        description text NOT NULL,
        repo_url varchar(100),
+       video varchar(64),
        UNIQUE(contest_id, user_id)
 );
 
