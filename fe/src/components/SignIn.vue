@@ -120,8 +120,12 @@ export default {
       if(error.email && error.code === 'auth/account-exists-with-different-credential') {
         firebase.auth().fetchProvidersForEmail(error.email).then(providers => {
           if(providers[0] && providers[0] !== 'password') {
-            let args = {provider: providers[0], email: error.email};
-            this.$store.commit('setFeedbackError', {message: 'proceedWithProvider', args});
+            if (providers[0] === 'google.com') {
+              this.signIn('GoogleAuthProvider');
+            } else {
+              let args = {provider: providers[0], email: error.email};
+              this.$store.commit('setFeedbackError', {message: 'proceedWithProvider', args});
+            }
           } else {
             showFirebaseErroMessage.apply(this, [error]);
           }
