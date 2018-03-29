@@ -10,6 +10,8 @@
               <input type="text" name="title" id="project-name" required v-model="title" maxlength="50">
               <label for="project-description">{{$t('project.description')}} *</label>
               <textarea type="text" name="description" id="project-description" required rows="5" v-model="description"></textarea>
+              <label for="project-video">{{$t('project.video')}}</label>
+              <input type="url" name="video" id="project-video" placeholder="https://youtu.be/Lo2qQmj0_h4" v-model="video" maxlength="50">
               <label for="project-repository">{{$t('project.repo')}}</label>
               <input type="url" name="repoURL" id="project-repository" placeholder="https://github.com/yourname/yourproject" v-model="repoURL">
               <label for="project-thumbnail">{{$t('project.thumb')}}</label>
@@ -45,6 +47,7 @@ export default {
       edit: false,
       title: null,
       description: null,
+      video: null,
       repoURL: null,
       uploading: false,
       progress: 0
@@ -63,6 +66,7 @@ export default {
           this.title = this.$store.state.project.title;
           this.description = this.$store.state.project.description;
           this.repoURL = this.$store.state.project.repoURL;
+          this.video = this.$store.state.project.video;
         }
         this.loading = false;
       })
