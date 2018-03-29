@@ -36,7 +36,7 @@
 
 <script>
 import ProgressBar from '@/components/ProgressBar'
-import {getYoutubeVideoKey} from 'shared-utils'
+import {getYoutubeVideoKey} from '@/utils'
 
 export default {
   components: {

@@ -38,3 +38,15 @@ export function getFeedback(data, type = 'ok') {
   }
   return {message, args, type};
 }
+
+export function getYoutubeVideoKey (url) {
+  const youtubeRegExpr = /^https:\/\/(?:youtu\.be\/|(?:www\.)?youtube\.com\/watch\?v=)(\w*)/;
+  let videoKey = null;
+  if(url) {
+    let match = url.match(youtubeRegExpr);
+    if(match && match.length === 2) {
+      videoKey = match[1];
+    }
+  }
+  return videoKey;
+}
