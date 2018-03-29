@@ -2,6 +2,7 @@ const lk = require('../../lib/lookups')
 const libContest = require('../../lib/contest')
 const persistence = require('../../lib/persistence')
 const logger = require('../../lib/logger')
+const error = require('../../lib/error')
 const express = require('express')
 const router = express.Router({mergeParams: true})
 
@@ -25,30 +26,29 @@ const pubfmt = (contest) => {
     return obj
 }
 
-function getContestList(req, res) {
+function getContestList(req, res, next) {
     const isAdmin = false
     persistence.getAllContests().then(lst => {
         res.status(lk.http.ok).send({
             contests: isAdmin? lst : lst.filter(contest => contest.state != lk.contest.state.draft).map(pubfmt)
         })
     }).catch(err => {
-        logger.error(err)
-        res.status(lk.http.internalError).send({error: err})
+        next(error.new(error.internal, {cause: err}))
     })
 }
 
-function getContest(req, res) {
+function getContest(req, res, next) {
     const isAdmin = false
     const id = req.params.contestId;
+
     ((id == 'last') ? persistence.getLastContest(req.language) : persistence.getContestById(id))
         .then(contest => {
             if (!contest || !isAdmin && contest.state == lk.contest.state.draft) {
-                return res.status(lk.http.notFound).send({error: 'contest not found'})
+                return next(error.contestNotFound)
             }
             res.status(lk.http.ok).send({contest: pubfmt(contest)})
         }).catch(err => {
-            logger.error(err)
-            res.status(lk.http.internalError).send({error: err})
+            next(error.new(error.internal, {cause: err}))
         })
 }
 

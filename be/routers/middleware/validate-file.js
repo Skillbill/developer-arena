@@ -1,4 +1,4 @@
-const lk = require('../../lib/lookups')
+const error = require('../../lib/error')
 
 const Image = {
     kind: 'image',
@@ -22,19 +22,19 @@ const Deliverable = {
 
 const fileSize = (file) => file.data.length
 
-const validate = (obj, req, res, next) => {
-    if (!req.files || !req.files[obj.kind]) {
+const validate = (file, req, res, next) => {
+    if (!req.files || !req.files[file.kind]) {
         return next()
     }
-    if (fileSize(req.files[obj.kind]) > obj.maxAllowedSize) {
-        return res.status(lk.http.unprocessableEntity).send({error: `${obj.kind} too big`})
+    if (fileSize(req.files[file.kind]) > file.maxAllowedSize) {
+        return next(error.new(error.fileTooBig, {file: file.kind}))
     }
-    const {name, mimetype} = req.files[obj.kind]
+    const {name, mimetype} = req.files[file.kind]
     if (!name) {
-        return res.status(lk.http.unprocessableEntity).send({error: `no file name specified for ${obj.kind}`})
+        return next(error.new(error.fileNoName, {file: file.kind}))
     }
-    if (!obj.allowedTypes.includes(mimetype)) {
-        return res.status(lk.http.unsupportedType).send({error: `type ${mimetype} for ${obj.kind} is not supported`})
+    if (!file.allowedTypes.includes(mimetype)) {
+        return next(error.new(error.fileInvalidType, {type: mimetype, file: file.kind}))
     }
     next()
 }
