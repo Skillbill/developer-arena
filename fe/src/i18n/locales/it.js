@@ -27,6 +27,11 @@ module.exports = {
     'auth-operation-not-supported-in-this-environment': 'Operazione non supportata in questo ambiente',
     'auth-timeout': 'Timeout'
   },
+  siteRules: {
+    0: 'Non parlate mai di sda contest',
+    1: 'Non DOVETE PARLARE MAI DI SDA CONTEST',
+    2: 'Se qualcuno grida "bug", finisce la memoria o il programma si blocca, il contest è terminato'
+   },
   contestBanner: {
     contest: 'Il Contest',
     presentation: 'comincierà tra',

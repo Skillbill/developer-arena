@@ -5,6 +5,7 @@ import Home from '@/components/Home'
 import SignIn from '@/components/SignIn'
 import SubmitEntry from '@/components/SubmitEntry'
 import Projects from '@/components/Projects'
+import Rules from '@/components/Rules'
 
 Vue.use(Router)
 
@@ -32,6 +33,11 @@ let router = new Router({
       path: '/projects',
       name: 'Projects',
       component: Projects
+    },
+    {
+      path: '/rules',
+      name: 'Rules',
+      component: Rules
     }
   ]
 })
