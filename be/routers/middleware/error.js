@@ -6,11 +6,12 @@ const logError = [
     http.internalError
 ]
 
-module.exports = (err, req, res) => { // add next?
-    if (!err) {
+module.exports = (err, req, res) => {
+    if (!err || !err.http) {
+        logger.error('FIXME: invalid err passed to error middleware')
+        logger.error(err)
         logger.trace()
-        logger.error(`FIXME: error "${err}" passed to error middleware`)
-        err = error.internal
+        err = error.new(error.internal, {cause: 'unknown'})
     }
     const log = logError.includes(err.http) ? logger.error : logger.info
     log({error: err})
