@@ -15,7 +15,7 @@
           <router-link to="/projects">{{$t("menu.projects")}}</router-link>
         </li>
         <li>
-          <router-link to="/about">{{$t("menu.about")}}</router-link>
+          <router-link to="/rules">{{$t("menu.rules")}}</router-link>
         </li>
         <li v-if="user">
           <a href="#" v-bind:class="{'user-photo': user && user.photoURL}" v-on:click.prevent="signOut" v-bind:style="{backgroundImage: `url('${user.photoURL}')`}">{{$t("menu.signOut")}}</a>

@@ -4,7 +4,7 @@ module.exports = {
   menu: {
     home: 'Home',
     projects: 'Progetti',
-    about: 'About',
+    rules: 'Regolamento',
     signIn: 'Accedi',
     signOut: 'Esci'
   },
