@@ -42,7 +42,7 @@ scripts/run_be.sh -B
 ```
 cd fe
 npm install
-npm run build
+npm run dev
 ```
 
 ##### docker:
