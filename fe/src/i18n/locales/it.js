@@ -58,7 +58,8 @@ module.exports = {
     editOk: 'Progetto modificato con successo',
     uploading: 'Attendere...',
     requiredFields: 'Campi obbligatori',
-    video: 'Video di anteprima'
+    video: 'Video di anteprima',
+    invalidYoutubeVideo: 'Inserire un video Youtube'
   },
   viewGitHub: 'Vedi su GitHub',
   applyContest: 'Invia il tuo progetto',

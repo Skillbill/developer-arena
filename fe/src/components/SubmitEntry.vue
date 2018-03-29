@@ -36,6 +36,7 @@
 
 <script>
 import ProgressBar from '@/components/ProgressBar'
+import {getYoutubeVideoKey} from 'shared-utils'
 
 export default {
   components: {
@@ -75,6 +76,10 @@ export default {
   methods: {
     submit(event) {
       this.$store.commit('removeFeedback');
+      if(this.video && !getYoutubeVideoKey(this.video)) {
+        this.$store.commit('setFeedbackError', 'project.invalidYoutubeVideo');
+        return;
+      }
       let form = this.$el.querySelector('form');
       let projectFormData = new FormData(form);
       this.uploading = true;
