@@ -1,8 +1,7 @@
 {
 	"info": {
 		"name": "SDA-CONTEST",
-		"_postman_id": "f5071916-a60d-bdea-3585-72ee69f4945c",
-		"description": "",
+		"_postman_id": "bdc9d07e-ae06-d7a5-e825-11efb79b9e46",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -43,7 +42,12 @@
 					"name": "project deliverable",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -70,7 +74,12 @@
 					"name": "project image",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -100,7 +109,8 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "userid"
+								"value": "userid",
+								"description": "fake id"
 							},
 							{
 								"key": "Accept-Language",
@@ -109,6 +119,7 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{adtoken}}",
+								"description": "firebase token",
 								"disabled": true
 							}
 						],
@@ -118,12 +129,14 @@
 								{
 									"key": "title",
 									"value": "my nice little project",
-									"type": "text"
+									"type": "text",
+									"description": "required"
 								},
 								{
 									"key": "description",
 									"value": "medium long description of my little project",
-									"type": "text"
+									"type": "text",
+									"description": "required"
 								},
 								{
 									"key": "repoURL",
@@ -132,9 +145,17 @@
 									"disabled": true
 								},
 								{
+									"key": "video",
+									"value": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
 									"key": "deliverable",
 									"value": "",
-									"type": "file"
+									"type": "file",
+									"description": "required"
 								},
 								{
 									"key": "image",
@@ -166,7 +187,8 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "userid"
+								"value": "userid",
+								"description": "fake id"
 							},
 							{
 								"key": "Accept-Language",
@@ -175,6 +197,7 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{adtoken}}",
+								"description": "firebase token",
 								"disabled": true
 							}
 						],
@@ -184,32 +207,27 @@
 								{
 									"key": "title",
 									"value": "my very nice little project",
-									"description": "",
 									"type": "text"
 								},
 								{
 									"key": "description",
 									"value": "more accurate description",
-									"description": "",
 									"type": "text"
 								},
 								{
 									"key": "repoURL",
 									"value": "github.com/username/little-project",
-									"description": "",
 									"type": "text",
 									"disabled": true
 								},
 								{
 									"key": "deliverable",
 									"value": "",
-									"description": "",
 									"type": "file"
 								},
 								{
 									"key": "image",
 									"value": "",
-									"description": "",
 									"type": "file"
 								}
 							]
@@ -237,7 +255,8 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "userid"
+								"value": "userid",
+								"description": "fake id"
 							},
 							{
 								"key": "Accept-Language",
@@ -246,6 +265,7 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{adtoken}}",
+								"description": "firebase token",
 								"disabled": true
 							}
 						],
