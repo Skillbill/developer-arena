@@ -51,14 +51,14 @@ function getProjectByQuery(req, res, next) {
             }
             res.status(lk.http.ok).send({project: project})
         }).catch(err => {
-            return next(error.new(error.internalError, {cause: err}))
+            return next(error.new(error.internal, {cause: err}))
         })
     } else { // list projects from given contest
         const cmp = req.query ? sortingModes[req.query.sort] : undefined
         persistence.getProjectsByContest(contestId).then(lst => {
             res.status(lk.http.ok).send({projects: cmp ? lst.sort(cmp) : lst})
         }).catch(err => {
-            next(error.new(error.internalError, {cause: err}))
+            next(error.new(error.internal, {cause: err}))
         })
     }
 }
@@ -75,7 +75,7 @@ function getProjectById(req, res, next) {
         }
         res.status(lk.http.ok).send({project: project})
     }).catch(err => {
-        next(error.new(error.internalError, {cause: err}))
+        next(error.new(error.internal, {cause: err}))
     })
 }
 
@@ -95,7 +95,7 @@ function getImage(req, res, next) {
         }
         sendfile(res, project.image)
     }).catch(err => {
-        next(error.new(error.internalError, {cause: err}))
+        next(error.new(error.internal, {cause: err}))
     })
 }
 
@@ -108,7 +108,7 @@ function getDeliverable(req, res, next) {
         }
         sendfile(res, project.deliverable)
     }).catch(err => {
-        next(error.new(error.internalError, {cause: err}))
+        next(error.new(error.internal, {cause: err}))
     })
 }
 
@@ -164,11 +164,11 @@ function submitProject(req, res, next) {
             if (err.name && err.name === 'SequelizeUniqueConstraintError') {
                 next(error.alreadySubmittedProject)
             } else {
-                next(error.new(error.internalError, {cause: err}))
+                next(error.new(error.internal, {cause: err}))
             }
         })
     }).catch(err => {
-        next(error.new(error.internalError, {cause: err}))
+        next(error.new(error.internal, {cause: err}))
     })
 }
 
@@ -199,10 +199,10 @@ function updateProject(req, res, next) {
         persistence.updateProject(projectId, newProject).then(project => {
             res.status(lk.http.ok).send({project: project})
         }).catch(err => {
-            next(error.new(error.internalError, {cause: err}))
+            next(error.new(error.internal, {cause: err}))
         })
     }).catch(err => {
-        next(error.new(error.internalError, {cause: err}))
+        next(error.new(error.internal, {cause: err}))
     })
 }
 
@@ -227,10 +227,10 @@ function voteProject(req, res, next) {
         persistence.voteProject(project, uid).then(() => {
             res.status(lk.http.ok).send()
         }).catch(err => {
-            next(error.new(error.internalError, {cause: err}))
+            next(error.new(error.internal, {cause: err}))
         })
     }).catch(err => {
-        next(error.new(error.internalError, {cause: err}))
+        next(error.new(error.internal, {cause: err}))
     })
 }
 
