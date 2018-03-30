@@ -99,5 +99,5 @@ INSERT INTO "public" . contest_i18n(
     'rules',
     'en',
     '1. Your program will run in the browser ** Chrome ** ‘Official Build’ 64 bit version> = 65
-2. The target computer will be a **VirtualBOX** machine with **8GB of RAM, **4** cpu core, network setting **offline** and a fresh installazion of the operating system **Xubuntu 16.04 LTS 64 bit** (here ... you can download and use the exported VirtualBOX appliance ). Your project will be loaded inside the virtual machine using the sharing folder feature with the VirtualBOX HOST'
+2. The target computer will be a **VirtualBOX** machine with **8GB** of RAM, **4** cpu core, network setting **offline** and a fresh installazion of the operating system **Xubuntu 16.04 LTS 64 bit** (here ... you can download and use the exported VirtualBOX appliance ). Your project will be loaded inside the virtual machine using the sharing folder feature with the VirtualBOX HOST'
 );
