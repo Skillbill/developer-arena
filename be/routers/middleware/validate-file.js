@@ -1,24 +1,8 @@
 const error = require('../../lib/error')
+const limits = require('../../limits')
 
-const Image = {
-    kind: 'image',
-    maxAllowedSize: 2 * 1024 * 1024,
-    allowedTypes: [
-        'image/jpeg',
-        'image/png'
-    ]
-}
-
-const Deliverable = {
-    kind: 'deliverable',
-    maxAllowedSize: 32 * 1024 * 1024,
-    allowedTypes: [
-        'application/gzip',
-        'application/x-tar',
-        'application/x-bzip2',
-        'application/zip'
-    ]
-}
+const Image = Object.assign({}, limits.image, {kind: 'image'})
+const Deliverable = Object.assign({}, limits.deliverable, {kind: 'deliverable'})
 
 const fileSize = (file) => file.data.length
 
