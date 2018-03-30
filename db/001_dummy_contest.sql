@@ -4,8 +4,8 @@ INSERT INTO "public" . contest(
        end_voting,
        state
 ) VALUES(
-  '2018-04-25',
   '2018-04-22',
+  '2018-04-29',
   '2018-05-13',
   'ACTIVE'
 );
@@ -31,7 +31,16 @@ INSERT INTO "public" . contest_i18n(
     1,
     'description',
     'en',
-    'Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis **nostrud** exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+    'The theme of this competition is the development of an animated and / or interactive  **HTML5** application inspired by the **Marvel** world, more specifically for the new upcoming movie **“Avengers Infinity War”**.
+Following some ideas :
+
+- an animation inspired by the movie scenes using the original characters
+- a visualization of a awesome genetic algorithm that pilots the IronMan\'s bullets
+- a transformation of Banner into HULK based on the speed of mouse clicks
+- take all the gems of Infinity by playing a rhythm game
+
+but ideas can be so many so the limit is only your imagination.
+You can use any web technique.'
 );
 
 INSERT INTO "public" . contest_i18n(
@@ -55,13 +64,16 @@ INSERT INTO "public" . contest_i18n(
     1,
     'description',
     'it',
-    'Il tema di questa gara è lo sviluppo di un programma HTML5 animato e/o interattivo ispirato al mondo **Marvel** più specificatamente al nuovo film in arrivo “Avengers Infinity War”. Per esempio potrai sviluppare una animazione con i personaggi Marvel, la visualizzazione di un algoritmo genetico per pilotare i proiettili sparati da Iron Man, la trasformazione di Banner in HULK basata sulla velocità dei click del mouse, prendere tutte le gemme dell’Infinito giocando un rhythm game… le idee possono essere davvero tante e il limite è quindi solo la tua immaginazione.
-Potrai usare qualsiasi tecnica web.
+    'Il tema di questa gara è lo sviluppo di un programma **HTML5** animato e/o interattivo ispirato al mondo **Marvel** più specificatamente al nuovo film in arrivo **“Avengers Infinity War”**.
+Ecco alcuni esempi :
 
-Il tuo programma verrà aperto nel browser Chrome ‘Official Build’ 64 bit versione >= 65 in una macchina virtuale avente 8GB di RAM, 4 core, impostazione di rete offline e con sistema operativo Xubuntu appena installato (qui… c’è export VirtualBox della macchina) .
-Solo i primi 15 classificati nella votazione online che partirà il 23/04/2018 potranno presentare dal vivo i loro progetti nell’evento che avverrà il 14/05/2018 e verranno giudicati da una giuria di **tecnici esperti**. A fine evento i primi tre classificati vinceranno dei premi !
-Per maggiori dettagli leggi il regolamento generale che trovi qui...
-'
+ - una animazione ispirata al film con i vari personaggi
+ - la visualizzazione di un algoritmo genetico per pilotare i proiettili sparati da Iron Man
+ - la trasformazione di Banner in HULK basata sulla velocità dei click del mouse
+ - prendere tutte le gemme dell’Infinito giocando un rhythm game
+
+le idee possono essere davvero tante e il limite è quindi solo la tua immaginazione.
+Potrai usare qualsiasi tecnica web.'
 );
 
 INSERT INTO "public" . contest_i18n(
@@ -73,10 +85,8 @@ INSERT INTO "public" . contest_i18n(
     1,
     'rules',
     'it',
-    '1. Regola numero 1.
-2. Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa labore accusamus commodi sequi natus obcaecati odio deleniti praesentium sed quam, modi pariatur soluta nihil autem nisi numquam ea animi iure.
-3. Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa labore accusamus commodi sequi natus obcaecati odio deleniti praesentium sed quam, modi pariatur soluta nihil autem nisi numquam ea animi iure.
-'
+    '1. Il tuo programma verrà aperto nel browser **Chrome** ‘Official Build’ 64 bit versione >= 65
+2. Il browser sarà ospitato in una macchina **VirtualBOX** avente **8GB** di RAM, **4** core cpu, impostazione di rete **offline** e con sistema operativo**Xubuntu 16.04 LTS 64 bit** appena installato (qui… c’è export VirtualBox della macchina). I file del tuo progetto verranno caricati con la condivisione delle cartelle verso il sitema VirtualBOX HOST'
 );
 
 INSERT INTO "public" . contest_i18n(
@@ -88,8 +98,6 @@ INSERT INTO "public" . contest_i18n(
     1,
     'rules',
     'en',
-    '1. Rule number one.
-2. Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa labore accusamus commodi sequi natus obcaecati odio deleniti praesentium sed quam, modi pariatur soluta nihil autem nisi numquam ea animi iure.
-3. Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa labore accusamus commodi sequi natus obcaecati odio deleniti praesentium sed quam, modi pariatur soluta nihil autem nisi numquam ea animi iure.
-'
+    '1. Your program will run in the browser ** Chrome ** ‘Official Build’ 64 bit version> = 65
+2. The target computer will be a **VirtualBOX** machine with **8GB of RAM, **4** cpu core, network setting **offline** and a fresh installazion of the operating system **Xubuntu 16.04 LTS 64 bit** (here ... you can download and use the exported VirtualBOX appliance ). Your project will be loaded inside the virtual machine using the sharing folder feature with the VirtualBOX HOST'
 );
