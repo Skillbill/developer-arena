@@ -1,7 +1,8 @@
 {
 	"info": {
 		"name": "SDA-CONTEST",
-		"_postman_id": "bdc9d07e-ae06-d7a5-e825-11efb79b9e46",
+		"_postman_id": "18341980-ab11-e505-dfd4-877a8ed8a068",
+		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -504,6 +505,28 @@
 						"{{version}}",
 						"contest",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "limits",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/{{version}}/limits",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{version}}",
+						"limits"
 					]
 				}
 			},

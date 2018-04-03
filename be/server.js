@@ -31,6 +31,7 @@ require('./config').init()
 
             const mainRouter = express.Router()
             app.use('/1.0', mainRouter)
+            mainRouter.use('/limits', require('./routers/limits'))
             mainRouter.use('/contest', require('./routers/contest/contest'))
 
             const errorMW = require('./routers/middleware/error')
