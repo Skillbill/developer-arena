@@ -28,10 +28,10 @@ module.exports = {
     'auth-timeout': 'Timeout'
   },
   siteRules: {
-    0: 'Potrai sempre lavorare al tuo progetto ma la sottomissione sarà possibile dopo la data di **partenza** del **Contest**',
+    0: 'Potrai sempre lavorare al tuo progetto ma la sottomissione (e l\'aggiornamento) sarà possibile dopo la data di **partenza** del **Contest**',
     1: 'Dopo la **partenza** del **Contest** potrai sottomettere le tue modifiche per due settimane fino all\'inizio della fase di **votazione**',
     2: 'La fase di **votazione** dura due settimane e alla fine i progetti saranno **classificati** a seconda dei **like** che avranno ricevuto',
-    3: 'I primi **15 progetti** della classifica potranno partecipare all\'evento pubblico',
+    3: 'Gli autori dei primi **15 progetti** della classifica verranno invitati a partecipare all\'evento pubblico del Contest',
     4: 'Ogni partecipante avrà **30 minuti** di tempo per presentare il proprio progetto',
     5: 'Una giuria composta da **tre persone** voterà il tuo progetto: ogni **giurato** potrà dare un voto da **1 a 10**. Il voto non sarà sindacabile in nessun modo',
     6: 'I **primi tre** progetti vincitori rimarranno in evidenza nel sito SDA Contest'
