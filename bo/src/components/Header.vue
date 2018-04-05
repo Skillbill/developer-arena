@@ -1,14 +1,23 @@
 <template>
-  <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-    <h5 class="my-0 mr-md-auto font-weight-normal">SDA Constest Back Office</h5>
-    <nav class="my-2 my-md-0 mr-md-3">
-      <router-link class="p-2 text-dark" v-if="user" to="/edit-dates">Dates</router-link>
-      <router-link class="p-2 text-dark" v-if="user" to="/contests">Contests</router-link>
-      <span class="p-2 text-muted" v-if="user">{{user.displayName}}</span>
-    </nav>
-    <button type="button" class="btn btn-primary" v-if="!user" v-on:click="signIn">Sign in</button>
-    <button type="button" class="btn btn-outline-danger" v-if="user" v-on:click="signOut">Sign out</button>
-  </div>
+  <nav class="navbar navbar-expand-lg navbar-light mb-2" style="background-color: #e3f2fd;">
+    <router-link class="navbar-brand" to='/'>SDA Contest Back Office</router-link>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" v-if="user">
+          <router-link class="nav-link" to="/edit-dates">Dates</router-link>
+        </li>
+        <li class="nav-item" v-if="user">
+          <router-link class="nav-link" to="/contests">Contests</router-link>
+        </li>
+      </ul>
+      <span class="pr-2 navbar-text" v-if="user">{{user.displayName}}</span>
+      <button type="button" class="btn btn-primary" v-if="!user" v-on:click="signIn">Sign in</button>
+      <button type="button" class="btn btn-outline-danger" v-if="user" v-on:click="signOut">Sign out</button>
+    </div>
+  </nav>
 </template>
 
 <script>
@@ -25,14 +34,18 @@ export default {
     signIn () {
       var provider = new firebase.auth.GithubAuthProvider()
       firebase.auth().signInWithRedirect(provider)
+      firebase.auth().getRedirectResult().then(this.onSignIn).catch(this.onError)
     },
     signOut () {
-      firebase.auth().signOut().then(this.onSignOut, this.onError)
+      firebase.auth().signOut().then(this.onSignOut).catch(this.onError)
       this.$store.commit('setUser', null)
     },
     onSignOut () {
       console.log('onSignOut')
       this.$router.push('/')
+    },
+    onSignIn (result) {
+      console.log('onSignIn: ', result.user.displayName)
     },
     onError () {
       console.error('onError')
