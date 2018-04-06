@@ -224,6 +224,10 @@ div.progress::after {
   text-align: right;
 }
 
+.text-align-center {
+  text-align: center;
+}
+
 ul.no-list-style,
 ol.no-list-style {
   list-style: none;

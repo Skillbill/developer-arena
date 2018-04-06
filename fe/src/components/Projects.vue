@@ -2,11 +2,15 @@
   <main class="projects">
     <section>
       <div v-show="!loading">
-        <ul>
+        <ul v-if="projects && projects.length > 0">
           <li v-for="item in projects" :key="item.id">
             <ProjectCard :project="item"/>
           </li>
         </ul>
+        <div class="card" v-else>
+          <p v-if="contest.state === 'PRESENTATION'" class="text-align-center">{{$t('contest.notStarted')}} {{$d(new Date(contest.endPresentation), 'short')}}</p>
+          <p v-else class="text-align-center">{{$t('contest.noProjects')}}</p>
+        </div>
       </div>
       <div class="progress" v-show="loading"></div>
     </section>
@@ -28,6 +32,9 @@ export default {
   computed: {
     projects() {
       return this.$store.state.projects;
+    },
+    contest() {
+      return this.$store.state.contest;
     }
   },
   created() {

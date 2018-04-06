@@ -96,5 +96,9 @@ module.exports = {
   proceedWithProvider: 'Hai già effettuato l\'accesso con {email}, usa {provider} per accedere.',
   vote: 'Voto',
   votes: 'Voti',
-  sendVote: 'Vota il progetto'
+  sendVote: 'Vota il progetto',
+  contest: {
+    notStarted: 'Il contest non è ancora partito. Accedi alla sezione "progetti" dopo il',
+    noProjects: 'Non ci sono ancora progetti da vedere'
+  }
 }

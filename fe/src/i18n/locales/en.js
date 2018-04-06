@@ -96,5 +96,9 @@ module.exports = {
   proceedWithProvider: 'The email {email} was already used, please use {provider} to access',
   vote: 'Vote',
   votes: 'Votes',
-  sendVote: 'Vote the project'
+  sendVote: 'Vote the project',
+  contest: {
+    notStarted: 'The contest is still closed. Come back here after',
+    noProjects: 'There are still no projects to see'
+  }
 }

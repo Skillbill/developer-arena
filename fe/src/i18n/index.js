@@ -7,9 +7,44 @@ const messages = {
   en: require('./locales/en'),
   it: require('./locales/it')
 }
+
+const dateTimeFormats = {
+  'en': {
+    short: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric'
+    },
+    long: {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      weekday: 'short',
+      hour: 'numeric',
+      minute: 'numeric'
+    }
+  },
+  'it': {
+    short: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric'
+    },
+    long: {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      weekday: 'short',
+      hour: 'numeric',
+      minute: 'numeric'
+    }
+  }
+}
+
 const i18n = new VueI18n({
   locale: 'en',
-  messages
+  messages,
+  dateTimeFormats
 })
 
 let language = localStorage.getItem('language');
