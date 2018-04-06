@@ -39,14 +39,14 @@ export function getFeedback(data, type = 'ok') {
   return {message, args, type};
 }
 
-export function getYoutubeVideoKey (url) {
-  const youtubeRegExpr = /^https:\/\/(?:youtu\.be\/|(?:www\.)?youtube\.com\/watch\?v=)(\w*)/;
-  let videoKey = null;
-  if(url) {
-    let match = url.match(youtubeRegExpr);
-    if(match && match.length === 2) {
-      videoKey = match[1];
-    }
-  }
-  return videoKey;
+export function getTypesString(mimeTypesArray) {
+  let types = mimeTypesArray.map(t => {
+    let splitted = t.split('/');
+    return splitted.length > 0 ? splitted[1] : splitted[0];
+  });
+  return types.join(', ');
+}
+
+export function getFileSizeString(bytesNumber) {
+  return Math.floor(bytesNumber / 1024 / 1024) + 'MB';
 }
