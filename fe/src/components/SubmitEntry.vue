@@ -91,7 +91,6 @@ export default {
 
       if(this.video && this.$store.state.limits && this.$store.state.limits.video) {
         let youtubeRegExpr = new RegExp(this.$store.state.limits.video.acceptedRegex);
-        window.youtubeRegExpr = youtubeRegExpr;
         let match = this.video.match(youtubeRegExpr);
         if(!match || match.length < 2) {
           this.$store.commit('setFeedbackError', 'project.invalidYoutubeVideo');
