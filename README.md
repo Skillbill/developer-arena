@@ -6,8 +6,6 @@
 
 [![docker required](https://img.shields.io/badge/docker-required-green.svg)](https://www.docker.com/)
 
-
-
 ```
 scripts/demo.sh
 ```
@@ -28,6 +26,9 @@ scripts/run_db.sh -B
 #### api server:
 
 ##### dev mode:
+
+[![nodejs required](https://img.shields.io/badge/nodejs-required-green.svg)](https://nodejs.org/)
+
 ```
 cd be
 npm install
@@ -46,6 +47,9 @@ scripts/run_be.sh -B
 ## frontend
 
 #### dev mode:
+
+[![nodejs required](https://img.shields.io/badge/nodejs-required-green.svg)](https://nodejs.org/)
+
 ```
 cd fe
 npm install
