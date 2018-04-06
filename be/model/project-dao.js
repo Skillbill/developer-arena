@@ -15,17 +15,14 @@ const getFullTable = (includes) => {
     const table = sql.getProjectTable()
     const fileTable = sql.getFileTable()
     const voteTable = sql.getVoteTable()
-    table.hasOne(fileTable, {as: 'deliverable', foreignKey: model.file.projectId})
+    table.hasMany(fileTable, {as: 'files', foreignKey: model.file.projectId})
     table.hasMany(voteTable, {as: 'votes', foreignKey: model.file.projectId})
     includes.push(...[
         {
             model: fileTable,
             required: false,
-            as: 'deliverable',
-            attributes: [model.file.name.field],
-            where: {
-                kind: fileKind.deliverable
-            }
+            as: 'files',
+            attributes: [model.file.name.field, model.file.kind.field],
         },
         {
             model: voteTable,
