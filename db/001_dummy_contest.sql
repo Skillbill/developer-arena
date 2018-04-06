@@ -86,7 +86,7 @@ INSERT INTO "public" . contest_i18n(
     'rules',
     'it',
     '1. Il tuo programma verrà aperto nel browser **Chrome** ‘Official Build’ 64 bit versione >= 65
-2. Il browser sarà ospitato in una macchina **VirtualBOX** avente **8GB** di RAM, **4** core cpu, impostazione di rete **offline** e con sistema operativo**Xubuntu 16.04 LTS 64 bit** appena installato (qui… c’è export VirtualBox della macchina). I file del tuo progetto verranno caricati con la condivisione delle cartelle verso il sitema VirtualBOX HOST'
+2. Il browser sarà ospitato in una macchina **VirtualBOX** avente **8GB** di RAM, **4** core cpu, impostazione di rete **offline** e con sistema operativo**Xubuntu 16.04 LTS 64 bit** appena installato ([qui](https://s3-eu-west-1.amazonaws.com/sda-static/xubuntu.ova) c’è export VirtualBox della macchina). I file del tuo progetto verranno caricati con la condivisione delle cartelle verso il sitema VirtualBOX HOST'
 );
 
 INSERT INTO "public" . contest_i18n(
@@ -99,5 +99,5 @@ INSERT INTO "public" . contest_i18n(
     'rules',
     'en',
     '1. Your program will run in the browser ** Chrome ** ‘Official Build’ 64 bit version> = 65
-2. The target computer will be a **VirtualBOX** machine with **8GB** of RAM, **4** cpu core, network setting **offline** and a fresh installazion of the operating system **Xubuntu 16.04 LTS 64 bit** (here ... you can download and use the exported VirtualBOX appliance ). Your project will be loaded inside the virtual machine using the sharing folder feature with the VirtualBOX HOST'
+2. The target computer will be a **VirtualBOX** machine with **8GB** of RAM, **4** cpu core, network setting **offline** and a fresh installazion of the operating system **Xubuntu 16.04 LTS 64 bit** ([here](https://s3-eu-west-1.amazonaws.com/sda-static/xubuntu.ova) you can download and use the exported VirtualBOX appliance ). Your project will be loaded inside the virtual machine using the sharing folder feature with the VirtualBOX HOST'
 );
