@@ -1,4 +1,4 @@
-const lk = require('./lookups')
+const http = require('./http')
 const logger = require('./logger')
 const firebase = require('firebase-admin')
 
@@ -7,7 +7,7 @@ let fakeAuthEnabled = false
 const firebase_auth_mw = (req, res, next) => {
     const token = extractToken(req)
     if (!token) {
-        return res.status(lk.http.unauthorized).send({error: 'unauthorized'})
+        return res.status(http.unauthorized).send({error: 'unauthorized'})
     }
     firebase.auth().verifyIdToken(token).then(decodedToken => {
         req.user = {
@@ -16,19 +16,19 @@ const firebase_auth_mw = (req, res, next) => {
             email: decodedToken.email
         }
         if (req.user.provider == 'password' && !decodedToken.email_verified) {
-            return res.status(lk.http.unauthorized).send({error: 'email not verified'})
+            return res.status(http.unauthorized).send({error: 'email not verified'})
         }
         next()
     }).catch(err => {
         logger.error(`cannot decode token: ${err.message}}`)
-        res.status(lk.http.badRequest).send({error: `wrong token: ${err.message}`})
+        res.status(http.badRequest).send({error: `wrong token: ${err.message}`})
     })
 }
 
 const fake_auth_mw = (req, res, next) => {
     const uid = req.get('Authorization')
     if (!uid) {
-        return res.status(lk.http.unauthorized).send({error: 'missing authorization header'})
+        return res.status(http.unauthorized).send({error: 'missing authorization header'})
     }
     req.user = {
         uid: uid

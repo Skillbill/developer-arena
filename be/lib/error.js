@@ -1,4 +1,4 @@
-const http = require('./lookups').http
+const http = require('./http')
 
 module.exports = {
     new: (err, args) => Object.assign({}, err, { args: args }),
@@ -56,7 +56,7 @@ module.exports = {
     uidMismatch: {
         http: http.unauthorized,
         code: 1011,
-        msg: 'uidMismatch'
+        msg: 'uid_mismatch'
     },
     fileTooBig: {
         http: http.unprocessableEntity,
@@ -72,5 +72,15 @@ module.exports = {
         http: http.unprocessableEntity,
         code: 1014,
         msg: 'file_invalid_type'
-    }
+    },
+    invalidParam: {
+        http: http.unprocessableEntity,
+        code: 1015,
+        msg: 'invalid_param'
+    },
+    notAdmin: {
+        http: http.unauthorized,
+        code: 1101,
+        msg: 'not_admin'
+    },
 }

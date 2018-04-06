@@ -1,9 +1,10 @@
 const contestDao = require('../model/contest-dao')
 const projectDao = require('../model/project-dao')
 
-const getAllContests = () => contestDao.findAllContests()
-const getContestById = (id) => contestDao.findContestById(id)
-const getLastContest = (language) => contestDao.findLastContest(language)
+const getAllContests = () => contestDao.findAll()
+const getContestById = (id) => contestDao.findById(id)
+const getLastContest = (language) => contestDao.findLast(language)
+const updateContest = (id, data) => contestDao.update(id, data)
 
 const getProjectById = (id) => projectDao.findById(id)
 const getProjectByUser = (contestId, userId) => projectDao.findByUser(contestId, userId)
@@ -18,6 +19,7 @@ module.exports = {
     getAllContests,
     getLastContest,
     getContestById,
+    updateContest,
 
     getProjectById,
     getProjectsByContest,
