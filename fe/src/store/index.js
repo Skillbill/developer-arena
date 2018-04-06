@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     feedback: null,
     language: null,
     project: null,
+    projects: null,
     limits: null
   },
   mutations: {
@@ -103,14 +104,40 @@ const store = new Vuex.Store({
         commit('setFeedbackError', utils.getApiErrorMessage(e));
       })
     },
-    async loadProjects ({commit}) {
+    async loadContest ({commit}, {contestId}) {
       const headers = await utils.getDefaultHeaders();
       return axios({
         method: 'get',
-        url: utils.getApiUrl(`/contest/${this.state.contest.id}/project`),
+        url: utils.getApiUrl(`/contest/${contestId}`),
+        headers
+      }).then(response => {
+        commit('setContest', response.data.contest);
+      }).catch(e => {
+        console.error(e);
+        commit('setFeedbackError', utils.getApiErrorMessage(e));
+      })
+    },
+    async loadProjects ({commit}, {contestId}) {
+      const headers = await utils.getDefaultHeaders();
+      return axios({
+        method: 'get',
+        url: utils.getApiUrl(`/contest/${contestId}/project`),
         headers
       }).then(response => {
         commit('setProjects', response.data.projects);
+      }).catch(e => {
+        console.error(e);
+        commit('setFeedbackError', utils.getApiErrorMessage(e));
+      })
+    },
+    async loadProject ({commit}, {contestId, projectId}) {
+      const headers = await utils.getDefaultHeaders();
+      return axios({
+        method: 'get',
+        url: utils.getApiUrl(`/contest/${contestId}/project/${projectId}`),
+        headers
+      }).then(response => {
+        commit('setProject', response.data.project);
       }).catch(e => {
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));

@@ -5,6 +5,7 @@ import Home from '@/components/Home'
 import SignIn from '@/components/SignIn'
 import SubmitEntry from '@/components/SubmitEntry'
 import Projects from '@/components/Projects'
+import Project from '@/components/Project'
 import Rules from '@/components/Rules'
 
 Vue.use(Router)
@@ -30,9 +31,14 @@ let router = new Router({
       }
     },
     {
-      path: '/projects',
+      path: '/contest/:contestId/projects',
       name: 'Projects',
       component: Projects
+    },
+    {
+      path: '/contest/:contestId/project/:projectId',
+      name: 'Project',
+      component: Project
     },
     {
       path: '/rules',

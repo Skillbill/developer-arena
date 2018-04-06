@@ -11,8 +11,8 @@
         <li>
           <router-link to="/">{{$t("menu.home")}}</router-link>
         </li>
-        <li>
-          <router-link to="/projects">{{$t("menu.projects")}}</router-link>
+        <li v-if="contest">
+          <router-link :to="{name: 'Projects', params: {contestId: contest.id}}">{{$t("menu.projects")}}</router-link>
         </li>
         <li>
           <router-link to="/rules">{{$t("menu.rules")}}</router-link>
@@ -36,6 +36,9 @@ export default {
   computed: {
     user() {
       return this.$store.state.user;
+    },
+    contest() {
+      return this.$store.state.contest;
     }
   },
   methods: {

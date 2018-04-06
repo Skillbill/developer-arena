@@ -50,3 +50,7 @@ export function getTypesString(mimeTypesArray) {
 export function getFileSizeString(bytesNumber) {
   return Math.floor(bytesNumber / 1024 / 1024) + 'MB';
 }
+
+export function getProjectImageUrl(project) {
+  return configuration.serverAddress + '/' + configuration.apiVersion + `/contest/${project.contestId}/project/${project.id}/image/`;
+}

@@ -103,7 +103,7 @@ export default {
       const isValidFile = (field) => {
         let valid = true;
         let file = projectFormData.get(field);
-        if(file && this.$store.state.limits && this.$store.state.limits[field]) {
+        if(file && file.name && file.size && file.type && this.$store.state.limits && this.$store.state.limits[field]) {
           if(this.$store.state.limits[field].allowedTypes.indexOf(file.type) === -1) {
             this.$store.commit('setFeedbackError', {message: `project.${field}InvalidType`, args: {types: utils.getTypesString(this.$store.state.limits[field].allowedTypes)}});
             valid = false;

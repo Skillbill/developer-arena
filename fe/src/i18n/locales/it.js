@@ -93,5 +93,8 @@ module.exports = {
   submit: 'Invia',
   close: 'Chiudi',
   rules: 'Regolamento',
-  proceedWithProvider: 'Hai già effettuato l\'accesso con {email}, usa {provider} per accedere.'
+  proceedWithProvider: 'Hai già effettuato l\'accesso con {email}, usa {provider} per accedere.',
+  vote: 'Voto',
+  votes: 'Voti',
+  sendVote: 'Vota il progetto'
 }

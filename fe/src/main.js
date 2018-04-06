@@ -31,3 +31,6 @@ registerDirectives();
 
 store.dispatch('chooseLanguage', localStorage.getItem('language'));
 store.dispatch('loadLimits');
+store.dispatch('loadLastContest');
+
+window.store = store;
