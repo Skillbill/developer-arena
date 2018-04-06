@@ -1,6 +1,11 @@
 # sda-contest
 
 ## Run the demo:
+
+[![docker required](https://img.shields.io/badge/docker-required-green.svg)](https://www.docker.com/)
+
+
+
 ```
 scripts/demo.sh
 ```
