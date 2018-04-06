@@ -23,7 +23,7 @@
           </template>
         </h2>
         <div class="contest" v-if="contest">
-          <h2>{{contest.title}}</h2>
+          <h2 v-md:strip.p="contest.title"></h2>
           <div v-md="contest.description"></div>
           <h3>{{$t('rules')}}</h3>
           <div v-md="contest.rules"></div>
