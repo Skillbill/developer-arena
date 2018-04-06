@@ -3,7 +3,7 @@
     <h3>
       <router-link :to="{name: 'Project', params: {projectId: project.id}}">{{project.title}}</router-link>
     </h3>
-    <router-link :to="{name: 'Project', params: {projectId: project.id}}">
+    <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="hasImage">
       <img :src="imageUrl" alt="Project thumbnail">
     </router-link>
     <div class="info">
@@ -36,6 +36,14 @@ export default {
         if(match && match.length === 2) {
           return match[1];
         }
+      }
+    },
+    hasImage() {
+      if(this.project && this.project.files && this.project.files.length) {
+        let images = this.project.files.filter((file) => {
+          return file.kind === 'IMAGE';
+        });
+        return images.length > 0;
       }
     }
   }
