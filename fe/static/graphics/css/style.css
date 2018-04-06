@@ -89,6 +89,11 @@ strong {
   clip-path: polygon(2% 2%, 98% 7%, 100% 99%, 4% 95%);
 }
 
+.v-md strong {
+  white-space: initial;
+  clip-path: initial;
+}
+
 main p {
   margin-bottom: 0.8rem;
 }
