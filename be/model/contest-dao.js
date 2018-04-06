@@ -1,17 +1,17 @@
-const lk = require('../lib/lookups')
+const libContest = require('../lib/contest')
 const sql = require('../lib/sql')
 
 const Op = require('sequelize').Op
 
-const findAllContests = () => {
+const findAll = () => {
     return sql.getContestTable().findAll({})
 }
 
-const findContestById = (id) => {
+const findById = (id) => {
     return sql.getContestTable().findById(id)
 }
 
-const findLastContest = (language) => {
+const findLast = (language) => {
     const contestTable = sql.getContestTable()
     const contestI18nTable = sql.getContestI18nTable()
     contestTable.hasMany(contestI18nTable, { as: 'i18n', foreignKey: 'entityId' })
@@ -19,7 +19,7 @@ const findLastContest = (language) => {
         order: [['id', 'DESC']],
         where:{
             state: {
-                [Op.ne]: lk.contest.state.draft
+                [Op.ne]: libContest.state.draft
             }
         },
         include: [{
@@ -34,8 +34,27 @@ const findLastContest = (language) => {
     })
 }
 
+const update = (id, data) => {
+    return new Promise((resolve, reject) => {
+        sql.getContestTable().update(data, {
+            fields: [
+                'endPresentation',
+                'endApplying',
+                'endVoting',
+                'state'
+            ],
+            returning: true,
+            limit: 1,
+            where: {
+                id: id
+            }
+        }).then(row => resolve(row[1][0])).catch(reject)
+    })
+}
+
 module.exports = {
-    findAllContests,
-    findContestById,
-    findLastContest
+    findAll,
+    findById,
+    findLast,
+    update
 }

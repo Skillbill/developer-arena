@@ -15,8 +15,11 @@
     "missing_parameter": "Missing required parameter: {{parameter}}",
     "already_submitted_project": "You've already submitted a project for this contest",
     "already_voted_project": "You've already voted for this project",
-    "uidMismatch": "You're not the owner of this project",
+    "uid_mismatch": "You're not the owner of this project",
     "file_too_big": "invalid {{file}}: too big",
     "file_no_name": "{{file}} must have a filename",
-    "file_invalid_type": "{{type}} for {{file}} is not supported"
+    "file_invalid_type": "{{type}} for {{file}} is not supported",
+    "not_admin": "You need admin privileges to access this resource",
+    "invalid_state": "invalid state: {{state}}",
+    "invalid_dates": "invalid dates"
 }

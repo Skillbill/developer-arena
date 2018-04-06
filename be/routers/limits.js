@@ -1,4 +1,4 @@
-const http = require('../lib/lookups').http
+const http = require('../lib/http')
 const limits = require('../limits')
 const express = require('express')
 const router = express.Router({mergeParams: true})

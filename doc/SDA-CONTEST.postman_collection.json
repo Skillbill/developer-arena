@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "SDA-CONTEST",
-		"_postman_id": "18341980-ab11-e505-dfd4-877a8ed8a068",
+		"_postman_id": "6bb1696e-b229-a9a6-cb9a-e0d64af75719",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -148,7 +148,6 @@
 								{
 									"key": "video",
 									"value": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-									"description": "",
 									"type": "text",
 									"disabled": true
 								},
@@ -426,6 +425,49 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "edit contest",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "userid",
+						"description": "fake id"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "{{language}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adtoken}}",
+						"description": "firebase token (admin)",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"endPresentation\": \"2018-04-21T22:00:00.000Z\",\n        \"endApplying\": \"2018-04-28T22:00:00.000Z\",\n        \"endVoting\": \"2018-05-12T22:00:00.000Z\",\n        \"state\": \"DRAFT\",\n        \"title\": \"Contest Title\"\n}\n"
+				},
+				"url": {
+					"raw": "{{host}}/{{version}}/contest/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{version}}",
+						"contest",
+						"1"
+					]
+				}
+			},
+			"response": []
 		},
 		{
 			"name": "contest list",

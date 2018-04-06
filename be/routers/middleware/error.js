@@ -1,5 +1,5 @@
 const logger = require('../../lib/logger')
-const http = require('../../lib/lookups').http
+const http = require('../../lib/http')
 const error = require('../../lib/error')
 
 const logError = [
@@ -10,7 +10,6 @@ module.exports = (err, req, res) => {
     if (!err || !err.http) {
         logger.error('FIXME: invalid err passed to error middleware')
         logger.error(err)
-        logger.trace()
         err = error.new(error.internal, {cause: 'unknown'})
     }
     const log = logError.includes(err.http) ? logger.error : logger.info
