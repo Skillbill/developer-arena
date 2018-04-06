@@ -68,7 +68,11 @@ module.exports = {
     uploading: 'Uploading...',
     requiredFields: 'Required fileds',
     video: 'Video preview',
-    invalidYoutubeVideo: 'Please link a Youtube video'
+    invalidYoutubeVideo: 'Please link a Youtube video',
+    imageInvalidType: 'Invalid image (please send {types})',
+    deliverableInvalidType: 'Invalid file, please send an archive ({types})',
+    imageInvalidSize: 'Image too big, max size: {size}',
+    deliverableInvalidSize: 'File too big, max size: {size}'
   },
   viewGitHub: 'View on GitHub',
   applyContest: 'Submit your project',

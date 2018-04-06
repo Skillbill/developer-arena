@@ -30,3 +30,4 @@ firebase.auth().onAuthStateChanged(user => {
 registerDirectives();
 
 store.dispatch('chooseLanguage', localStorage.getItem('language'));
+store.dispatch('loadLimits');

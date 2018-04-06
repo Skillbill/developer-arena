@@ -15,9 +15,9 @@
               <label for="project-repository">{{$t('project.repo')}}</label>
               <input type="url" name="repoURL" id="project-repository" placeholder="https://github.com/yourname/yourproject" v-model="repoURL">
               <label for="project-thumbnail">{{$t('project.thumb')}}</label>
-              <input type="file" name="image" id="project-thumbnail">
+              <input type="file" name="image" id="project-thumbnail" :accept="acceptedImageTypes">
               <label for="project-file">{{$t('project.file')}} {{edit? '' : '*'}}</label>
-              <input type="file" name="deliverable" id="project-file" :required=!edit>
+              <input type="file" name="deliverable" id="project-file" :required=!edit :accept="acceptedDeliverableTypes">
               <p class="text-align-right">* {{$t('project.requiredFields')}}</p>
             </fieldset>
             <button type="submit">{{$t('project.send')}}</button>
@@ -36,7 +36,7 @@
 
 <script>
 import ProgressBar from '@/components/ProgressBar'
-import {getYoutubeVideoKey} from '@/utils'
+import * as utils from '@/utils'
 
 export default {
   components: {
@@ -57,6 +57,16 @@ export default {
   computed: {
     project () {
       return this.$store.state.project;
+    },
+    acceptedDeliverableTypes() {
+      if(this.$store.state.limits && this.$store.state.limits.deliverable) {
+        return this.$store.state.limits.deliverable.allowedTypes.join(', ');
+      }
+    },
+    acceptedImageTypes() {
+      if(this.$store.state.limits && this.$store.state.limits.image) {
+        return this.$store.state.limits.image.allowedTypes.join(', ');
+      }
     }
   },
   created() {
@@ -76,12 +86,42 @@ export default {
   methods: {
     submit(event) {
       this.$store.commit('removeFeedback');
-      if(this.video && !getYoutubeVideoKey(this.video)) {
-        this.$store.commit('setFeedbackError', 'project.invalidYoutubeVideo');
-        return;
-      }
       let form = this.$el.querySelector('form');
       let projectFormData = new FormData(form);
+
+      if(this.video && this.$store.state.limits && this.$store.state.limits.video) {
+        let youtubeRegExpr = new RegExp(this.$store.state.limits.video.acceptedRegex);
+        window.youtubeRegExpr = youtubeRegExpr;
+        let match = this.video.match(youtubeRegExpr);
+        if(!match || match.length < 2) {
+          this.$store.commit('setFeedbackError', 'project.invalidYoutubeVideo');
+          form.querySelector('[name="video"]').focus();
+          return;
+        }
+      }
+
+      const isValidFile = (field) => {
+        let valid = true;
+        let file = projectFormData.get(field);
+        if(file && this.$store.state.limits && this.$store.state.limits[field]) {
+          if(this.$store.state.limits[field].allowedTypes.indexOf(file.type) === -1) {
+            this.$store.commit('setFeedbackError', {message: `project.${field}InvalidType`, args: {types: utils.getTypesString(this.$store.state.limits[field].allowedTypes)}});
+            valid = false;
+          } else if(file.size > this.$store.state.limits[field].maxAllowedSize) {
+            this.$store.commit('setFeedbackError', {message: `project.${field}InvalidSize`, args: {size: utils.getFileSizeString(this.$store.state.limits[field].maxAllowedSize)}});
+            valid = false;
+          }
+        }
+        if(!valid) {
+          form.querySelector(`[name="${field}"]`).focus();
+        }
+        return valid;
+      }
+
+      if(!isValidFile('image') || !isValidFile('deliverable')) {
+        return;
+      }
+
       this.uploading = true;
       const onUploadProgress = (status) => {
         this.progress = Math.round(status.loaded / status.total * 100);

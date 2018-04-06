@@ -12,7 +12,8 @@ const store = new Vuex.Store({
     contest: null,
     feedback: null,
     language: null,
-    project: null
+    project: null,
+    limits: null
   },
   mutations: {
     setUser (state, user) {
@@ -38,6 +39,9 @@ const store = new Vuex.Store({
     },
     setProjects (state, projects) {
       state.projects = projects;
+    },
+    setLimits (state, limits) {
+      state.limits = limits;
     }
   },
   actions: {
@@ -107,6 +111,19 @@ const store = new Vuex.Store({
         headers
       }).then(response => {
         commit('setProjects', response.data.projects);
+      }).catch(e => {
+        console.error(e);
+        commit('setFeedbackError', utils.getApiErrorMessage(e));
+      })
+    },
+    async loadLimits ({commit}) {
+      const headers = await utils.getDefaultHeaders();
+      return axios({
+        method: 'get',
+        url: utils.getApiUrl(`/limits`),
+        headers
+      }).then(response => {
+        commit('setLimits', response.data.limits);
       }).catch(e => {
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));
