@@ -19,7 +19,7 @@ INSERT INTO "public" . contest_i18n(
     1,
     'title',
     'en',
-    'Avengers WEB application'
+    '**Avengers** WEB application'
 );
 
 INSERT INTO "public" . contest_i18n(
@@ -52,7 +52,7 @@ INSERT INTO "public" . contest_i18n(
     1,
     'title',
     'it',
-    'Applicazione WEB Avengers'
+    'Applicazione WEB **Avengers**'
 );
 
 INSERT INTO "public" . contest_i18n(
