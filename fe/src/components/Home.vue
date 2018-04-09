@@ -7,7 +7,7 @@
           {{$t("contestBanner.contest")}} <strong>#{{contest.id}}</strong>
           <template v-if="contest.state === 'PRESENTATION'">
             {{$t("contestBanner.presentation")}}
-            <Countdown :date="this.contest.endPresentation"></Countdown>
+            <Countdown :date="this.contest.endPresentation" :onEnd="onEndCountdown"></Countdown>
           </template>
           <template v-if="contest.state === 'APPLYING'">
             {{$t("contestBanner.applying")}}
@@ -53,10 +53,7 @@ export default {
     }
   },
   created () {
-    this.loading = true;
-    this.$store.dispatch('loadLastContest').then(() => {
-      this.loading = false;
-    });
+    this.loadContest();
   },
   components: {
     Countdown
@@ -64,6 +61,15 @@ export default {
   methods: {
     applyContest() {
       this.$router.push('submit-entry');
+    },
+    onEndCountdown() {
+      this.loadContest();
+    },
+    loadContest() {
+      this.loading = true;
+      this.$store.dispatch('loadLastContest').then(() => {
+        this.loading = false;
+      });
     }
   }
 }

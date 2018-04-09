@@ -13,6 +13,7 @@ function getTimeRemaining(date) {
   var t = new Date(date).getTime() - new Date().getTime();
   if(t <= 0) {
     return {
+      time: 0,
       days: 0,
       hours: 0,
       hoursAll: 0,
@@ -26,6 +27,7 @@ function getTimeRemaining(date) {
   let hours = hoursAll % 24;
   let days = Math.floor(t / (1000 * 60 * 60 * 24));
   return {
+    time: t,
     days,
     hours,
     hoursAll,
@@ -42,7 +44,7 @@ function pad(n) {
 }
 
 export default {
-  props: ['date'],
+  props: ['date', 'onEnd'],
   data() {
     return {
       interval: null,
@@ -57,6 +59,12 @@ export default {
       this.days = result.days;
       this.showDays = result.days > 1;
       this.countdown = `${pad(this.showDays ? result.hours : result.hoursAll)}:${pad(result.minutes)}:${pad(result.seconds)}`;
+      if(result.time <= 0) {
+        clearInterval(this.interval);
+        if(this.onEnd) {
+          this.onEnd();
+        }
+      }
     };
     calc();
     this.interval = setInterval(() => {
