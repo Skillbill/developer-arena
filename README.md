@@ -1,7 +1,5 @@
 # sda-contest
 
-![license](https://img.shields.io/github/license/mashape/apistatus.svg)
-
 ## Run the demo:
 
 [![docker required](https://img.shields.io/badge/docker-required-green.svg)](https://www.docker.com/)
