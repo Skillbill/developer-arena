@@ -155,6 +155,19 @@ const store = new Vuex.Store({
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));
       })
+    },
+    async voteProject ({commit, dispatch}, {projectId, contestId}) {
+      const headers = await utils.getDefaultHeaders({auth: true});
+      return axios({
+        method: 'put',
+        url: utils.getApiUrl(`/contest/${contestId}/project/${projectId}/vote`),
+        headers
+      }).then(response => {
+        return dispatch('loadProjects', {contestId});
+      }).catch(e => {
+        console.error(e);
+        commit('setFeedbackError', utils.getApiErrorMessage(e));
+      })
     }
   }
 })

@@ -10,7 +10,7 @@
       <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
     </div>
     <div class="description" v-if="showDescription" v-html="project.description.replace(/\n/gi, '<br />')"></div>
-    <button>{{$t('sendVote')}}</button>
+    <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.label)}}</button>
     <div class="video" v-if="showVideo && youtubeVideoCode">
       <YoutubeVideo :code="youtubeVideoCode"/>
     </div>
@@ -22,6 +22,11 @@ import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
   props: ['project', 'show-video', 'show-description'],
+  data() {
+    return {
+      sendingVote: false
+    }
+  },
   components: {
     YoutubeVideo
   },
@@ -45,6 +50,25 @@ export default {
         });
         return images.length > 0;
       }
+    },
+    label() {
+      return this.isVoted ? 'alreadyVoted' : (this.sendingVote ? 'waiting' : 'sendVote')
+    },
+    canVote() {
+      return this.$store.state.user && this.$store.state.contest && this.$store.state.contest.state === 'VOTING';
+    },
+    isVoted() {
+      return this.project.votes.filter(v => {
+        return this.$store.state.user && v.userId === this.$store.state.user.uid;
+      }).length > 0;
+    }
+  },
+  methods: {
+    vote() {
+      this.sendingVote = true;
+      this.$store.dispatch('voteProject', {projectId: this.project.id, contestId: this.$route.params.contestId}).then(() => {
+        this.sendingVote = false;
+      });
     }
   }
 }

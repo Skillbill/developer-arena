@@ -97,6 +97,8 @@ module.exports = {
   vote: 'Vote',
   votes: 'Votes',
   sendVote: 'Vote the project',
+  alreadyVoted: 'Project voted',
+  waiting: 'Please wait...',
   contest: {
     notStarted: 'The contest is still closed. Come back here after',
     noProjects: 'There are still no projects to see'
