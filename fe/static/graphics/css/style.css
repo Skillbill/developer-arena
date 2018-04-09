@@ -147,6 +147,7 @@ form label {
   background-size: 3rem;
   background-position: 2% center;
   color: #fefefe;
+  z-index: 40;
 }
 
 .feedback.ok {
