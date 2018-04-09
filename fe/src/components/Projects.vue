@@ -8,7 +8,7 @@
           </li>
         </ul>
         <div class="card" v-else>
-          <p v-if="contest.state === 'PRESENTATION'" class="text-align-center">{{$t('contest.notStarted')}} {{$d(new Date(contest.endPresentation), 'short')}}</p>
+          <p v-if="contest && contest.state === 'PRESENTATION'" class="text-align-center">{{$t('contest.notStarted')}} {{$d(new Date(contest.endPresentation), 'short')}}</p>
           <p v-else class="text-align-center">{{$t('contest.noProjects')}}</p>
         </div>
       </div>

@@ -28,8 +28,5 @@ module.exports = {
     'semi': 'off',
     'space-before-function-paren': 'off',
     'keyword-spacing': 'off'
-  },
-  "globals": {
-    "configuration": true
   }
 }

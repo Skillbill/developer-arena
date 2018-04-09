@@ -1,4 +1,5 @@
 import store from '../store'
+import configuration from '../../configuration'
 
 export function getApiUrl(path) {
   return configuration.serverAddress + '/' + configuration.apiVersion + path;
@@ -10,7 +11,7 @@ export function getDefaultHeaders({auth} = {}) {
   }
   if(auth && store.state.user) {
     return store.state.user.getIdToken().then(token => {
-      headers['Authorization'] = `Bearer ${token}`;
+      headers['Authorization'] = configuration.firebase.devMode ? token : `Bearer ${token}`;
       return Promise.resolve(headers);
     });
   } else {

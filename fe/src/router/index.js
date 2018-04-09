@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import firebase from 'firebase'
+import store from '../store'
 import Home from '@/components/Home'
 import SignIn from '@/components/SignIn'
 import SubmitEntry from '@/components/SubmitEntry'
@@ -49,7 +49,7 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  const currentUser = firebase.auth().currentUser
+  let currentUser = store.state.user;
   const providerPassword = currentUser && currentUser.providerData[0].providerId === 'password'
   const emailVerified = currentUser && currentUser.emailVerified === true
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)

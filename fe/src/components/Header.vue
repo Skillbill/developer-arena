@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import auth from '../auth'
 
 export default {
   computed: {
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     signOut() {
-      firebase.auth().signOut();
+      auth.signOut();
     }
   }
 }

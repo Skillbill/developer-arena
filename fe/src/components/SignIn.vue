@@ -82,10 +82,14 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import auth from '@/auth'
 import ProviderButton from '@/components/ProviderButton'
 
 function showFirebaseErroMessage(error) {
+  if(auth.isDevMode()) {
+    this.$store.commit('setFeedbackError', error.message);
+    return;
+  }
   let errorMessage = `firebase.${error.code.replace('/', '-')}`;
   if(!this.$i18n.te(errorMessage)) {
     errorMessage = 'firebase.generic-error';
@@ -96,7 +100,7 @@ function showFirebaseErroMessage(error) {
 export default {
   data() {
     return {
-      providers: ['github', 'twitter', 'google', 'facebook'],
+      providers: auth.getEnabledProviders(),
       loading: false,
       email: null,
       password: null,
@@ -120,14 +124,14 @@ export default {
     }
   },
   created () {
-    firebase.auth().getRedirectResult().then(() => {
+    auth.getRedirectResult().then(() => {
       if(this.$route.query.redirect) {
         this.$router.replace(this.$route.query.redirect);
       }
     }).catch((error) => {
       console.error(error, error.message);
       if(error.email && error.code === 'auth/account-exists-with-different-credential') {
-        firebase.auth().fetchProvidersForEmail(error.email).then(providers => {
+        auth.fetchProvidersForEmail(error.email).then(providers => {
           if(providers[0] && providers[0] !== 'password') {
             this.proceedWithProvider = {provider: providers[0], email: error.email};
           } else {
@@ -141,18 +145,17 @@ export default {
   },
   methods: {
     signIn(providerName, scopes = []) {
-      console.log(providerName, scopes)
       let signInFn;
       this.$store.commit('removeFeedback');
       this.loading = true;
       if(providerName === 'email') {
-        signInFn = firebase.auth().signInWithEmailAndPassword(this.email, this.password);
+        signInFn = auth.signInWithEmailAndPassword(this.email, this.password);
       } else {
-        const provider = new firebase.auth[providerName]();
+        const provider = auth.getProvider(providerName);
         scopes.forEach((scope) => {
           provider.addScope(scope);
         });
-        signInFn = firebase.auth().signInWithRedirect(provider);
+        signInFn = auth.signInWithRedirect(provider);
       }
       signInFn.then((result) => {
         this.loading = false;
@@ -167,7 +170,7 @@ export default {
     },
     resetPassword () {
       this.loading = true;
-      firebase.auth().sendPasswordResetEmail(this.email, {url: document.location.href}).then(() => {
+      auth.sendPasswordResetEmail(this.email, {url: document.location.href}).then(() => {
         this.$store.commit('setFeedbackOk', 'resetEmailSent');
         this.loading = false;
       }).catch(error => {
@@ -184,7 +187,7 @@ export default {
         return;
       }
       this.loading = true;
-      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(user => {
+      auth.createUserWithEmailAndPassword(this.email, this.password).then(user => {
         this.$store.commit('setFeedbackOk', 'accountCreated');
         let continueUrl = document.location.href;
         if(this.$route.query.redirect) {

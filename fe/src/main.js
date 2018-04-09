@@ -5,15 +5,14 @@ import App from './App'
 import router from './router'
 import store from './store'
 import i18n from './i18n'
-import firebase from 'firebase'
+import auth from './auth'
 import {register as registerDirectives} from './directives'
+import configuration from '../configuration';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+let app;
 
-firebase.initializeApp(configuration.firebase)
-let app
-firebase.auth().onAuthStateChanged(user => {
-  store.commit('setUser', user);
+function initVueApp() {
   if (!app) {
     /* eslint-disable no-new */
     app = new Vue({
@@ -25,7 +24,13 @@ firebase.auth().onAuthStateChanged(user => {
       store
     })
   }
-})
+}
+
+auth.initializeApp(configuration.firebase);
+auth.onAuthStateChanged(user => {
+  store.commit('setUser', user);
+  initVueApp();
+});
 
 registerDirectives();
 
