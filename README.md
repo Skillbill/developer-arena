@@ -12,7 +12,7 @@ scripts/demo.sh
 
 When you finished, shutdown the containers with:
 ```
-scripts/stopall.sh
+scripts/stop.sh
 ```
 
 ## backend
@@ -20,7 +20,7 @@ scripts/stopall.sh
 ### how to run
 #### database:
 ```
-scripts/run_db.sh -B
+scripts/run.sh -B db
 ````
 
 #### api server:
@@ -37,7 +37,7 @@ node server.js
 
 ##### docker:
 ```
-scripts/run_be.sh -B
+scripts/run.sh -B be
 ```
 
 ### api doc
@@ -58,7 +58,7 @@ npm run dev
 
 ##### docker:
 ```
-scripts/run_fe.sh -B
+scripts/run.sh -B fe
 ```
 
 ## Authentication
