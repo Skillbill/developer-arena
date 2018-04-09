@@ -11,15 +11,17 @@ LIB=`dirname $0`/lib
 root="$LIB/../../"
 
 tag=${TAG:-latest}
-docker_img_ns=${DOCKER_IMG_NS:-skillbillsrl}
-DOCKER_IMG_FE=${DOCKER_IMG_FE:-sda-contest-fe}
-FE_PORT=8080
-DOCKER_IMG_BE=${DOCKER_IMG_BE:-sda-contest-be}
-BE_PORT=3000
-DOCKER_IMG_BO=${DOCKER_IMG_BO:-sda-contest-bo}
-BO_PORT=8080
-DOCKER_IMG_DB=${DOCKER_IMG_DB:-sda-contest-db}
-DB_PORT=5432
+network=${DOCKER_NETWORK:-host}
+namespace=${DOCKER_NAMESPACE:-skillbillsrl}
+img_fe=${DOCKER_IMG_FE:-sda-contest-fe}
+img_be=${DOCKER_IMG_BE:-sda-contest-be}
+img_bo=${DOCKER_IMG_BO:-sda-contest-bo}
+img_db=${DOCKER_IMG_DB:-sda-contest-db}
+
+fe_port=8080
+be_port=3000
+bo_port=8080
+db_port=5432
 
 usage() {
 	echo "usage: $CMD [-B|-P] [-t tag] [-n net] [-l port] [-c file] service"
@@ -36,7 +38,7 @@ Start service with the given settings
     -f			run container in foreground
 
     -t TAG		docker tag (default: $tag)
-    -n NETWORK		docker network (default: docker default)
+    -n NETWORK		docker network (default: $docker_network)
     -c FILE		configuration file (default: none)
     -l PORT		exposed listen port
     -h			print this help end exit
@@ -82,26 +84,25 @@ shift $OPTIND
 svc=$1
 case $svc in
     fe)
-	img=$DOCKER_IMG_FE
+	img=$img_fe
 	bindto=/app/static/configuration.js:ro
-	svclisten=$FE_PORT
+	svclisten=$fe_port
 	;;
     be)
-	img=$DOCKER_IMG_BE
+	img=$img_be
 	bindto=/be/config.json:ro
-	svclisten=$BE_PORT
-
+	svclisten=$be_port
 	;;
     bo)
 	svc=bo
-	img=$DOCKER_IMG_BO
+	img=$img_bo
 	bindto=/app/static/configuration.json:ro
-	svclisten=$BO_PORT
+	svclisten=$bo_port
 	;;
     db)
-	img=$DOCKER_IMG_DB
+	img=$img_db
 	bindto=/var/lib/postgresql/data
-	svclisten=$DB_PORT
+	svclisten=$db_port
 	;;
     '')
 	usage >&2
@@ -111,12 +112,16 @@ case $svc in
 	panic "unknown service: $svc"
 esac
 
+if [ "$listen" ] && [ "$network" == "host" ]; then
+    warn "-l argument is not effective in host mode"
+fi
+
 listen=${listen:-$svclisten}
 
 if [ $build ]; then
 	docker_build -t $img "$root/$svc/" || exit 1
 elif [ $pull ]; then
-        img=${docker_img_ns}/${img}
+        img=${namespace}/${img}
 	docker_pull ${img}:${tag} || exit 1
 fi
 
@@ -140,12 +145,6 @@ else
     cfgpath="(defaults)"
 fi
 
-if [ "$network" ]; then
-    net_cfg="--net $network"
-else
-    network="(docker default)"
-fi
-
 if [ -z "$fg" ]; then
     opts="-d"
 fi
@@ -163,4 +162,4 @@ if [ $svc == db ]; then
     fi
 fi
 
-docker_run ${opts} --name $svc -p ${listen}:${svclisten} ${net_cfg} ${map_cfg} ${env_cfg} ${img}:${tag}
+docker_run ${opts} --net ${network} --name $svc -p ${listen}:${svclisten} ${map_cfg} ${env_cfg} ${img}:${tag}

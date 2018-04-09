@@ -14,8 +14,8 @@ cd $root
 
 msg 'pulling and starting services'
 
-scripts/run.sh -P -n host db
-scripts/run.sh -P -n host be
-scripts/run.sh -P -n host -l 8080 fe
+for svc in db be fe; do
+    scripts/run.sh -P $svc
+done
 
 msg "open demo at http://localhost:8080/"
