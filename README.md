@@ -63,9 +63,17 @@ scripts/run.sh -B fe
 
 ## Authentication
 
+### fake auth middleware (dev mode)
+
+By default, the backend will start in dev mode: any auth-required operation is accepted as long as the client sets the following HTTP header:
+
+```
+Authorization: $userid
+```
+
 ### firebase auth middleware
 
-firebase authentication is implemented in [be/lib/auth.js](be/lib/auth.js); it is automatically enabled at the backend init time if a valid service account key is found in ``be/keys/firebase.json``
+In order to use the firebase authentication system, a service account must be provided in the [configuration file](be/config.json) and `devMode` has to be set to `false`
 
 A client, in order to successfully perform an auth-required operation (like submit a project) must add to the HTTP request the following header:
 
@@ -76,11 +84,3 @@ Authorization: Bearer $token
 where `$token` is a valid token obtained from firebase.
 
 Accounts provisioned by email (that is, without an external provider), must verify their email first.
-
-### fake auth middleware (dev mode)
-
-If no firebase key is provided, the backend will proceed in dev mode: any auth-required operation is accepted as long as the client sets the following HTTP header:
-
-```
-Authorization: $userid
-```
