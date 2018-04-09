@@ -163,7 +163,7 @@ const store = new Vuex.Store({
         url: utils.getApiUrl(`/contest/${contestId}/project/${projectId}/vote`),
         headers
       }).then(response => {
-        return dispatch('loadProjects', {contestId});
+        return Promise.all([dispatch('loadProjects', {contestId}), dispatch('loadProject', {contestId, projectId})]);
       }).catch(e => {
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));
