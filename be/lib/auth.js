@@ -39,23 +39,21 @@ const fake_auth_mw = (req, res, next) => {
 const middleware = (req, res, next) => (fakeAuthEnabled ? fake_auth_mw : firebase_auth_mw)(req, res, next)
 
 const init = (cfg) => {
+    if (cfg.devMode) {
+        logger.warn('firebase is DISABLED: using fake auth middleware instead (dev mode)')
+        fakeAuthEnabled = true
+        return
+    }
     try {
-        const key = require(cfg.keyPath)
-        logger.info(`svc account project: ${key.project_id}`)
-        logger.info(`svc account key: ${key.private_key_id}`)
+        logger.info(`svc account project: ${cfg.serviceAccount.project_id}`)
+        logger.info(`svc account private: ${cfg.serviceAccount.private_key_id}`)
         firebase.initializeApp({
-            credential: firebase.credential.cert(key),
+            credential: firebase.credential.cert(cfg.serviceAccount),
             databaseURL: cfg.databaseURL
         })
     } catch (err) {
-        if (err.code && err.code == 'MODULE_NOT_FOUND') {
-            logger.error(`could not load firebase service account "${cfg.keyPath}"`)
-            logger.warn('firebase is DISABLED: use fake auth middleware instead (dev mode)')
-            fakeAuthEnabled = true
-        } else {
-            logger.error('could not initialize firebase:', JSON.stringify(err))
-            throw 'failed to initialize auth lib'
-        }
+        logger.error('could not initialize firebase:', JSON.stringify(err))
+        throw 'failed to initialize auth lib'
     }
 }
 

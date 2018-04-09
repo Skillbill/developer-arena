@@ -56,5 +56,5 @@ panic() {
 }
 
 vmap() {
-    printf -- '-v %s:%s' "$1" "$2"
+    printf -- '-v %s:%s' "$(realpath "$1")" "$2"
 }

@@ -88,7 +88,7 @@ case $svc in
 	;;
     be)
 	img=$DOCKER_IMG_BE
-	bindto=/be/config.js:ro
+	bindto=/be/config.json:ro
 	svclisten=$BE_PORT
 
 	;;
