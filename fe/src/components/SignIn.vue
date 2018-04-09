@@ -9,11 +9,14 @@
           <h2>{{$t('signIn')}}</h2>
           <div class="sections">
             <section class="social">
+              <div v-if="proceedWithProvider" class="card">
+                <p>{{$t('proceedWithProvider', this.proceedWithProvider)}}</p>
+                <ProviderButton :provider="this.proceedWithProvider.provider" :onProceed="signIn" :label="$t('proceedWithProviderButton', this.proceedWithProvider)"></ProviderButton>
+              </div>
               <div class="social-buttons">
-                <button class="github" v-on:click="signIn('GithubAuthProvider')">GitHub</button>
-                <button class="twitter" v-on:click="signIn('TwitterAuthProvider')">Twitter</button>
-                <button class="google" v-on:click="signIn('GoogleAuthProvider', ['https://www.googleapis.com/auth/userinfo.email'])">Google</button>
-                <button class="facebook" v-on:click="signIn('FacebookAuthProvider')">Facebook</button>
+                <template v-for="provider in providers">
+                  <ProviderButton :provider="provider" :onProceed="signIn" :key="provider"></ProviderButton>
+                </template>
               </div>
             </section>
             <section class="email">
@@ -80,6 +83,7 @@
 
 <script>
 import firebase from 'firebase'
+import ProviderButton from '@/components/ProviderButton'
 
 function showFirebaseErroMessage(error) {
   let errorMessage = `firebase.${error.code.replace('/', '-')}`;
@@ -92,12 +96,17 @@ function showFirebaseErroMessage(error) {
 export default {
   data() {
     return {
+      providers: ['github', 'twitter', 'google', 'facebook'],
       loading: false,
       email: null,
       password: null,
       passwordConfirm: null,
-      signInSection: 'signIn'
+      signInSection: 'signIn',
+      proceedWithProvider: null
     }
+  },
+  components: {
+    ProviderButton
   },
   computed: {
     user() {
@@ -120,8 +129,7 @@ export default {
       if(error.email && error.code === 'auth/account-exists-with-different-credential') {
         firebase.auth().fetchProvidersForEmail(error.email).then(providers => {
           if(providers[0] && providers[0] !== 'password') {
-            let args = {provider: providers[0], email: error.email};
-            this.$store.commit('setFeedbackError', {message: 'proceedWithProvider', args});
+            this.proceedWithProvider = {provider: providers[0], email: error.email};
           } else {
             showFirebaseErroMessage.apply(this, [error]);
           }
@@ -133,6 +141,7 @@ export default {
   },
   methods: {
     signIn(providerName, scopes = []) {
+      console.log(providerName, scopes)
       let signInFn;
       this.$store.commit('removeFeedback');
       this.loading = true;

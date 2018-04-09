@@ -458,7 +458,7 @@ ol.no-list-style {
   margin: 0.7rem 0;
 }
 
-.social-buttons button {
+button.social-button {
   background-position: 1rem center;
   background-size: 1rem;
   background-repeat: no-repeat;
@@ -466,19 +466,19 @@ ol.no-list-style {
   padding-left: 3rem;
 }
 
-.social-buttons .facebook {
+.social-button.facebook {
   background-image: url("social-icons/facebook_buttn.svg");
 }
 
-.social-buttons .twitter {
+.social-button.twitter {
   background-image: url("social-icons/twitter_buttn.svg");
 }
 
-.social-buttons .google {
+.social-button.google {
   background-image: url("social-icons/google_buttn.svg");
 }
 
-.social-buttons .github {
+.social-button.github {
   background-image: url("social-icons/github_buttn.svg");
 }
 
@@ -703,7 +703,11 @@ main.sign-in section.email {
   position: relative;
 }
 
-/** vue amonations **/
+.social .card {
+  height: auto;
+}
+
+/** vue animations **/
 
 /* fade */
 

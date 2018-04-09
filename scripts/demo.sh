@@ -7,17 +7,15 @@ set -efC
 
 CMD=`basename $0`
 LIB=`dirname $0`/lib
-. "$LIB/def.sh"
 . "$LIB/fns.sh"
 
 root="$LIB/../../"
-
 cd $root
 
 msg 'pulling and starting services'
 
-for svc in db be fe; do
-	scripts/run_${svc}.sh -P
-done
+scripts/run.sh -P -n host db
+scripts/run.sh -P -n host be
+scripts/run.sh -P -n host -l 8080 fe
 
-msg "open demo at http://$FE_ADDR/"
+msg "open demo at http://localhost:8080/"

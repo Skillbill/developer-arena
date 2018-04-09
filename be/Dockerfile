@@ -1,7 +1,9 @@
 FROM node:carbon
 
-RUN mkdir /sda-contest
-COPY . /sda-contest/
-RUN cd /sda-contest && npm install
+ENV root /be
 
-CMD ["/usr/local/bin/node", "/sda-contest/server.js"]
+RUN mkdir $root
+COPY . $root/
+RUN cd $root && npm install
+
+CMD "/usr/local/bin/node" "$root/server.js"

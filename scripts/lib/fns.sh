@@ -39,9 +39,7 @@ _print() {
 }
 
 msg() {
-	echo
 	_print "${_bold}  " "  $@"
-	echo
 }
 
 warn() {
@@ -53,30 +51,10 @@ err() {
 }
 
 panic() {
-	err "@"
+	err "$@"
 	exit 1
 }
 
-split_addr() {
-	eval "$2"=`echo $1 | awk -F: '{print $1}'`
-	eval "$3"=`echo $1 | awk -F: '{print $2}'`
-}
-
-portscan() {
-	$netcat -z ${host} ${port} 2>/dev/null
-	case $? in
-		127)    # command not found, ignore test
-			return 0
-			;;
-		*)
-			return $?
-	esac
-}
-
-read_passwd() {
-	echo -n "$1 password: "
-	stty -echo
-	read $2
-	stty echo
-	echo
+vmap() {
+    printf -- '-v %s:%s' "$1" "$2"
 }

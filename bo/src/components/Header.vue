@@ -30,11 +30,15 @@ export default {
       user: 'getUser'
     })
   },
+  created: function () {
+    firebase.auth().getRedirectResult().then(result => {
+      if (result.user) this.onSignIn(result)
+    }).catch(this.onError)
+  },
   methods: {
     signIn () {
       var provider = new firebase.auth.GithubAuthProvider()
       firebase.auth().signInWithRedirect(provider)
-      firebase.auth().getRedirectResult().then(this.onSignIn).catch(this.onError)
     },
     signOut () {
       firebase.auth().signOut().then(this.onSignOut).catch(this.onError)
@@ -47,8 +51,8 @@ export default {
     onSignIn (result) {
       console.log('onSignIn: ', result.user.displayName)
     },
-    onError () {
-      console.error('onError')
+    onError (e) {
+      console.error('onError: ', e)
     }
   }
 }

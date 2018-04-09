@@ -94,6 +94,7 @@ module.exports = {
   close: 'Close',
   rules: 'Rules',
   proceedWithProvider: 'The email {email} was already used, please use {provider} to access',
+  proceedWithProviderButton: 'Proceed with {provider}',
   vote: 'Vote',
   votes: 'Votes',
   sendVote: 'Vote the project',
