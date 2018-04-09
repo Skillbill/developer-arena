@@ -225,7 +225,7 @@ function voteProject(req, res, next) {
             return next(error.alreadyVotedProject)
         }
         persistence.voteProject(project, uid).then(() => {
-            res.status(http.ok).send()
+            res.status(http.noContent).send()
         }).catch(err => {
             next(error.new(error.internal, {cause: err}))
         })
