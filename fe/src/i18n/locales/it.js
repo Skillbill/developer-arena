@@ -94,6 +94,7 @@ module.exports = {
   close: 'Chiudi',
   rules: 'Regolamento',
   proceedWithProvider: 'Hai già effettuato l\'accesso con {email}, usa {provider} per accedere.',
+  proceedWithProviderButton: 'Procedi con {provider}',
   vote: 'Voto',
   votes: 'Voti',
   sendVote: 'Vota il progetto',
