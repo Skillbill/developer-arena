@@ -14,9 +14,8 @@ WORKDIR $TMPDIR
 RUN npm run build
 
 RUN mv dist $APPDIR
-RUN mv dynconfig.js $APPDIR
 RUN rm -rf $TMPDIR
 
 WORKDIR $APPDIR
 
-CMD (node ./dynconfig) && http-server
+CMD http-server
