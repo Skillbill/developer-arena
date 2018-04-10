@@ -1,12 +1,10 @@
 <template>
   <main class="rules">
     <section>
-      <div class="contest">
-        <h2>{{ $t('rules') }}</h2>
-         <ol>
-           <li v-for="(v, k) in rules" :key="k" v-md="v"></li>
-         </ol>
-      </div>
+      <h2>{{ $t('rules') }}</h2>
+      <ol>
+        <li v-for="(v, k) in rules" :key="k" v-md="v"></li>
+      </ol>
     </section>
   </main>
 </template>
