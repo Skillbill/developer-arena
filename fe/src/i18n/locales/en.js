@@ -102,6 +102,7 @@ module.exports = {
   alreadyVoted: 'Project voted',
   waiting: 'Please wait...',
   viewRepo: 'View the repository',
+  contacts: 'Contatti',
   contest: {
     notStarted: 'The contest is still closed. Come back here after',
     noProjects: 'There are still no projects to see'
