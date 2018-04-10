@@ -1,8 +1,7 @@
 {
 	"info": {
 		"name": "SDA-CONTEST",
-		"_postman_id": "6bb1696e-b229-a9a6-cb9a-e0d64af75719",
-		"description": "",
+		"_postman_id": "2fdcac63-b441-0dac-8b9b-1c77c4b950bd",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -432,13 +431,13 @@
 				"method": "PATCH",
 				"header": [
 					{
-						"key": "Authorization",
-						"value": "userid",
-						"description": "fake id"
-					},
-					{
 						"key": "Accept-Language",
 						"value": "{{language}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "admin",
+						"description": "fake id"
 					},
 					{
 						"key": "Authorization",
@@ -453,7 +452,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \"endPresentation\": \"2018-04-21T22:00:00.000Z\",\n        \"endApplying\": \"2018-04-28T22:00:00.000Z\",\n        \"endVoting\": \"2018-05-12T22:00:00.000Z\",\n        \"state\": \"DRAFT\",\n        \"title\": \"Contest Title\"\n}\n"
+					"raw": "{\n        \"endPresentation\": \"2018-04-21T22:00:00.000Z\",\n        \"endApplying\": \"2018-04-28T22:00:00.000Z\",\n        \"endVoting\": \"2018-05-12T22:00:00.000Z\",\n        \"state\": \"DRAFT\"\n}\n"
 				},
 				"url": {
 					"raw": "{{host}}/{{version}}/contest/1",
@@ -477,6 +476,18 @@
 					{
 						"key": "Accept-Language",
 						"value": "{{language}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "admin",
+						"description": "fake id (optional)",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adtoken}}",
+						"description": "firebase token (optional)",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -532,6 +543,18 @@
 					{
 						"key": "Accept-Language",
 						"value": "{{language}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "admin",
+						"description": "fake id (optional)",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adtoken}}",
+						"description": "firebase token (optional)",
+						"disabled": true
 					}
 				],
 				"body": {
