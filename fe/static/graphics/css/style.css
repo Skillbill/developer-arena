@@ -262,7 +262,7 @@ ol.no-list-style {
   margin: 0.5rem 0;
   transform: translateY(-1.3rem);
   margin: 0;
-  padding: 0.8rem 2rem;
+  padding: 0.8rem 2.5rem;
   text-align: center;
   position: relative;
   clip-path: polygon(0 0, 100% 0, 99% 100%, 1% 100%);
