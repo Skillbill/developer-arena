@@ -1,6 +1,7 @@
 <template>
   <div class="card">
     <h3>
+      <strong v-if="position">#{{position}}</strong>
       <router-link :to="{name: 'Project', params: {projectId: project.id}}">{{project.title}}</router-link>
     </h3>
     <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="hasImage">
@@ -21,7 +22,7 @@ import {getProjectImageUrl} from '@/utils'
 import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
-  props: ['project', 'show-video', 'show-description'],
+  props: ['project', 'show-video', 'show-description', 'position'],
   data() {
     return {
       sendingVote: false

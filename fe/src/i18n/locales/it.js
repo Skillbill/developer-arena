@@ -104,5 +104,11 @@ module.exports = {
   contest: {
     notStarted: 'Il contest non è ancora partito. Accedi alla sezione "progetti" dopo il',
     noProjects: 'Non ci sono ancora progetti da vedere'
+  },
+  sorting: {
+    label: 'Ordina per:',
+    rank: 'Classifica',
+    date: 'Data',
+    trend: 'Tendenza'
   }
 }

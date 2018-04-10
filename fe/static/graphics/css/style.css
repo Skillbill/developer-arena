@@ -533,6 +533,39 @@ div.progressbar span.bar {
   justify-content: flex-end;
 }
 
+/* links-list */
+
+.links-list {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  box-shadow: 0 0 0.5rem #c0c0c0;
+  display: inline-block;
+}
+
+.links-list > * {
+  display: inline-block;
+}
+
+.links-list ul {
+  padding: 0;
+  margin: 0;
+}
+
+.links-list li {
+  margin: 0 0.5rem;
+  list-style: none;
+  display: inline-block;
+}
+
+.links-list a {
+  text-decoration: none;
+}
+
+.links-list a.router-link-exact-active {
+  padding: 0.2rem 0.5rem;
+  background: #ffce31;
+  color: #222;
+}
 
 /*** organisms ***/
 
@@ -675,7 +708,7 @@ main.projects {
   width: 100%;
 }
 
-main.projects ul {
+main.projects ul.projects-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
   grid-gap: 1rem;

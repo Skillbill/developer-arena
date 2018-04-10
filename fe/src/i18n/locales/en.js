@@ -104,5 +104,11 @@ module.exports = {
   contest: {
     notStarted: 'The contest is still closed. Come back here after',
     noProjects: 'There are still no projects to see'
+  },
+  sorting: {
+    label: 'Sort by:',
+    rank: 'Rank',
+    date: 'Date',
+    trend: 'Trend'
   }
 }

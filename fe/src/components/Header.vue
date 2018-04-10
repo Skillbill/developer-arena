@@ -12,7 +12,7 @@
           <router-link to="/">{{$t("menu.home")}}</router-link>
         </li>
         <li v-if="contest">
-          <router-link :to="{name: 'Projects', params: {contestId: contest.id}}">{{$t("menu.projects")}}</router-link>
+          <router-link :to="{name: 'Projects', params: {contestId: contest.id}, query: {sort: showContestRanking ? 'rank' : 'trend'}}">{{$t("menu.projects")}}</router-link>
         </li>
         <li>
           <router-link to="/rules">{{$t("menu.rules")}}</router-link>
@@ -39,6 +39,9 @@ export default {
     },
     contest() {
       return this.$store.state.contest;
+    },
+    showContestRanking() {
+      return this.$store.getters.showContestRanking;
     }
   },
   methods: {

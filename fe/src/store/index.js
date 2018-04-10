@@ -49,6 +49,11 @@ const store = new Vuex.Store({
       state.limits = limits;
     }
   },
+  getters: {
+    showContestRanking: state => {
+      return state.contest && (state.contest.state === 'CLOSED' || state.contest.state === 'PAST');
+    }
+  },
   actions: {
     loadConfiguration({commit}) {
       return axios({
@@ -132,11 +137,12 @@ const store = new Vuex.Store({
         commit('setFeedbackError', utils.getApiErrorMessage(e));
       })
     },
-    async loadProjects ({commit}, {contestId}) {
+    async loadProjects ({commit}, {contestId, sort}) {
       const headers = await utils.getDefaultHeaders();
       return axios({
         method: 'get',
         url: utils.getApiUrl(`/contest/${contestId}/project`),
+        params: {sort},
         headers
       }).then(response => {
         commit('setProjects', response.data.projects);

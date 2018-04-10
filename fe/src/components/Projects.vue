@@ -2,9 +2,17 @@
   <main class="projects">
     <section>
       <div v-show="!loading">
-        <ul v-if="projects && projects.length > 0">
-          <li v-for="item in projects" :key="item.id">
-            <ProjectCard :project="item"/>
+        <div class="links-list" v-if="contest" role="navigation">
+          <span>{{$t('sorting.label')}}</span>
+          <ul>
+            <li v-for="item in sorting" :key="item">
+              <router-link :to="{name: 'Projects', params: {contestId: contest.id}, query: {sort: item}}">{{$t(`sorting.${item}`)}}</router-link>
+            </li>
+          </ul>
+        </div>
+        <ul class="projects-list" v-if="projects && projects.length > 0">
+          <li v-for="(item, index) in projects" :key="item.id">
+            <ProjectCard :project="item" :position="isRanking ? index + 1 : null"/>
           </li>
         </ul>
         <div class="card" v-else>
@@ -35,15 +43,34 @@ export default {
     },
     contest() {
       return this.$store.state.contest;
+    },
+    isRanking() {
+      return this.$route.query.sort === 'rank';
+    },
+    sorting() {
+      let sorting = ['trend', 'date'];
+      if(this.$store.getters.showContestRanking) {
+        sorting = ['rank'].concat(sorting);
+      }
+      return sorting;
     }
   },
   created() {
-    this.loading = true;
-    this.$store.dispatch('loadContest', {contestId: this.$route.params.contestId}).then(() => {
-      return this.$store.dispatch('loadProjects', {contestId: this.$route.params.contestId});
-    }).then(() => {
-      this.loading = false;
-    });
+    this.loadProjects();
+  },
+  beforeRouteUpdate (to, from, next) {
+    next();
+    this.loadProjects();
+  },
+  methods: {
+    loadProjects() {
+      this.loading = true;
+      this.$store.dispatch('loadContest', {contestId: this.$route.params.contestId}).then(() => {
+        return this.$store.dispatch('loadProjects', {contestId: this.$route.params.contestId, sort: this.$route.query.sort});
+      }).then(() => {
+        this.loading = false;
+      });
+    }
   }
 }
 </script>
