@@ -124,9 +124,11 @@ export default {
     }
   },
   created () {
-    auth.getRedirectResult().then(() => {
+    auth.getRedirectResult().then((result) => {
       if(this.$route.query.redirect) {
         this.$router.replace(this.$route.query.redirect);
+      } else if (result && result.user) {
+        this.$router.replace('/');
       }
     }).catch((error) => {
       console.error(error, error.message);

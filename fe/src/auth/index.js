@@ -74,7 +74,7 @@ const auth = {
   },
   getRedirectResult() {
     if(this.isDevMode()) {
-      return Promise.resolve();
+      return Promise.resolve({user: getSessionUser()});
     } else {
       return firebase.auth().getRedirectResult();
     }
