@@ -11,6 +11,8 @@
           </template>
           <template v-if="contest.state === 'APPLYING'">
             {{$t("contestBanner.applying")}}
+            <Countdown :date="this.contest.endApplying" :onEnd="onEndCountdown"></Countdown>
+            {{$t("contestBanner.applyingRemaining")}}
           </template>
           <template v-if="contest.state === 'VOTING'">
             {{$t("contestBanner.voting")}}

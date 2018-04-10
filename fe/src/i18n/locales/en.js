@@ -40,6 +40,7 @@ module.exports = {
     contest: 'Contest',
     presentation: 'starts in',
     applying: 'is live!',
+    applyingRemaining: 'remaining time for project submission',
     voting: 'is in voting phase',
     closed: 'is closed',
     past: 'is end'

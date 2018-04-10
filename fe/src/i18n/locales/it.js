@@ -40,6 +40,7 @@ module.exports = {
     contest: 'Il Contest',
     presentation: 'comincierà tra',
     applying: 'è iniziato!',
+    applyingRemaining: 'rimanenti per l\'invio del progetto',
     voting: 'è in votazione',
     closed: 'è chiuso',
     past: 'è terminato'
