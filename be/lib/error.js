@@ -83,4 +83,24 @@ module.exports = {
         code: 1101,
         msg: 'not_admin'
     },
+    emailNotVerified: {
+        http: http.unauthorized,
+        code: 1201,
+        msg: 'email_not_verified'
+    },
+    tokenMissing: {
+        http: http.unauthorized,
+        code: 1202,
+        msg: 'token_missing'
+    },
+    tokenError: {
+        http: http.badRequest,
+        code: 1203,
+        msg: 'token_error'
+    },
+    tokenExpired: {
+        http: http.badRequest,
+        code: 1204,
+        msg: 'token_expired'
+    }
 }

@@ -1,5 +1,5 @@
-const http = require('./http')
 const logger = require('./logger')
+const error = require('./error')
 const config = require('./config').get()
 const firebase = require('firebase-admin')
 
@@ -16,7 +16,7 @@ const extractToken = (req) => {
 const get_firebase_user = (req) => {
     const token = extractToken(req)
     if (!token) {
-        return Promise.reject(null)
+        return Promise.reject(error.tokenMissing)
     }
     return new Promise((resolve, reject) => {
         firebase.auth().verifyIdToken(token).then(decodedToken => {
@@ -28,8 +28,14 @@ const get_firebase_user = (req) => {
                 emailVerified: decodedToken.email_verified
             })
         }).catch(err => {
-            logger.error(`cannot decode token: ${err.message}}`)
-            reject(err)
+            // if the token has expired, err.code is "auth/argument-error" but in the
+            // message string you can find the correct one: "auth/id-token-expired".
+            // TODO: contact firebase-admin mantainers?
+            if (err.message.includes('auth/id-token-expired')) {
+                reject(error.tokenExpired)
+            } else {
+                reject(error.tokenError)
+            }
         })
     })
 }
@@ -37,12 +43,12 @@ const get_firebase_user = (req) => {
 const firebase_auth = (req, res, next) => {
     get_firebase_user(req).then(user => {
         if (user.provider == 'password' && !user.email_verified) {
-            return res.status(http.unauthorized).send({error: 'email not verified'})
+            return next(error.emailNotVerified)
         }
         req.user = user
         next()
     }).catch(err => {
-        res.status(http.badRequest).send({error: err ? err : 'no token provided'})
+        next(err)
     })
 }
 
@@ -51,10 +57,10 @@ const firebase_auth_optional = (req, res, next) => {
         req.user = user
         next()
     }).catch(err => {
-        if (err == null) { // no token provided, not a big deal
+        if (err == error.tokenMissing) {
             return next()
         }
-        res.status(http.badRequest).send({error: `wrong token: ${err.message}`})
+        next(err)
     })
 }
 
@@ -72,7 +78,7 @@ const get_fake_user = (req) => {
 const fake_auth = (req, res, next) => {
     const user = get_fake_user(req)
     if (!user) {
-        return res.status(http.unauthorized).send({error: 'missing authorization header'})
+        return next(error.tokenMissing)
     }
     req.user = user
     next()

@@ -21,5 +21,9 @@
     "file_invalid_type": "{{type}} for {{file}} is not supported",
     "not_admin": "You need admin privileges to access this resource",
     "invalid_state": "invalid state: {{state}}",
-    "invalid_dates": "invalid dates"
+    "invalid_dates": "invalid dates",
+    "email_not_verified": "email not verified",
+    "token_missing": "no token provided",
+    "token_error": "could not decode token: {{cause}}",
+    "token_expired": "access token has expired"
 }
