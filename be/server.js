@@ -11,6 +11,7 @@ try {
     const i18n = require('i18n')
     const fileUpload = require('express-fileupload')
     const auth = require('./lib/auth')
+    const cors = require('cors')
     const app = express()
 
     auth.init()
@@ -22,6 +23,7 @@ try {
     app.use(bodyParser.urlencoded({extended: false}))
     app.use(i18n.init)
     app.use(fileUpload())
+    app.use(cors())
 
     app.use('/info', require('./routers/info'))
 
