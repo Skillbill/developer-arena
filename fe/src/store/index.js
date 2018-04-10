@@ -8,6 +8,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    configuration: null,
     user: null,
     contest: null,
     feedback: null,
@@ -17,6 +18,9 @@ const store = new Vuex.Store({
     limits: null
   },
   mutations: {
+    setConfiguration (state, configuration) {
+      state.configuration = configuration;
+    },
     setUser (state, user) {
       state.user = user;
     },
@@ -46,6 +50,17 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    loadConfiguration({commit}) {
+      return axios({
+        method: 'get',
+        url: '/static/configuration.json'
+      }).then(response => {
+        commit('setConfiguration', response.data);
+      }).catch(e => {
+        console.error(e);
+        commit('setFeedbackError', utils.getApiErrorMessage(e));
+      })
+    },
     chooseLanguage ({commit, dispatch, state}, language) {
       if (state.language === language) {
         return;

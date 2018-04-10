@@ -1,8 +1,7 @@
 import store from '../store'
-import configuration from '../../configuration'
 
 export function getApiUrl(path) {
-  return configuration.serverAddress + '/' + configuration.apiVersion + path;
+  return store.state.configuration.serverAddress + '/' + store.state.configuration.apiVersion + path;
 }
 
 export function getDefaultHeaders({auth} = {}) {
@@ -11,7 +10,7 @@ export function getDefaultHeaders({auth} = {}) {
   }
   if(auth && store.state.user) {
     return store.state.user.getIdToken().then(token => {
-      headers['Authorization'] = configuration.firebase.devMode ? token : `Bearer ${token}`;
+      headers['Authorization'] = store.state.configuration.firebase.devMode ? token : `Bearer ${token}`;
       return Promise.resolve(headers);
     });
   } else {
@@ -53,5 +52,5 @@ export function getFileSizeString(bytesNumber) {
 }
 
 export function getProjectImageUrl(project) {
-  return configuration.serverAddress + '/' + configuration.apiVersion + `/contest/${project.contestId}/project/${project.id}/image/`;
+  return store.state.configuration.serverAddress + '/' + store.state.configuration.apiVersion + `/contest/${project.contestId}/project/${project.id}/image/`;
 }

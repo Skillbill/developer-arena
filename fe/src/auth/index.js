@@ -1,6 +1,5 @@
 import firebase from 'firebase';
-import configuration from '../../configuration';
-const devMode = configuration.firebase.devMode;
+import store from '../store';
 
 const fakeUser = () => {
   let uid = sessionStorage.getItem('uid');
@@ -48,13 +47,13 @@ const getSessionUser = () => {
 
 const auth = {
   isDevMode() {
-    return devMode;
+    return store.state.configuration.firebase.devMode;
   },
   getEnabledProviders: () => {
-    return configuration.firebase.providers || [];
+    return store.state.configuration.firebase.providers || [];
   },
   signOut() {
-    if(devMode) {
+    if(this.isDevMode()) {
       sessionStorage.removeItem('user');
       location.reload();
     } else {
@@ -62,33 +61,33 @@ const auth = {
     }
   },
   initializeApp() {
-    if(!devMode) {
-      firebase.initializeApp(configuration.firebase);
+    if(!this.isDevMode()) {
+      firebase.initializeApp(store.state.configuration.firebase);
     }
   },
   onAuthStateChanged(fn) {
-    if(devMode) {
+    if(this.isDevMode()) {
       fn(getSessionUser());
     } else {
       firebase.auth().onAuthStateChanged(fn);
     }
   },
   getRedirectResult() {
-    if(devMode) {
+    if(this.isDevMode()) {
       return Promise.resolve();
     } else {
       return firebase.auth().getRedirectResult();
     }
   },
   fetchProvidersForEmail(email) {
-    if(devMode) {
+    if(this.isDevMode()) {
       return Promise.resolve();
     } else {
       return firebase.auth().fetchProvidersForEmail(email);
     }
   },
   signInWithEmailAndPassword(email, password) {
-    if(devMode) {
+    if(this.isDevMode()) {
       createSessionUser();
       setTimeout(() => location.reload());
       return Promise.resolve();
@@ -97,7 +96,7 @@ const auth = {
     }
   },
   signInWithRedirect(provider) {
-    if(devMode) {
+    if(this.isDevMode()) {
       createSessionUser();
       setTimeout(() => location.reload());
       return Promise.resolve();
@@ -106,7 +105,7 @@ const auth = {
     }
   },
   getProvider(providerName) {
-    if(devMode) {
+    if(this.isDevMode()) {
       return {
         name: 'fake',
         addScope() {
@@ -117,14 +116,14 @@ const auth = {
     }
   },
   sendPasswordResetEmail(email) {
-    if(devMode) {
+    if(this.isDevMode()) {
       return Promise.reject(new Error('Impossible to send emails in devMode'));
     } else {
       return firebase.auth().sendPasswordResetEmail(email);
     }
   },
   createUserWithEmailAndPassword(email, password) {
-    if(devMode) {
+    if(this.isDevMode()) {
       return Promise.reject(new Error('Impossible to create users in devMode'));
     } else {
       return firebase.auth().createUserWithEmailAndPassword(email, password);

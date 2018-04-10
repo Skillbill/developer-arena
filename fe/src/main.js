@@ -7,7 +7,6 @@ import store from './store'
 import i18n from './i18n'
 import auth from './auth'
 import {register as registerDirectives} from './directives'
-import configuration from '../configuration';
 
 Vue.config.productionTip = false;
 let app;
@@ -26,16 +25,15 @@ function initVueApp() {
   }
 }
 
-auth.initializeApp(configuration.firebase);
-auth.onAuthStateChanged(user => {
-  store.commit('setUser', user);
-  initVueApp();
-});
-
 registerDirectives();
 
-store.dispatch('chooseLanguage', localStorage.getItem('language'));
-store.dispatch('loadLimits');
-store.dispatch('loadLastContest');
-
-window.store = store;
+store.dispatch('loadConfiguration').then(() => {
+  store.dispatch('chooseLanguage', localStorage.getItem('language'));
+  store.dispatch('loadLimits');
+  store.dispatch('loadLastContest');
+  auth.initializeApp();
+  auth.onAuthStateChanged(user => {
+    store.commit('setUser', user);
+    initVueApp();
+  });
+});
