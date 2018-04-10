@@ -1,10 +1,12 @@
 const logger = require('./lib/logger')
 const libconfig = require('./lib/config')
+const path = require('path')
 
 logger.info('starting server')
 
 try {
-    const config = libconfig.init(process.env.CONFIG || './config.json')
+    const cfgpath = process.env.CONFIG || path.join(__dirname, './config.json')
+    const config = libconfig.init(path.resolve(cfgpath))
 
     const express = require('express')
     const bodyParser = require('body-parser')
