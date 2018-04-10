@@ -285,8 +285,6 @@ main ol li::before {
 .main-info {
   background-color: #003363;
   color: #fefefe;
-  padding: 0.8rem;
-  margin: 0.5rem 0;
   transform: translateY(-1.3rem);
   margin: 0;
   padding: 0.8rem 2.5rem;
