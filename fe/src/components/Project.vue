@@ -2,7 +2,7 @@
   <main class="project">
     <section>
       <div class="progress" v-if="loading"></div>
-      <ProjectCard v-else :project="project" show-video="true" show-description="true" />
+      <ProjectCard v-else :project="project" show-video="true" show-description="true" show-repo="true" />
     </section>
   </main>
 </template>

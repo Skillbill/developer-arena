@@ -11,7 +11,8 @@
       <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
     </div>
     <div class="description" v-if="showDescription" v-html="project.description.replace(/\n/gi, '<br />')"></div>
-    <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.label)}}</button>
+    <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.voteButtonLabel)}}</button>
+    <button v-if="showRepo && project.repoURL" v-on:click="goToRepo">{{$t('viewRepo')}}</button>
     <div class="video" v-if="showVideo && youtubeVideoCode">
       <YoutubeVideo :code="youtubeVideoCode"/>
     </div>
@@ -22,7 +23,7 @@ import {getProjectImageUrl} from '@/utils'
 import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
-  props: ['project', 'show-video', 'show-description', 'position'],
+  props: ['project', 'show-video', 'show-description', 'position', 'show-repo'],
   data() {
     return {
       sendingVote: false
@@ -52,7 +53,7 @@ export default {
         return images.length > 0;
       }
     },
-    label() {
+    voteButtonLabel() {
       return this.isVoted ? 'alreadyVoted' : (this.sendingVote ? 'waiting' : 'sendVote')
     },
     canVote() {
@@ -70,6 +71,9 @@ export default {
       this.$store.dispatch('voteProject', {projectId: this.project.id, contestId: this.$route.params.contestId}).then(() => {
         this.sendingVote = false;
       });
+    },
+    goToRepo() {
+      location.href = this.project.repoURL;
     }
   }
 }
