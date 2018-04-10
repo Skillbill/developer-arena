@@ -78,6 +78,7 @@ h2, h3 {
 }
 
 img {
+  max-width: 100%;
   object-fit: contain;
 }
 
@@ -641,6 +642,12 @@ div.progressbar span.bar {
   height: 1.8rem;
   text-align: center;
   font-weight: 800;
+}
+
+.contest img {
+  display: block;
+  float: right;
+  margin: 0 0 0.4rem 0.4rem;
 }
 
 /* footer */
