@@ -118,6 +118,7 @@ select {
 }
 
 input:focus,
+input:focus-within,
 textarea:focus,
 select:focus {
   border: 0.1rem solid #003363;
