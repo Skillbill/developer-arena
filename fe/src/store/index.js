@@ -71,6 +71,7 @@ const store = new Vuex.Store({
         return;
       }
       localStorage.setItem('language', language);
+      document.documentElement.lang = language;
       i18n.locale = language;
       commit('setLanguage', language);
     },
