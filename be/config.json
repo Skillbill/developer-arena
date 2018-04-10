@@ -10,6 +10,9 @@
         "locales": [ "en", "it", "fr" ],
         "defaultLocale": "en"
     },
+    "admins": [
+        "admin"
+    ],
     "firebase": {
         "devMode": true,
         "databaseURL": "",

@@ -2,7 +2,7 @@ const contestDao = require('../model/contest-dao')
 const projectDao = require('../model/project-dao')
 
 const getAllContests = () => contestDao.findAll()
-const getContestById = (id) => contestDao.findById(id)
+const getContestById = (id, language /*optional*/) => contestDao.findById(id, language)
 const getLastContest = (language) => contestDao.findLast(language)
 const updateContest = (id, data) => contestDao.update(id, data)
 

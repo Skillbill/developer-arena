@@ -7,10 +7,15 @@ const error = require('../../lib/error')
 const express = require('express')
 const router = express.Router({mergeParams: true})
 
-router.patch('*', auth.middleware)
+const mw = {
+    auth: auth.middleware,
+    authOptional: auth.middleware_optional
+}
 
-router.get('/', getContestList)
-router.get('/:contestId', getContest)
+router.patch('*', mw.auth)
+
+router.get('/', mw.authOptional, getContestList)
+router.get('/:contestId', mw.authOptional, getContest)
 router.patch('/:contestId', patchContest)
 router.use('/:contestId/project/', require('./project'))
 
@@ -31,7 +36,7 @@ const pubfmt = (contest) => {
 }
 
 function getContestList(req, res, next) {
-    const isAdmin = false
+    const isAdmin = req.user && req.user.isAdmin
     persistence.getAllContests().then(lst => {
         res.status(http.ok).send({
             contests: isAdmin? lst : lst.filter(contest => contest.state != libContest.state.draft).map(pubfmt)
@@ -42,15 +47,15 @@ function getContestList(req, res, next) {
 }
 
 function getContest(req, res, next) {
-    const isAdmin = false // TODO
+    const isAdmin = req.user && req.user.isAdmin
     const id = req.params.contestId;
 
-    ((id == 'last') ? persistence.getLastContest(req.language) : persistence.getContestById(id))
+    ((id == 'last') ? persistence.getLastContest(req.language) : persistence.getContestById(id, req.language))
         .then(contest => {
             if (!contest || !isAdmin && contest.state == libContest.state.draft) {
                 return next(error.contestNotFound)
             }
-            res.status(http.ok).send({contest: pubfmt(contest)})
+            res.status(http.ok).send({contest: isAdmin ? contest : pubfmt(contest)})
         }).catch(err => {
             next(error.new(error.internal, {cause: err}))
         })
@@ -59,8 +64,7 @@ function getContest(req, res, next) {
 function patchContest(req, res, next) {
     const id = req.params.contestId
     const patch = req.body
-    const isAdmin = true  // TODO
-    if (!isAdmin) {
+    if (!req.user.isAdmin) {
         return next(error.notAdmin)
     }
     if (patch.state && !libContest.stateIsValid(patch.state)) {

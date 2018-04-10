@@ -7,8 +7,27 @@ const findAll = () => {
     return sql.getContestTable().findAll({})
 }
 
-const findById = (id) => {
-    return sql.getContestTable().findById(id)
+const findById = (id, language) => {
+    if (!language) {
+        return sql.getContestTable().findById(id)
+    }
+    const contestTable = sql.getContestTable()
+    const contestI18nTable = sql.getContestI18nTable()
+    contestTable.hasMany(contestI18nTable, { as: 'i18n', foreignKey: 'entityId' })
+    return contestTable.findOne({
+        where:{
+            id: id
+        },
+        include: [{
+            model: contestI18nTable,
+            as: 'i18n',
+            where: {
+                language: {
+                    [Op.eq]: language
+                }
+            }
+        }]
+    })
 }
 
 const findLast = (language) => {

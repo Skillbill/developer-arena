@@ -14,10 +14,9 @@ try {
     const cors = require('cors')
     const app = express()
 
-    auth.init(config.firebase)
+    auth.init()
 
     logger.info('starting api')
-    //app.set('creds', config);
     i18n.configure(Object.assign({}, {directory: __dirname + '/locales', updateFiles: false}, config.i18n))
     app.disable('x-powered-by')
     app.use(bodyParser.json())
