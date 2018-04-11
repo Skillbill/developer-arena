@@ -15,7 +15,8 @@ const store = new Vuex.Store({
     language: null,
     project: null,
     projects: null,
-    limits: null
+    limits: null,
+    firebaseRedirectResultConsumed: false
   },
   mutations: {
     setConfiguration (state, configuration) {
@@ -47,6 +48,9 @@ const store = new Vuex.Store({
     },
     setLimits (state, limits) {
       state.limits = limits;
+    },
+    setFirebaseRedirectResultConsumed (state, firebaseRedirectResultConsumed) {
+      state.firebaseRedirectResultConsumed = firebaseRedirectResultConsumed;
     }
   },
   getters: {
