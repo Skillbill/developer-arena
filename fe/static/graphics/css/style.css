@@ -71,7 +71,8 @@ h1, h2, h3, h4, h5,h6 {
   color: #003363;
 }
 
-h2, h3 {
+h2, h3, hr {
+  border: 0;
   border-bottom: 0.2rem solid #fa6603;
   margin-bottom: 0.5rem;
 }
