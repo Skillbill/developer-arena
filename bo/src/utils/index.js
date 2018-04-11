@@ -1,5 +1,5 @@
-import configuration from '../../static/configuration'
+import Vue from 'vue'
 
 export function getApiUrl (path) {
-  return configuration.serverAddress + '/' + configuration.apiVersion + path
+  return Vue.prototype.$config.serverAddress + '/' + Vue.prototype.$config.apiVersion + path
 }

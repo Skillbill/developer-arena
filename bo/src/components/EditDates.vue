@@ -54,7 +54,7 @@ export default {
     saveNewDates () {
       this.user.getIdToken().then(token => {
         let headers = {
-          'Authorization': 'Bearer ' + token,
+          'Authorization': 'admin',
           'Content-Type': 'application/json',
           'Accept-Language': 'en'
         }
@@ -73,7 +73,6 @@ export default {
           title: 'Saved',
           message: 'New dates have been saved successfully'
         })
-        console.log(response.data)
       }).catch(e => {
         let error = e.response && e.response.data && e.response.data.error
         if (error) {
