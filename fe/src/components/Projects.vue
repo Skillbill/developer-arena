@@ -2,7 +2,7 @@
   <main class="projects">
     <section>
       <div v-show="!loading">
-        <div class="links-list" v-if="contest" role="navigation">
+        <div class="links-list" v-if="contest && projects && projects.length > 0" role="navigation">
           <span>{{$t('sorting.label')}}</span>
           <ul>
             <li v-for="item in sorting" :key="item">
@@ -16,8 +16,8 @@
           </li>
         </ul>
         <div class="card" v-else>
-          <p v-if="contest && contest.state === 'PRESENTATION'" class="text-align-center">{{$t('contest.notStarted')}} {{$d(new Date(contest.endPresentation), 'short')}}</p>
-          <p v-else class="text-align-center">{{$t('contest.noProjects')}}</p>
+          <span v-if="contest && contest.state === 'PRESENTATION'" class="text-align-center">{{$t('contest.notStarted')}} {{$d(new Date(contest.endPresentation), 'short')}}</span>
+          <span v-else class="text-align-center">{{$t('contest.noProjects')}}</span>
         </div>
       </div>
       <div class="progress" v-show="loading"></div>
