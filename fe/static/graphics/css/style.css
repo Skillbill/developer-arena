@@ -471,6 +471,7 @@ small {
   max-width: 100%;
   position: sticky;
   top: -0.5rem;
+  z-index: 30;
 }
 
 .feedback-message p {
