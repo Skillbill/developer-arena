@@ -29,6 +29,7 @@
         <div v-show="project && !edit" class="card">
           <p>{{$t('project.submitted')}}</p>
           <button v-on:click="editProject">{{$t('project.edit')}}</button>
+          <button v-on:click="viewProject">{{$t('project.viewYour')}}</button>
         </div>
       </div>
       <div class="progress" v-if="loading"></div>
@@ -84,7 +85,10 @@ export default {
         }
         this.loading = false;
       })
-    })
+    });
+    if(this.$route.query.edit) {
+      this.edit = true;
+    }
   },
   methods: {
     submit(event) {
@@ -135,6 +139,9 @@ export default {
     },
     editProject() {
       this.edit = true;
+    },
+    viewProject() {
+      this.$router.push(`/contest/${this.project.contestId}/project/${this.project.id}`);
     }
   }
 }

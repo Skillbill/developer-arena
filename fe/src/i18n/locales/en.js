@@ -74,7 +74,8 @@ module.exports = {
     imageInvalidType: 'Invalid image (please send {types})',
     deliverableInvalidType: 'Invalid file, please send an archive ({types})',
     imageInvalidSize: 'Image too big, max size: {size}',
-    deliverableInvalidSize: 'File too big, max size: {size}'
+    deliverableInvalidSize: 'File too big, max size: {size}',
+    viewYour: 'View your project page'
   },
   viewGitHub: 'View on GitHub',
   applyContest: 'Submit your project',

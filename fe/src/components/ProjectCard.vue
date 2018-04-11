@@ -13,6 +13,7 @@
     <div class="description" v-if="showDescription" v-html="project.description.replace(/\n/gi, '<br />')"></div>
     <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.voteButtonLabel)}}</button>
     <button v-if="showRepo && project.repoURL" v-on:click="goToRepo">{{$t('viewRepo')}}</button>
+    <button v-if="showEdit && isOwnProject" v-on:click="goToEdit">{{$t('project.edit')}}</button>
     <div class="video" v-if="showVideo && youtubeVideoCode">
       <YoutubeVideo :code="youtubeVideoCode"/>
     </div>
@@ -23,7 +24,7 @@ import {getProjectImageUrl} from '@/utils'
 import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
-  props: ['project', 'show-video', 'show-description', 'position', 'show-repo', 'image-scale'],
+  props: ['project', 'show-video', 'show-description', 'position', 'show-repo', 'show-edit', 'image-scale'],
   data() {
     return {
       sendingVote: false
@@ -64,6 +65,9 @@ export default {
       return this.project.votes.filter(v => {
         return this.$store.state.user && v.userId === this.$store.state.user.uid;
       }).length > 0;
+    },
+    isOwnProject() {
+      return this.$store.state.user && this.project && this.project.userId === this.$store.state.user.uid;
     }
   },
   methods: {
@@ -75,6 +79,9 @@ export default {
     },
     goToRepo() {
       location.href = this.project.repoURL;
+    },
+    goToEdit() {
+      this.$router.push('/submit-entry?edit=true');
     }
   }
 }
