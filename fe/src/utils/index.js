@@ -51,6 +51,21 @@ export function getFileSizeString(bytesNumber) {
   return Math.floor(bytesNumber / 1024 / 1024) + 'MB';
 }
 
-export function getProjectImageUrl(project) {
-  return store.state.configuration.serverAddress + '/' + store.state.configuration.apiVersion + `/contest/${project.contestId}/project/${project.id}/image/`;
+export function getProjectImageUrl(project, {width, height}) {
+  let imageUrl = `/contest/${project.contestId}/project/${project.id}/image/`;
+  return getImageUrl(imageUrl, {resizeType: 'cover', width, height});
+}
+
+export function getImageUrl(url, params = {}) {
+  if(store.state.configuration.tinyPictures && store.state.configuration.tinyPictures.enabled) {
+    return store.state.configuration.tinyPictures.url + url + '?' + getQueryString(params);
+  } else {
+    return store.state.configuration.serverAddress + '/' + store.state.configuration.apiVersion + url;
+  }
+}
+
+export function getQueryString(params = {}) {
+  return Object.keys(params).map(key => {
+    return `${key}=${encodeURIComponent(params[key])}`;
+  }).join('&');
 }

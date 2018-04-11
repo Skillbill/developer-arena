@@ -5,7 +5,7 @@
       <router-link :to="{name: 'Project', params: {projectId: project.id}}">{{project.title}}</router-link>
     </h3>
     <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="hasImage">
-      <img :src="imageUrl" alt="Project thumbnail">
+      <img :src="imageUrl" :alt="$t('project.thumb')">
     </router-link>
     <div class="info">
       <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
@@ -23,7 +23,7 @@ import {getProjectImageUrl} from '@/utils'
 import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
-  props: ['project', 'show-video', 'show-description', 'position', 'show-repo'],
+  props: ['project', 'show-video', 'show-description', 'position', 'show-repo', 'image-scale'],
   data() {
     return {
       sendingVote: false
@@ -34,7 +34,8 @@ export default {
   },
   computed: {
     imageUrl() {
-      return getProjectImageUrl(this.project);
+      let imageScale = parseInt(this.imageScale) || 1;
+      return getProjectImageUrl(this.project, {width: 480 * imageScale, height: 270 * imageScale});
     },
     youtubeVideoCode() {
       if(this.project && this.project.video && this.$store.state.limits && this.$store.state.limits.video) {
