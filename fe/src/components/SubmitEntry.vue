@@ -14,7 +14,10 @@
               <input type="url" name="video" id="project-video" placeholder="https://youtu.be/Lo2qQmj0_h4" v-model="video" maxlength="50">
               <label for="project-repository">{{$t('project.repo')}}</label>
               <input type="url" name="repoURL" id="project-repository" placeholder="https://github.com/yourname/yourproject" v-model="repoURL">
-              <label for="project-thumbnail">{{$t('project.thumb')}}</label>
+              <label for="project-thumbnail">
+                {{$t('project.thumb')}}
+                <small class="hint">{{$t('project.thumbHint')}}</small>
+              </label>
               <input type="file" name="image" id="project-thumbnail" :accept="acceptedImageTypes">
               <label for="project-file">{{$t('project.file')}} {{edit? '' : '*'}}</label>
               <input type="file" name="deliverable" id="project-file" :required=!edit :accept="acceptedDeliverableTypes">

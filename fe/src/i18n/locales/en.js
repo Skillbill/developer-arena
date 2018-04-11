@@ -60,6 +60,7 @@ module.exports = {
     description: 'Description',
     repo: 'Repository URL',
     thumb: 'Thumbnail',
+    thumbHint: 'preferred size 960x540',
     file: 'File',
     send: 'Send!',
     submitted: 'Your project has been submitted',
