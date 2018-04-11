@@ -1,3 +1,4 @@
 .idea
+.vscode
 be/node_modules
 be/keys/firebase.json

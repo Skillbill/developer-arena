@@ -78,6 +78,16 @@ module.exports = {
         code: 1015,
         msg: 'invalid_param'
     },
+    invalidState: {
+        http: http.badRequest,
+        code: 1016,
+        msg: 'invalid_state'
+    },
+    invalidDates: {
+        http: http.badRequest,
+        code: 1017,
+        msg: 'invalid_dates'
+    },
     notAdmin: {
         http: http.unauthorized,
         code: 1101,
