@@ -1,5 +1,5 @@
 <template>
-  <div class="container-flex mx-4">
+  <div>
     <h2>Dates of the contest</h2>
     <form v-on:submit.prevent="saveNewDates">
       <div class="d-flex flex-column flex-md-row">
@@ -51,25 +51,38 @@ export default {
         this.$store.commit('setContestDate'.concat(index), e.target.value)
       }
     },
-    async saveNewDates () {
-      var headers = {
-        'Authorization': '12345',
-        'Content-Type': 'application/json',
-        'Accept-Language': 'en'
-      }
-      axios({
-        method: 'patch',
-        url: utils.getApiUrl('/contest/' + this.contest.id),
-        data: {
-          endPresentation: this.contest.endPresentation,
-          endApplying: this.contest.endApplying,
-          endVoting: this.contest.endVoting
-        },
-        headers
+    saveNewDates () {
+      this.user.getIdToken().then(token => {
+        let headers = {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          'Accept-Language': 'en'
+        }
+        return axios({
+          method: 'patch',
+          url: utils.getApiUrl('/contest/' + this.contest.id),
+          data: {
+            endPresentation: this.contest.endPresentation,
+            endApplying: this.contest.endApplying,
+            endVoting: this.contest.endVoting
+          },
+          headers
+        })
       }).then(response => {
+        this.$store.commit('addFeedback', {
+          title: 'Saved',
+          message: 'New dates have been saved successfully'
+        })
         console.log(response.data)
       }).catch(e => {
-        console.error(e)
+        let error = e.response && e.response.data && e.response.data.error
+        if (error) {
+          this.$store.commit('addFeedback', {
+            title: 'Error',
+            message: `status code: ${error.code}, text: ${error.msg}`
+          })
+          console.error(e)
+        }
       })
     }
   },
