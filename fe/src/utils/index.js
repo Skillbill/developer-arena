@@ -69,3 +69,8 @@ export function getQueryString(params = {}) {
     return `${key}=${encodeURIComponent(params[key])}`;
   }).join('&');
 }
+
+export function getProjectDeliverableUrl(project) {
+  return `${store.state.configuration.serverAddress}/${store.state.configuration.apiVersion}` +
+    `/contest/${project.contestId}/project/${project.id}/deliverable/`;
+}

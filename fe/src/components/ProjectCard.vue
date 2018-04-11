@@ -12,6 +12,7 @@
     </div>
     <div class="description" v-if="showDescription" v-html="project.description.replace(/\n/gi, '<br />')"></div>
     <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.voteButtonLabel)}}</button>
+    <button v-if="showDeliverable" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
     <button v-if="showRepo && project.repoURL" v-on:click="goToRepo">{{$t('viewRepo')}}</button>
     <button v-if="showEdit && isOwnProject" v-on:click="goToEdit">{{$t('project.edit')}}</button>
     <div class="video" v-if="showVideo && youtubeVideoCode">
@@ -20,11 +21,11 @@
   </div>
 </template>
 <script>
-import {getProjectImageUrl} from '@/utils'
+import {getProjectImageUrl, getProjectDeliverableUrl} from '@/utils'
 import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
-  props: ['project', 'show-video', 'show-description', 'position', 'show-repo', 'show-edit', 'image-scale'],
+  props: ['project', 'show-video', 'show-description', 'position', 'show-repo', 'show-edit', 'show-deliverable', 'image-scale'],
   data() {
     return {
       sendingVote: false
@@ -82,6 +83,9 @@ export default {
     },
     goToEdit() {
       this.$router.push('/submit-entry?edit=true');
+    },
+    downloadDeliverable() {
+      location.href = getProjectDeliverableUrl(this.project);
     }
   }
 }
