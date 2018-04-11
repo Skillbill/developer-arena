@@ -5,25 +5,27 @@
       <router-link :to="{name: 'Project', params: {projectId: project.id}}">{{project.title}}</router-link>
     </h3>
     <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="hasImage">
-      <img :src="imageUrl" alt="Project thumbnail">
+      <img :src="imageUrl" :alt="$t('project.thumb')">
     </router-link>
     <div class="info">
       <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
     </div>
     <div class="description" v-if="showDescription" v-html="project.description.replace(/\n/gi, '<br />')"></div>
     <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.voteButtonLabel)}}</button>
+    <button v-if="showDeliverable" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
     <button v-if="showRepo && project.repoURL" v-on:click="goToRepo">{{$t('viewRepo')}}</button>
+    <button v-if="showEdit && isOwnProject" v-on:click="goToEdit">{{$t('project.edit')}}</button>
     <div class="video" v-if="showVideo && youtubeVideoCode">
       <YoutubeVideo :code="youtubeVideoCode"/>
     </div>
   </div>
 </template>
 <script>
-import {getProjectImageUrl} from '@/utils'
+import {getProjectImageUrl, getProjectDeliverableUrl} from '@/utils'
 import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
-  props: ['project', 'show-video', 'show-description', 'position', 'show-repo'],
+  props: ['project', 'show-video', 'show-description', 'position', 'show-repo', 'show-edit', 'show-deliverable', 'image-scale'],
   data() {
     return {
       sendingVote: false
@@ -34,7 +36,8 @@ export default {
   },
   computed: {
     imageUrl() {
-      return getProjectImageUrl(this.project);
+      let imageScale = parseInt(this.imageScale) || 1;
+      return getProjectImageUrl(this.project, {width: 480 * imageScale, height: 270 * imageScale});
     },
     youtubeVideoCode() {
       if(this.project && this.project.video && this.$store.state.limits && this.$store.state.limits.video) {
@@ -63,6 +66,9 @@ export default {
       return this.project.votes.filter(v => {
         return this.$store.state.user && v.userId === this.$store.state.user.uid;
       }).length > 0;
+    },
+    isOwnProject() {
+      return this.$store.state.user && this.project && this.project.userId === this.$store.state.user.uid;
     }
   },
   methods: {
@@ -74,6 +80,12 @@ export default {
     },
     goToRepo() {
       location.href = this.project.repoURL;
+    },
+    goToEdit() {
+      this.$router.push('/submit-entry?edit=true');
+    },
+    downloadDeliverable() {
+      location.href = getProjectDeliverableUrl(this.project);
     }
   }
 }

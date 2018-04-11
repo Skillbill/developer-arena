@@ -124,7 +124,11 @@ export default {
     }
   },
   created () {
+    if(this.$store.state.firebaseRedirectResultConsumed) {
+      return;
+    }
     auth.getRedirectResult().then((result) => {
+      this.$store.commit('setFirebaseRedirectResultConsumed', true);
       if(this.$route.query.redirect) {
         this.$router.replace(this.$route.query.redirect);
       } else if (result && result.user) {
@@ -132,6 +136,7 @@ export default {
       }
     }).catch((error) => {
       console.error(error, error.message);
+      this.$store.commit('setFirebaseRedirectResultConsumed', true);
       if(error.email && error.code === 'auth/account-exists-with-different-credential') {
         auth.fetchProvidersForEmail(error.email).then(providers => {
           if(providers[0] && providers[0] !== 'password') {

@@ -278,6 +278,13 @@ main ol li::before {
   font-weight: 800;
 }
 
+small {
+  font-size: 70%;
+}
+
+.hint {
+  color: #666;
+}
 
 /*** molecules ***/
 

@@ -59,7 +59,8 @@ module.exports = {
     title: 'Titolo',
     description: 'Descrizione',
     repo: 'Repository URL',
-    thumb: 'Immagine di anteprima',
+    thumb: 'Immagine',
+    thumbHint: 'dimensioni suggerite 960x540',
     file: 'File',
     send: 'Invia!',
     submitted: 'Il tuo progetto è stato inviato',
@@ -73,7 +74,9 @@ module.exports = {
     imageInvalidType: 'Immagine non valida (inviare {types})',
     deliverableInvalidType: 'File non valido, inviare un archivio ({types})',
     imageInvalidSize: 'Immagine troppo grande, dimensione massima: {size}',
-    deliverableInvalidSize: 'File troppo grande, dimensione massima: {size}'
+    deliverableInvalidSize: 'File troppo grande, dimensione massima: {size}',
+    viewYour: 'Vedi la pagina del tuo progetto',
+    download: 'Scarica il progetto'
   },
   viewGitHub: 'Vedi su GitHub',
   applyContest: 'Invia il tuo progetto',

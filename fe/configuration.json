@@ -10,5 +10,9 @@
     "projectId": "",
     "storageBucket": "",
     "messagingSenderId": ""
+  },
+  "tinyPictures": {
+    "enabled": false,
+    "url": "https://sdacontest.tiny.pictures/main"
   }
 }

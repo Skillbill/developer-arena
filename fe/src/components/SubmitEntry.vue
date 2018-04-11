@@ -14,7 +14,10 @@
               <input type="url" name="video" id="project-video" placeholder="https://youtu.be/Lo2qQmj0_h4" v-model="video" maxlength="50">
               <label for="project-repository">{{$t('project.repo')}}</label>
               <input type="url" name="repoURL" id="project-repository" placeholder="https://github.com/yourname/yourproject" v-model="repoURL">
-              <label for="project-thumbnail">{{$t('project.thumb')}}</label>
+              <label for="project-thumbnail">
+                {{$t('project.thumb')}}
+                <small class="hint">{{$t('project.thumbHint')}}</small>
+              </label>
               <input type="file" name="image" id="project-thumbnail" :accept="acceptedImageTypes">
               <label for="project-file">{{$t('project.file')}} {{edit? '' : '*'}}</label>
               <input type="file" name="deliverable" id="project-file" :required=!edit :accept="acceptedDeliverableTypes">
@@ -26,6 +29,7 @@
         <div v-show="project && !edit" class="card">
           <p>{{$t('project.submitted')}}</p>
           <button v-on:click="editProject">{{$t('project.edit')}}</button>
+          <button v-on:click="viewProject">{{$t('project.viewYour')}}</button>
         </div>
       </div>
       <div class="progress" v-if="loading"></div>
@@ -81,7 +85,10 @@ export default {
         }
         this.loading = false;
       })
-    })
+    });
+    if(this.$route.query.edit) {
+      this.edit = true;
+    }
   },
   methods: {
     submit(event) {
@@ -132,6 +139,9 @@ export default {
     },
     editProject() {
       this.edit = true;
+    },
+    viewProject() {
+      this.$router.push(`/contest/${this.project.contestId}/project/${this.project.id}`);
     }
   }
 }
