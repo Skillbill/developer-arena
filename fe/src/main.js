@@ -34,6 +34,11 @@ store.dispatch('loadConfiguration').then(() => {
   auth.initializeApp();
   auth.onAuthStateChanged(user => {
     store.commit('setUser', user);
+    if(user && process.env.NODE_ENV === 'development') {
+      user.getIdToken().then(token => {
+        console.log(`User Token: ${token}`);
+      });
+    }
     initVueApp();
   });
 });
