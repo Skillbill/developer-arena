@@ -8,8 +8,11 @@
             <fieldset>
               <label for="project-name">{{$t('project.title')}} *</label>
               <input type="text" name="title" id="project-name" required v-model="title" maxlength="50">
-              <label for="project-description">{{$t('project.description')}} *</label>
-              <textarea type="text" name="description" id="project-description" required rows="5" v-model="description"></textarea>
+              <label for="project-description">
+                {{$t('project.description')}} *
+                <small class="hint">{{$t('project.descriptionHint')}}</small>
+              </label>
+              <textarea type="text" name="description" id="project-description" required rows="8" v-model="description"></textarea>
               <label for="project-video">{{$t('project.video')}}</label>
               <input type="url" name="video" id="project-video" placeholder="https://youtu.be/Lo2qQmj0_h4" v-model="video" maxlength="50">
               <label for="project-repository">{{$t('project.repo')}}</label>

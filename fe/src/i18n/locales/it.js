@@ -58,6 +58,7 @@ module.exports = {
     submit: 'Invia il tuo progetto',
     title: 'Titolo',
     description: 'Descrizione',
+    descriptionHint: 'Puoi usare markdown',
     repo: 'Repository URL',
     thumb: 'Immagine',
     thumbHint: 'dimensioni suggerite 960x540',

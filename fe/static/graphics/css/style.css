@@ -278,6 +278,31 @@ main ol li::before {
   font-weight: 800;
 }
 
+pre {
+  background: #222;
+  padding: 1rem;
+  color: #f0f0f0;
+  margin-bottom: 0.6rem; 
+  width: 100%;
+  white-space: pre-wrap;
+}
+
+table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+table tr {
+  border-bottom: 0.08rem solid #003363;
+}
+
+table thead tr {
+  border-bottom-width: 0.2rem;
+}
+
 small {
   font-size: 70%;
 }
@@ -685,6 +710,40 @@ footer::after {
 
 footer a {
   color: #fca368;
+}
+
+/* project description */
+.project .description {
+  border: 0.2rem solid #fa6603;
+  padding: 1rem;
+}
+
+.project .description h1,
+.project .description h2,
+.project .description h3,
+.project .description h4,
+.project .description h5,
+.project .description h6 {
+  border: 0;
+}
+
+.project .description strong {
+  background: transparent;
+  color: inherit;
+  padding: initial;
+}
+
+.project .description ol {
+  padding-left: 1rem;
+  list-style: decimal;
+}
+
+.project .description li::before {
+  content: unset;
+}
+
+.project .description img {
+  width: auto;
 }
 
 /*** templates ***/

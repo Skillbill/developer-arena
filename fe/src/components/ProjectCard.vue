@@ -10,7 +10,6 @@
     <div class="info">
       <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
     </div>
-    <div class="description" v-if="showDescription" v-html="project.description.replace(/\n/gi, '<br />')"></div>
     <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.voteButtonLabel)}}</button>
     <button v-if="showDeliverable" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
     <button v-if="showRepo && project.repoURL" v-on:click="goToRepo">{{$t('viewRepo')}}</button>
@@ -18,6 +17,7 @@
     <div class="video" v-if="showVideo && youtubeVideoCode">
       <YoutubeVideo :code="youtubeVideoCode"/>
     </div>
+    <div class="description" v-if="showDescription" v-md="project.description"></div>
   </div>
 </template>
 <script>
