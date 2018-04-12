@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/components/Home.vue'
-import EditDates from '@/components/EditDates.vue'
+import EditContest from '@/components/EditContest.vue'
 import Contests from '@/components/Contests.vue'
 import firebase from 'firebase'
 
@@ -15,8 +15,8 @@ const router = new VueRouter({
       component: Home
     },
     {
-      path: '/edit-dates',
-      component: EditDates
+      path: '/edit-contest',
+      component: EditContest
     },
     {
       path: '/contests',

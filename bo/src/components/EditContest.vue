@@ -3,23 +3,10 @@
     <h2>Dates of the contest</h2>
     <form v-on:submit.prevent="saveNewDates">
       <div class="d-flex flex-column flex-md-row">
-        <div class="form-group px-2">
-          <label for="date1">End presentation: </label>
-          <input type="date" required="true" class="form-control date" id="date1"
-            :value="contestDate1" @input="updateDate(1, $event)">
-        </div>
-        <div class="form-group px-2">
-          <label for="date0">End applying:</label>
-          <input type="date" required="true" class="form-control date" id="date0"
-            :value="contestDate0" @input="updateDate(0, $event)">
-        </div>
-        <div class="form-group px-2">
-          <label for="date2">End voting: </label>
-          <input type="date" required="true" class="form-control date" id="date2"
-            :value="contestDate2" @input="updateDate(2, $event)">
-        </div>
+        <EditDate v-if="contest" label="End Presentation" v-model="contest.endPresentation"/>
+        <EditDate v-if="contest" label="End Applying" v-model="contest.endApplying"/>
+        <EditDate v-if="contest" label="End Voting" v-model="contest.endVoting"/>
       </div>
-
       <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
     </form>
   </div>
@@ -27,30 +14,26 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import EditDate from '@/components/EditDate'
 import axios from 'axios'
 import * as utils from '../utils'
 
 export default {
-  name: 'EditDates',
+  name: 'EditContest',
+  components: {
+    EditDate
+  },
   data: function () {
     return {
+      contest: null
     }
   },
   computed: {
     ...mapGetters({
-      user: 'getUser',
-      contest: 'getContest',
-      contestDate0: 'getContestDate0',
-      contestDate1: 'getContestDate1',
-      contestDate2: 'getContestDate2'
+      user: 'getUser'
     })
   },
   methods: {
-    updateDate (index, e) {
-      if (e.target.value) {
-        this.$store.commit('setContestDate'.concat(index), e.target.value)
-      }
-    },
     saveNewDates () {
       this.user.getIdToken().then(token => {
         let headers = {
@@ -81,14 +64,36 @@ export default {
             message: `status code: ${error.code}, text: ${error.msg}`
           })
           console.error(e)
+        } else {
+          console.log(e)
         }
       })
     }
   },
   created () {
-    if (!this.$store.contest) {
-      this.$store.dispatch('loadLastContest')
+    let headers = {
+      'Authorization': 'admin',
+      'Content-Type': 'application/json',
+      'Accept-Language': 'en'
     }
+    axios({
+      method: 'get',
+      url: utils.getApiUrl('/contest/last'),
+      headers
+    }).then(response => {
+      this.contest = response.data.contest
+    }).catch(e => {
+      let error = e.response && e.response.data && e.response.data.error
+      if (error) {
+        this.$store.commit('addFeedback', {
+          title: 'Error',
+          message: `status code: ${error.code}, text: ${error.msg}`
+        })
+        console.error(e)
+      } else {
+        console.error(e)
+      }
+    })
   }
 }
 </script>
