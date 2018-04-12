@@ -287,6 +287,20 @@ pre {
   white-space: pre-wrap;
 }
 
+code {
+  background: #222;
+  color: #f0f0f0;
+}
+
+blockquote {
+  background: #ffce31;
+  padding: 1rem;
+  color: #222;
+  margin-bottom: 0.6rem;
+  width: 100%;
+  white-space: pre-wrap;
+}
+
 table {
   width: 100%;
   max-width: 100%;
@@ -716,6 +730,8 @@ footer a {
 .project .description {
   border: 0.2rem solid #fa6603;
   padding: 1rem;
+  max-width: 34rem;
+  overflow: auto;
 }
 
 .project .description h1,
@@ -879,6 +895,10 @@ main.sign-in section.email {
   .footer-links,
   .footer-info p {
     text-align: center;
+  }
+
+  .project .description {
+    max-width: calc(100vw - 3rem);
   }
 
 }
