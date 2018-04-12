@@ -13,7 +13,7 @@
     </div>
     <div class="footer-info">
       <p>{{$t("siteFullName")}} <br> &copy; <a href="http://www.skillbill.it/">Skillbill</a> {{new Date().getFullYear()}}</p>
-      <img class="logo" src="static/graphics/assets/logo-skillbill.png" alt="Logo Skillbill">
+      <img class="logo" src="/static/graphics/assets/logo-skillbill.png" alt="Logo Skillbill">
     </div>
   </footer>
 </template>

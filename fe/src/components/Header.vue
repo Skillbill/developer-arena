@@ -2,7 +2,7 @@
   <header class="main-header">
     <h1>
       <router-link to="/">
-        <img src="static/graphics/assets/logo.svg" alt="Logo">
+        <img src="/static/graphics/assets/logo.svg" alt="Logo">
         <span>{{$t("siteName")}}</span>
       </router-link>
     </h1>
