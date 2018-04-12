@@ -43,14 +43,19 @@ const dateTimeFormats = {
 
 const i18n = new VueI18n({
   locale: 'en',
+  fallbackLocale: 'en',
   messages,
   dateTimeFormats
 })
 
 let language = localStorage.getItem('language');
 if (!language && navigator.language) {
-  language = navigator.language.split('-');
-  localStorage.setItem('language', language[0]);
+  language = navigator.language.split('-')[0];
+  if(Object.keys(messages).indexOf(language) > -1) {
+    localStorage.setItem('language', language);
+  } else {
+    localStorage.setItem('language', 'en');
+  }
 }
 
 export default i18n
