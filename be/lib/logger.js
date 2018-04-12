@@ -13,7 +13,7 @@ const theme = {
 
 colors.setTheme(theme)
 
-const fmt = (o) => typeof o == 'object' && !(o instanceof Error) ? JSON.stringify(o) : o
+const fmt = (o) => typeof o == 'object' && !(o instanceof Error) ? JSON.stringify(o, null, 2) : o
 
 Object.keys(theme).forEach(kind => {
     module.exports[kind] = (...args) => {
