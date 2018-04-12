@@ -19,7 +19,11 @@ try {
     auth.init()
 
     logger.info('starting api')
-    i18n.configure(Object.assign({}, {directory: __dirname + '/locales', updateFiles: false}, config.i18n))
+    i18n.configure(Object.assign({
+        queryParameter: 'lang',
+        directory: __dirname + '/locales',
+        updateFiles: false
+    }, config.i18n))
     app.disable('x-powered-by')
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({extended: false}))
