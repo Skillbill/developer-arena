@@ -4,7 +4,7 @@
       <strong v-if="position">#{{position}}</strong>
       <router-link :to="{name: 'Project', params: {projectId: project.id}}">{{project.title}}</router-link>
     </h3>
-    <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="hasImage">
+    <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="hasImage || showDefaultImage">
       <img :src="imageUrl" :alt="$t('project.thumb')">
     </router-link>
     <div class="info">
@@ -25,10 +25,12 @@ import {getProjectImageUrl, getProjectDeliverableUrl} from '@/utils'
 import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
-  props: ['project', 'show-video', 'show-description', 'position', 'show-repo', 'show-edit', 'show-deliverable', 'image-scale'],
+  props: ['project', 'show-video', 'show-description', 'position',
+    'show-repo', 'show-edit', 'show-deliverable', 'image-scale', 'show-default-image'],
   data() {
     return {
-      sendingVote: false
+      sendingVote: false,
+      defaultImage: '/static/graphics/assets/default-thumbnail.svg'
     }
   },
   components: {
@@ -36,8 +38,12 @@ export default {
   },
   computed: {
     imageUrl() {
-      let imageScale = parseInt(this.imageScale) || 1;
-      return getProjectImageUrl(this.project, {width: 480 * imageScale, height: 270 * imageScale});
+      if(this.hasImage) {
+        let imageScale = parseInt(this.imageScale) || 1;
+        return getProjectImageUrl(this.project, {width: 480 * imageScale, height: 270 * imageScale});
+      } else if(this.showDefaultImage) {
+        return this.defaultImage;
+      }
     },
     youtubeVideoCode() {
       if(this.project && this.project.video && this.$store.state.limits && this.$store.state.limits.video) {
