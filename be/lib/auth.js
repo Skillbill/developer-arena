@@ -1,10 +1,10 @@
-const logger = require('./logger')
-const error = require('./error')
-const config = require('./config').get()
+const logger = require('@/lib/logger')
+const error = require('@/lib/error')
 const firebase = require('firebase-admin')
 
+let _config = {}
 let fakeAuthEnabled = false
-const isAdmin = (uid) => config.admins ? config.admins.includes(uid) : false
+const isAdmin = (uid) => _config.admins ? _config.admins.includes(uid) : false
 
 const extractToken = (req) => {
     const header = req.get('Authorization')
@@ -52,18 +52,6 @@ const firebase_auth = (req, res, next) => {
     })
 }
 
-const firebase_auth_optional = (req, res, next) => {
-    get_firebase_user(req).then(user => {
-        req.user = user
-        next()
-    }).catch(err => {
-        if (err == error.tokenMissing) {
-            return next()
-        }
-        next(err)
-    })
-}
-
 const get_fake_user = (req) => {
     const uid = req.get('Authorization')
     if (!uid) {
@@ -84,18 +72,10 @@ const fake_auth = (req, res, next) => {
     next()
 }
 
-const fake_auth_optional = (req, res, next) => {
-    const user = get_fake_user(req)
-    if (user) {
-        req.user = user
-    }
-    next()
-}
-
 const middleware = (req, res, next) => (fakeAuthEnabled ? fake_auth : firebase_auth)(req, res, next)
-const middleware_optional = (req, res, next) => (fakeAuthEnabled ? fake_auth_optional : firebase_auth_optional)(req, res, next)
 
-const init = () => {
+const init = (config) => {
+    _config = Object.assign({}, config)
     const cfg = config.firebase
     if (cfg.devMode) {
         logger.warn('firebase is DISABLED: using fake auth middleware instead (dev mode)')
@@ -117,6 +97,5 @@ const init = () => {
 
 module.exports = {
     init: init,
-    middleware: middleware,
-    middleware_optional: middleware_optional
+    middleware: middleware
 }

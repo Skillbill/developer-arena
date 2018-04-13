@@ -1,4 +1,4 @@
-const http = require('./http')
+const http = require('@/lib/http')
 
 module.exports = {
     new: (err, args) => Object.assign({}, err, { args: args }),

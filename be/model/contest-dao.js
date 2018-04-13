@@ -1,5 +1,5 @@
-const libContest = require('../lib/contest')
-const sql = require('../lib/sql')
+const libContest = require('@/lib/contest')
+const sql = require('@/lib/sql')
 
 const Op = require('sequelize').Op
 

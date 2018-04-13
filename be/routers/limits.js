@@ -1,5 +1,5 @@
-const http = require('../lib/http')
-const limits = require('../limits')
+const http = require('@/lib/http')
+const limits = require('@/limits')
 const express = require('express')
 const router = express.Router({mergeParams: true})
 

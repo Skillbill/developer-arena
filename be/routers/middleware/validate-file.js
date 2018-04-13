@@ -1,5 +1,5 @@
-const error = require('../../lib/error')
-const limits = require('../../limits')
+const error = require('@/lib/error')
+const limits = require('@/limits')
 
 const Image = Object.assign({}, limits.image, {kind: 'image'})
 const Deliverable = Object.assign({}, limits.deliverable, {kind: 'deliverable'})
