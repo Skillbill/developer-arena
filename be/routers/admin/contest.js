@@ -7,6 +7,7 @@ const express = require('express')
 const router = express.Router({mergeParams: true})
 
 router.get('/', getContestList)
+router.post('/', createContest)
 router.get('/:contestId', getContest)
 router.patch('/:contestId', patchContest)
 
@@ -25,6 +26,24 @@ function getContest(req, res, next) {
             return next(error.contestNotFound)
         }
         res.status(http.ok).send({contest: contest})
+    }).catch(err => {
+        next(error.new(error.internal, {cause: err}))
+    })
+}
+
+function createContest(req, res, next) {
+    const contest = req.body
+    if (!libContest.datesAreValid(contest)) {
+        return next(error.invalidDates)
+    }
+    if (!libContest.stateIsValid(contest.state)) {
+        return next(error.new(error.invalidState, {state: contest.state}))
+    }
+    if (!contest.i18n) {
+        return next(error.new(error.missingParameter, {parameter: 'i18n'}))
+    }
+    persistence.createContest(contest).then(created => {
+        res.status(http.created).send(created)
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
     })

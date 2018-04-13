@@ -46,6 +46,31 @@ const findLast = (language) => {
     })
 }
 
+const _create_i18n = (contestId, data, tx) => {
+    const table = sql.getContestI18nTable()
+    return Promise.all(data.map(el => table.create(Object.assign(el, {entityId: contestId}), {transaction: tx})))
+}
+
+const create = (data) => new Promise((resolve, reject) => {
+    sql.transaction().then(tx => {
+        sql.getContestTable().create(data, {
+            transaction: tx
+        }).then(contest => {
+            return Promise.all([
+                Promise.resolve(contest),
+                _create_i18n(contest.id, data.i18n, tx)
+            ])
+        }).then(([contest, i18n]) => {
+            tx.commit()
+            resolve(Object.assign(contest.toJSON(), {i18n: i18n}))
+        }).catch(err => {
+            tx.rollback()
+            reject(err)
+        })
+    })
+})
+
+
 const _update_i18n = (constestId, data, tx) => new Promise((resolve, reject) => {
     const table = sql.getContestI18nTable()
     Promise.all(data.map(row => table.update({translation: row.translation}, {
@@ -107,5 +132,6 @@ module.exports = {
     findAll,
     findById,
     findLast,
+    create,
     update
 }
