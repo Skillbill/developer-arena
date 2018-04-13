@@ -16,7 +16,8 @@ const store = new Vuex.Store({
     project: null,
     projects: null,
     limits: null,
-    firebaseRedirectResultConsumed: false
+    firebaseRedirectResultConsumed: false,
+    pageTitle: null
   },
   mutations: {
     setConfiguration (state, configuration) {
@@ -51,6 +52,9 @@ const store = new Vuex.Store({
     },
     setFirebaseRedirectResultConsumed (state, firebaseRedirectResultConsumed) {
       state.firebaseRedirectResultConsumed = firebaseRedirectResultConsumed;
+    },
+    setPageTitle (state, title) {
+      state.pageTitle = title;
     }
   },
   getters: {
@@ -79,7 +83,16 @@ const store = new Vuex.Store({
       i18n.locale = language;
       commit('setLanguage', language);
     },
-    async loadLastContest ({commit}) {
+    setPageTitle({commit}, title = '') {
+      let pageTitle = i18n.t('siteName');
+      if(title) {
+        title = title.replace(/\*/gi, '');
+        pageTitle = title + ' | ' + pageTitle;
+      }
+      document.title = pageTitle;
+      commit('setPageTitle', pageTitle);
+    },
+    async loadLastContest ({commit, dispatch}) {
       commit('setContest', null);
       const headers = await utils.getDefaultHeaders();
       return axios({
@@ -88,6 +101,7 @@ const store = new Vuex.Store({
         headers
       }).then(response => {
         commit('setContest', response.data.contest);
+        dispatch('setPageTitle', response.data.contest ? response.data.contest.title : '');
       }).catch(e => {
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));
