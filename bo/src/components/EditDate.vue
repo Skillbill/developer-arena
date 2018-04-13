@@ -1,8 +1,11 @@
 <template>
   <div class="form-group px-2">
     <label v-bind:for="label">{{label}}: </label>
-    <input type="date" required="true" class="form-control date" v-bind:id="label"
-      v-model="dateInput">
+    <input type="date" required class="form-control date" v-bind:id="label"
+      :value="dateInput" @input="dateInput=$event.target.value">
+    <div class="invalid-feedback">
+      Valid date is required
+    </div>
   </div>
 </template>
 
@@ -16,11 +19,10 @@ export default {
   computed: {
     dateInput: {
       get: function () {
-        return this.value.substring(0, 10)
+        return this.value ? this.value.substring(0, 10) : null
       },
       set: function (newDate) {
-        this.value = newDate + 'T00:00:00.000Z'
-        this.$emit('input', this.value)
+        this.$emit('input', newDate ? (newDate + 'T00:00:00.000Z') : null)
       }
     }
   }

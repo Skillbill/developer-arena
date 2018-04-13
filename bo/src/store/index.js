@@ -24,7 +24,7 @@ export default new Vuex.Store({
       }
       feedbackData.id = id
       feedbackData.remove = cbRemove
-      setTimeout(cbRemove, 2000)
+      setTimeout(cbRemove, 5000)
       state.feedbacks.push(feedbackData)
     },
     removeFeedback (state, id) {

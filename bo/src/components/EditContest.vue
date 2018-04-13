@@ -1,7 +1,8 @@
 <template>
   <div>
     <h2>Dates of the contest</h2>
-    <form v-on:submit.prevent="saveNewDates">
+    <form class="needs-validation"
+      v-bind:class="{'was-validated': wasValidated}" novalidate @submit.prevent="saveNewDates">
       <div class="d-flex flex-column flex-md-row">
         <EditDate v-if="contest" label="End Presentation" v-model="contest.endPresentation"/>
         <EditDate v-if="contest" label="End Applying" v-model="contest.endApplying"/>
@@ -25,7 +26,8 @@ export default {
   },
   data: function () {
     return {
-      contest: null
+      contest: null,
+      wasValidated: false
     }
   },
   computed: {
@@ -34,7 +36,14 @@ export default {
     })
   },
   methods: {
-    saveNewDates () {
+    saveNewDates (event) {
+      if (event.target.checkValidity() === false) {
+        this.wasValidated = true
+        return
+      } else {
+        this.wasValidated = false
+      }
+
       this.user.getIdToken().then(token => {
         let headers = {
           'Authorization': 'admin',
