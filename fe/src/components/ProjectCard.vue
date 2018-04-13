@@ -4,11 +4,14 @@
       <strong v-if="position">#{{position}}</strong>
       <router-link :to="{name: 'Project', params: {projectId: project.id}}">{{project.title}}</router-link>
     </h3>
-    <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="hasImage || showDefaultImage">
+    <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="showImage">
       <img :src="imageUrl" :alt="$t('project.thumb')">
+      <strong v-if="project.votes.length" class="votes">{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
     </router-link>
-    <div class="info">
-      <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
+    <div v-else-if="project.votes.length">
+      <p class="text-align-right">
+        <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
+      </p>
     </div>
     <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.voteButtonLabel)}}</button>
     <button v-if="showDeliverable" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
@@ -61,6 +64,9 @@ export default {
         });
         return images.length > 0;
       }
+    },
+    showImage() {
+      return this.hasImage || this.showDefaultImage;
     },
     voteButtonLabel() {
       return this.isVoted ? 'alreadyVoted' : (this.sendingVote ? 'waiting' : 'sendVote')
