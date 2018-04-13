@@ -52,7 +52,7 @@ export default {
         }
         return axios({
           method: 'patch',
-          url: utils.getApiUrl('/contest/' + this.contest.id),
+          url: utils.getApiUrl('/admin/contest/' + this.contest.id),
           data: {
             endPresentation: this.contest.endPresentation,
             endApplying: this.contest.endApplying,

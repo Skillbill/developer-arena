@@ -118,6 +118,13 @@ select {
   background-color: #fefefe;
 }
 
+input:invalid,
+textarea:invalid,
+select:invalid {
+  border: 0.1rem solid #b82626;
+  box-shadow: none;
+}
+
 input:focus,
 input:focus-within,
 textarea:focus,
@@ -132,13 +139,16 @@ select:focus {
 }
 
 label + input,
-textarea + input,
-select + input {
+label + textarea,
+label + select {
   margin-bottom: 0.5rem;
 }
 
 form label {
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 .feedback {
@@ -447,6 +457,13 @@ small {
   box-shadow: 0 0 0.5rem #c0c0c0;
   height: 100%;
   width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.card h3,
+.card .description {
+  max-width: 34rem;
 }
 
 .card h3 a {
@@ -454,7 +471,8 @@ small {
 }
 
 .card > a {
-  line-height: 1;
+  display: block;
+  position: relative;
 }
 
 .card img {
@@ -472,8 +490,18 @@ small {
   filter: brightness(100%);
 }
 
-.card .info {
-  margin: 0.5rem 0;
+.card > a .votes {
+  position: absolute;
+  top: 3%;
+  right: 1%;
+  transform: scale(0.8) translateY(-1rem);
+  transform-origin: top right;
+}
+
+.card:hover > a .votes,
+.card:focus-within > a .votes {
+  transform: scale(1.1) translateY(-1.2rem);
+  filter: brightness(110%);
 }
 
 .card .description {
@@ -487,6 +515,39 @@ small {
 .card button {
   width: 100%;
   margin-bottom: 0.2rem;
+}
+
+.card .description {
+  border: 0.2rem solid #fa6603;
+  padding: 1rem;
+}
+
+.card .description h1,
+.card .description h2,
+.card .description h3,
+.card .description h4,
+.card .description h5,
+.card .description h6 {
+  border: 0;
+}
+
+.card .description strong {
+  background: transparent;
+  color: inherit;
+  padding: initial;
+}
+
+.card .description ol {
+  padding-left: 1rem;
+  list-style: decimal;
+}
+
+.card .description li::before {
+  content: unset;
+}
+
+.card .description img {
+  width: auto;
 }
 
 /* footer-links */
@@ -726,41 +787,6 @@ footer a {
   color: #fca368;
 }
 
-/* project description */
-.project .description {
-  border: 0.2rem solid #fa6603;
-  padding: 1rem;
-  max-width: 34rem;
-  overflow: auto;
-}
-
-.project .description h1,
-.project .description h2,
-.project .description h3,
-.project .description h4,
-.project .description h5,
-.project .description h6 {
-  border: 0;
-}
-
-.project .description strong {
-  background: transparent;
-  color: inherit;
-  padding: initial;
-}
-
-.project .description ol {
-  padding-left: 1rem;
-  list-style: decimal;
-}
-
-.project .description li::before {
-  content: unset;
-}
-
-.project .description img {
-  width: auto;
-}
 
 /*** templates ***/
 
@@ -897,7 +923,8 @@ main.sign-in section.email {
     text-align: center;
   }
 
-  .project .description {
+  .card h3,
+  .card .description {
     max-width: calc(100vw - 3rem);
   }
 

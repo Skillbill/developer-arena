@@ -1,4 +1,4 @@
-const sql = require('../lib/sql')
+const sql = require('@/lib/sql')
 
 const model = {
     project: require('./project'),

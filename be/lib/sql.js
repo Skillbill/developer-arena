@@ -1,4 +1,4 @@
-const config = require('./config').get()
+const config = require('@/lib/config').get()
 const Sequelize = require('sequelize')
 
 const model = {

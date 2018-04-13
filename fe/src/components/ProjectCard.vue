@@ -1,14 +1,17 @@
 <template>
   <div class="card">
     <h3>
-      <strong v-if="position">#{{position}}</strong>
+      <strong v-if="rankPosition">#{{rankPosition}}</strong>
       <router-link :to="{name: 'Project', params: {projectId: project.id}}">{{project.title}}</router-link>
     </h3>
-    <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="hasImage">
+    <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="showImage" tabindex="-1">
       <img :src="imageUrl" :alt="$t('project.thumb')">
+      <strong v-if="project.votes.length" class="votes">{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
     </router-link>
-    <div class="info">
-      <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
+    <div v-else-if="project.votes.length">
+      <p class="text-align-right">
+        <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
+      </p>
     </div>
     <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.voteButtonLabel)}}</button>
     <button v-if="showDeliverable" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
@@ -25,10 +28,27 @@ import {getProjectImageUrl, getProjectDeliverableUrl} from '@/utils'
 import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
-  props: ['project', 'show-video', 'show-description', 'position', 'show-repo', 'show-edit', 'show-deliverable', 'image-scale'],
+  props: {
+    project: {
+      type: Object,
+      required: true
+    },
+    imageScale: {
+      type: Number,
+      default: 1
+    },
+    rankPosition: Number,
+    showVideo: Boolean,
+    showDescription: Boolean,
+    showRepo: Boolean,
+    showEdit: Boolean,
+    showDeliverable: Boolean,
+    showDefaultImage: Boolean
+  },
   data() {
     return {
-      sendingVote: false
+      sendingVote: false,
+      defaultImage: '/static/graphics/assets/default-thumbnail.svg'
     }
   },
   components: {
@@ -36,8 +56,11 @@ export default {
   },
   computed: {
     imageUrl() {
-      let imageScale = parseInt(this.imageScale) || 1;
-      return getProjectImageUrl(this.project, {width: 480 * imageScale, height: 270 * imageScale});
+      if(this.hasImage) {
+        return getProjectImageUrl(this.project, {width: 480 * this.imageScale, height: 270 * this.imageScale});
+      } else if(this.showDefaultImage) {
+        return this.defaultImage;
+      }
     },
     youtubeVideoCode() {
       if(this.project && this.project.video && this.$store.state.limits && this.$store.state.limits.video) {
@@ -55,6 +78,9 @@ export default {
         });
         return images.length > 0;
       }
+    },
+    showImage() {
+      return this.hasImage || this.showDefaultImage;
     },
     voteButtonLabel() {
       return this.isVoted ? 'alreadyVoted' : (this.sendingVote ? 'waiting' : 'sendVote')
