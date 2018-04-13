@@ -4,7 +4,7 @@
       <strong v-if="rankPosition">#{{rankPosition}}</strong>
       <router-link :to="{name: 'Project', params: {projectId: project.id}}">{{project.title}}</router-link>
     </h3>
-    <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="showImage">
+    <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="showImage" tabindex="-1">
       <img :src="imageUrl" :alt="$t('project.thumb')">
       <strong v-if="project.votes.length" class="votes">{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
     </router-link>
