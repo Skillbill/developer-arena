@@ -118,6 +118,13 @@ select {
   background-color: #fefefe;
 }
 
+input:invalid,
+textarea:invalid,
+select:invalid {
+  border: 0.1rem solid #b82626;
+  box-shadow: none;
+}
+
 input:focus,
 input:focus-within,
 textarea:focus,
@@ -132,13 +139,16 @@ select:focus {
 }
 
 label + input,
-textarea + input,
-select + input {
+label + textarea,
+label + select {
   margin-bottom: 0.5rem;
 }
 
 form label {
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 .feedback {
