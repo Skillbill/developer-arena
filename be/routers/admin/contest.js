@@ -40,15 +40,12 @@ function patchContest(req, res, next) {
         if (!contest) {
             return next(error.contestNotFound)
         }
-        let newContest = {}
-        Object.keys(contest.toJSON()).forEach(k => {
-            newContest[k] = patch[k] || contest[k]
-        })
-        if (!libContest.datesAreValid(newContest)) {
+        const merge = Object.assign(contest.toJSON(), patch)
+        if (!libContest.datesAreValid(merge)) {
             return next(error.invalidDates)
         }
-        persistence.updateContest(id, newContest).then(updated => {
-            res.status(http.ok).send({contest: updated})
+        persistence.updateContest(id, merge).then(updated => {
+            res.status(http.ok).send(updated)
         }).catch(err => {
             next(error.new(error.internal, {cause: err}))
         })
