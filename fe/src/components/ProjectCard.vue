@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <h3>
-      <strong v-if="position">#{{position}}</strong>
+      <strong v-if="rankPosition">#{{rankPosition}}</strong>
       <router-link :to="{name: 'Project', params: {projectId: project.id}}">{{project.title}}</router-link>
     </h3>
     <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="showImage">
@@ -28,8 +28,23 @@ import {getProjectImageUrl, getProjectDeliverableUrl} from '@/utils'
 import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
-  props: ['project', 'show-video', 'show-description', 'position',
-    'show-repo', 'show-edit', 'show-deliverable', 'image-scale', 'show-default-image'],
+  props: {
+    project: {
+      type: Object,
+      required: true
+    },
+    imageScale: {
+      type: Number,
+      default: 1
+    },
+    rankPosition: Number,
+    showVideo: Boolean,
+    showDescription: Boolean,
+    showRepo: Boolean,
+    showEdit: Boolean,
+    showDeliverable: Boolean,
+    showDefaultImage: Boolean
+  },
   data() {
     return {
       sendingVote: false,
@@ -42,8 +57,7 @@ export default {
   computed: {
     imageUrl() {
       if(this.hasImage) {
-        let imageScale = parseInt(this.imageScale) || 1;
-        return getProjectImageUrl(this.project, {width: 480 * imageScale, height: 270 * imageScale});
+        return getProjectImageUrl(this.project, {width: 480 * this.imageScale, height: 270 * this.imageScale});
       } else if(this.showDefaultImage) {
         return this.defaultImage;
       }
