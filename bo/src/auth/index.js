@@ -19,9 +19,9 @@ const auth = {
   },
   afterRedirect (result) {
     if (result && result.user) {
-      console.log('afterRedirect: ', result.user.displayName)
+      Vue.$log.debug('afterRedirect: ', result.user.displayName)
     } else {
-      console.log('afterRedirect: ', 'no user in result :', result)
+      Vue.$log.debug('afterRedirect: ', 'no user in result :', result)
     }
   },
   signIn () {

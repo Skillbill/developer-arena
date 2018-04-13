@@ -40,11 +40,11 @@ export default {
       this.$store.commit('setUser', null)
     },
     onSignOut () {
-      console.log('onSignOut')
+      this.$log.debug('onSignOut')
       this.$router.push('/')
     },
     onError (e) {
-      console.error('onError: ', e)
+      this.$log.error('onError: ', e)
     }
   }
 }

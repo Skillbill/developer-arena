@@ -72,9 +72,9 @@ export default {
             title: 'Error',
             message: `status code: ${error.code}, text: ${error.msg}`
           })
-          console.error(e)
+          this.$log.error(e)
         } else {
-          console.log(e)
+          this.$log.debug(e)
         }
       })
     }
@@ -98,9 +98,9 @@ export default {
           title: 'Error',
           message: `status code: ${error.code}, text: ${error.msg}`
         })
-        console.error(e)
+        this.$log.error(e)
       } else {
-        console.error(e)
+        this.$log.error(e)
       }
     })
   }

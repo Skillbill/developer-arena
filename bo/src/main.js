@@ -4,8 +4,11 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import auth from './auth'
+import VueLogger from 'vuejs-logger'
 
 Vue.config.productionTip = false
+Vue.use(VueLogger, {logLevel: 'debug'})
+
 axios({
   method: 'get',
   url: '/static/configuration.json'
@@ -14,7 +17,7 @@ axios({
   Vue.prototype.$config = config
   auth.init(config, vueAppData)
 }).catch(e => {
-  console.error(e)
+  Vue.$log.error(e)
 })
 
 const vueAppData = {
