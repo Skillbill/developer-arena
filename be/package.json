@@ -16,6 +16,7 @@
 		"sequelize": "4.22.12"
 	},
 	"scripts": {
+		"postinstall": "ln -sfn ../ node_modules/@",
 		"lint": "eslint --ext .js .",
 		"lint-fix": "eslint --fix --ext .js ."
 	},

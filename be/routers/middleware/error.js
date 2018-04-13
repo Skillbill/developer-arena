@@ -1,6 +1,6 @@
-const logger = require('../../lib/logger')
-const http = require('../../lib/http')
-const error = require('../../lib/error')
+const logger = require('@/lib/logger')
+const http = require('@/lib/http')
+const error = require('@/lib/error')
 
 const logError = [
     http.internalError
