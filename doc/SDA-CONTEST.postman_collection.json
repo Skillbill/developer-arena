@@ -1,10 +1,163 @@
 {
 	"info": {
 		"name": "SDA-CONTEST",
-		"_postman_id": "2fdcac63-b441-0dac-8b9b-1c77c4b950bd",
+		"_postman_id": "a6f73b4b-6ea2-cd0d-6f9c-d32199744000",
+		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "admin",
+			"description": "",
+			"item": [
+				{
+					"name": "edit contest",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "admin",
+								"description": "fake id"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adtoken}}",
+								"description": "firebase token (admin)",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"id\": 1,\n        \"endPresentation\": \"2018-02-21T16:00:00.000Z\",\n        \"endApplying\": \"2018-04-28T16:00:00.000Z\",\n        \"endVoting\": \"2018-05-12T16:00:00.000Z\",\n        \"state\": \"ACTIVE\",\n        \"i18n\": [\n            {\n                \"entityAttribute\": \"title\",\n                \"language\": \"it\",\n                \"translation\": \"Nuovo titolo\"\n            },\n            {\n                \"entityAttribute\": \"description\",\n                \"language\": \"en\",\n                \"translation\": \"New Description\"\n            },\n\t\t\t{\n                \"entityAttribute\": \"rules\",\n                \"language\": \"en\",\n                \"translation\": \"New Rules\"\n            }\n\t]\n}\n"
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/admin/contest/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"admin",
+								"contest",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "contest list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "admin",
+								"description": "fake id"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adtoken}}",
+								"description": "firebase token",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/admin/contest",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"admin",
+								"contest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "contest by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "admin",
+								"description": "fake id"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adtoken}}",
+								"description": "firebase token",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/admin/contest/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"admin",
+								"contest",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "admin",
+								"description": "fake id"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adtoken}}",
+								"description": "firebase token",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/admin/check",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"admin",
+								"check"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "project",
 			"item": [
@@ -12,12 +165,7 @@
 					"name": "project",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -42,12 +190,7 @@
 					"name": "project deliverable",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -74,12 +217,7 @@
 					"name": "project image",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -111,10 +249,6 @@
 								"key": "Authorization",
 								"value": "userid",
 								"description": "fake id"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
 							},
 							{
 								"key": "Authorization",
@@ -190,10 +324,6 @@
 								"description": "fake id"
 							},
 							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							},
-							{
 								"key": "Authorization",
 								"value": "Bearer {{adtoken}}",
 								"description": "firebase token",
@@ -258,10 +388,6 @@
 								"description": "fake id"
 							},
 							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							},
-							{
 								"key": "Authorization",
 								"value": "Bearer {{adtoken}}",
 								"description": "firebase token",
@@ -293,12 +419,7 @@
 					"name": "contest projects list",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -323,12 +444,7 @@
 					"name": "contest projects list (by trend)",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -360,12 +476,7 @@
 					"name": "contest projects list (by date)",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -397,12 +508,7 @@
 					"name": "contest projects list (by rank)",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -426,70 +532,10 @@
 			]
 		},
 		{
-			"name": "edit contest",
-			"request": {
-				"method": "PATCH",
-				"header": [
-					{
-						"key": "Accept-Language",
-						"value": "{{language}}"
-					},
-					{
-						"key": "Authorization",
-						"value": "admin",
-						"description": "fake id"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{adtoken}}",
-						"description": "firebase token (admin)",
-						"disabled": true
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n        \"endPresentation\": \"2018-04-21T22:00:00.000Z\",\n        \"endApplying\": \"2018-04-28T22:00:00.000Z\",\n        \"endVoting\": \"2018-05-12T22:00:00.000Z\",\n        \"state\": \"DRAFT\"\n}\n"
-				},
-				"url": {
-					"raw": "{{host}}/{{version}}/contest/1",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"{{version}}",
-						"contest",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "contest list",
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Accept-Language",
-						"value": "{{language}}"
-					},
-					{
-						"key": "Authorization",
-						"value": "admin",
-						"description": "fake id (optional)",
-						"disabled": true
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{adtoken}}",
-						"description": "firebase token (optional)",
-						"disabled": true
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": ""
@@ -543,18 +589,6 @@
 					{
 						"key": "Accept-Language",
 						"value": "{{language}}"
-					},
-					{
-						"key": "Authorization",
-						"value": "admin",
-						"description": "fake id (optional)",
-						"disabled": true
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{adtoken}}",
-						"description": "firebase token (optional)",
-						"disabled": true
 					}
 				],
 				"body": {
