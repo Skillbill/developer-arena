@@ -51,6 +51,45 @@
 					"response": []
 				},
 				{
+					"name": "create contest",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "admin",
+								"description": "fake id"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adtoken}}",
+								"description": "firebase token (admin)",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"endPresentation\": \"2018-02-21T16:00:00.000Z\",\n        \"endApplying\": \"2018-04-28T16:00:00.000Z\",\n        \"endVoting\": \"2018-05-12T16:00:00.000Z\",\n        \"state\": \"DRAFT\",\n        \"i18n\": [\n            {\n                \"entityAttribute\": \"title\",\n                \"language\": \"it\",\n                \"translation\": \"Title\"\n            },\n            {\n                \"entityAttribute\": \"description\",\n                \"language\": \"it\",\n                \"translation\": \"Description\"\n            },\n\t\t\t{\n                \"entityAttribute\": \"rules\",\n                \"language\": \"it\",\n                \"translation\": \"Rules\"\n            }\n\t]\n}\n"
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/admin/contest",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"admin",
+								"contest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "contest list",
 					"request": {
 						"method": "GET",
