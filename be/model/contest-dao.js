@@ -6,7 +6,7 @@ const Op = require('sequelize').Op
 const getTableWithI18n = (includes, language) => {
     const contest = sql.getContestTable()
     const i18n = sql.getContestI18nTable()
-    contest.hasMany(i18n, { as: 'i18n', foreignKey: 'entityId' })
+    contest.hasMany(i18n, { as: 'i18n', foreignKey: 'contestId' })
     let filter = {}
     if (language) {
         filter = { language: language }
@@ -49,7 +49,7 @@ const findLast = (language) => {
 
 const _create_i18n = (contestId, lst, tx) => {
     const table = sql.getContestI18nTable()
-    return Promise.all(lst.map(el => table.create(Object.assign(el, {entityId: contestId}), {transaction: tx})))
+    return Promise.all(lst.map(el => table.create(Object.assign(el, {contestId: contestId}), {transaction: tx})))
 }
 
 const create = (data) => new Promise((resolve, reject) => {
@@ -75,7 +75,7 @@ const _replace_i18n = (contestId, lst, tx) => {
     const table = sql.getContestI18nTable()
     return table.destroy({
         where: {
-            entityId: contestId
+            contestId: contestId
         },
         transaction: tx
     }).then(() => lst ? _create_i18n(contestId, lst, tx) : Promise.resolve({}))

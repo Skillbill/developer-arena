@@ -11,10 +11,10 @@ INSERT INTO "public" . contest(
 );
 
 INSERT INTO "public" . contest_i18n(
-       entity_id,
-       entity_attribute,
+       contest_id,
+       attribute,
        language,
-       translation
+       text
 ) VALUES(
     1,
     'title',
@@ -23,10 +23,10 @@ INSERT INTO "public" . contest_i18n(
 );
 
 INSERT INTO "public" . contest_i18n(
-       entity_id,
-       entity_attribute,
+       contest_id,
+       attribute,
        language,
-       translation
+       text
 ) VALUES(
     1,
     'description',
@@ -44,10 +44,10 @@ You can use any web technique.'
 );
 
 INSERT INTO "public" . contest_i18n(
-       entity_id,
-       entity_attribute,
+       contest_id,
+       attribute,
        language,
-       translation
+       text
 ) VALUES(
     1,
     'title',
@@ -56,10 +56,10 @@ INSERT INTO "public" . contest_i18n(
 );
 
 INSERT INTO "public" . contest_i18n(
-       entity_id,
-       entity_attribute,
+       contest_id,
+       attribute,
        language,
-       translation
+       text
 ) VALUES(
     1,
     'description',
@@ -77,10 +77,10 @@ Potrai usare qualsiasi tecnica web.'
 );
 
 INSERT INTO "public" . contest_i18n(
-       entity_id,
-       entity_attribute,
+       contest_id,
+       attribute,
        language,
-       translation
+       text
 ) VALUES(
     1,
     'rules',
@@ -90,10 +90,10 @@ INSERT INTO "public" . contest_i18n(
 );
 
 INSERT INTO "public" . contest_i18n(
-       entity_id,
-       entity_attribute,
+       contest_id,
+       attribute,
        language,
-       translation
+       text
 ) VALUES(
     1,
     'rules',

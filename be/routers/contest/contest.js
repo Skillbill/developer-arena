@@ -16,9 +16,9 @@ const pubfmt = (contest) => {
     }
     let obj = contest.toJSON()
     obj.state = libContest.getPublicState(contest)
-    if(obj.i18n) {
+    if (obj.i18n) {
         obj.i18n.forEach(i18n => {
-            obj[i18n.entityAttribute] = i18n.translation
+            obj[i18n.attribute] = i18n.text
         })
         delete obj.i18n
     }

@@ -4,11 +4,6 @@ CREATE TYPE contest_status AS ENUM (
        'PAST'
 );
 
-CREATE TYPE language_code AS ENUM (
-       'en',
-       'it'
-);
-
 CREATE DOMAIN userid AS varchar(32);
 
 CREATE TABLE IF NOT EXISTS contest (
@@ -21,10 +16,10 @@ CREATE TABLE IF NOT EXISTS contest (
 
 CREATE TABLE IF NOT EXISTS contest_i18n (
        id serial NOT NULL PRIMARY KEY,
-       entity_id int not null,
-       entity_attribute varchar(20) not null,
-       language language_code not null,
-       translation text not null
+       contest_id int REFERENCES contest(id) ON DELETE CASCADE,
+       attribute varchar(20) NOT NULL,
+       language varchar(2) NOT NULL,
+       text text NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS project (
