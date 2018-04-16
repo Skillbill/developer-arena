@@ -1,4 +1,4 @@
-version: "2"
+version: "2.3"
 services:
   be:
     image: "skillbillsrl/sda-contest-be:${TAG}"
@@ -6,6 +6,12 @@ services:
       - db
     ports:
       - 3000:3000
+    volumes:
+      - type: bind
+        source: ./config
+        target: /config
+    environment:
+      - CONFIG=/config/config.json
   db:
     image: "skillbillsrl/sda-contest-db:${TAG}"
   fe:
