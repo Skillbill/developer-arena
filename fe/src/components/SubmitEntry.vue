@@ -71,7 +71,9 @@ export default {
   },
   computed: {
     project () {
-      return this.$store.state.project;
+      if(this.$store.state.user && this.$store.state.project && this.$store.state.project.userId === this.$store.state.user.uid) {
+        return this.$store.state.project;
+      }
     },
     acceptedDeliverableTypes() {
       if(this.$store.state.limits && this.$store.state.limits.deliverable) {
@@ -88,11 +90,11 @@ export default {
     this.loading = true;
     this.$store.dispatch('loadLastContest').then(() => {
       this.$store.dispatch('loadLastUserProject').then(() => {
-        if(this.$store.state.project) {
-          this.title = this.$store.state.project.title;
-          this.description = this.$store.state.project.description;
-          this.repoURL = this.$store.state.project.repoURL;
-          this.video = this.$store.state.project.video;
+        if(this.project) {
+          this.title = this.project.title;
+          this.description = this.project.description;
+          this.repoURL = this.project.repoURL;
+          this.video = this.project.video;
         }
         this.loading = false;
       })
