@@ -1,0 +1,24 @@
+version: "2"
+services:
+  be:
+    image: "skillbillsrl/sda-contest-be:${TAG}"
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+  db:
+    image: "skillbillsrl/sda-contest-db:${TAG}"
+  fe:
+    image: "skillbillsrl/sda-contest-fe:${TAG}"
+    depends_on:
+      - be
+    ports:
+      - 80:8080
+  bo:
+    image: "skillbillsrl/sda-contest-bo:${TAG}"
+    depends_on:
+      - be
+    ports:
+      - 81:8080
+
+#cd be && docker build . -t skillbillsrl/sda-contest-be:local && cd .. && cd db && docker build . -t skillbillsrl/sda-contest-db:local && cd .. && cd fe && docker build . -t skillbillsrl/sda-contest-fe:local && cd .. && cd bo && docker build . -t skillbillsrl/sda-contest-bo:local && cd .. && TAG=local docker-compose up
