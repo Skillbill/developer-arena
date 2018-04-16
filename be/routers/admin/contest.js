@@ -10,6 +10,7 @@ router.get('/', getContestList)
 router.post('/', createContest)
 router.get('/:contestId', getContest)
 router.patch('/:contestId', patchContest)
+router.delete('/:contestId', deleteContest)
 
 function getContestList(req, res, next) {
     persistence.getAllContests().then(lst => {
@@ -68,6 +69,18 @@ function patchContest(req, res, next) {
         }).catch(err => {
             next(error.new(error.internal, {cause: err}))
         })
+    })
+}
+
+function deleteContest(req, res, next) {
+    const id = req.params.contestId
+    persistence.destroyContest(id).then(count => {
+        if (count == 0) {
+            return next(error.contestNotFound)
+        }
+        res.status(http.ok).end()
+    }).catch(err => {
+        next(error.new(error.internal, {cause: err}))
     })
 }
 

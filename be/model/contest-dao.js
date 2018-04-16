@@ -128,10 +128,13 @@ const update = (id, data) => new Promise((resolve, reject) => {
     })
 })
 
+const destroy = (id) => sql.getContestTable().destroy({where: {id: id}})
+
 module.exports = {
     findAll,
     findById,
     findLast,
     create,
-    update
+    update,
+    destroy
 }
