@@ -5,6 +5,50 @@ import router from '@/lib/router'
 import api from '@/lib/api'
 import feedback from '@/lib/feedback'
 
+const fakeUser = () => {
+  let uid = sessionStorage.getItem('uid')
+  if (!uid) {
+    uid = Math.floor(Math.random() * 1000).toString()
+    sessionStorage.setItem('uid', uid)
+  }
+  return {
+    uid,
+    displayName: `User ${uid}`,
+    email: 'fake@email.com',
+    emailVerified: true,
+    isAnonymous: false,
+    phoneNumber: null,
+    photoURL: '/static/graphics/assets/dummy/user.svg',
+    providerData: [
+      {
+        displayName: `User ${uid}`,
+        email: 'fake@email.com',
+        phoneNumber: null,
+        photoURL: '/static/graphics/assets/dummy/user.svg',
+        providerId: 'fake',
+        uid
+      }
+    ]
+  }
+}
+
+const createSessionUser = () => {
+  sessionStorage.setItem('user', JSON.stringify(fakeUser()))
+}
+
+const getSessionUser = () => {
+  const sessionItem = sessionStorage.getItem('user')
+  if (sessionItem) {
+    const user = JSON.parse(sessionItem)
+    user.getIdToken = () => {
+      return Promise.resolve('admin')
+    }
+    return user
+  } else {
+    return null
+  }
+}
+
 const auth = {
   providers: {
     google: {
@@ -26,30 +70,37 @@ const auth = {
     }
   },
   init (config, showApp) {
-    firebase.initializeApp(config.firebase)
-    firebase.auth().onAuthStateChanged(function (user) {
+    if (config.firebase.devMode) {
+      let user = getSessionUser()
+      if (!user) user = createSessionUser()
       store.commit('setUser', user)
-      if (!user) {
-        showApp()
+      router.push('/edit-contest')
+      showApp()
+    } else {
+      firebase.initializeApp(config.firebase)
+      firebase.auth().onAuthStateChanged(user => {
+        store.commit('setUser', user)
+        user ? this.checkUser(user).then(showApp) : showApp()
+      })
+      firebase.auth().getRedirectResult()
+        .then(this.afterRedirect)
+        .catch(this.onError)
+    }
+  },
+  checkUser (user) {
+    api.checkAdmin().then(isAdmin => {
+      if (isAdmin) {
+        feedback.isAdmin()
+        router.push('/edit-contest')
       } else {
-        api.checkAdmin().then(isAdmin => {
-          if (isAdmin) {
-            feedback.isAdmin()
-            router.push('/edit-contest')
-          } else {
-            feedback.notAdmin()
-          }
-        }).catch(e => {
-          Vue.$log.error(e)
-          feedback.apiError()
-        }).then(() => {
-          showApp()
-        })
+        feedback.notAdmin()
       }
+    }).catch(e => {
+      Vue.$log.error(e)
+      feedback.apiError()
+    }).then(() => {
+      return Promise.resolve()
     })
-    firebase.auth().getRedirectResult()
-      .then(this.afterRedirect)
-      .catch(this.onError)
   },
   afterRedirect (result) {
     if (result && result.user) {
@@ -61,10 +112,14 @@ const auth = {
   signIn (provider) {
     firebase.auth().signInWithRedirect(new firebase.auth[provider.providerName]())
   },
-  signOut (onSignOut, onError) {
+  signOut () {
     store.commit('setUser', null)
     router.push('/')
-    firebase.auth().signOut().then(onSignOut).catch(onError)
+    if (!Vue.$config.firebase.devMode) {
+      firebase.auth().signOut()
+    } else {
+      sessionStorage.removeItem('user')
+    }
   }
 }
 

@@ -16,7 +16,8 @@ axios({
   url: '/static/configuration.json'
 }).then(rep => {
   let config = rep.data
-  Vue.prototype.$config = config
+  Vue.$config = config
+  // Vue.prototype.$config = config
   auth.init(config, showApp)
   api.init(config)
 }).catch(e => {

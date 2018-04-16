@@ -12,10 +12,17 @@ const init = (config) => {
 
 const getHeaders = () => {
   let user = store.state.user
+  if (Vue.$config.firebase.devMode) {
+    return Promise.resolve({
+      'Authorization': 'admin',
+      'Content-Type': 'application/json',
+      'Accept-Language': 'en'
+    })
+  }
   if (user) {
     return user.getIdToken().then(token => {
       return {
-        'Authorization': 'admin',
+        'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',
         'Accept-Language': 'en'
       }
