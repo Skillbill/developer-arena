@@ -34,14 +34,9 @@ function getContest(req, res, next) {
 
 function createContest(req, res, next) {
     const contest = req.body
-    if (!libContest.datesAreValid(contest)) {
-        return next(error.invalidDates)
-    }
-    if (!libContest.stateIsValid(contest.state)) {
-        return next(error.new(error.invalidState, {state: contest.state}))
-    }
-    if (!contest.i18n) {
-        return next(error.new(error.missingParameter, {parameter: 'i18n'}))
+    const err = libContest.check(contest)
+    if (err != null) {
+        return next(err)
     }
     persistence.createContest(contest).then(created => {
         res.status(http.created).send(created)
@@ -53,16 +48,14 @@ function createContest(req, res, next) {
 function patchContest(req, res, next) {
     const id = req.params.contestId
     const patch = req.body
-    if (patch.state && !libContest.stateIsValid(patch.state)) {
-        return next(error.new(error.invalidState, {state: patch.state}))
-    }
     persistence.getContestById(id).then(contest => {
         if (!contest) {
             return next(error.contestNotFound)
         }
         const merge = Object.assign(contest.toJSON(), patch)
-        if (!libContest.datesAreValid(merge)) {
-            return next(error.invalidDates)
+        const err = libContest.check(merge)
+        if (err != null) {
+            return next(err)
         }
         persistence.updateContest(id, merge).then(updated => {
             res.status(http.ok).send(updated)
