@@ -14,6 +14,7 @@ const getTableWithI18n = (includes, language) => {
     includes.push({
         model: i18n,
         as: 'i18n',
+        required: false,
         where: filter
     })
     return contest
@@ -46,9 +47,9 @@ const findLast = (language) => {
     })
 }
 
-const _create_i18n = (contestId, data, tx) => {
+const _create_i18n = (contestId, lst, tx) => {
     const table = sql.getContestI18nTable()
-    return Promise.all(data.map(el => table.create(Object.assign(el, {entityId: contestId}), {transaction: tx})))
+    return Promise.all(lst.map(el => table.create(Object.assign(el, {entityId: contestId}), {transaction: tx})))
 }
 
 const create = (data) => new Promise((resolve, reject) => {
@@ -70,24 +71,15 @@ const create = (data) => new Promise((resolve, reject) => {
     })
 })
 
-
-const _update_i18n = (constestId, data, tx) => new Promise((resolve, reject) => {
+const _replace_i18n = (contestId, lst, tx) => {
     const table = sql.getContestI18nTable()
-    Promise.all(data.map(row => table.update({translation: row.translation}, {
-        returning: true,
-        limit: 1,
+    return table.destroy({
         where: {
-            entityId: constestId,
-            language: row.language,
-            entityAttribute: row.entityAttribute
+            entityId: contestId
         },
         transaction: tx
-    }))).then(rows => {
-        resolve(rows.map(row => row[1][0]).filter(row => row != null))
-    }).catch(err => {
-        reject(err)
-    })
-})
+    }).then(() => lst ? _create_i18n(contestId, lst, tx) : Promise.resolve({}))
+}
 
 const _update_contest = (id, data, tx) => new Promise((resolve, reject) => {
     sql.getContestTable().update(data, {
@@ -114,7 +106,7 @@ const update = (id, data) => new Promise((resolve, reject) => {
     sql.transaction().then(tx => {
         Promise.all([
             _update_contest(id, data, tx),
-            _update_i18n(id, data.i18n, tx)
+            _replace_i18n(id, data.i18n, tx)
         ]).then(([contest, i18n]) => {
             tx.commit()
             resolve({
