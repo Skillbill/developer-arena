@@ -6,7 +6,7 @@ const express = require('express')
 const router = express.Router({mergeParams: true})
 
 router.all('*', auth.middleware, adminCheck)
-router.get('/check', (req, res) => res.status(http.ok).send())
+router.get('/check', (req, res) => res.status(http.noContent).send())
 router.use('/contest', require('./contest'))
 
 function adminCheck(req, res, next) {
