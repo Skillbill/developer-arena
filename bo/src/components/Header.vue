@@ -22,7 +22,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import auth from '../auth'
+import auth from '@/lib/auth'
 
 export default {
   name: 'Header',

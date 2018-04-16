@@ -21,11 +21,17 @@ const router = new VueRouter({
     },
     {
       path: '/edit-contest',
-      component: EditContest
+      component: EditContest,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/contests',
-      component: Contests
+      component: Contests,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })

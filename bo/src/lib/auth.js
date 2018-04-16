@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import firebase from 'firebase'
-import store from '../store'
-import axios from 'axios'
-import * as utils from '../utils'
+import store from '@/lib/store'
+import router from '@/lib/router'
+import api from '@/lib/api'
+import feedback from '@/lib/feedback'
 
 const auth = {
   providers: {
@@ -24,47 +25,26 @@ const auth = {
       providerName: 'TwitterAuthProvider'
     }
   },
-  init (config, vueAppData) {
-    let vm
+  init (config, showApp) {
     firebase.initializeApp(config.firebase)
     firebase.auth().onAuthStateChanged(function (user) {
       store.commit('setUser', user)
-      if (user) {
-        user.getIdToken().then(token => {
-          let headers = {
-            'Authorization': 'admin',
-            'Content-Type': 'application/json',
-            'Accept-Language': 'en'
-          }
-          return axios({
-            method: 'get',
-            url: utils.getApiUrl('/admin/check'),
-            headers
-          })
-        }).then((response) => {
-          Vue.$log.debug('admin check: ', response)
-          store.commit('addFeedback', {
-            title: 'Success',
-            message: 'You are an admin'
-          })
-        }).catch(e => {
-          // this.signOut((r) => Vue.$log.debug('Not admin: signed out: ', r), (e) => Vue.$log.error('Not admin: ', e))
-          let error = e.response && e.response.data && e.response.data.error
-          if (error) {
-            store.commit('addFeedback', {
-              title: 'Error',
-              message: `status code: ${error.code}, text: ${error.msg}`
-            })
-            Vue.$log.error(e)
+      if (!user) {
+        showApp()
+      } else {
+        api.checkAdmin().then(isAdmin => {
+          if (isAdmin) {
+            feedback.isAdmin()
+            router.push('/edit-contest')
           } else {
-            Vue.$log.debug('admin check: ', e)
+            feedback.notAdmin()
           }
+        }).catch(e => {
+          Vue.$log.error(e)
+          feedback.apiError()
+        }).then(() => {
+          showApp()
         })
-      }
-
-      if (!vm) {
-        /* eslint-disable no-new */
-        vm = new Vue(vueAppData)
       }
     })
     firebase.auth().getRedirectResult()
@@ -83,6 +63,7 @@ const auth = {
   },
   signOut (onSignOut, onError) {
     store.commit('setUser', null)
+    router.push('/')
     firebase.auth().signOut().then(onSignOut).catch(onError)
   }
 }
