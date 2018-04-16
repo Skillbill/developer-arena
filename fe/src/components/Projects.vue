@@ -12,7 +12,7 @@
         </div>
         <ul class="projects-list" v-if="projects && projects.length > 0">
           <li v-for="(item, index) in projects" :key="item.id">
-            <ProjectCard :project="item" :position="isRanking ? index + 1 : null"/>
+            <ProjectCard :project="item" :position="isRanking ? index + 1 : null" :show-default-image="true"/>
           </li>
         </ul>
         <div class="card" v-else>

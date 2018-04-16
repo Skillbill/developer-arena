@@ -1,3 +1,5 @@
+const error = require('@/lib/error')
+
 const _state = {
     draft: 'DRAFT',
     active: 'ACTIVE',
@@ -27,7 +29,7 @@ const getPublicState = (contest) => {
     }
 }
 
-const stateIsValid = (state) => Object.values(_state).includes(state)
+const stateIsValid = (contest) => Object.values(_state).includes(contest.state)
 
 const datesAreValid = (contest) => {
     const dates = ['endPresentation', 'endApplying', 'endVoting'].map(k => new Date(contest[k]))
@@ -39,11 +41,25 @@ const datesAreValid = (contest) => {
     return true
 }
 
+const check = (contest) => {
+    if (!stateIsValid(contest)) {
+        return error.invalidState
+    }
+    if (!datesAreValid(contest)) {
+        return error.new(error.invalidDates, {state: contest.state})
+    }
+    if (!contest.i18n || !(contest.i18n instanceof Array) || contest.i18n.length == 0) {
+        return error.new(error.missingParameter, {parameter: 'i18n'})
+    }
+    return null
+}
+
 module.exports = {
     state : _state,
     publicState: _publicState,
 
     getPublicState,
     stateIsValid,
-    datesAreValid
+    datesAreValid,
+    check
 }

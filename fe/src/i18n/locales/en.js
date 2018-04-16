@@ -58,8 +58,10 @@ module.exports = {
     submit: 'Submit your project',
     title: 'Title',
     description: 'Description',
+    descriptionHint: 'You can use markdown',
     repo: 'Repository URL',
     thumb: 'Thumbnail',
+    thumbHint: 'preferred size 960x540',
     file: 'File',
     send: 'Send!',
     submitted: 'Your project has been submitted',
@@ -73,7 +75,9 @@ module.exports = {
     imageInvalidType: 'Invalid image (please send {types})',
     deliverableInvalidType: 'Invalid file, please send an archive ({types})',
     imageInvalidSize: 'Image too big, max size: {size}',
-    deliverableInvalidSize: 'File too big, max size: {size}'
+    deliverableInvalidSize: 'File too big, max size: {size}',
+    viewYour: 'View your project page',
+    download: 'Download the project'
   },
   viewGitHub: 'View on GitHub',
   applyContest: 'Submit your project',

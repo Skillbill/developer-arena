@@ -1,4 +1,4 @@
-const logger = require('./logger')
+const logger = require('@/lib/logger')
 const fs = require('fs')
 let config = {}
 

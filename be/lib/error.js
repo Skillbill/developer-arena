@@ -1,4 +1,4 @@
-const http = require('./http')
+const http = require('@/lib/http')
 
 module.exports = {
     new: (err, args) => Object.assign({}, err, { args: args }),
@@ -59,24 +59,19 @@ module.exports = {
         msg: 'uid_mismatch'
     },
     fileTooBig: {
-        http: http.unprocessableEntity,
+        http: http.tooLarge,
         code: 1012,
         msg: 'file_too_big'
     },
     fileNoName: {
-        http: http.unprocessableEntity,
+        http: http.badRequest,
         code: 1013,
         msg: 'file_no_name'
     },
     fileInvalidType: {
-        http: http.unprocessableEntity,
+        http: http.unsupportedType,
         code: 1014,
         msg: 'file_invalid_type'
-    },
-    invalidParam: {
-        http: http.unprocessableEntity,
-        code: 1015,
-        msg: 'invalid_param'
     },
     invalidState: {
         http: http.badRequest,
@@ -89,12 +84,12 @@ module.exports = {
         msg: 'invalid_dates'
     },
     notAdmin: {
-        http: http.unauthorized,
+        http: http.forbidden,
         code: 1101,
         msg: 'not_admin'
     },
     emailNotVerified: {
-        http: http.unauthorized,
+        http: http.forbidden,
         code: 1201,
         msg: 'email_not_verified'
     },

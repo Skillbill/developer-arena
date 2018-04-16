@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" v-if="user">
-          <router-link class="nav-link" to="/edit-dates">Dates</router-link>
+          <router-link class="nav-link" to="/edit-contest">Dates</router-link>
         </li>
         <li class="nav-item" v-if="user">
           <router-link class="nav-link" to="/contests">Contests</router-link>
@@ -22,34 +22,26 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import firebase from 'firebase'
+import auth from '../auth'
 
 export default {
+  name: 'Header',
   computed: {
     ...mapGetters({
       user: 'getUser'
     })
   },
-  created: function () {
-    firebase.auth().getRedirectResult().then(result => {
-      if (result.user) this.onSignIn(result)
-    }).catch(this.onError)
-  },
   methods: {
     signIn () {
-      var provider = new firebase.auth.GithubAuthProvider()
-      firebase.auth().signInWithRedirect(provider)
+      auth.signIn()
     },
     signOut () {
-      firebase.auth().signOut().then(this.onSignOut).catch(this.onError)
+      auth.signOut(this.onSignOut, this.onError)
       this.$store.commit('setUser', null)
     },
     onSignOut () {
       console.log('onSignOut')
       this.$router.push('/')
-    },
-    onSignIn (result) {
-      console.log('onSignIn: ', result.user.displayName)
     },
     onError (e) {
       console.error('onError: ', e)

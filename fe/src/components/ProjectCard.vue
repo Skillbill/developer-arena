@@ -1,32 +1,54 @@
 <template>
   <div class="card">
     <h3>
-      <strong v-if="position">#{{position}}</strong>
+      <strong v-if="rankPosition">#{{rankPosition}}</strong>
       <router-link :to="{name: 'Project', params: {projectId: project.id}}">{{project.title}}</router-link>
     </h3>
-    <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="hasImage">
-      <img :src="imageUrl" alt="Project thumbnail">
+    <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="showImage" tabindex="-1">
+      <img :src="imageUrl" :alt="$t('project.thumb')">
+      <strong v-if="project.votes.length" class="votes">{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
     </router-link>
-    <div class="info">
-      <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
+    <div v-else-if="project.votes.length">
+      <p class="text-align-right">
+        <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
+      </p>
     </div>
-    <div class="description" v-if="showDescription" v-html="project.description.replace(/\n/gi, '<br />')"></div>
     <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.voteButtonLabel)}}</button>
+    <button v-if="showDeliverable" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
     <button v-if="showRepo && project.repoURL" v-on:click="goToRepo">{{$t('viewRepo')}}</button>
+    <button v-if="canEdit" v-on:click="goToEdit">{{$t('project.edit')}}</button>
     <div class="video" v-if="showVideo && youtubeVideoCode">
       <YoutubeVideo :code="youtubeVideoCode"/>
     </div>
+    <div class="description" v-if="showDescription" v-md="project.description"></div>
   </div>
 </template>
 <script>
-import {getProjectImageUrl} from '@/utils'
+import {getProjectImageUrl, getProjectDeliverableUrl} from '@/utils'
 import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
-  props: ['project', 'show-video', 'show-description', 'position', 'show-repo'],
+  props: {
+    project: {
+      type: Object,
+      required: true
+    },
+    imageScale: {
+      type: Number,
+      default: 1
+    },
+    rankPosition: Number,
+    showVideo: Boolean,
+    showDescription: Boolean,
+    showRepo: Boolean,
+    showEdit: Boolean,
+    showDeliverable: Boolean,
+    showDefaultImage: Boolean
+  },
   data() {
     return {
-      sendingVote: false
+      sendingVote: false,
+      defaultImage: '/static/graphics/assets/default-thumbnail.svg'
     }
   },
   components: {
@@ -34,7 +56,11 @@ export default {
   },
   computed: {
     imageUrl() {
-      return getProjectImageUrl(this.project);
+      if(this.hasImage) {
+        return getProjectImageUrl(this.project, {width: 480 * this.imageScale, height: 270 * this.imageScale});
+      } else if(this.showDefaultImage) {
+        return this.defaultImage;
+      }
     },
     youtubeVideoCode() {
       if(this.project && this.project.video && this.$store.state.limits && this.$store.state.limits.video) {
@@ -53,11 +79,18 @@ export default {
         return images.length > 0;
       }
     },
+    showImage() {
+      return this.hasImage || this.showDefaultImage;
+    },
     voteButtonLabel() {
       return this.isVoted ? 'alreadyVoted' : (this.sendingVote ? 'waiting' : 'sendVote')
     },
     canVote() {
       return this.$store.state.user && this.$store.state.contest && this.$store.state.contest.state === 'VOTING';
+    },
+    canEdit() {
+      return this.showEdit && this.$store.state.user && this.$store.state.contest && this.project &&
+              this.$store.state.contest.state === 'APPLYING' && this.project.userId === this.$store.state.user.uid;
     },
     isVoted() {
       return this.project.votes.filter(v => {
@@ -74,6 +107,12 @@ export default {
     },
     goToRepo() {
       location.href = this.project.repoURL;
+    },
+    goToEdit() {
+      this.$router.push('/submit-entry?edit=true');
+    },
+    downloadDeliverable() {
+      location.href = getProjectDeliverableUrl(this.project);
     }
   }
 }

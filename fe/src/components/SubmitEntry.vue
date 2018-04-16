@@ -6,17 +6,31 @@
           <h2>{{$t(edit ? 'project.edit' : 'project.submit')}}</h2>
           <form action="#" method="post" class="submit-project" enctype="multipart/form-data" v-on:submit.prevent="submit">
             <fieldset>
-              <label for="project-name">{{$t('project.title')}} *</label>
+              <label for="project-name">
+                <span>{{$t('project.title')}} *</span>
+              </label>
               <input type="text" name="title" id="project-name" required v-model="title" maxlength="50">
-              <label for="project-description">{{$t('project.description')}} *</label>
-              <textarea type="text" name="description" id="project-description" required rows="5" v-model="description"></textarea>
-              <label for="project-video">{{$t('project.video')}}</label>
+              <label for="project-description">
+                <span>{{$t('project.description')}} *</span>
+                <small class="hint">{{$t('project.descriptionHint')}}</small>
+              </label>
+              <textarea type="text" name="description" id="project-description" required rows="8" v-model="description"></textarea>
+              <label for="project-video">
+                <span>{{$t('project.video')}}</span>
+              </label>
               <input type="url" name="video" id="project-video" placeholder="https://youtu.be/Lo2qQmj0_h4" v-model="video" maxlength="50">
-              <label for="project-repository">{{$t('project.repo')}}</label>
+              <label for="project-repository">
+                <span>{{$t('project.repo')}}</span>
+              </label>
               <input type="url" name="repoURL" id="project-repository" placeholder="https://github.com/yourname/yourproject" v-model="repoURL">
-              <label for="project-thumbnail">{{$t('project.thumb')}}</label>
+              <label for="project-thumbnail">
+                {{$t('project.thumb')}}
+                <small class="hint">{{$t('project.thumbHint')}}</small>
+              </label>
               <input type="file" name="image" id="project-thumbnail" :accept="acceptedImageTypes">
-              <label for="project-file">{{$t('project.file')}} {{edit? '' : '*'}}</label>
+              <label for="project-file">
+                <span>{{$t('project.file')}} {{edit? '' : '*'}}</span>
+              </label>
               <input type="file" name="deliverable" id="project-file" :required=!edit :accept="acceptedDeliverableTypes">
               <p class="text-align-right">* {{$t('project.requiredFields')}}</p>
             </fieldset>
@@ -26,6 +40,7 @@
         <div v-show="project && !edit" class="card">
           <p>{{$t('project.submitted')}}</p>
           <button v-on:click="editProject">{{$t('project.edit')}}</button>
+          <button v-on:click="viewProject">{{$t('project.viewYour')}}</button>
         </div>
       </div>
       <div class="progress" v-if="loading"></div>
@@ -56,7 +71,9 @@ export default {
   },
   computed: {
     project () {
-      return this.$store.state.project;
+      if(this.$store.state.user && this.$store.state.project && this.$store.state.project.userId === this.$store.state.user.uid) {
+        return this.$store.state.project;
+      }
     },
     acceptedDeliverableTypes() {
       if(this.$store.state.limits && this.$store.state.limits.deliverable) {
@@ -73,15 +90,18 @@ export default {
     this.loading = true;
     this.$store.dispatch('loadLastContest').then(() => {
       this.$store.dispatch('loadLastUserProject').then(() => {
-        if(this.$store.state.project) {
-          this.title = this.$store.state.project.title;
-          this.description = this.$store.state.project.description;
-          this.repoURL = this.$store.state.project.repoURL;
-          this.video = this.$store.state.project.video;
+        if(this.project) {
+          this.title = this.project.title;
+          this.description = this.project.description;
+          this.repoURL = this.project.repoURL;
+          this.video = this.project.video;
         }
         this.loading = false;
       })
-    })
+    });
+    if(this.$route.query.edit) {
+      this.edit = true;
+    }
   },
   methods: {
     submit(event) {
@@ -132,6 +152,9 @@ export default {
     },
     editProject() {
       this.edit = true;
+    },
+    viewProject() {
+      this.$router.push(`/contest/${this.project.contestId}/project/${this.project.id}`);
     }
   }
 }

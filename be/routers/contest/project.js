@@ -1,14 +1,14 @@
+const http = require('@/lib/http')
+const libContest = require('@/lib/contest')
+const logger = require('@/lib/logger')
+const error = require('@/lib/error')
+const persistence = require('@/lib/persistence')
 const express = require('express')
-const http = require('../../lib/http')
-const libContest = require('../../lib/contest')
-const logger = require('../../lib/logger')
-const error = require('../../lib/error')
-const persistence = require('../../lib/persistence')
 const router = express.Router({mergeParams: true})
 
 const mw = {
-    auth: require('../../lib//auth').middleware,
-    validateFile: require('../middleware/validate-file')
+    auth: require('@/lib/auth').middleware,
+    validateFile: require('@/routers/middleware/validate-file')
 }
 
 router.post('*', mw.auth)

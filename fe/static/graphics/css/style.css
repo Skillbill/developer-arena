@@ -118,6 +118,13 @@ select {
   background-color: #fefefe;
 }
 
+input:invalid,
+textarea:invalid,
+select:invalid {
+  border: 0.1rem solid #b82626;
+  box-shadow: none;
+}
+
 input:focus,
 input:focus-within,
 textarea:focus,
@@ -132,13 +139,16 @@ select:focus {
 }
 
 label + input,
-textarea + input,
-select + input {
+label + textarea,
+label + select {
   margin-bottom: 0.5rem;
 }
 
 form label {
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 .feedback {
@@ -278,6 +288,52 @@ main ol li::before {
   font-weight: 800;
 }
 
+pre {
+  background: #222;
+  padding: 1rem;
+  color: #f0f0f0;
+  margin-bottom: 0.6rem; 
+  width: 100%;
+  white-space: pre-wrap;
+}
+
+code {
+  background: #222;
+  color: #f0f0f0;
+}
+
+blockquote {
+  background: #ffce31;
+  padding: 1rem;
+  color: #222;
+  margin-bottom: 0.6rem;
+  width: 100%;
+  white-space: pre-wrap;
+}
+
+table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+table tr {
+  border-bottom: 0.08rem solid #003363;
+}
+
+table thead tr {
+  border-bottom-width: 0.2rem;
+}
+
+small {
+  font-size: 70%;
+}
+
+.hint {
+  color: #666;
+}
 
 /*** molecules ***/
 
@@ -401,6 +457,13 @@ main ol li::before {
   box-shadow: 0 0 0.5rem #c0c0c0;
   height: 100%;
   width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.card h3,
+.card .description {
+  max-width: 34rem;
 }
 
 .card h3 a {
@@ -408,7 +471,8 @@ main ol li::before {
 }
 
 .card > a {
-  line-height: 1;
+  display: block;
+  position: relative;
 }
 
 .card img {
@@ -426,8 +490,18 @@ main ol li::before {
   filter: brightness(100%);
 }
 
-.card .info {
-  margin: 0.5rem 0;
+.card > a .votes {
+  position: absolute;
+  top: 3%;
+  right: 1%;
+  transform: scale(0.8) translateY(-1rem);
+  transform-origin: top right;
+}
+
+.card:hover > a .votes,
+.card:focus-within > a .votes {
+  transform: scale(1.1) translateY(-1.2rem);
+  filter: brightness(110%);
 }
 
 .card .description {
@@ -441,6 +515,39 @@ main ol li::before {
 .card button {
   width: 100%;
   margin-bottom: 0.2rem;
+}
+
+.card .description {
+  border: 0.2rem solid #fa6603;
+  padding: 1rem;
+}
+
+.card .description h1,
+.card .description h2,
+.card .description h3,
+.card .description h4,
+.card .description h5,
+.card .description h6 {
+  border: 0;
+}
+
+.card .description strong {
+  background: transparent;
+  color: inherit;
+  padding: initial;
+}
+
+.card .description ol {
+  padding-left: 1rem;
+  list-style: decimal;
+}
+
+.card .description li::before {
+  content: unset;
+}
+
+.card .description img {
+  width: auto;
 }
 
 /* footer-links */
@@ -464,6 +571,7 @@ main ol li::before {
   max-width: 100%;
   position: sticky;
   top: -0.5rem;
+  z-index: 30;
 }
 
 .feedback-message p {
@@ -679,6 +787,7 @@ footer a {
   color: #fca368;
 }
 
+
 /*** templates ***/
 
 /* default */
@@ -812,6 +921,11 @@ main.sign-in section.email {
   .footer-links,
   .footer-info p {
     text-align: center;
+  }
+
+  .card h3,
+  .card .description {
+    max-width: calc(100vw - 3rem);
   }
 
 }

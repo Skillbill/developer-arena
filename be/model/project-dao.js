@@ -1,4 +1,4 @@
-const sql = require('../lib/sql')
+const sql = require('@/lib/sql')
 
 const model = {
     project: require('./project'),
@@ -170,7 +170,8 @@ const update = (projectId, data) => {
                 limit: 1,
                 where: {
                     id: projectId
-                }
+                },
+                transaction: tx
             }).then(row => {
                 return Promise.all([
                     Promise.resolve(row[1][0]),
