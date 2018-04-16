@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '@/components/Home.vue'
-import EditContest from '@/components/EditContest.vue'
-import Contests from '@/components/Contests.vue'
+import Home from '@/components/Home'
+import SignIn from '@/components/SignIn'
+import EditContest from '@/components/EditContest'
+import Contests from '@/components/Contests'
 import firebase from 'firebase'
 
 Vue.use(VueRouter)
@@ -13,6 +14,10 @@ const router = new VueRouter({
     {
       path: '/',
       component: Home
+    },
+    {
+      path: '/sign-in',
+      component: SignIn
     },
     {
       path: '/edit-contest',
