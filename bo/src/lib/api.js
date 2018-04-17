@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import store from '@/lib/store'
+import feedback from '@/lib/feedback'
 
 let instance = null
 
@@ -15,15 +16,13 @@ const getHeaders = () => {
   if (Vue.$config.firebase.devMode) {
     return Promise.resolve({
       'Authorization': 'admin',
-      'Content-Type': 'application/json',
-      'Accept-Language': 'en'
+      'Content-Type': 'application/json'
     })
   } else if (user) {
     return user.getIdToken().then(token => {
       return {
         'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json',
-        'Accept-Language': 'en'
+        'Content-Type': 'application/json'
       }
     })
   } else {
@@ -45,7 +44,22 @@ const checkAdmin = () => {
       return false
     }
     apiError(e)
-    throw new Error(e)
+    return null
+  })
+}
+
+const getContestById = id => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'get',
+      url: 'admin/contest/' + id,
+      headers
+    }).then(response => {
+      return response.data.contest
+    }).catch(e => {
+      apiError(e)
+      return null
+    })
   })
 }
 
@@ -61,21 +75,23 @@ const patchContest = (id, data) => {
     return response
   }).catch(e => {
     apiError(e)
-    throw new Error(e)
+    return null
   })
 }
 
 const apiError = e => {
   let error = e.response && e.response.data && e.response.data.error
   if (error) {
-    Vue.$log.error('API Error: ', error)
+    feedback.apiError(error)
+    Vue.$log.warn('API Error: ', error)
   } else {
-    Vue.$log.debug(e)
+    Vue.$log.error(e)
   }
 }
 
 export default {
   init,
   checkAdmin,
+  getContestById,
   patchContest
 }

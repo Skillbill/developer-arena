@@ -1,7 +1,7 @@
 <template>
-  <div class="form-group px-2">
-    <label v-bind:for="label">{{label}}: </label>
-    <input type="date" required class="form-control date" v-bind:id="label"
+  <div class="col-md-4 mb-3">
+    <label v-bind:for="label">{{label}}</label>
+    <input type="date" required class="form-control" v-bind:id="label"
       :value="dateInput" @input="dateInput=$event.target.value">
     <div class="invalid-feedback">
       Valid date is required

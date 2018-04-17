@@ -95,11 +95,13 @@ const auth = {
   },
   checkUser (user) {
     return api.checkAdmin().then(isAdmin => {
-      if (isAdmin) {
+      if (isAdmin === true) {
         feedback.isAdmin()
         router.push('edit-contest')
-      } else {
+      } else if (isAdmin === false) {
         feedback.notAdmin()
+        this.signOut()
+      } else {
         this.signOut()
       }
     }).catch(e => {
