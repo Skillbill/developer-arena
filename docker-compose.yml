@@ -8,10 +8,8 @@ services:
       - 3000:3000
     volumes:
       - type: bind
-        source: ./config
-        target: /config
-    environment:
-      - CONFIG=/config/config.json
+        source: ./config/config.json
+        target: /be/config.json
   db:
     image: "skillbillsrl/sda-contest-db:${TAG}"
   fe:
@@ -20,6 +18,10 @@ services:
       - be
     ports:
       - 80:8080
+    volumes:
+      - type: bind
+        source: ./config/configuration.json
+        target: /app/static/configuration.json
   bo:
     image: "skillbillsrl/sda-contest-bo:${TAG}"
     depends_on:
