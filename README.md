@@ -1,5 +1,7 @@
 # sda-contest
 
+[![buddy pipeline](https://app.buddy.works/skillbill/sda-contest/pipelines/pipeline/133124/badge.svg?token=e2e206bc004d0c6e951d21b1626bb735ebd86eeb49d735368b5d053938f35e20 "buddy pipeline")](https://app.buddy.works/skillbill/sda-contest/pipelines/pipeline/133124)
+
 ## Run the demo:
 
 [![docker required](https://img.shields.io/badge/docker-required-green.svg)](https://www.docker.com/)

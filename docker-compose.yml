@@ -8,7 +8,7 @@ services:
       - 3000:3000
     volumes:
       - type: bind
-        source: ./config/config.json
+        source: ./config/be.json
         target: /be/config.json
   db:
     image: "skillbillsrl/sda-contest-db:${TAG}"
@@ -20,7 +20,7 @@ services:
       - 80:8080
     volumes:
       - type: bind
-        source: ./config/configuration.json
+        source: ./config/fe.json
         target: /app/static/configuration.json
   bo:
     image: "skillbillsrl/sda-contest-bo:${TAG}"
@@ -28,5 +28,9 @@ services:
       - be
     ports:
       - 81:8080
+    volumes:
+      - type: bind
+        source: ./config/bo.json
+        target: /app/static/configuration.json
 
 #cd be && docker build . -t skillbillsrl/sda-contest-be:local && cd .. && cd db && docker build . -t skillbillsrl/sda-contest-db:local && cd .. && cd fe && docker build . -t skillbillsrl/sda-contest-fe:local && cd .. && cd bo && docker build . -t skillbillsrl/sda-contest-bo:local && cd .. && TAG=local docker-compose up
