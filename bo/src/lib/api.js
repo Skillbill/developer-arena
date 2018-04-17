@@ -18,8 +18,7 @@ const getHeaders = () => {
       'Content-Type': 'application/json',
       'Accept-Language': 'en'
     })
-  }
-  if (user) {
+  } else if (user) {
     return user.getIdToken().then(token => {
       return {
         'Authorization': 'Bearer ' + token,

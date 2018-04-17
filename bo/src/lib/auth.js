@@ -72,28 +72,32 @@ const auth = {
   init (config, showApp) {
     if (config.firebase.devMode) {
       let user = getSessionUser()
+      Vue.$log.info('Auth initialization in devMode with: ', user ? user.displayName : 'a new user')
       if (!user) user = createSessionUser()
       store.commit('setUser', user)
       router.push('/edit-contest')
       showApp()
     } else {
+      Vue.$log.info('Auth initialization in normal mode')
       firebase.initializeApp(config.firebase)
       firebase.auth().onAuthStateChanged(user => {
+        Vue.$log.info('Auth state changed for: ', user ? (user.displayName + ' id:' + user.uid) : 'no user')
         store.commit('setUser', user)
         user ? this.checkUser(user).then(showApp) : showApp()
       })
       firebase.auth().getRedirectResult()
         .then(this.afterRedirect)
-        .catch(this.onError)
+        .catch(this.afterRedirectError)
     }
   },
   checkUser (user) {
-    api.checkAdmin().then(isAdmin => {
+    return api.checkAdmin().then(isAdmin => {
       if (isAdmin) {
         feedback.isAdmin()
-        router.push('/edit-contest')
+        router.push('edit-contest')
       } else {
         feedback.notAdmin()
+        this.signOut()
       }
     }).catch(e => {
       Vue.$log.error(e)
@@ -108,6 +112,19 @@ const auth = {
     } else {
       Vue.$log.debug('afterRedirect: ', 'no user in result :', result)
     }
+  },
+  afterRedirectError (error) {
+    if (error.email && error.code === 'auth/account-exists-with-different-credential') {
+      firebase.auth().fetchProvidersForEmail(error.email).then(providers => {
+        if (providers.length !== 1) Vue.$log.error('After firebase account exists error, ', providers.length, ' providers were found')
+        Vue.$log.info(`Asking user "${error.email}"` +
+          ` that tried to login with "${error.credential.providerId}"` +
+          ` to login using his existing account at "${providers[0]}"`
+        )
+        router.push(`sign-in/${error.email}/${error.credential.providerId}/${providers[0]}`)
+      })
+    }
+    Vue.$log.debug('afterRedirectError', error)
   },
   signIn (provider) {
     firebase.auth().signInWithRedirect(new firebase.auth[provider.providerName]())

@@ -20,6 +20,11 @@ const router = new VueRouter({
       component: SignIn
     },
     {
+      path: '/sign-in/:email/:providerUsed/:providerToUse',
+      component: SignIn,
+      props: true
+    },
+    {
       path: '/edit-contest',
       component: EditContest,
       meta: {

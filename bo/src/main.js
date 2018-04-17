@@ -9,7 +9,7 @@ import VueLogger from 'vuejs-logger'
 
 Vue.config.productionTip = false
 let vm = null
-Vue.use(VueLogger, {logLevel: 'debug'})
+Vue.use(VueLogger, {logLevel: 'info', showConsoleColors: true, showLogLevel: true})
 
 axios({
   method: 'get',
@@ -17,6 +17,7 @@ axios({
 }).then(rep => {
   let config = rep.data
   Vue.$config = config
+  if (typeof Vue.$config.firebase.devMode !== 'boolean') Vue.$log.error('devMode in configuration.json should be a boolean')
   // Vue.prototype.$config = config
   auth.init(config, showApp)
   api.init(config)
