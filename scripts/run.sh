@@ -85,7 +85,6 @@ svc=$1
 case $svc in
     fe)
 	img=$img_fe
-	bindto=/app/static/configuration.js:ro
 	bindto=/app/static/configuration.json:ro
 	svclisten=$fe_port
 	;;
