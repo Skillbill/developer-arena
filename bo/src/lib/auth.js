@@ -33,7 +33,10 @@ const fakeUser = () => {
 }
 
 const createSessionUser = () => {
-  sessionStorage.setItem('user', JSON.stringify(fakeUser()))
+  let user = fakeUser()
+  Vue.$log.info('Auth created and added to session: ', user.displayName)
+  sessionStorage.setItem('user', JSON.stringify(user))
+  return user
 }
 
 const getSessionUser = () => {
@@ -121,13 +124,26 @@ const auth = {
           ` that tried to login with "${error.credential.providerId}"` +
           ` to login using his existing account at "${providers[0]}"`
         )
-        router.push(`sign-in/${error.email}/${error.credential.providerId}/${providers[0]}`)
+        router.push({
+          name: 'signInWithProvider',
+          params: {
+            email: error.email,
+            providerUsed: error.credential.providerId,
+            providerToUse: providers[0]
+          }
+        })
       })
     }
     Vue.$log.debug('afterRedirectError', error)
   },
   signIn (provider) {
-    firebase.auth().signInWithRedirect(new firebase.auth[provider.providerName]())
+    if (!Vue.$config.firebase.devMode) {
+      firebase.auth().signInWithRedirect(new firebase.auth[provider.providerName]())
+    } else {
+      let user = createSessionUser()
+      store.commit('setUser', user)
+      router.push('/edit-contest')
+    }
   },
   signOut () {
     store.commit('setUser', null)

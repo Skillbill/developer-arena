@@ -41,7 +41,7 @@ const checkAdmin = () => {
   }).then(response => {
     return true
   }).catch(e => {
-    if (e.response && e.response.status === 401) {
+    if (e.response && e.response.status === 403) {
       return false
     }
     apiError(e)

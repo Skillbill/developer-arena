@@ -20,6 +20,7 @@ const router = new VueRouter({
       component: SignIn
     },
     {
+      name: 'signInWithProvider',
       path: '/sign-in/:email/:providerUsed/:providerToUse',
       component: SignIn,
       props: true
