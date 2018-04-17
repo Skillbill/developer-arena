@@ -17,7 +17,7 @@ services:
     depends_on:
       - be
     ports:
-      - 80:8080
+      - 8080:8080
     volumes:
       - type: bind
         source: ./config/fe.json
@@ -27,7 +27,7 @@ services:
     depends_on:
       - be
     ports:
-      - 81:8080
+      - 8081:8080
     volumes:
       - type: bind
         source: ./config/bo.json
