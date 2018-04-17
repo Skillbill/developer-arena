@@ -17,7 +17,9 @@
 import {mapGetters} from 'vuex'
 import EditDate from '@/components/EditDate'
 import axios from 'axios'
-import * as utils from '../utils'
+import api from '@/lib/api'
+import feedback from '@/lib/feedback'
+import * as utils from '@/lib/utils'
 
 export default {
   name: 'EditContest',
@@ -44,38 +46,14 @@ export default {
         this.wasValidated = false
       }
 
-      this.user.getIdToken().then(token => {
-        let headers = {
-          'Authorization': 'admin',
-          'Content-Type': 'application/json',
-          'Accept-Language': 'en'
-        }
-        return axios({
-          method: 'patch',
-          url: utils.getApiUrl('/admin/contest/' + this.contest.id),
-          data: {
-            endPresentation: this.contest.endPresentation,
-            endApplying: this.contest.endApplying,
-            endVoting: this.contest.endVoting
-          },
-          headers
-        })
-      }).then(response => {
-        this.$store.commit('addFeedback', {
-          title: 'Saved',
-          message: 'New dates have been saved successfully'
-        })
-      }).catch(e => {
-        let error = e.response && e.response.data && e.response.data.error
-        if (error) {
-          this.$store.commit('addFeedback', {
-            title: 'Error',
-            message: `status code: ${error.code}, text: ${error.msg}`
-          })
-          console.error(e)
-        } else {
-          console.log(e)
-        }
+      api.patchContest(this.contest.id, {
+        endPresentation: this.contest.endPresentation,
+        endApplying: this.contest.endApplying,
+        endVoting: this.contest.endVoting
+      }).then(() => {
+        feedback.contestUpdated()
+      }).catch(() => {
+        feedback.apiError()
       })
     }
   },
@@ -98,9 +76,9 @@ export default {
           title: 'Error',
           message: `status code: ${error.code}, text: ${error.msg}`
         })
-        console.error(e)
+        this.$log.error(e)
       } else {
-        console.error(e)
+        this.$log.error(e)
       }
     })
   }

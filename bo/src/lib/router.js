@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '@/components/Home.vue'
-import EditContest from '@/components/EditContest.vue'
-import Contests from '@/components/Contests.vue'
+import Home from '@/components/Home'
+import SignIn from '@/components/SignIn'
+import EditContest from '@/components/EditContest'
+import Contests from '@/components/Contests'
 import firebase from 'firebase'
 
 Vue.use(VueRouter)
@@ -15,17 +16,33 @@ const router = new VueRouter({
       component: Home
     },
     {
+      path: '/sign-in',
+      component: SignIn
+    },
+    {
+      path: '/sign-in/:email/:providerUsed/:providerToUse',
+      component: SignIn,
+      props: true
+    },
+    {
       path: '/edit-contest',
-      component: EditContest
+      component: EditContest,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/contests',
-      component: Contests
+      component: Contests,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
+  if (!Vue.$config || Vue.$config.firebase.devMode) next()
   let currentUser = firebase.auth().currentUser
   let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   if (requiresAuth && !currentUser) {

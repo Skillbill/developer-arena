@@ -12,7 +12,7 @@
 
 <script>
 import axios from 'axios'
-import * as utils from '../utils'
+import * as utils from '@/lib/utils'
 
 export default {
   name: 'Contests',
@@ -31,7 +31,7 @@ export default {
     }).then(response => {
       this.lastContestTitle = response.data.contest.title
     }).catch(e => {
-      console.error(e)
+      this.$log.error(e)
     })
     axios({
       method: 'get',
@@ -40,7 +40,7 @@ export default {
     }).then(response => {
       this.contestList = response.data.contests
     }).catch(e => {
-      console.error(e)
+      this.$log.error(e)
     })
   }
 }

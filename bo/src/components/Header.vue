@@ -14,7 +14,7 @@
         </li>
       </ul>
       <span class="pr-2 navbar-text" v-if="user">{{user.displayName}}</span>
-      <button type="button" class="btn btn-primary" v-if="!user" v-on:click="signIn">Sign in</button>
+      <router-link type="button" class="btn btn-primary" v-if="!user" to="/sign-in">Sign in</router-link>
       <button type="button" class="btn btn-outline-danger" v-if="user" v-on:click="signOut">Sign out</button>
     </div>
   </nav>
@@ -22,7 +22,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import auth from '../auth'
+import auth from '@/lib/auth'
 
 export default {
   name: 'Header',
@@ -32,19 +32,8 @@ export default {
     })
   },
   methods: {
-    signIn () {
-      auth.signIn()
-    },
     signOut () {
-      auth.signOut(this.onSignOut, this.onError)
-      this.$store.commit('setUser', null)
-    },
-    onSignOut () {
-      console.log('onSignOut')
-      this.$router.push('/')
-    },
-    onError (e) {
-      console.error('onError: ', e)
+      auth.signOut()
     }
   }
 }

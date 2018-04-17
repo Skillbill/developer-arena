@@ -1,0 +1,50 @@
+<template>
+  <div>
+    <div v-if="providerToUse">
+      <span>Please use <b>{{providerToUse}}</b> instead if you want to login with <b>{{email}}</b></span>
+      <span>(You've tried to login with {{providerUsed}})</span>
+    </div>
+    <div v-for="provider in providers" :key="provider.name">
+      <ProviderButton :provider="provider" @provider-clicked="signIn"/>
+    </div>
+  </div>
+</template>
+
+<script>
+import {mapGetters} from 'vuex'
+import auth from '@/lib/auth'
+import ProviderButton from '@/components/ProviderButton'
+
+export default {
+  name: 'SignIn',
+  data () {
+    return {
+      providers: auth.providers
+    }
+  },
+  props: {
+    email: {
+      type: String
+    },
+    providerUsed: {
+      type: String
+    },
+    providerToUse: {
+      type: String
+    }
+  },
+  components: {
+    ProviderButton
+  },
+  computed: {
+    ...mapGetters({
+      user: 'getUser'
+    })
+  },
+  methods: {
+    signIn (provider) {
+      auth.signIn(provider)
+    }
+  }
+}
+</script>
