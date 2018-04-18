@@ -956,3 +956,7 @@ main.sign-in section.email {
   }
 
 }
+
+div.v-md img {
+  margin : 5px
+}
