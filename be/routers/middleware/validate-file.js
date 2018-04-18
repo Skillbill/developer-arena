@@ -17,7 +17,7 @@ const validate = (file, req, res, next) => {
     if (!name) {
         return next(error.new(error.fileNoName, {file: file.kind}))
     }
-    if (!file.allowedTypes.includes(mimetype)) {
+    if (file.allowedTypes && !file.allowedTypes.includes(mimetype)) {
         return next(error.new(error.fileInvalidType, {type: mimetype, file: file.kind}))
     }
     next()
