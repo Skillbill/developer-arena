@@ -889,6 +889,15 @@ main.sign-in section.email {
 
   .main-header {
     font-size: 16px;
+    padding: 1rem 0rem 2rem 0rem;
+  }
+
+  .main-header h1 {
+    padding-bottom: 0.5rem;
+  }
+
+  .main-nav li {
+    padding: 0.5rem 0.1rem;
   }
 
   .container > main {
@@ -928,6 +937,12 @@ main.sign-in section.email {
     max-width: calc(100vw - 3rem);
   }
 
+}
+
+@media screen and (max-width: 499px) {
+  .main-nav {
+    width: 100vw;
+  }
 }
 
 @media screen and (max-width: 359px) {
