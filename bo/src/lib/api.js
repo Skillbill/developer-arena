@@ -2,6 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import store from '@/lib/store'
 import feedback from '@/lib/feedback'
+import * as utils from '@/lib/utils'
 
 let instance = null
 
@@ -55,7 +56,9 @@ const getContestById = id => {
       url: 'admin/contest/' + id,
       headers
     }).then(response => {
-      return response.data.contest
+      let contest = response.data.contest
+      contest.i18n = utils.fromI18n(contest.i18n)
+      return contest
     }).catch(e => {
       apiError(e)
       return null
@@ -63,11 +66,13 @@ const getContestById = id => {
   })
 }
 
-const patchContest = (id, data) => {
+const patchContest = (contest) => {
+  let data = Object.assign({}, contest)
+  data.i18n = utils.toI18n(data.i18n)
   return getHeaders().then(headers => {
     return instance({
       method: 'patch',
-      url: '/admin/contest/' + id,
+      url: '/admin/contest/' + contest.id,
       data,
       headers
     })
