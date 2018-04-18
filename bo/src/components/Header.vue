@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" v-if="user">
-          <router-link class="nav-link" to="/edit-contest">Dates</router-link>
+          <router-link class="nav-link" to="/edit-contest">Edit contest</router-link>
         </li>
         <li class="nav-item" v-if="user">
           <router-link class="nav-link" to="/contests">Contests</router-link>

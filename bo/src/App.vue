@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header/>
-    <div class="container-flex mx-4">
+    <div class="container">
       <Feedbacks/>
       <router-view></router-view>
     </div>

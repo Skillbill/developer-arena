@@ -18,10 +18,10 @@ const contestUpdated = () => {
     message: 'New dates have been saved successfully'
   })
 }
-const apiError = () => {
+const apiError = (error) => {
   store.commit('addFeedback', {
     title: 'API error',
-    message: ''
+    message: `status code: ${error.code}, text: ${error.msg}`
   })
 }
 

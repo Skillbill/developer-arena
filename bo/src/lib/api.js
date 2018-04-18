@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import axios from 'axios'
 import store from '@/lib/store'
+import feedback from '@/lib/feedback'
+import * as utils from '@/lib/utils'
 
 let instance = null
 
@@ -15,15 +17,13 @@ const getHeaders = () => {
   if (Vue.$config.firebase.devMode) {
     return Promise.resolve({
       'Authorization': 'admin',
-      'Content-Type': 'application/json',
-      'Accept-Language': 'en'
+      'Content-Type': 'application/json'
     })
   } else if (user) {
     return user.getIdToken().then(token => {
       return {
         'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json',
-        'Accept-Language': 'en'
+        'Content-Type': 'application/json'
       }
     })
   } else {
@@ -45,15 +45,34 @@ const checkAdmin = () => {
       return false
     }
     apiError(e)
-    throw new Error(e)
+    return null
   })
 }
 
-const patchContest = (id, data) => {
+const getContestById = id => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'get',
+      url: 'admin/contest/' + id,
+      headers
+    }).then(response => {
+      let contest = response.data.contest
+      contest.i18n = utils.fromI18n(contest.i18n)
+      return contest
+    }).catch(e => {
+      apiError(e)
+      return null
+    })
+  })
+}
+
+const patchContest = (contest) => {
+  let data = Object.assign({}, contest)
+  data.i18n = utils.toI18n(data.i18n)
   return getHeaders().then(headers => {
     return instance({
       method: 'patch',
-      url: '/admin/contest/' + id,
+      url: '/admin/contest/' + contest.id,
       data,
       headers
     })
@@ -61,21 +80,23 @@ const patchContest = (id, data) => {
     return response
   }).catch(e => {
     apiError(e)
-    throw new Error(e)
+    return null
   })
 }
 
 const apiError = e => {
   let error = e.response && e.response.data && e.response.data.error
   if (error) {
-    Vue.$log.error('API Error: ', error)
+    feedback.apiError(error)
+    Vue.$log.warn('API Error: ', error)
   } else {
-    Vue.$log.debug(e)
+    Vue.$log.error(e)
   }
 }
 
 export default {
   init,
   checkAdmin,
+  getContestById,
   patchContest
 }
