@@ -755,7 +755,7 @@ div.progressbar span.bar {
 .contest img {
   display: block;
   float: right;
-  margin: 0 0 0.4rem 0.4rem;
+  margin: 0.4rem 0 0.4rem 0.4rem;
 }
 
 /* footer */
@@ -955,8 +955,4 @@ main.sign-in section.email {
     font-size: 14px;
   }
 
-}
-
-div.v-md img {
-  margin : 5px
 }
