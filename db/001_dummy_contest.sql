@@ -36,7 +36,7 @@ INSERT INTO "public" . contest_i18n(
 Following some ideas :
 
 - an animation inspired by the movie scenes using the original characters
-- a visualization of a awesome genetic algorithm that pilots the Iroenter code herenMan''s bullets
+- a visualization of a awesome genetic algorithm that pilots the Iron Man''s bullets
 - a transformation of Banner into HULK based on the speed of mouse clicks
 - take all the gems of Infinity by playing a rhythm game
 
