@@ -1,3 +1,4 @@
+const limits = require('@/limits')
 const http = require('@/lib/http')
 const libContest = require('@/lib/contest')
 const logger = require('@/lib/logger')
@@ -121,6 +122,12 @@ function prepareProject(req, res, next) {
         description: req.body.description,
         repoURL: req.body.repoURL || null,
         video: req.body.video || null
+    }
+    if (req.project.video) {
+        const re = new RegExp(limits.video.acceptedRegex)
+        if (!re.test(req.project.video)) {
+            return next(error.new(error.invalidUrl, {url: req.project.video}))
+        }
     }
     if (req.files) {
         if (req.files.deliverable) {

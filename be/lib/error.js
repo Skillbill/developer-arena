@@ -73,6 +73,11 @@ module.exports = {
         code: 1014,
         msg: 'file_invalid_type'
     },
+    invalidUrl: {
+        http: http.badRequest,
+        code: 1015,
+        msg: 'invalid_url'
+    },
     invalidState: {
         http: http.badRequest,
         code: 1016,

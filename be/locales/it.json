@@ -20,6 +20,7 @@
     "file_no_name": "{{file}} deve avere un nome",
     "file_invalid_type": "il tipo {{type}} non è supportato per il file {{file}}",
     "not_admin": "Hai bisogno dei permessi di amministrazione per accedere a questa risorsa",
+    "invalid_url": "La URL fornita non è accettata: {{url}}",
     "invalid_state": "stato non valido: {{state}}",
     "invalid_dates": "date non valide",
     "email_not_verified": "email non verificata",
