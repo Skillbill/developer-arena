@@ -30,7 +30,7 @@
           <hr>
           <div v-md="contest.rules"></div>
           <template v-if="contest.state === 'APPLYING'">
-            <form action="#" class="submit-project" v-on:submit.prevent="applyContest">
+            <form action="#" class="submit-project sticky-bottom" v-on:submit.prevent="applyContest">
               <button type="submit">{{ $t('applyContest') }}</button>
             </form>
           </template>
@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     applyContest() {
-      this.$router.push('submit-entry');
+      this.$router.push('/submit-entry');
     },
     onEndCountdown() {
       this.loadContest();

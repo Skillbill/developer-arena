@@ -21,6 +21,11 @@
         </div>
       </div>
       <div class="progress" v-show="loading"></div>
+      <template v-if="contest && contest.state === 'APPLYING'">
+        <form action="#" class="submit-project sticky-bottom" v-on:submit.prevent="applyContest">
+          <button type="submit">{{ $t('applyContest') }}</button>
+        </form>
+      </template>
     </section>
   </main>
 </template>
@@ -70,6 +75,9 @@ export default {
       }).then(() => {
         this.loading = false;
       });
+    },
+    applyContest() {
+      this.$router.push('/submit-entry');
     }
   }
 }

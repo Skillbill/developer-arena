@@ -335,6 +335,11 @@ small {
   color: #666;
 }
 
+.sticky-bottom {
+  position: sticky;
+  bottom: 0;  
+}
+
 /*** molecules ***/
 
 /* main-info */
@@ -421,7 +426,6 @@ small {
   width: 100%;
   padding: 1rem;
   font-size: 150%;  
-  margin-bottom: 0.2rem;
 }
 
 /* footer-info */

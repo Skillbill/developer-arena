@@ -56,7 +56,7 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth && (!currentUser || (currentUser && providerPassword && !emailVerified))) {
     next({
-      path: 'sign-in',
+      path: '/sign-in',
       query: {
         redirect: to.fullPath
       }
