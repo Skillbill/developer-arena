@@ -90,7 +90,7 @@ function showFirebaseErroMessage(error) {
     this.$store.commit('setFeedbackError', error.message);
     return;
   }
-  let errorMessage = `firebase.${error.code.replace('/', '-')}`;
+  let errorMessage = `firebase.${(error.code || '').replace('/', '-')}`;
   if(!this.$i18n.te(errorMessage)) {
     errorMessage = 'firebase.generic-error';
   }
