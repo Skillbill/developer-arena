@@ -31,16 +31,18 @@ INSERT INTO "public" . contest_i18n(
     1,
     'description',
     'en',
-    'The theme of this competition is the development of an animated and / or interactive  **HTML5** application inspired by the **Marvel** world, more specifically for the new upcoming movie **“Avengers Infinity War”**.
+    '
+The theme of this competition is the development of an animated and / or interactive  **HTML5** application inspired by the **Marvel** world, more specifically for the new upcoming movie **“Avengers Infinity War”**.
+![poster](https://s3-eu-west-1.amazonaws.com/sda-static/3367434-aiw_master-1-960x540.jpg)
 Following some ideas :
 
 - an animation inspired by the movie scenes using the original characters
-- a visualization of a awesome genetic algorithm that pilots the IronMan''s bullets
+- a visualization of a awesome genetic algorithm that pilots the Iroenter code herenMan''s bullets
 - a transformation of Banner into HULK based on the speed of mouse clicks
 - take all the gems of Infinity by playing a rhythm game
 
 but ideas can be so many so the limit is only your imagination.
-You can use any web technique.'
+You can use any web technique.''
 );
 
 INSERT INTO "public" . contest_i18n(
@@ -65,6 +67,7 @@ INSERT INTO "public" . contest_i18n(
     'description',
     'it',
     'Il tema di questa gara è lo sviluppo di un programma **HTML5** animato e/o interattivo ispirato al mondo **Marvel** più specificatamente al nuovo film in arrivo **“Avengers Infinity War”**.
+![poster](https://s3-eu-west-1.amazonaws.com/sda-static/3367434-aiw_master-1-960x540.jpg)
 Ecco alcuni esempi :
 
  - una animazione ispirata al film con i vari personaggi
