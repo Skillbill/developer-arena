@@ -76,12 +76,14 @@ export default {
       }
     },
     acceptedDeliverableTypes() {
-      if(this.$store.state.limits && this.$store.state.limits.deliverable) {
+      if(this.$store.state.limits && this.$store.state.limits.deliverable &&
+          this.$store.state.limits.deliverable.allowedTypes && this.$store.state.limits.deliverable.allowedTypes.length > 0) {
         return this.$store.state.limits.deliverable.allowedTypes.join(', ');
       }
     },
     acceptedImageTypes() {
-      if(this.$store.state.limits && this.$store.state.limits.image) {
+      if(this.$store.state.limits && this.$store.state.limits.image &&
+          this.$store.state.limits.image.allowedTypes && this.$store.state.limits.image.allowedTypes.length > 0) {
         return this.$store.state.limits.image.allowedTypes.join(', ');
       }
     }
@@ -123,10 +125,11 @@ export default {
         let valid = true;
         let file = projectFormData.get(field);
         if(file && file.name && file.size && file.type && this.$store.state.limits && this.$store.state.limits[field]) {
-          if(this.$store.state.limits[field].allowedTypes.indexOf(file.type) === -1) {
+          if(this.$store.state.limits[field].allowedTypes && this.$store.state.limits[field].allowedTypes.length > 0 &&
+              this.$store.state.limits[field].allowedTypes.indexOf(file.type) === -1) {
             this.$store.commit('setFeedbackError', {message: `project.${field}InvalidType`, args: {types: utils.getTypesString(this.$store.state.limits[field].allowedTypes)}});
             valid = false;
-          } else if(file.size > this.$store.state.limits[field].maxAllowedSize) {
+          } else if(this.$store.state.limits[field].maxAllowedSize > 0 && file.size > this.$store.state.limits[field].maxAllowedSize) {
             this.$store.commit('setFeedbackError', {message: `project.${field}InvalidSize`, args: {size: utils.getFileSizeString(this.$store.state.limits[field].maxAllowedSize)}});
             valid = false;
           }
