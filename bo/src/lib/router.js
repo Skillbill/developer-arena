@@ -9,7 +9,6 @@ import firebase from 'firebase'
 Vue.use(VueRouter)
 const router = new VueRouter({
   base: '/admin',
-  mode: 'history',
   routes: [
     {
       path: '/',
