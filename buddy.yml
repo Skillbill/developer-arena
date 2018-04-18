@@ -77,9 +77,9 @@
     port: "22"
     authentication_mode: "PASS"
     commands:
-    - "docker-compose pull"
+    - "TAG=test docker-compose pull"
     - "docker-compose down --remove-orphans"
-    - "docker-compose up -d"
+    - "TAG=test docker-compose up -d"
     run_as_script: true
     shell: "BASH"
     trigger_condition: "ALWAYS"
