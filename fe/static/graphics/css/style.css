@@ -759,8 +759,7 @@ div.progressbar span.bar {
 
 .contest img {
   display: block;
-  float: right;
-  margin: 0.4rem 0 0.4rem 0.4rem;
+  margin: 0.4rem 0;
 }
 
 /* footer */
