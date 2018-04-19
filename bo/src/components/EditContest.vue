@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 v-if="contest" class="mb-3">Edit contest {{contest.id}}</h3>
+    <h3 v-if="contest" class="mb-3">Edit contest number {{contest.id}} ({{contest.i18n['en'].title}})</h3>
     <form v-if="contest" class="needs-validation" autocomplete="off"
       v-bind:class="{'was-validated': wasValidated}" novalidate @submit.prevent="validateAndPatch">
       <div class="btn-group btn-group-toggle mb-3">
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import {mapGetters} from 'vuex'
 import EditDate from '@/components/EditDate'
 import api from '@/lib/api'
@@ -81,15 +82,35 @@ export default {
   },
   methods: {
     validateAndPatch (event) {
-      if (event.target.checkValidity() === false) {
-        this.wasValidated = true
-        return
-      } else {
-        this.wasValidated = false
-      }
-
-      api.patchContest(this.contest).then(response => {
-        if (response) feedback.contestUpdated()
+      let form = event.target
+      let oldLang = this.activeLang
+      console.info('check en')
+      this.checkValidity(form, 'en').then(() => {
+        console.info('check it')
+        return this.checkValidity(form, 'it')
+      }).then(() => {
+        console.info('OK patch')
+        this.activeLang = oldLang
+        api.patchContest(this.contest).then(response => {
+          if (response) feedback.contestUpdated()
+        })
+      }).catch(() => {
+        console.info('KO no patch')
+        feedback.invalidFeilds()
+      })
+    },
+    checkValidity (form, lang) {
+      this.activeLang = lang
+      return Vue.nextTick().then(() => {
+        if (form.checkValidity()) {
+          this.wasValidated = false
+          console.info(lang, ' valid')
+          return Promise.resolve()
+        } else {
+          this.wasValidated = true
+          console.info(lang, ' not valid')
+          return Promise.reject(new Error('not valid'))
+        }
       })
     }
   },

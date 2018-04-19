@@ -104,8 +104,12 @@ const patchContest = (contest) => {
 const apiError = e => {
   let error = e.response && e.response.data && e.response.data.error
   if (error) {
-    feedback.apiError(error)
-    Vue.$log.warn('API Error: ', error)
+    if (error.code === 1017) {
+      feedback.invalidDates()
+    } else {
+      feedback.apiError(error)
+      Vue.$log.warn('API Error: ', error)
+    }
   } else {
     Vue.$log.error(e)
   }
