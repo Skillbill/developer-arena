@@ -123,7 +123,7 @@ export default {
 
       const isValidFile = (field) => {
         let valid = true;
-        let file = projectFormData.get(field);
+        let file = form.querySelector(`[name="${field}"]`).files[0];
         if(file && file.name && file.size && file.type && this.$store.state.limits && this.$store.state.limits[field]) {
           if(this.$store.state.limits[field].allowedTypes && this.$store.state.limits[field].allowedTypes.length > 0 &&
               this.$store.state.limits[field].allowedTypes.indexOf(file.type) === -1) {
