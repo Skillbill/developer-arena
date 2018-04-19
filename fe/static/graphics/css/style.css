@@ -374,7 +374,7 @@ small {
 }
 
 .main-info::after {
-  left: initial;
+  left: auto;
   right: 0;
   transform: skewX(-8deg) translateX(-1rem);
 }
