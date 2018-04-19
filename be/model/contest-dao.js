@@ -20,7 +20,12 @@ const getTableWithI18n = (includes, language) => {
     return contest
 }
 
-const findAll = () => sql.getContestTable().findAll({})
+const findAll = (language) => {
+    let includes = []
+    const table = getTableWithI18n(includes, language)
+    includes[0].where.attribute = 'title'
+    return table.findAll({ include: includes })
+}
 
 const findById = (id, language) => {
     let includes = []
