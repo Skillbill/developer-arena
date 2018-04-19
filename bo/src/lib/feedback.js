@@ -1,28 +1,16 @@
-import store from '@/lib/store'
+import Vue from 'vue'
 
 const isAdmin = () => {
-  store.commit('addFeedback', {
-    title: 'Success',
-    message: 'You are an admin'
-  })
+  Vue.$toastr.success('You are an admin', 'Logged in')
 }
 const notAdmin = () => {
-  store.commit('addFeedback', {
-    title: 'Denied',
-    message: 'You are not an admin'
-  })
+  Vue.$toastr.warning('You are not an admin', 'Denied access')
 }
 const contestUpdated = () => {
-  store.commit('addFeedback', {
-    title: 'Saved',
-    message: 'New dates have been saved successfully'
-  })
+  Vue.$toastr.success('New dates have been saved successfully', 'Saved')
 }
 const apiError = (error) => {
-  store.commit('addFeedback', {
-    title: 'API error',
-    message: `status code: ${error.code}, text: ${error.msg}`
-  })
+  Vue.$toastr.error(`status code: ${error.code}, text: ${error.msg}`, 'API error')
 }
 
 export default {
