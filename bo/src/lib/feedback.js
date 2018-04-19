@@ -9,6 +9,9 @@ const notAdmin = () => {
 const contestUpdated = () => {
   Vue.$toastr.success('The contest has been modified successfully', 'Saved')
 }
+const contestCreated = () => {
+  Vue.$toastr.success('The contest has been created successfully', 'Saved')
+}
 const invalidFeilds = () => {
   Vue.$toastr.error('Some feilds are invalid', 'Not saved')
 }
@@ -25,5 +28,6 @@ export default {
   invalidFeilds,
   invalidDates,
   contestUpdated,
+  contestCreated,
   apiError
 }

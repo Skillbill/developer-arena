@@ -1,8 +1,9 @@
 <template>
   <div>
-    <h3 v-if="contest" class="mb-3">Edit contest number {{contest.id}} ({{contest.i18n['en'].title}})</h3>
+    <h3 v-if="contest && contest.id" class="mb-3">Edit contest number {{contest.id}} ({{contest.i18n['en'].title}})</h3>
+    <h3 v-if="contest && !contest.id" class="mb-3">Create new contest</h3>
     <form v-if="contest" class="needs-validation" autocomplete="off"
-      v-bind:class="{'was-validated': wasValidated}" novalidate @submit.prevent="validateAndPatch">
+      v-bind:class="{'was-validated': wasValidated}" novalidate @submit.prevent="validateAndSend">
       <div class="btn-group btn-group-toggle mb-3">
         <label class="btn btn-secondary" v-for="lang in ['en', 'it']" :key="lang" :class="{active: lang === activeLang}">
           <input type="radio" name="options" id="lang" @click="activeLang = lang"> {{lang}}
@@ -59,6 +60,8 @@ import {mapGetters} from 'vuex'
 import EditDate from '@/components/EditDate'
 import api from '@/lib/api'
 import feedback from '@/lib/feedback'
+import router from '@/lib/router'
+import * as utils from '@/lib/utils'
 
 export default {
   name: 'EditContest',
@@ -81,19 +84,28 @@ export default {
     })
   },
   methods: {
-    validateAndPatch (event) {
+    validateAndSend (event) {
       let form = event.target
       let oldLang = this.activeLang
-      console.info('check en')
       this.checkValidity(form, 'en').then(() => {
-        console.info('check it')
         return this.checkValidity(form, 'it')
       }).then(() => {
-        console.info('OK patch')
         this.activeLang = oldLang
-        api.patchContest(this.contest).then(response => {
-          if (response) feedback.contestUpdated()
-        })
+        if (this.contest.id) {
+          api.patchContest(this.contest).then(response => {
+            if (response) {
+              feedback.contestUpdated()
+              router.push('/contests')
+            }
+          })
+        } else {
+          api.createContest(this.contest).then(response => {
+            if (response) {
+              feedback.contestCreated()
+              router.push('/contests')
+            }
+          })
+        }
       }).catch(() => {
         console.info('KO no patch')
         feedback.invalidFeilds()
@@ -104,20 +116,22 @@ export default {
       return Vue.nextTick().then(() => {
         if (form.checkValidity()) {
           this.wasValidated = false
-          console.info(lang, ' valid')
           return Promise.resolve()
         } else {
           this.wasValidated = true
-          console.info(lang, ' not valid')
           return Promise.reject(new Error('not valid'))
         }
       })
     }
   },
   created () {
-    api.getContestById(this.contestId).then(contest => {
-      if (contest) this.contest = contest
-    })
+    if (this.contestId) {
+      api.getContestById(this.contestId).then(contest => {
+        if (contest) this.contest = contest
+      })
+    } else {
+      this.contest = utils.getEmptyContest()
+    }
   }
 }
 </script>
