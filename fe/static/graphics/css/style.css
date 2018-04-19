@@ -718,6 +718,7 @@ div.progressbar span.bar {
   justify-content: center;
   align-items: center;
   background: #003363;
+  overflow: hidden;
 }
 
 .main-header::after {
