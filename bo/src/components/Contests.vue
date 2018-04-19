@@ -13,7 +13,7 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Start date</th>
-          <th scope="col">English title</th>
+          <th scope="col">Title</th>
           <th scope="col">State</th>
         </tr>
       </thead>
@@ -21,7 +21,7 @@
         <tr v-for="contest in contestList" v-bind:key="contest.id" @click="editContest(contest.id)">
           <th scope="row">{{contest.id}}</th>
           <td>{{contest.endPresentation | formatDate}}</td>
-          <td>TODO: add title</td>
+          <td>{{contest.title}}</td>
           <td>{{contest.state}}</td>
         </tr>
       </tbody>
