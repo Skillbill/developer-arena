@@ -14,7 +14,10 @@
       </p>
     </div>
     <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.voteButtonLabel)}}</button>
-    <button v-if="showDeliverable" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
+    <template v-if="showDeliverable">
+      <button v-if="isApproved || isOwn" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
+      <button v-else disabled>{{$t('project.needsApprove')}}</button>
+    </template>
     <button v-if="showRepo && project.repoURL" v-on:click="goToRepo">{{$t('viewRepo')}}</button>
     <button v-if="canEdit" v-on:click="goToEdit">{{$t('project.edit')}}</button>
     <div class="video" v-if="showVideo && youtubeVideoCode">
@@ -89,13 +92,18 @@ export default {
       return this.$store.state.user && this.$store.state.contest && this.$store.state.contest.state === 'VOTING';
     },
     canEdit() {
-      return this.showEdit && this.$store.state.user && this.$store.state.contest && this.project &&
-              this.$store.state.contest.state === 'APPLYING' && this.project.userId === this.$store.state.user.uid;
+      return this.showEdit && this.isOwn && this.$store.state.contest && this.$store.state.contest.state === 'APPLYING';
+    },
+    isOwn() {
+      return this.$store.state.user && this.project && this.project.userId === this.$store.state.user.uid;
     },
     isVoted() {
       return this.project.votes.filter(v => {
         return this.$store.state.user && v.userId === this.$store.state.user.uid;
       }).length > 0;
+    },
+    isApproved() {
+      return this.project && this.project.approved;
     }
   },
   methods: {
