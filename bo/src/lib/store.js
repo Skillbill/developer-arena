@@ -1,34 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import uuid from 'uuid4'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: null,
-    feedbacks: []
+    user: null
   },
   getters: {
-    getUser: state => state.user,
-    getFeedbacks: state => state.feedbacks
+    getUser: state => state.user
   },
   mutations: {
     setUser (state, user) {
       state.user = user
-    },
-    addFeedback (state, feedbackData) {
-      let id = uuid()
-      let cbRemove = () => {
-        this.commit('removeFeedback', id)
-      }
-      feedbackData.id = id
-      feedbackData.remove = cbRemove
-      setTimeout(cbRemove, 5000)
-      state.feedbacks.push(feedbackData)
-    },
-    removeFeedback (state, id) {
-      state.feedbacks = state.feedbacks.filter(elem => elem.id !== id)
     }
   },
   actions: {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="mb-3">Edit contest {{contest.id}}</h3>
+    <h3 v-if="contest" class="mb-3">Edit contest {{contest.id}}</h3>
     <form v-if="contest" class="needs-validation" autocomplete="off"
       v-bind:class="{'was-validated': wasValidated}" novalidate @submit.prevent="validateAndPatch">
       <div class="btn-group btn-group-toggle mb-3">

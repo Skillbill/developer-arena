@@ -6,19 +6,20 @@ import axios from 'axios'
 import auth from './lib/auth'
 import api from './lib/api'
 import VueLogger from 'vuejs-logger'
+import Toastr from 'toastr'
 
 Vue.config.productionTip = false
 let vm = null
 Vue.use(VueLogger, {logLevel: 'info', showConsoleColors: true, showLogLevel: true})
+Vue.$toastr = Vue.prototype.$toastr = Toastr
 
 axios({
   method: 'get',
   url: '/static/configuration.json'
 }).then(rep => {
   let config = rep.data
-  Vue.$config = config
+  Vue.$config = Vue.prototype.$config = config
   if (typeof Vue.$config.firebase.devMode !== 'boolean') Vue.$log.error('devMode in configuration.json should be a boolean')
-  // Vue.prototype.$config = config
   auth.init(config, showApp)
   api.init(config)
 }).catch(e => {
