@@ -25,8 +25,10 @@ const router = new VueRouter({
       props: true
     },
     {
-      path: '/edit-contest',
+      name: 'editContest',
+      path: '/edit-contest/:contestId',
       component: EditContest,
+      props: true,
       meta: {
         requiresAuth: true
       }

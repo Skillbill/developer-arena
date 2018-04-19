@@ -49,6 +49,23 @@ const checkAdmin = () => {
   })
 }
 
+const getContests = () => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'get',
+      url: 'admin/contest',
+      headers
+    }).then(response => {
+      let contests = response.data.contests
+      contests.sort((a, b) => a.id > b.id)
+      return contests
+    }).catch(e => {
+      apiError(e)
+      return null
+    })
+  })
+}
+
 const getContestById = id => {
   return getHeaders().then(headers => {
     return instance({
@@ -97,6 +114,7 @@ const apiError = e => {
 export default {
   init,
   checkAdmin,
+  getContests,
   getContestById,
   patchContest
 }

@@ -78,7 +78,7 @@ const auth = {
       Vue.$log.info('Auth initialization in devMode with: ', user ? user.displayName : 'a new user')
       if (!user) user = createSessionUser()
       store.commit('setUser', user)
-      router.push('/edit-contest')
+      router.push('/contests')
       showApp()
     } else {
       Vue.$log.info('Auth initialization in normal mode')
@@ -144,7 +144,7 @@ const auth = {
     } else {
       let user = createSessionUser()
       store.commit('setUser', user)
-      router.push('/edit-contest')
+      router.push('/contests')
     }
   },
   signOut () {

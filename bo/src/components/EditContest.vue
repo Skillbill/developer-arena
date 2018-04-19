@@ -64,6 +64,9 @@ export default {
   components: {
     EditDate
   },
+  props: [
+    'contestId'
+  ],
   data: function () {
     return {
       contest: null,
@@ -91,7 +94,7 @@ export default {
     }
   },
   created () {
-    api.getContestById(1).then(contest => {
+    api.getContestById(this.contestId).then(contest => {
       if (contest) this.contest = contest
     })
   }
