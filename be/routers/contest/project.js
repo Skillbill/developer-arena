@@ -104,7 +104,7 @@ function getDeliverable(req, res, next) {
     const contestId = req.params.contestId
     const projectId = req.params.projectId
     persistence.getProjectWithDeliverable(projectId).then(project => {
-        if (!project || project.contestId != contestId) {
+        if (!project || project.contestId != contestId || !project.approved) {
             return next(error.deliverableNotFound)
         }
         sendfile(res, project.deliverable)
@@ -133,6 +133,7 @@ function prepareProject(req, res, next) {
         if (req.files.deliverable) {
             req.project.deliverable = req.files.deliverable
             req.project.deliverable.mtime = new Date()
+            req.project.approved = false
         }
         if (req.files.image) {
             req.project.image = req.files.image
