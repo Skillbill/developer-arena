@@ -42,7 +42,7 @@ const get_firebase_user = (req) => {
 
 const firebase_auth = (req, res, next) => {
     get_firebase_user(req).then(user => {
-        if (user.provider == 'password' && !user.email_verified) {
+        if (user.provider == 'password' && !user.emailVerified) {
             return next(error.emailNotVerified)
         }
         req.user = user
