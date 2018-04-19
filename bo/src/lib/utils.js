@@ -1,8 +1,3 @@
-import Vue from 'vue'
-
-export function getApiUrl (path) {
-  return Vue.$config.serverAddress + '/' + Vue.$config.apiVersion + path
-}
 
 export function fromI18n (i18n) {
   let resObj = {}
@@ -27,4 +22,26 @@ export function toI18n (obj) {
     })
   })
   return resI18n
+}
+
+export function getEmptyContest () {
+  return {
+    id: null,
+    endPresentation: null,
+    endApplying: null,
+    endVoting: null,
+    state: 'DRAFT',
+    i18n: {
+      en: {
+        title: '',
+        description: '',
+        rules: ''
+      },
+      it: {
+        title: '',
+        description: '',
+        rules: ''
+      }
+    }
+  }
 }

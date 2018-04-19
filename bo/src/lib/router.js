@@ -34,6 +34,14 @@ const router = new VueRouter({
       }
     },
     {
+      name: 'newContest',
+      path: '/new-contest',
+      component: EditContest,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/contests',
       component: Contests,
       meta: {

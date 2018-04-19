@@ -1,6 +1,13 @@
 <template>
   <div>
-    <h2>List of the contests</h2>
+    <div class="row mb-3">
+        <div class="col">
+          <h2>List of the contests</h2>
+        </div>
+        <div class="float-right">
+          <button class="btn btn-primary" @click="createContest">Create a new contest</button>
+        </div>
+    </div>
     <table class="table table-hover">
       <thead>
         <tr>
@@ -47,6 +54,11 @@ export default {
         params: {
           contestId: id
         }
+      })
+    },
+    createContest () {
+      router.push({
+        name: 'newContest'
       })
     }
   },

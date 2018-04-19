@@ -101,6 +101,24 @@ const patchContest = (contest) => {
   })
 }
 
+const createContest = (contest) => {
+  let data = Object.assign({}, contest)
+  data.i18n = utils.toI18n(data.i18n)
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'post',
+      url: '/admin/contest',
+      data,
+      headers
+    })
+  }).then(response => {
+    return response
+  }).catch(e => {
+    apiError(e)
+    return null
+  })
+}
+
 const apiError = e => {
   let error = e.response && e.response.data && e.response.data.error
   if (error) {
@@ -120,5 +138,6 @@ export default {
   checkAdmin,
   getContests,
   getContestById,
-  patchContest
+  patchContest,
+  createContest
 }

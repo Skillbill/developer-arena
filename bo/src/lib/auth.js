@@ -97,7 +97,7 @@ const auth = {
     return api.checkAdmin().then(isAdmin => {
       if (isAdmin === true) {
         feedback.isAdmin()
-        router.push('edit-contest')
+        router.push('contests')
       } else if (isAdmin === false) {
         feedback.notAdmin()
         this.signOut()
