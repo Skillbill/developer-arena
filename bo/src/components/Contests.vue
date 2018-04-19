@@ -1,47 +1,59 @@
 <template>
   <div>
-    <h2>Last contest: {{ lastContestTitle }}</h2>
-    <h2>List of other contest</h2>
-    <ul>
-      <li v-for='contest in contestList' v-bind:key="contest.id">
-        {{contest.id}}
-      </li>
-    </ul>
+    <h2>List of the contests</h2>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Start date</th>
+          <th scope="col">English title</th>
+          <th scope="col">State</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="contest in contestList" v-bind:key="contest.id" @click="editContest(contest.id)">
+          <th scope="row">{{contest.id}}</th>
+          <td>{{contest.endPresentation | formatDate}}</td>
+          <td>TODO: add title</td>
+          <td>{{contest.state}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import * as utils from '@/lib/utils'
+import api from '@/lib/api'
+import router from '@/lib/router'
 
 export default {
   name: 'Contests',
   data: function () {
     return {
-      lastContestTitle: '',
       contestList: []
     }
   },
   created: function () {
-    var headers = {}
-    axios({
-      method: 'get',
-      url: utils.getApiUrl('/contest/last'),
-      headers
-    }).then(response => {
-      this.lastContestTitle = response.data.contest.title
+    api.getContests().then(contestList => {
+      this.contestList = contestList
     }).catch(e => {
       this.$log.error(e)
     })
-    axios({
-      method: 'get',
-      url: utils.getApiUrl('/contest'),
-      headers
-    }).then(response => {
-      this.contestList = response.data.contests
-    }).catch(e => {
-      this.$log.error(e)
-    })
+  },
+  methods: {
+    editContest (id) {
+      router.push({
+        name: 'editContest',
+        params: {
+          contestId: id
+        }
+      })
+    }
+  },
+  filters: {
+    formatDate: function (date) {
+      return date.substring(0, 10)
+    }
   }
 }
 </script>

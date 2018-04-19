@@ -49,6 +49,23 @@ const checkAdmin = () => {
   })
 }
 
+const getContests = () => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'get',
+      url: 'admin/contest',
+      headers
+    }).then(response => {
+      let contests = response.data.contests
+      contests.sort((a, b) => a.id > b.id)
+      return contests
+    }).catch(e => {
+      apiError(e)
+      return null
+    })
+  })
+}
+
 const getContestById = id => {
   return getHeaders().then(headers => {
     return instance({
@@ -87,8 +104,12 @@ const patchContest = (contest) => {
 const apiError = e => {
   let error = e.response && e.response.data && e.response.data.error
   if (error) {
-    feedback.apiError(error)
-    Vue.$log.warn('API Error: ', error)
+    if (error.code === 1017) {
+      feedback.invalidDates()
+    } else {
+      feedback.apiError(error)
+      Vue.$log.warn('API Error: ', error)
+    }
   } else {
     Vue.$log.error(e)
   }
@@ -97,6 +118,7 @@ const apiError = e => {
 export default {
   init,
   checkAdmin,
+  getContests,
   getContestById,
   patchContest
 }
