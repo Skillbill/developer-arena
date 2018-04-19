@@ -14,13 +14,13 @@ const fakeUser = () => {
     emailVerified: true,
     isAnonymous: false,
     phoneNumber: null,
-    photoURL: '/static/graphics/assets/dummy/user.svg',
+    photoURL: null,
     providerData: [
       {
         displayName: `User ${uid}`,
         email: 'fake@email.com',
         phoneNumber: null,
-        photoURL: '/static/graphics/assets/dummy/user.svg',
+        photoURL: null,
         providerId: 'fake',
         uid
       }

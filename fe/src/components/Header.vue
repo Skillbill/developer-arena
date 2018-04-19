@@ -18,7 +18,7 @@
           <router-link to="/rules">{{$t("menu.rules")}}</router-link>
         </li>
         <li v-if="user">
-          <a href="#" v-bind:class="{'user-photo': user && user.photoURL}" v-on:click.prevent="signOut" v-bind:style="{backgroundImage: `url('${user.photoURL}')`}">{{$t("menu.signOut")}}</a>
+          <a href="#" class="user-photo" v-on:click.prevent="signOut" v-bind:style="{backgroundImage: `url('${photoURL}')`}">{{$t("menu.signOut")}}</a>
         </li>
         <li v-else>
           <router-link to="/sign-in">{{$t("menu.signIn")}}</router-link>
@@ -42,6 +42,13 @@ export default {
     },
     showContestRanking() {
       return this.$store.getters.showContestRanking;
+    },
+    photoURL() {
+      if(this.user && this.user.photoURL) {
+        return this.user.photoURL;
+      } else {
+        return '/static/graphics/assets/user.svg';
+      }
     }
   },
   methods: {
