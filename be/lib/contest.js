@@ -15,10 +15,11 @@ const _publicState = {
 }
 
 const getPublicState = (contest) => {
-    const now = new Date()
     if (contest.state == _state.past) {
-        return contest.publicState.past
-    } else if (contest.endPresentation > now) {
+        return _publicState.past
+    }
+    const now = new Date()
+    if (contest.endPresentation > now) {
         return _publicState.presentation
     } else if (contest.endApplying > now) {
         return _publicState.applying
