@@ -11,12 +11,14 @@ const _publicState = {
     applying: 'APPLYING',
     voting: 'VOTING',
     closed: 'CLOSED',
-    past: 'PAST'
+    past: _state.past
 }
 
 const getPublicState = (contest) => {
-    if (contest.state == _state.past) {
-        return _publicState.past
+    switch (contest.state) {
+    case _state.past:
+    case _state.draft:
+        return contest.state
     }
     const now = new Date()
     if (contest.endPresentation > now) {
@@ -55,6 +57,18 @@ const check = (contest) => {
     return null
 }
 
+const fmt = (contest) => {
+    const json  = contest.toJSON ? contest.toJSON() : contest
+    json.state = getPublicState(contest)
+    if (json.i18n) {
+        json.i18n.forEach(i18n => {
+            json[i18n.attribute] = i18n.text
+        })
+        delete json.i18n
+    }
+    return json
+}
+
 module.exports = {
     state : _state,
     publicState: _publicState,
@@ -62,5 +76,6 @@ module.exports = {
     getPublicState,
     stateIsValid,
     datesAreValid,
-    check
+    check,
+    fmt
 }

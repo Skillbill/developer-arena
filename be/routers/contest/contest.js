@@ -1,7 +1,6 @@
 const http = require('@/lib/http')
 const libContest = require('@/lib/contest')
 const persistence = require('@/lib/persistence')
-const logger = require('@/lib/logger')
 const error = require('@/lib/error')
 const express = require('express')
 const router = express.Router({mergeParams: true})
@@ -9,26 +8,10 @@ const router = express.Router({mergeParams: true})
 router.get('/', getContestList)
 router.get('/:contestId', getContest)
 
-const pubfmt = (contest) => {
-    if (contest.state == libContest.state.draft) {
-        logger.warn(`unexpected draft passed to pubfmt: ${contest.toJSON()}`)
-        return null
-    }
-    let obj = contest.toJSON()
-    obj.state = libContest.getPublicState(contest)
-    if (obj.i18n) {
-        obj.i18n.forEach(i18n => {
-            obj[i18n.attribute] = i18n.text
-        })
-        delete obj.i18n
-    }
-    return obj
-}
-
 function getContestList(req, res, next) {
-    persistence.getAllContests().then(lst => {
+    persistence.getAllContests(req.language).then(lst => {
         res.status(http.ok).send({
-            contests: lst.filter(contest => contest.state != libContest.state.draft).map(pubfmt)
+            contests: lst.filter(contest => contest.state != libContest.state.draft).map(libContest.fmt)
         })
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
@@ -42,7 +25,7 @@ function getContest(req, res, next) {
             if (!contest || contest.state == libContest.state.draft) {
                 return next(error.contestNotFound)
             }
-            res.status(http.ok).send({contest: pubfmt(contest)})
+            res.status(http.ok).send({contest: libContest.fmt(contest)})
         }).catch(err => {
             next(error.new(error.internal, {cause: err}))
         })

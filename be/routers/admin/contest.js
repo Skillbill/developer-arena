@@ -13,8 +13,8 @@ router.patch('/:contestId', patchContest)
 router.delete('/:contestId', deleteContest)
 
 function getContestList(req, res, next) {
-    persistence.getAllContests().then(lst => {
-        res.status(http.ok).send({contests: lst})
+    persistence.getAllContests(req.language).then(lst => {
+        res.status(http.ok).send({contests: lst.map(libContest.fmt)})
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
     })
