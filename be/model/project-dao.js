@@ -165,7 +165,7 @@ const update = (projectId, data) => {
     return new Promise((resolve, reject) => {
         sql.transaction().then(tx => {
             return sql.getProjectTable().update(data, {
-                fields: ['title', 'description', 'updated', 'repoURL', 'video'],
+                fields: ['title', 'description', 'updated', 'repoURL', 'video', 'approved'],
                 returning: true,
                 limit: 1,
                 where: {
@@ -202,6 +202,14 @@ const vote = (project, voterId) => {
     })
 }
 
+const setApproved = (projectId, value) => {
+    return sql.getProjectTable().update({approved: !!value}, {
+        where: {
+            id: projectId
+        }
+    })
+}
+
 module.exports = {
     findById,
     findByUser,
@@ -210,5 +218,6 @@ module.exports = {
     findWithImage,
     submit,
     update,
-    vote
+    vote,
+    setApproved
 }

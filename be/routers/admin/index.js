@@ -8,6 +8,7 @@ const router = express.Router({mergeParams: true})
 router.all('*', auth.middleware, adminCheck)
 router.get('/check', (req, res) => res.status(http.noContent).send())
 router.use('/contest', require('./contest'))
+router.use('/contest/:contestId/project/', require('./project'))
 
 function adminCheck(req, res, next) {
     if (!req.user.isAdmin) {
