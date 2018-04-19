@@ -21,7 +21,7 @@
             </section>
             <section class="email">
               <transition name="switch-form">
-                <form v-if="signInSection === 'signIn'" v-on:submit="signIn('email')" key="sign-in-form">
+                <form v-if="signInSection === 'signIn'" v-on:submit.prevent="signIn('email')" key="sign-in-form">
                   <fieldset>
                     <legend>{{$t('signInEmail')}}</legend>
                     <label for="login-email">{{$t('email')}}</label>
@@ -33,7 +33,7 @@
                     </div>
                   </fieldset>
                 </form>
-                <form v-if="signInSection === 'passwordLost'" v-on:submit="resetPassword" key="pwd-lost-form">
+                <form v-if="signInSection === 'passwordLost'" v-on:submit.prevent="resetPassword" key="pwd-lost-form">
                   <fieldset>
                     <legend>{{$t('resetPassword')}}</legend>
                     <label for="login-email">{{$t('email')}}</label>
@@ -43,7 +43,7 @@
                     </div>
                   </fieldset>
                 </form>
-                <form v-if="signInSection === 'signUp'" v-on:submit="signUp" key="sign-up-form">
+                <form v-if="signInSection === 'signUp'" v-on:submit.prevent="signUp" key="sign-up-form">
                   <fieldset>
                     <legend>{{$t('signUp')}}</legend>
                     <label for="signup-email">{{$t('email')}}</label>
