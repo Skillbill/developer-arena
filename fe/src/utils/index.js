@@ -52,7 +52,7 @@ export function getFileSizeString(bytesNumber) {
 }
 
 export function getProjectImageUrl(project, {width, height}) {
-  let imageUrl = `/contest/${project.contestId}/project/${project.id}/image/`;
+  let imageUrl = `/${store.state.configuration.apiVersion}/contest/${project.contestId}/project/${project.id}/image/`;
   return getImageUrl(imageUrl, {resizeType: 'cover', width, height});
 }
 
@@ -60,7 +60,7 @@ export function getImageUrl(url, params = {}) {
   if(store.state.configuration.tinyPictures && store.state.configuration.tinyPictures.enabled) {
     return store.state.configuration.tinyPictures.url + url + '?' + getQueryString(params);
   } else {
-    return store.state.configuration.serverAddress + '/' + store.state.configuration.apiVersion + url;
+    return store.state.configuration.serverAddress + url;
   }
 }
 
