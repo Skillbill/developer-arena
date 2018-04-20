@@ -134,6 +134,40 @@ const getProjectsByContest = (contestId) => {
   })
 }
 
+const getProjectDeliverable = (contestId, projectId) => {
+  return instance({
+    method: 'get',
+    url: `contest/${contestId}/project/${projectId}/deliverable`,
+    responseType: 'blob'
+  }).then((response) => {
+    Vue.$log.info(response.headers.contentType)
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'file')
+    document.body.appendChild(link)
+    link.click()
+  }).catch(e => {
+    apiError(e)
+    return null
+  })
+}
+
+const setProjectApproved = (contestId, projectId, bool) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: bool ? 'put' : 'delete',
+      url: `admin/contest/${contestId}/project/${projectId}/approve`,
+      headers
+    }).then(response => {
+      return true
+    }).catch(e => {
+      apiError(e)
+      return null
+    })
+  })
+}
+
 const apiError = e => {
   let error = e.response && e.response.data && e.response.data.error
   if (error && error.code) {
@@ -152,5 +186,7 @@ export default {
   getContestById,
   patchContest,
   createContest,
-  getProjectsByContest
+  getProjectsByContest,
+  getProjectDeliverable,
+  setProjectApproved
 }
