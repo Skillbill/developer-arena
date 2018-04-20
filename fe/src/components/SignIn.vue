@@ -129,11 +129,7 @@ export default {
     }
     auth.getRedirectResult().then((result) => {
       this.$store.commit('setFirebaseRedirectResultConsumed', true);
-      if(this.$route.query.redirect) {
-        this.$router.replace(this.$route.query.redirect);
-      } else if (result && result.user) {
-        this.$router.replace('/');
-      }
+      this.redirectAfterSignIn(result ? result.user : null);
     }).catch((error) => {
       console.error(error, error.message);
       this.$store.commit('setFirebaseRedirectResultConsumed', true);
@@ -152,28 +148,24 @@ export default {
   },
   methods: {
     signIn(providerName, scopes = []) {
-      let signInFn;
       this.$store.commit('removeFeedback');
       this.loading = true;
       if(providerName === 'email') {
-        signInFn = auth.signInWithEmailAndPassword(this.email, this.password);
+        auth.signInWithEmailAndPassword(this.email, this.password).then((result) => {
+          this.loading = false;
+          this.redirectAfterSignIn(result);
+        }).catch((error) => {
+          console.error(error, error.message);
+          showFirebaseErroMessage.apply(this, [error]);
+          this.loading = false;
+        });
       } else {
         const provider = auth.getProvider(providerName);
         scopes.forEach((scope) => {
           provider.addScope(scope);
         });
-        signInFn = auth.signInWithRedirect(provider);
+        auth.signInWithRedirect(provider);
       }
-      signInFn.then((result) => {
-        this.loading = false;
-        if(this.$route.query.redirect) {
-          this.$router.replace(this.$route.query.redirect);
-        }
-      }).catch((error) => {
-        console.error(error, error.message);
-        showFirebaseErroMessage.apply(this, [error]);
-        this.loading = false;
-      });
     },
     resetPassword () {
       this.loading = true;
@@ -219,6 +211,18 @@ export default {
     },
     switchToSignIn() {
       this.signInSection = 'signIn';
+    },
+    redirectAfterSignIn(user) {
+      if(user) {
+        if(user.providerData[0].providerId === 'password' && !user.emailVerified) {
+          return;
+        }
+        if(this.$route.query.redirect) {
+          this.$router.replace(this.$route.query.redirect);
+        } else {
+          this.$router.replace('/');
+        }
+      }
     }
   }
 }
