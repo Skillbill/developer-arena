@@ -55,6 +55,49 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "disapprove project",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "admin",
+										"description": "fake id"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"description": "firebase token",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/contest/1/project/1/approve",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"contest",
+										"1",
+										"project",
+										"1",
+										"approve"
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"_postman_isSubFolder": true
