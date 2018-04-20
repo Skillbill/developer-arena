@@ -84,9 +84,9 @@ function getProjectById(req, res, next) {
 }
 
 const sendfile = (res, file, inline) => {
-    const mtime = moment(file.mtime).format('ddd, DD MMM YYYY HH:mm:ss')
+    const mtime = moment(file.mtime).format('ddd, DD MMM YYYY HH:mm:ss') + ' GMT' // rfc7232, section 2.2
     res.set('Content-Type', file.mimetype)
-    res.set('Last-Modified', mtime + ' GMT')
+    res.set('Last-Modified', mtime)
     if (!inline) {
         res.set('Content-Disposition', `attachment; filename="${file.name}"`)
     }
