@@ -110,7 +110,7 @@ function getDeliverable(req, res, next) {
     const contestId = req.params.contestId
     const projectId = req.params.projectId
     persistence.getProjectWithDeliverable(projectId).then(project => {
-        if (!project || project.contestId != contestId || !project.approved) {
+        if (!project || project.contestId != contestId) {
             return next(error.deliverableNotFound)
         }
         sendfile(res, project.deliverable)

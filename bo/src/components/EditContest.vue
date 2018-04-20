@@ -49,7 +49,10 @@
           </div>
         </div>
       </div>
-      <button id="btnSave" type="submit" class="btn btn-primary mb-3">Save</button>
+      <div class="row">
+        <button id="btnSave" type="submit" class="btn btn-primary mb-3 mr-3">Save</button>
+        <button class="btn btn-danger mb-3" @click.prevent="cancel">Cancel</button>
+      </div>
     </form>
   </div>
 </template>
@@ -122,6 +125,9 @@ export default {
           return Promise.reject(new Error('not valid'))
         }
       })
+    },
+    cancel () {
+      router.go(-1)
     }
   },
   created () {

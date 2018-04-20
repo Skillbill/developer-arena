@@ -15,14 +15,26 @@
           <th scope="col">Start date</th>
           <th scope="col">Title</th>
           <th scope="col">State</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="contest in contestList" v-bind:key="contest.id" @click="editContest(contest.id)">
+        <tr v-for="contest in contestList" v-bind:key="contest.id">
           <th scope="row">{{contest.id}}</th>
           <td>{{contest.endPresentation | formatDate}}</td>
           <td>{{contest.title}}</td>
           <td>{{contest.state}}</td>
+          <td>
+            <button class="btn btn-outline-primary btn-sm" title="edit contest" @click.prevent="editContest(contest.id)">
+              <span class="oi oi-pencil"></span> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-outline-secondary btn-sm" @click="approveProjects(contest.id)">
+              <span class="oi oi-list"></span> Projects approval
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -43,14 +55,20 @@ export default {
   created: function () {
     api.getContests().then(contestList => {
       this.contestList = contestList
-    }).catch(e => {
-      this.$log.error(e)
     })
   },
   methods: {
     editContest (id) {
       router.push({
         name: 'editContest',
+        params: {
+          contestId: id
+        }
+      })
+    },
+    approveProjects (id) {
+      router.push({
+        name: 'projects',
         params: {
           contestId: id
         }
@@ -64,7 +82,7 @@ export default {
   },
   filters: {
     formatDate: function (date) {
-      return date.substring(0, 10)
+      return new Date(date).toLocaleDateString(navigator.language)
     }
   }
 }

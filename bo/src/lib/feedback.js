@@ -15,19 +15,30 @@ const contestCreated = () => {
 const invalidFeilds = () => {
   Vue.$toastr.error('Some feilds are invalid', 'Not saved')
 }
-const invalidDates = () => {
-  Vue.$toastr.error('The dates are invalid', 'Not saved')
-}
 const apiError = (error) => {
   Vue.$toastr.error(`status code: ${error.code}, text: ${error.msg}`, 'API error')
+}
+
+const apiErrorText = {
+  1017: {title: 'Not saved', msg: 'The dates are invalid'},
+  1005: {title: 'Not found', msg: 'No deliverable found for this project'}
+}
+
+const forApiErrorCode = (code) => {
+  if (apiErrorText[code]) {
+    Vue.$toastr.error(apiErrorText[code].msg, apiErrorText[code].title)
+    return true
+  } else {
+    return false
+  }
 }
 
 export default {
   isAdmin,
   notAdmin,
   invalidFeilds,
-  invalidDates,
   contestUpdated,
   contestCreated,
-  apiError
+  apiError,
+  forApiErrorCode
 }

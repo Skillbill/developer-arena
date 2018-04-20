@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import SignIn from '@/components/SignIn'
 import EditContest from '@/components/EditContest'
 import Contests from '@/components/Contests'
+import Projects from '@/components/Projects'
 import firebase from 'firebase'
 
 Vue.use(VueRouter)
@@ -44,6 +45,15 @@ const router = new VueRouter({
     {
       path: '/contests',
       component: Contests,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      name: 'projects',
+      path: '/contest/:contestId/projects',
+      component: Projects,
+      props: true,
       meta: {
         requiresAuth: true
       }

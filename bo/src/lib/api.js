@@ -119,14 +119,26 @@ const createContest = (contest) => {
   })
 }
 
+const getProjectsByContest = (contestId) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'get',
+      url: `contest/${contestId}/project`,
+      headers
+    }).then(response => {
+      return response.data.projects
+    }).catch(e => {
+      apiError(e)
+      return null
+    })
+  })
+}
+
 const apiError = e => {
   let error = e.response && e.response.data && e.response.data.error
-  if (error) {
-    if (error.code === 1017) {
-      feedback.invalidDates()
-    } else {
+  if (error && error.code) {
+    if (!feedback.forApiErrorCode(error.code)) {
       feedback.apiError(error)
-      Vue.$log.warn('API Error: ', error)
     }
   } else {
     Vue.$log.error(e)
@@ -139,5 +151,6 @@ export default {
   getContests,
   getContestById,
   patchContest,
-  createContest
+  createContest,
+  getProjectsByContest
 }
