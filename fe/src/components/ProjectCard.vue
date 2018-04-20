@@ -89,7 +89,7 @@ export default {
       return this.isVoted ? 'alreadyVoted' : (this.sendingVote ? 'waiting' : 'sendVote')
     },
     canVote() {
-      return this.$store.state.user && this.$store.state.contest && this.$store.state.contest.state === 'VOTING';
+      return this.$store.state.contest && this.$store.state.contest.state === 'VOTING';
     },
     canEdit() {
       return this.showEdit && this.isOwn && this.$store.state.contest && this.$store.state.contest.state === 'APPLYING';
@@ -108,6 +108,15 @@ export default {
   },
   methods: {
     vote() {
+      if(!this.$store.state.user) {
+        this.$router.push({
+          path: '/sign-in',
+          query: {
+            redirect: this.$router.currentRoute.fullPath
+          }
+        });
+        return;
+      }
       this.sendingVote = true;
       this.$store.dispatch('voteProject', {projectId: this.project.id, contestId: this.$route.params.contestId}).then(() => {
         this.sendingVote = false;
