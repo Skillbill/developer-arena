@@ -129,10 +129,12 @@ function prepareProject(req, res, next) {
         repoURL: req.body.repoURL || null,
         video: req.body.video || null
     }
-    if (req.project.video) {
-        const re = new RegExp(limits.video.acceptedRegex)
-        if (!re.test(req.project.video)) {
-            return next(error.new(error.invalidUrl, {url: req.project.video}))
+    for (let k of ['repoURL', 'video']) {
+        if (req.project[k]) {
+            const re = new RegExp(limits[k].acceptedRegex)
+            if (!re.test(req.project[k])) {
+                return next(error.new(error.invalidUrl, {url: req.project[k]}))
+            }
         }
     }
     if (req.files) {
