@@ -13,7 +13,7 @@
         <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
       </p>
     </div>
-    <button :class="{success: isVoted}" v-if="canVote" v-on:click="isVoted ? vote('delete') : vote('put')" :disabled="sendingVote">{{$t(voteButtonLabel)}}</button>
+    <button :class="{success: isVoted, wait: sendingVote}" v-if="canVote" v-on:click="isVoted ? vote('delete') : vote('put')" :disabled="sendingVote">{{$t(voteButtonLabel)}}</button>
     <template v-if="showDeliverable">
       <button v-if="isApproved" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
       <button v-else disabled>{{$t('project.needsApprove')}}</button>

@@ -58,6 +58,10 @@ button:active {
   background: #ffce31;
 }
 
+button.wait {
+  cursor: wait;
+}
+
 main ul {
   padding-left: 1rem;
   margin-bottom: 0.5rem;
