@@ -61,7 +61,7 @@ module.exports = {
     descriptionHint: 'Puoi usare markdown',
     repo: 'Repository URL',
     thumb: 'Immagine',
-    thumbHint: 'dimensioni suggerite 960x540',
+    thumbHint: 'Dimensioni suggerite 960x540',
     file: 'File',
     send: 'Invia!',
     submitted: 'Il tuo progetto è stato inviato',
