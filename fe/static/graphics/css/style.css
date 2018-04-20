@@ -38,27 +38,37 @@ a:active {
   color: #fa6603;
 }
 
-button {
+button,
+a.button {
   background: #003363;
   color: #fefefe;
   border: 0.2rem solid #fa6603;
   cursor: pointer;
   padding: 0.5rem;
+  text-decoration: none;
+  text-align: center;
+  font-size: 1rem;
+  outline-offset: -0.2rem;
 }
 
-button.success {
+button.success,
+a.button.success {
   background-color: #2c6e00;
   color: #fefefe;
 }
 
 button:hover,
 button:focus,
-button:active {
+button:active,
+a.button:hover,
+a.button:focus,
+a.button:active {
   color: #222;
   background: #ffce31;
 }
 
-button.wait {
+button.wait,
+a.button.wait {
   cursor: wait;
 }
 
@@ -520,7 +530,8 @@ small {
   margin: 1rem 0;
 }
 
-.card button {
+.card button,
+.card a.button {
   width: 100%;
   margin-bottom: 0.2rem;
 }
