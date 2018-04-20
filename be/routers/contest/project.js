@@ -5,6 +5,7 @@ const logger = require('@/lib/logger')
 const error = require('@/lib/error')
 const persistence = require('@/lib/persistence')
 const express = require('express')
+const moment = require('moment')
 const router = express.Router({mergeParams: true})
 
 const mw = {
@@ -83,8 +84,9 @@ function getProjectById(req, res, next) {
 }
 
 const sendfile = (res, file, inline) => {
+    const mtime = moment(file.mtime).format('ddd, DD MMM YYYY HH:mm:ss')
     res.set('Content-Type', file.mimetype)
-    res.set('Last-Modified', file.mtime)
+    res.set('Last-Modified', mtime + ' GMT')
     if (!inline) {
         res.set('Content-Disposition', `attachment; filename="${file.name}"`)
     }
