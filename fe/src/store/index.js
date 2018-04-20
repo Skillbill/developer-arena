@@ -196,10 +196,10 @@ const store = new Vuex.Store({
         commit('setFeedbackError', utils.getApiErrorMessage(e));
       })
     },
-    async voteProject ({commit, dispatch}, {projectId, contestId}) {
+    async voteProject ({commit, dispatch}, {method, projectId, contestId}) {
       const headers = await utils.getDefaultHeaders({auth: true});
       return axios({
-        method: 'put',
+        method,
         url: utils.getApiUrl(`/contest/${contestId}/project/${projectId}/vote`),
         headers
       }).then(response => {

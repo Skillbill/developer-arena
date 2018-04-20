@@ -13,7 +13,7 @@
         <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
       </p>
     </div>
-    <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.voteButtonLabel)}}</button>
+    <button :class="{success: isVoted}" v-if="canVote" v-on:click="isVoted ? vote('delete') : vote('put')" :disabled="sendingVote">{{$t(voteButtonLabel)}}</button>
     <template v-if="showDeliverable">
       <button v-if="isApproved" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
       <button v-else disabled>{{$t('project.needsApprove')}}</button>
@@ -107,7 +107,7 @@ export default {
     }
   },
   methods: {
-    vote() {
+    vote(method) {
       if(!this.$store.state.user) {
         this.$router.push({
           path: '/sign-in',
@@ -118,7 +118,7 @@ export default {
         return;
       }
       this.sendingVote = true;
-      this.$store.dispatch('voteProject', {projectId: this.project.id, contestId: this.$route.params.contestId}).then(() => {
+      this.$store.dispatch('voteProject', {method, projectId: this.project.id, contestId: this.$route.params.contestId}).then(() => {
         this.sendingVote = false;
       });
     },
