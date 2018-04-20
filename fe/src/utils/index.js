@@ -52,7 +52,7 @@ export function getFileSizeString(bytesNumber) {
 }
 
 export function getProjectImageUrl(project, {width, height}) {
-  let params = {resizeType: 'cover', width, height};
+  let params = {resizeType: 'cover', width, height, enlarge: true};
   let imageUrl = `/${store.state.configuration.apiVersion}/contest/${project.contestId}/project/${project.id}/image/`;
   let imageFile = getProjectFile(project, 'IMAGE');
   if(imageFile && imageFile.mtime) {
