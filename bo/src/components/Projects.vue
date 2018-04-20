@@ -30,8 +30,11 @@
             </button>
           </td>
           <td>
-            <button class="btn btn-outline-secondary btn-sm" title="approve project" @click="approve(project.id)">
+            <button v-if="!project.approved" class="btn btn-outline-secondary btn-sm" title="approve project" @click="approve(project, true)">
               <span class="oi oi-check"></span> Approve
+            </button>
+            <button v-else class="btn btn-outline-secondary btn-sm" title="disapprove project" @click="approve(project, false)">
+              <span class="oi oi-x"></span> Disapprove
             </button>
           </td>
         </tr>
@@ -56,14 +59,19 @@ export default {
   },
   methods: {
     download (projectId) {
-      this.$toastr.info(`TODO: get deliverable for ${projectId}`)
-      // api.getDeliverable(this.contest.id, projectId)
+      location.href = `${this.$config.serverAddress}/${this.$config.apiVersion}` +
+        `/contest/${this.contest.id}/project/${projectId}/deliverable`
+      // api.getProjectDeliverable(this.contest.id, projectId)
     },
     redirectToFE (projectId) {
       this.$toastr.info(`TODO: redirect to FE/contest/${this.contest.id}/project/${projectId}`)
     },
-    approve (projectId) {
-      this.$toastr.info(`TODO: approve project ${projectId}`)
+    approve (project, bool) {
+      api.setProjectApproved(this.contest.id, project.id, bool).then(response => {
+        if (response) {
+          project.approved = bool
+        }
+      })
     }
   },
   created: function () {
