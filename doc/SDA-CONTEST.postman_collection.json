@@ -540,6 +540,44 @@
 					"response": []
 				},
 				{
+					"name": "undo vote project",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "userid",
+								"description": "fake id"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"description": "firebase token",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1/project/1/vote",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1",
+								"project",
+								"1",
+								"vote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "contest projects list",
 					"request": {
 						"method": "GET",
