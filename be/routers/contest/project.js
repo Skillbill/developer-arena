@@ -82,10 +82,12 @@ function getProjectById(req, res, next) {
     })
 }
 
-const sendfile = (res, file) => {
+const sendfile = (res, file, inline) => {
     res.set('Content-Type', file.mimetype)
     res.set('Last-Modified', file.mtime)
-    res.set('Content-Disposition', `attachment; filename="${file.name}"`)
+    if (!inline) {
+        res.set('Content-Disposition', `attachment; filename="${file.name}"`)
+    }
     res.status(http.ok).send(file.data)
 }
 
@@ -96,7 +98,7 @@ function getImage(req, res, next) {
         if (!project || project.contestId != contestId) {
             return next(error.imageNotFound)
         }
-        sendfile(res, project.image)
+        sendfile(res, project.image, true)
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
     })
