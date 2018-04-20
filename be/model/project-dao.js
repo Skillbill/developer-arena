@@ -22,7 +22,7 @@ const getFullTable = (includes) => {
             model: fileTable,
             required: false,
             as: 'files',
-            attributes: [model.file.name.field, model.file.kind.field],
+            attributes: [model.file.name.field, model.file.kind.field, model.file.mtime.field],
         },
         {
             model: voteTable,
