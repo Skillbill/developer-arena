@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import {getProjectImageUrl, getProjectDeliverableUrl} from '@/utils'
+import {getProjectImageUrl, getProjectDeliverableUrl, getProjectFile} from '@/utils'
 import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
@@ -75,12 +75,7 @@ export default {
       }
     },
     hasImage() {
-      if(this.project && this.project.files && this.project.files.length) {
-        let images = this.project.files.filter((file) => {
-          return file.kind === 'IMAGE';
-        });
-        return images.length > 0;
-      }
+      return !!getProjectFile(this.project, 'IMAGE');
     },
     showImage() {
       return this.hasImage || this.showDefaultImage;

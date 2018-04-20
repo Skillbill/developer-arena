@@ -52,16 +52,21 @@ export function getFileSizeString(bytesNumber) {
 }
 
 export function getProjectImageUrl(project, {width, height}) {
+  let params = {resizeType: 'cover', width, height};
   let imageUrl = `/${store.state.configuration.apiVersion}/contest/${project.contestId}/project/${project.id}/image/`;
-  return getImageUrl(imageUrl, {resizeType: 'cover', width, height});
+  let imageFile = getProjectFile(project, 'IMAGE');
+  if(imageFile && imageFile.mtime) {
+    params.ts = new Date(imageFile.mtime).getTime();
+  }
+  return getImageUrl(imageUrl, params);
 }
 
 export function getImageUrl(url, params = {}) {
+  let basePath = store.state.configuration.serverAddress;
   if(store.state.configuration.tinyPictures && store.state.configuration.tinyPictures.enabled) {
-    return store.state.configuration.tinyPictures.url + url + '?' + getQueryString(params);
-  } else {
-    return store.state.configuration.serverAddress + url;
+    basePath = store.state.configuration.tinyPictures.url;
   }
+  return basePath + url + '?' + getQueryString(params);
 }
 
 export function getQueryString(params = {}) {
@@ -73,4 +78,16 @@ export function getQueryString(params = {}) {
 export function getProjectDeliverableUrl(project) {
   return `${store.state.configuration.serverAddress}/${store.state.configuration.apiVersion}` +
     `/contest/${project.contestId}/project/${project.id}/deliverable/`;
+}
+
+export function getProjectFile(project, kind) {
+  if(project && project.files && project.files.length) {
+    let files = project.files.filter(file => {
+      return file.kind === kind;
+    });
+    if(files.length > 0) {
+      return files[0];
+    }
+  }
+  return null;
 }
