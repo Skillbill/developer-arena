@@ -15,7 +15,7 @@
     </div>
     <button :class="{success: this.isVoted}" v-if="canVote" v-on:click="vote" :disabled="this.sendingVote || this.isVoted">{{$t(this.voteButtonLabel)}}</button>
     <template v-if="showDeliverable">
-      <button v-if="isApproved || isOwn" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
+      <button v-if="isApproved" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
       <button v-else disabled>{{$t('project.needsApprove')}}</button>
     </template>
     <button v-if="showRepo && project.repoURL" v-on:click="goToRepo">{{$t('viewRepo')}}</button>
