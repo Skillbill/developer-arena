@@ -202,6 +202,16 @@ const vote = (project, voterId) => {
     })
 }
 
+const undoVote = (project, voterId) => {
+    return sql.getVoteTable().destroy({
+        where: {
+            contestId: project.contestId,
+            projectId: project.id,
+            voterId: voterId
+        }
+    })
+}
+
 const setApproved = (projectId, value) => {
     return sql.getProjectTable().update({approved: !!value}, {
         where: {
@@ -219,5 +229,6 @@ module.exports = {
     submit,
     update,
     vote,
+    undoVote,
     setApproved
 }

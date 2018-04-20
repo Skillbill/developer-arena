@@ -14,6 +14,7 @@ const mw = {
 
 router.post('*', mw.auth)
 router.put('*', mw.auth)
+router.delete('*', mw.auth)
 
 router.get('/', getProjectByQuery)
 router.post('/', mw.validateFile.image, mw.validateFile.deliverable, prepareProject, submitProject)
@@ -22,7 +23,8 @@ router.get('/:projectId', getProjectById)
 router.put('/:projectId', mw.validateFile.image, mw.validateFile.deliverable, prepareProject, updateProject)
 router.get('/:projectId/image', getImage)
 router.get('/:projectId/deliverable', getDeliverable)
-router.put('/:projectId/vote', voteProject)
+router.put('/:projectId/vote', prepareVote, voteProject)
+router.delete('/:projectId/vote', prepareVote, undoVoteProject)
 
 const missingParam = (res, param) => {
     if (!param) {
@@ -214,11 +216,9 @@ function updateProject(req, res, next) {
     })
 }
 
-function voteProject(req, res, next) {
+function prepareVote(req, res, next) {
     const contestId = req.params.contestId
     const projectId = req.params.projectId
-    const uid = req.user.uid
-
     Promise.all([
         persistence.getContestById(contestId),
         persistence.getProjectById(projectId)
@@ -229,14 +229,29 @@ function voteProject(req, res, next) {
         if (libContest.getPublicState(contest) != libContest.publicState.voting) {
             return next(error.contestNotOpenForVoting)
         }
-        if (project.votes.map(vote => vote.userId).includes(uid)) {
-            return next(error.alreadyVotedProject)
-        }
-        persistence.voteProject(project, uid).then(() => {
-            res.status(http.noContent).send()
-        }).catch(err => {
-            next(error.new(error.internal, {cause: err}))
-        })
+        req.project = project.toJSON()
+        next()
+    }).catch(err => {
+        next(error.new(error.internal, {cause: err}))
+    })
+}
+
+function voteProject(req, res, next) {
+    const uid = req.user.uid
+    if (req.project.votes.map(vote => vote.userId).includes(uid)) {
+        return next(error.alreadyVotedProject)
+    }
+    persistence.voteProject(req.project, uid).then(() => {
+        res.status(http.noContent).send()
+    }).catch(err => {
+        next(error.new(error.internal, {cause: err}))
+    })
+}
+
+function undoVoteProject(req, res, next) {
+    const uid = req.user.uid
+    persistence.undoVoteProject(req.project, uid).then(() => {
+        res.status(http.noContent).send()
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
     })

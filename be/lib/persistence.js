@@ -16,6 +16,7 @@ const getProjectWithImage = (projectId) => projectDao.findWithImage(projectId)
 const submitProject = (project) => projectDao.submit(project)
 const updateProject = (projectId, data) => projectDao.update(projectId, data)
 const voteProject = (project, userId) => projectDao.vote(project, userId)
+const undoVoteProject = (project, userId) => projectDao.undoVote(project, userId)
 const setProjectApproved = (projectId, value) => projectDao.setApproved(projectId, value)
 
 module.exports = {
@@ -34,5 +35,6 @@ module.exports = {
     submitProject,
     updateProject,
     voteProject,
+    undoVoteProject,
     setProjectApproved
 }
