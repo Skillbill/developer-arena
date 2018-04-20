@@ -39,6 +39,7 @@ const voteTime = (vote) => new Date(vote.ts).getTime()
 const sortingModes = { // all descending
     trend: (a, b) => Math.max(...b.votes.map(voteTime)) - Math.max(...a.votes.map(voteTime)),
     date:  (a, b) => new Date(b.submitted).getTime() - new Date(a.submitted).getTime(),
+    update: (a, b) => new Date(b.updated).getTime() - new Date(a.updated).getTime(),
     rank:  (a, b) => b.votes.length - a.votes.length
 }
 
