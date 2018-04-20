@@ -15,11 +15,11 @@
     </div>
     <button :class="{success: isVoted, wait: sendingVote}" v-if="canVote" v-on:click="isVoted ? vote('delete') : vote('put')" :disabled="sendingVote">{{$t(voteButtonLabel)}}</button>
     <template v-if="showDeliverable">
-      <button v-if="isApproved" v-on:click="downloadDeliverable">{{$t('project.download')}}</button>
+      <a class="button" v-if="isApproved" download :href="deliverableUrl">{{$t('project.download')}}</a>
       <button v-else disabled>{{$t('project.needsApprove')}}</button>
     </template>
-    <button v-if="showRepo && project.repoURL" v-on:click="goToRepo">{{$t('viewRepo')}}</button>
-    <button v-if="canEdit" v-on:click="goToEdit">{{$t('project.edit')}}</button>
+    <a class="button" v-if="showRepo && project.repoURL" :href="project.repoURL" target="_blank">{{$t('viewRepo')}}</a>
+    <router-link class="button" v-if="canEdit" to="/submit-entry?edit=true">{{$t('project.edit')}}</router-link>
     <div class="video" v-if="showVideo && youtubeVideoCode">
       <YoutubeVideo :code="youtubeVideoCode"/>
     </div>
@@ -99,6 +99,9 @@ export default {
     },
     isApproved() {
       return this.project && this.project.approved;
+    },
+    deliverableUrl() {
+      return getProjectDeliverableUrl(this.project);
     }
   },
   methods: {
@@ -116,15 +119,6 @@ export default {
       this.$store.dispatch('voteProject', {method, projectId: this.project.id, contestId: this.$route.params.contestId}).then(() => {
         this.sendingVote = false;
       });
-    },
-    goToRepo() {
-      location.href = this.project.repoURL;
-    },
-    goToEdit() {
-      this.$router.push('/submit-entry?edit=true');
-    },
-    downloadDeliverable() {
-      location.href = getProjectDeliverableUrl(this.project);
     }
   }
 }
