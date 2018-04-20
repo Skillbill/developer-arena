@@ -9,7 +9,10 @@ module.exports = {
     deliverable: {
         maxAllowedSize: 32 * 1024 * 1024
     },
+    repoURL: {
+        acceptedRegex: '^https?://'
+    },
     video: {
-        acceptedRegex: 'https:\\/\\/(?:youtu\\.be\\/|(?:www\\.)?youtube\\.com\\/watch\\?v=)([0-9A-Za-z_-]{11})'
+        acceptedRegex: 'https://(?:youtu\\.be/|(?:www\\.)?youtube\\.com/watch\\?v=)([0-9A-Za-z_-]{11})'
     }
 }
