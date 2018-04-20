@@ -21,7 +21,12 @@ function initVueApp() {
       components: { App },
       template: '<App/>',
       store
-    })
+    });
+    if(process.env.NODE_ENV === 'development') {
+      window.app = app;
+      window.store = store;
+      window.router = router;
+    }
   }
 }
 
