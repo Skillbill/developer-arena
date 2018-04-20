@@ -12,6 +12,8 @@ services:
         target: /be/config.json
   db:
     image: "skillbillsrl/sda-contest-db:${TAG}"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
   fe:
     image: "skillbillsrl/sda-contest-fe:${TAG}"
     depends_on:
@@ -33,4 +35,7 @@ services:
         source: ./config/bo.json
         target: /app/static/configuration.json
 
+volumes:
+    pgdata:
+        external: true
 #cd be && docker build . -t skillbillsrl/sda-contest-be:local && cd .. && cd db && docker build . -t skillbillsrl/sda-contest-db:local && cd .. && cd fe && docker build . -t skillbillsrl/sda-contest-fe:local && cd .. && cd bo && docker build . -t skillbillsrl/sda-contest-bo:local && cd .. && TAG=local docker-compose up
