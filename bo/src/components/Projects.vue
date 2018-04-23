@@ -64,7 +64,7 @@ export default {
       // api.getProjectDeliverable(this.contest.id, projectId)
     },
     redirectToFE (projectId) {
-      this.$toastr.info(`TODO: redirect to FE/contest/${this.contest.id}/project/${projectId}`)
+      window.open(`${this.$config.frontEndAddress}/#/contest/${this.contest.id}/project/${projectId}`, '_blank')
     },
     approve (project, bool) {
       api.setProjectApproved(this.contest.id, project.id, bool).then(response => {
