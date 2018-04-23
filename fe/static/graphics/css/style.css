@@ -501,7 +501,7 @@ small {
 
 .card img {
   width: 100%;
-  filter: brightness(70%);
+  filter: brightness(80%);
 }
 
 .card:hover,
@@ -510,7 +510,8 @@ small {
 }
 
 .card:hover img,
-.card:focus-within img {
+.card:focus-within img,
+main.project .card img {
   filter: brightness(100%);
 }
 
