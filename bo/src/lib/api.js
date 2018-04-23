@@ -126,7 +126,9 @@ const getProjectsByContest = (contestId) => {
       url: `contest/${contestId}/project`,
       headers
     }).then(response => {
-      return response.data.projects
+      let projects = response.data.projects
+      projects.sort((a, b) => a.submitted < b.submitted)
+      return projects
     }).catch(e => {
       apiError(e)
       return null

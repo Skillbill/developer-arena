@@ -13,6 +13,8 @@ let vm = null
 Vue.use(VueLogger, {logLevel: 'info', showConsoleColors: true, showLogLevel: true})
 Vue.$toastr = Vue.prototype.$toastr = Toastr
 
+Vue.$log.info(`Host: ${location.hostname}, Path: ${location.pathname}, Port: ${location.port}`)
+
 axios({
   method: 'get',
   url: '/static/configuration.json'

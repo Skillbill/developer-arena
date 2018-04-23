@@ -7,6 +7,7 @@
       <thead>
         <tr>
           <th scope="col">#</th>
+          <th scope="col">Title</th>
           <th scope="col">Submitted</th>
           <th scope="col">Updated</th>
           <th scope="col"></th>
@@ -17,6 +18,7 @@
       <tbody>
         <tr v-for="project in projects" v-bind:key="project.id">
           <th scope="row">{{project.id}}</th>
+          <td>{{project.title}}</td>
           <td>{{project.submitted | formatDateTime}}</td>
           <td>{{project.updated | formatDateTime}}</td>
           <td>
