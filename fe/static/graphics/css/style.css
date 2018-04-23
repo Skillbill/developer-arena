@@ -484,6 +484,12 @@ small {
   max-width: 34rem;
 }
 
+.card h3 {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
 .card h3 a {
   text-decoration: none;
 }
