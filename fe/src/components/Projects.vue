@@ -5,7 +5,7 @@
         <div class="links-list" v-if="contest && projects && projects.length > 0" role="navigation">
           <span>{{$t('sorting.label')}}</span>
           <ul>
-            <li v-for="item in sorting" :key="item">
+            <li v-for="item in contestStorting" :key="item">
               <router-link :to="{name: 'Projects', params: {contestId: contest.id}, query: {sort: item}}">{{$t(`sorting.${item}`)}}</router-link>
             </li>
           </ul>
@@ -52,12 +52,8 @@ export default {
     isRanking() {
       return this.$route.query.sort === 'rank';
     },
-    sorting() {
-      let sorting = ['trend', 'date'];
-      if(this.$store.getters.showContestRanking) {
-        sorting = ['rank'].concat(sorting);
-      }
-      return sorting;
+    contestStorting() {
+      return this.$store.getters.contestStorting;
     }
   },
   created() {

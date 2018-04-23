@@ -58,8 +58,18 @@ const store = new Vuex.Store({
     }
   },
   getters: {
-    showContestRanking: state => {
-      return state.contest && (state.contest.state === 'CLOSED' || state.contest.state === 'PAST');
+    contestStorting: state => {
+      let sorting = ['date'];
+      if(state.contest && state.contest.state === 'APPLYING') {
+        sorting = ['update'].concat(sorting);
+      }
+      if(state.contest && state.contest.state === 'VOTING') {
+        sorting = ['trend'].concat(sorting);
+      }
+      if(state.contest && (state.contest.state === 'CLOSED' || state.contest.state === 'PAST')) {
+        sorting = ['rank'].concat(sorting);
+      }
+      return sorting;
     }
   },
   actions: {

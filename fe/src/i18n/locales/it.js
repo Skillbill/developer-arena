@@ -115,7 +115,8 @@ module.exports = {
   sorting: {
     label: 'Ordina per:',
     rank: 'Classifica',
-    date: 'Data',
-    trend: 'Tendenza'
+    date: 'Data di caricamento',
+    trend: 'Tendenza',
+    update: 'Aggiornamento'
   }
 }

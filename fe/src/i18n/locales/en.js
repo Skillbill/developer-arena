@@ -115,7 +115,8 @@ module.exports = {
   sorting: {
     label: 'Sort by:',
     rank: 'Rank',
-    date: 'Date',
-    trend: 'Trend'
+    date: 'Upload date',
+    trend: 'Trend',
+    update: 'Last update'
   }
 }
