@@ -13,7 +13,7 @@ let vm = null
 Vue.use(VueLogger, {logLevel: 'info', showConsoleColors: true, showLogLevel: true})
 Vue.$toastr = Vue.prototype.$toastr = Toastr
 
-let configurationPath = location.origin + location.pathname + '/static/configuration.json'
+let configurationPath = location.origin + location.pathname + 'static/configuration.json'
 Vue.$log.info(`Protocol: ${location.protocol}, Host: ${location.hostname}, Path: ${location.pathname}, Port: ${location.port}`)
 Vue.$log.info(`configuration loaded from: ${configurationPath}`)
 
