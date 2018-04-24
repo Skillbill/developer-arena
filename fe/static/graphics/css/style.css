@@ -846,17 +846,24 @@ main.home > section {
 
 /* projects */
 
-main.projects {
-  width: 100%;
-}
-
 main.projects ul.projects-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
-  grid-gap: 1rem;
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+@supports (display: grid) {
+
+  main.projects {
+    width: 100%;
+  }
+
+  main.projects ul.projects-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    grid-gap: 1rem;
+  }
+
 }
 
 /* project */
