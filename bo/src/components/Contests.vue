@@ -8,36 +8,38 @@
           <button class="btn btn-primary" @click="createContest">Create a new contest</button>
         </div>
     </div>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Start date</th>
-          <th scope="col">Title</th>
-          <th scope="col">State</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="contest in contestList" v-bind:key="contest.id">
-          <th scope="row">{{contest.id}}</th>
-          <td>{{contest.endPresentation | formatDate}}</td>
-          <td>{{contest.title}}</td>
-          <td>{{contest.state}}</td>
-          <td>
-            <button class="btn btn-outline-primary btn-sm" title="edit contest" @click.prevent="editContest(contest.id)">
-              <span class="oi oi-pencil"></span> Edit
-            </button>
-          </td>
-          <td>
-            <button class="btn btn-outline-secondary btn-sm" @click="approveProjects(contest.id)">
-              <span class="oi oi-list"></span> Projects approval
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Start date</th>
+            <th scope="col">Title</th>
+            <th scope="col">State</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="contest in contestList" v-bind:key="contest.id">
+            <th scope="row">{{contest.id}}</th>
+            <td>{{contest.endPresentation | formatDate}}</td>
+            <td>{{contest.title}}</td>
+            <td>{{contest.state}}</td>
+            <td>
+              <button class="btn btn-outline-primary btn-sm" title="edit contest" @click.prevent="editContest(contest.id)">
+                <span class="oi oi-pencil"></span> Edit
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-outline-secondary btn-sm" @click="approveProjects(contest.id)">
+                <span class="oi oi-list"></span> Projects approval
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
