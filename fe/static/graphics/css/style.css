@@ -715,10 +715,11 @@ div.progressbar span.bar {
   margin: 0;
 }
 
-.links-list li {
-  margin: 0 0.5rem;
+.links-list li,
+.links-list span {
   list-style: none;
   display: inline-block;
+  margin: 0 0.5rem 0 0;
 }
 
 .links-list a {
