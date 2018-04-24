@@ -5,7 +5,7 @@
           <h2>List of the contests</h2>
         </div>
         <div class="float-right">
-          <button class="btn btn-primary" @click="createContest">Create a new contest</button>
+          <b-button variant="primary" @click="createContest">Create a new contest</b-button>
         </div>
     </div>
     <div class="table-responsive">
@@ -27,14 +27,14 @@
             <td>{{contest.title}}</td>
             <td>{{contest.state}}</td>
             <td>
-              <button class="btn btn-outline-primary btn-sm" title="edit contest" @click.prevent="editContest(contest.id)">
+              <b-button variant="outline-primary" size="sm" title="edit contest" @click.prevent="editContest(contest.id)">
                 <span class="oi oi-pencil"></span> Edit
-              </button>
+              </b-button>
             </td>
             <td>
-              <button class="btn btn-outline-secondary btn-sm" @click="approveProjects(contest.id)">
+              <b-button variant="outline-secondary" size="sm" @click="approveProjects(contest.id)">
                 <span class="oi oi-list"></span> Projects approval
-              </button>
+              </b-button>
             </td>
           </tr>
         </tbody>

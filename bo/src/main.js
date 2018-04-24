@@ -2,14 +2,18 @@ import Vue from 'vue'
 import App from './App'
 import router from './lib/router'
 import store from './lib/store'
-import axios from 'axios'
 import auth from './lib/auth'
 import api from './lib/api'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import axios from 'axios'
 import VueLogger from 'vuejs-logger'
 import Toastr from 'toastr'
 
 Vue.config.productionTip = false
 let vm = null
+Vue.use(BootstrapVue)
 Vue.use(VueLogger, {logLevel: 'info', showConsoleColors: true, showLogLevel: true})
 Vue.$toastr = Vue.prototype.$toastr = Toastr
 

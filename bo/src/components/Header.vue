@@ -1,20 +1,18 @@
 <template>
-  <nav class="navbar fixed-top navbar-expand-lg navbar-light mb-2" style="background-color: #e3f2fd;">
-    <router-link class="navbar-brand" to='/'>SDA Contest Back Office</router-link>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item" v-if="user">
-          <router-link class="nav-link" to="/contests">Contests</router-link>
-        </li>
-      </ul>
-      <span class="pr-2 navbar-text" v-if="user">{{user.displayName}}</span>
-      <router-link type="button" class="btn btn-primary" v-if="!user" to="/sign-in">Sign in</router-link>
-      <button type="button" class="btn btn-outline-danger" v-if="user" v-on:click="signOut">Sign out</button>
-    </div>
-  </nav>
+  <b-navbar class="fixed-top" toggleable="md" style="background-color: #e3f2fd;">
+    <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+    <b-navbar-brand to="/">SDA Contest Back Office</b-navbar-brand>
+    <b-collapse is-nav id="nav_collapse">
+      <b-navbar-nav>
+        <b-nav-item v-if="user" to="/contests">Contests</b-nav-item>
+      </b-navbar-nav>
+      <b-navbar-nav class="ml-auto">
+        <b-nav-text class="pr-2" v-if="user">{{user.displayName}}</b-nav-text>
+        <b-button v-if="!user" variant="primary" to="/sign-in">Sign in</b-button>
+        <b-button v-if="user" variant="outline-danger" @click="signOut">signOut</b-button>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
 </template>
 
 <script>
