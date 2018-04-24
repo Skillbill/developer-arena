@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="progress" v-if="loading"></div>
-      <ProgressBar v-if="uploading" :progress=progress :label="$t('project.uploading')"></ProgressBar>
+      <ProgressBar v-if="uploading" :progress="progress" :label="$t('project.uploading')"></ProgressBar>
     </section>
   </main>
 </template>
@@ -151,6 +151,7 @@ export default {
       this.$store.dispatch('submitProject', {projectFormData, edit: this.edit, onUploadProgress}).then(() => {
         this.uploading = false;
         this.edit = false;
+        this.progress = 0;
       });
     },
     editProject() {
