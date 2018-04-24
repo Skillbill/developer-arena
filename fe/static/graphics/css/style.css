@@ -494,6 +494,10 @@ small {
   text-decoration: none;
 }
 
+.card h3 strong {
+  margin-right: 0.5rem;
+}
+
 .card > a {
   display: block;
   position: relative;
@@ -519,13 +523,13 @@ main.project .card img {
   position: absolute;
   top: 3%;
   right: 1%;
-  transform: scale(0.8) translateY(-1rem);
+  transform: perspective(400px) translate3d(0, -0.65rem, 1rem) rotate3d(0, 0, 1, 3deg);
   transform-origin: top right;
 }
 
 .card:hover > a .votes,
 .card:focus-within > a .votes {
-  transform: scale(1.1) translateY(-1.2rem);
+  transform: perspective(400px) translate3d(-0.2rem, -0.65rem, 5rem) rotate3d(0, 0, 1, 0deg);
   filter: brightness(110%);
 }
 
