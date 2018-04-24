@@ -19,10 +19,16 @@ export default {
   computed: {
     dateInput: {
       get: function () {
-        return this.value ? this.value.substring(0, 10) : null
+        if (!this.value) return null
+        let date = new Date(this.value)
+        date.setMinutes(date.getMinutes() - date.getTimezoneOffset()) // to local timezone
+        return date.toISOString().split('T')[0] // YYYY-MM-DD
       },
       set: function (newDate) {
-        this.$emit('input', newDate ? (newDate + 'T00:00:00.000Z') : null)
+        if (!newDate) return null
+        let outDate = new Date(newDate)
+        outDate.setMinutes(outDate.getMinutes() + outDate.getTimezoneOffset()) // to UTC
+        this.$emit('input', outDate)
       }
     }
   }
