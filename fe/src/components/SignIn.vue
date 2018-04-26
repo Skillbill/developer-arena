@@ -73,7 +73,10 @@
           </div>
         </template>
         <div v-else>
-          <p v-if="providerPassword && !emailVerified">{{$t('signedInAsAndVerifyEmail', {name: user.displayName || user.email})}}</p>
+          <p v-if="providerPassword && !emailVerified">
+            {{$t('signedInAsAndVerifyEmail', {name: user.displayName || user.email})}}
+            <button @click="resendEmailVerification">Resend verification email</button>
+          </p>
           <p v-else>{{$t('signedInAs', {name: user.displayName || user.email})}}</p>
         </div>
       </template>
@@ -202,6 +205,23 @@ export default {
         showFirebaseErroMessage.apply(this, [error]);
         this.loading = false;
       });
+    },
+    resendEmailVerification () {
+      this.loading = true;
+      let continueUrl = document.location.href;
+      if(this.$route.query.redirect) {
+        const a = document.createElement('a');
+        a.href = this.$router.resolve(this.$route.query.redirect).href;
+        continueUrl = a.protocol + '//' + a.host + a.pathname + a.search + a.hash;
+      }
+      this.user.sendEmailVerification({url: continueUrl}).then(() => {
+        this.$store.commit('setFeedbackOk', 'verificationEmailResent');
+        this.loading = false;
+      }).catch(error => {
+        console.error(error, error.message);
+        showFirebaseErroMessage.apply(this, [error]);
+        this.loading = false;
+      })
     },
     switchToSignUp() {
       this.signInSection = 'signUp';

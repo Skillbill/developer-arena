@@ -89,6 +89,7 @@ module.exports = {
   resetPassword: 'Reimposta la tua password',
   back: 'Indietro',
   resetEmailSent: 'Email di reimpostazione password spedita, controlla la tua posta in arrivo',
+  verificationEmailResent: 'Una nuova email di verifica è stata inviata con successo',
   signedInAs: 'Hai effettuato l\'accesso come {name}',
   signedInAsAndVerifyEmail: 'Hai effettuato l\'accesso come {name}, verifica la tua email prima di procedere',
   email: 'Email',

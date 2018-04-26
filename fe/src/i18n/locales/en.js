@@ -89,6 +89,7 @@ module.exports = {
   resetPassword: 'Reset your password',
   back: 'Back',
   resetEmailSent: 'Password reset email sent, please check your inbox',
+  verificationEmailResent: 'A new verification email was sent with success',
   signedInAs: 'Signed in as {name}',
   signedInAsAndVerifyEmail: 'Signed in as {name}, please verify your email before proceeding',
   email: 'Email',
