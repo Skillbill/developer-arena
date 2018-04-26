@@ -119,6 +119,21 @@ const createContest = (contest) => {
   })
 }
 
+const deleteContest = (id) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'delete',
+      url: '/admin/contest/' + id,
+      headers
+    })
+  }).then(response => {
+    return response
+  }).catch(e => {
+    apiError(e)
+    return null
+  })
+}
+
 const getProjectsByContest = (contestId) => {
   return getHeaders().then(headers => {
     return instance({
@@ -188,6 +203,7 @@ export default {
   getContestById,
   patchContest,
   createContest,
+  deleteContest,
   getProjectsByContest,
   getProjectDeliverable,
   setProjectApproved

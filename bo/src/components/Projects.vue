@@ -11,10 +11,10 @@
         <b-button variant="outline-primary" size="sm" title="see project in the public front-end" @click.stop="redirectToFE(data.item.id)">
           <span class="oi oi-eye"></span> See
         </b-button>
-        <b-button v-if="!data.item.approved" variant="outline-secondary" size="sm" title="approve project" @click.stop="approve(data.item, true)">
+        <b-button v-if="!data.item.approved" variant="outline-success" size="sm" title="approve project" @click.stop="approve(data.item, true)">
           <span class="oi oi-check"></span> Approve
         </b-button>
-        <b-button v-else variant="outline-secondary" size="sm" title="disapprove project" @click.stop="approve(data.item, false)">
+        <b-button v-else variant="outline-danger" size="sm" title="disapprove project" @click.stop="approve(data.item, false)">
           <span class="oi oi-x"></span> Disapprove
         </b-button>
       </template>

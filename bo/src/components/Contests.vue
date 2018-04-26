@@ -8,50 +8,52 @@
           <b-button variant="primary" @click="createContest">Create a new contest</b-button>
         </div>
     </div>
-    <div class="table-responsive">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Start date</th>
-            <th scope="col">Title</th>
-            <th scope="col">State</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="contest in contestList" v-bind:key="contest.id">
-            <th scope="row">{{contest.id}}</th>
-            <td>{{contest.endPresentation | formatDate}}</td>
-            <td>{{contest.title}}</td>
-            <td>{{contest.state}}</td>
-            <td>
-              <b-button variant="outline-primary" size="sm" title="edit contest" @click.prevent="editContest(contest.id)">
-                <span class="oi oi-pencil"></span> Edit
-              </b-button>
-            </td>
-            <td>
-              <b-button variant="outline-secondary" size="sm" @click="approveProjects(contest.id)">
-                <span class="oi oi-list"></span> Projects approval
-              </b-button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <b-table :fields="fields" :items="contestList">
+      <template slot="action" slot-scope="data">
+        <b-button variant="outline-primary" size="sm" title="edit contest" @click.stop="editContest(data.item.id)">
+          <span class="oi oi-pencil"></span> Edit
+        </b-button>
+        <b-button variant="outline-secondary" size="sm" @click.stop="approveProjects(data.item.id)">
+          <span class="oi oi-list"></span> Projects approval
+        </b-button>
+        <b-button variant="outline-danger" size="sm" @click.stop="toDelete = data.item" v-b-modal.modalDelete>
+          <span class="oi oi-x"></span> Delete
+        </b-button>
+      </template>
+    </b-table>
+    <b-modal id="modalDelete" :title="toDelete ? `Delete contest ${toDelete.title}?` : ''" @ok="deleteContest"></b-modal>
   </div>
 </template>
 
 <script>
 import api from '@/lib/api'
 import router from '@/lib/router'
+import feedback from '@/lib/feedback'
 
 export default {
   name: 'Contests',
   data: function () {
     return {
-      contestList: []
+      contestList: [],
+      toDelete: null,
+      fields: [
+        {
+          key: 'id',
+          label: '#',
+          isRowHeader: true
+        },
+        {
+          key: 'endPresentation',
+          label: 'Start date',
+          formatter: this.formatDate
+        },
+        'title',
+        'state',
+        {
+          key: 'action',
+          label: ''
+        }
+      ]
     }
   },
   created: function () {
@@ -80,9 +82,15 @@ export default {
       router.push({
         name: 'newContest'
       })
-    }
-  },
-  filters: {
+    },
+    deleteContest () {
+      api.deleteContest(this.toDelete.id).then(response => {
+        if (response) {
+          feedback.contestDeleted()
+          this.contestList = this.contestList.filter(e => e.id !== this.toDelete.id)
+        }
+      })
+    },
     formatDate: function (date) {
       return new Date(date).toLocaleDateString(navigator.language)
     }

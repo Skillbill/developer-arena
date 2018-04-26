@@ -12,6 +12,9 @@ const contestUpdated = () => {
 const contestCreated = () => {
   Vue.$toastr.success('The contest has been created successfully', 'Saved')
 }
+const contestDeleted = () => {
+  Vue.$toastr.success('The contest has been deleted successfully', 'Saved')
+}
 const invalidFeilds = () => {
   Vue.$toastr.error('Some feilds are invalid', 'Not saved')
 }
@@ -39,6 +42,7 @@ export default {
   invalidFeilds,
   contestUpdated,
   contestCreated,
+  contestDeleted,
   apiError,
   forApiErrorCode
 }
