@@ -101,10 +101,11 @@ const auth = {
     return api.checkAdmin().then(isAdmin => {
       if (isAdmin === true) {
         feedback.isAdmin()
+        Vue.set(user, 'isAdmin', true)
         router.push('contests')
       } else if (isAdmin === false) {
         feedback.notAdmin()
-        this.signOut()
+        router.push('/')
       } else {
         this.signOut()
       }

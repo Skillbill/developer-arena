@@ -4,7 +4,7 @@ const isAdmin = () => {
   Vue.$toastr.success('You are an admin', 'Logged in')
 }
 const notAdmin = () => {
-  Vue.$toastr.error('You are not an admin', 'Denied access')
+  Vue.$toastr.warning('You are not an admin', 'Limited access')
 }
 const contestUpdated = () => {
   Vue.$toastr.success('The contest has been modified successfully', 'Saved')

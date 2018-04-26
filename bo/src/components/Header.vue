@@ -4,7 +4,7 @@
     <b-navbar-brand to="/">SDA Contest Back Office</b-navbar-brand>
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
-        <b-nav-item v-if="user" to="/contests">Contests</b-nav-item>
+        <b-nav-item v-if="user && user.isAdmin" to="/contests">Contests</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <b-nav-text class="pr-2" v-if="user">{{user.displayName}}</b-nav-text>
