@@ -73,10 +73,10 @@
           </div>
         </template>
         <div v-else>
-          <p v-if="providerPassword && !emailVerified">
-            {{$t('signedInAsAndVerifyEmail', {name: user.displayName || user.email})}}
-            <button @click="resendEmailVerification">Resend verification email</button>
-          </p>
+          <div v-if="providerPassword && !emailVerified">
+            <p>{{$t('signedInAsAndVerifyEmail', {name: user.displayName || user.email})}}</p>
+            <button @click="resendEmailVerification">{{$t('resendVerificationEmail')}}</button>
+          </div>
           <p v-else>{{$t('signedInAs', {name: user.displayName || user.email})}}</p>
         </div>
       </template>
