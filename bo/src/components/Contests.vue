@@ -11,13 +11,13 @@
     <b-table :fields="fields" :items="contestList">
       <template slot="action" slot-scope="data">
         <b-button variant="outline-primary" size="sm" title="edit contest" @click.stop="editContest(data.item.id)">
-          <span class="oi oi-pencil"></span> Edit
+          <i class="fas fa-edit"></i> Edit
         </b-button>
         <b-button variant="outline-secondary" size="sm" @click.stop="approveProjects(data.item.id)">
-          <span class="oi oi-list"></span> Projects approval
+          <i class="fas fa-list-ul"></i> Projects approval
         </b-button>
         <b-button variant="outline-danger" size="sm" @click.stop="toDelete = data.item" v-b-modal.modalDelete>
-          <span class="oi oi-x"></span> Delete
+          <i class="fas fa-times"></i> Delete
         </b-button>
       </template>
     </b-table>

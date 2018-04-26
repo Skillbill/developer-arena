@@ -6,16 +6,16 @@
     <b-table :fields="fields" :items="projects" :current-page="currentPage" :per-page="perPage">
       <template slot="action" slot-scope="data">
         <b-button variant="outline-primary" size="sm" title="download project" @click.stop="download(data.item.id)">
-          <span class="oi oi-data-transfer-download"></span> Download
+          <i class="fas fa-download"></i> Download
         </b-button>
         <b-button variant="outline-primary" size="sm" title="see project in the public front-end" @click.stop="redirectToFE(data.item.id)">
-          <span class="oi oi-eye"></span> See
+          <i class="fas fa-eye"></i> See
         </b-button>
         <b-button v-if="!data.item.approved" variant="outline-success" size="sm" title="approve project" @click.stop="approve(data.item, true)">
-          <span class="oi oi-check"></span> Approve
+          <i class="fas fa-check"></i> Approve
         </b-button>
         <b-button v-else variant="outline-danger" size="sm" title="disapprove project" @click.stop="approve(data.item, false)">
-          <span class="oi oi-x"></span> Disapprove
+          <i class="fas fa-times"></i> Disapprove
         </b-button>
       </template>
     </b-table>

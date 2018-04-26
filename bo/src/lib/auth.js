@@ -57,18 +57,22 @@ const auth = {
     google: {
       name: 'Google',
       providerName: 'GoogleAuthProvider',
+      style: 'google',
       scopes: ['https://www.googleapis.com/auth/userinfo.email']
     },
     github: {
       name: 'GitHub',
+      style: 'github',
       providerName: 'GithubAuthProvider'
     },
     facebook: {
       name: 'Facebook',
+      style: 'facebook',
       providerName: 'FacebookAuthProvider'
     },
     twitter: {
       name: 'Twitter',
+      style: 'twitter',
       providerName: 'TwitterAuthProvider'
     }
   },
