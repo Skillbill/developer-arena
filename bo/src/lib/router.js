@@ -10,7 +10,6 @@ import store from '@/lib/store'
 
 Vue.use(VueRouter)
 const router = new VueRouter({
-  base: '/admin',
   routes: [
     {
       name: 'home',
