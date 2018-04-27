@@ -1,7 +1,6 @@
 const limits = require('@/limits')
 const http = require('@/lib/http')
 const libContest = require('@/lib/contest')
-const logger = require('@/lib/logger')
 const error = require('@/lib/error')
 const persistence = require('@/lib/persistence')
 const express = require('express')
@@ -153,7 +152,6 @@ function prepareProject(req, res, next) {
 }
 
 function submitProject(req, res, next) {
-    logger.debug('submit project request from:', req.user)
     const newProject = req.project
     persistence.getContestById(req.params.contestId).then(contest => {
         if (!contest || contest.state == libContest.state.draft) {
