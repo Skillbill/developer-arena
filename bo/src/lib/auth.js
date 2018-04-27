@@ -12,6 +12,7 @@ const fakeUser = () => {
     sessionStorage.setItem('uid', uid)
   }
   return {
+    isAdmin: true,
     uid,
     displayName: `User ${uid}`,
     email: 'fake@email.com',
@@ -34,7 +35,7 @@ const fakeUser = () => {
 
 const createSessionUser = () => {
   let user = fakeUser()
-  Vue.$log.info('Auth created and added to session: ', user.displayName)
+  Vue.$log.info('Auth: created and added to session: ', user.displayName)
   sessionStorage.setItem('user', JSON.stringify(user))
   return user
 }
@@ -79,42 +80,41 @@ const auth = {
   init (config, showApp) {
     if (config.firebase.devMode) {
       let user = getSessionUser()
-      Vue.$log.info('Auth initialization in devMode with: ', user ? user.displayName : 'a new user')
-      if (!user) user = createSessionUser()
-      store.commit('setUser', user)
-      router.push('/contests')
+      Vue.$log.info('Auth initialization in devMode with:', user ? user.displayName : 'no user', 'signed in')
+      if (user) {
+        this.signIn(null)
+      }
       showApp()
     } else {
       Vue.$log.info('Auth initialization in normal mode')
       firebase.initializeApp(config.firebase)
-      firebase.auth().onAuthStateChanged(user => {
-        Vue.$log.info('Auth state changed for: ', user ? (user.displayName + ' id:' + user.uid) : 'no user')
-        store.commit('setUser', user)
-        user ? this.checkUser(user).then(showApp) : showApp()
-      })
+      firebase.auth().onAuthStateChanged(user => this.authStateChanged(user, showApp))
       firebase.auth().getRedirectResult()
         .then(this.afterRedirect)
         .catch(this.afterRedirectError)
     }
   },
-  checkUser (user) {
-    return api.checkAdmin().then(isAdmin => {
-      if (isAdmin === true) {
-        feedback.isAdmin()
-        Vue.set(user, 'isAdmin', true)
-        router.push('contests')
-      } else if (isAdmin === false) {
-        feedback.notAdmin()
-        router.push('/')
-      } else {
-        this.signOut()
-      }
-    }).catch(e => {
-      Vue.$log.error(e)
-      feedback.apiError()
-    }).then(() => {
-      return Promise.resolve()
-    })
+  authStateChanged (user, showApp) {
+    Vue.$log.info('Auth state changed for: ', user ? (user.displayName + ' id:' + user.uid) : 'no user')
+    store.commit('setUser', user)
+    if (user) {
+      api.checkAdmin().then(isAdmin => {
+        if (isAdmin === true) {
+          feedback.isAdmin()
+          Vue.set(user, 'isAdmin', true)
+          router.push('contests')
+        } else if (isAdmin === false) {
+          feedback.notAdmin()
+          router.push('/')
+        } else {
+          this.signOut()
+        }
+        showApp()
+      })
+    } else {
+      router.push('/')
+      showApp()
+    }
   },
   afterRedirect (result) {
     if (result && result.user) {
@@ -147,18 +147,20 @@ const auth = {
     if (!Vue.$config.firebase.devMode) {
       firebase.auth().signInWithRedirect(new firebase.auth[provider.providerName]())
     } else {
-      let user = createSessionUser()
+      let user = getSessionUser()
+      if (!user) user = createSessionUser()
+      Vue.$log.info(`SignIn with fakeUser ${user.displayName}`)
       store.commit('setUser', user)
       router.push('/contests')
     }
   },
   signOut () {
-    store.commit('setUser', null)
-    router.push('/')
     if (!Vue.$config.firebase.devMode) {
       firebase.auth().signOut()
     } else {
       sessionStorage.removeItem('user')
+      store.commit('setUser', null)
+      router.push('/')
     }
   }
 }
