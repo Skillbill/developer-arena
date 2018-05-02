@@ -29,7 +29,9 @@ try {
     app.use(i18n.init)
     app.use(fileUpload())
     app.use(cors())
-    app.use(require('./routers/middleware/logger'))
+    if (config.server.logger) {
+        app.use(require('./routers/middleware/logger'))
+    }
     app.use('/info', require('./routers/info'))
     app.use('/1.0', require('./routers'))
 
