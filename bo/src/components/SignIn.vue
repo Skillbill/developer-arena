@@ -1,14 +1,18 @@
 <template>
-  <div class="d-flex  justify-content-center align-items-center">
-    <div class="d-flex flex-column align-items-center">
-      <h2>Sign in with an administrator account</h2>
-      <div v-if="providerToUse">
-        <span>Please use <b>{{providerToUse}}</b> instead if you want to login with <b>{{email}}</b></span>
-        <span>(You've tried to login with {{providerUsed}})</span>
-      </div>
-      <div style="width: 230px;">
-        <div v-for="provider in providers" :key="provider.name">
-          <ProviderButton :provider="provider" @provider-clicked="signIn"/>
+  <div class="root-div d-flex justify-content-center align-items-center">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">
+          Sign in with an administrator account
+        </h4>
+        <div v-if="providerToUse">
+          <span>Please use <b>{{providerToUse}}</b> instead if you want to login with <b>{{email}}</b></span>
+          <span>(You've tried to login with {{providerUsed}})</span>
+        </div>
+        <div>
+          <div v-for="provider in providers" :key="provider.name">
+            <ProviderButton :provider="provider" @provider-clicked="signIn"/>
+          </div>
         </div>
       </div>
     </div>
@@ -53,3 +57,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.root-div {
+  height: 100%;
+}
+.card {
+  width: 18rem
+}
+</style>

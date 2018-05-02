@@ -1,5 +1,5 @@
 <template>
-  <b-navbar class="fixed-top" toggleable="md" style="background-color: #e3f2fd;">
+  <b-navbar id="myNav" class="fixed-top" toggleable="md">
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
     <b-navbar-brand to="/">SDA Contest Back Office</b-navbar-brand>
     <b-collapse is-nav id="nav_collapse">
@@ -33,3 +33,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#myNav {
+  background-color: #e3f2fd;
+}
+</style>

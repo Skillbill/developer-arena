@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="row mb-3">
-        <div class="col">
+    <div class="d-flex row mb-3">
+        <div class="mr-auto">
           <h2>List of the contests</h2>
         </div>
-        <div class="float-right">
+        <div>
           <b-button variant="primary" @click="createContest">Create a new contest</b-button>
         </div>
     </div>

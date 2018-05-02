@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header/>
-    <main role="main" class="container" style="padding-top: 70px;">
+    <main role="main" class="container">
       <router-view></router-view>
     </main>
   </div>
@@ -17,3 +17,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+main {
+  padding-top: 70px;
+  height: 100vh;
+}
+</style>
