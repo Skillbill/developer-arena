@@ -12,9 +12,9 @@ module.exports = (err, req, res) => {
         logger.error(err)
         err = error.new(error.internal, {cause: 'unknown'})
     }
-    const log = logError.includes(err.http) ? logger.error : logger.info
-    log({error: err})
-
+    if (logError.includes(err.http)) {
+        logger.error({error: err})
+    }
     let args = {}
     if (err.args) {
         Object.keys(err.args).map(k => {
