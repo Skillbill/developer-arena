@@ -1,5 +1,5 @@
 {
-	"name": "sda-constest-be",
+	"name": "sda-contest-be",
 	"version": "1.0.0",
 	"description": "SDA Contest Backend",
 	"dependencies": {
@@ -18,10 +18,14 @@
 	"scripts": {
 		"postinstall": "ln -sfn ../ node_modules/@",
 		"lint": "eslint --ext .js .",
-		"lint-fix": "eslint --fix --ext .js ."
+		"lint-fix": "eslint --fix --ext .js .",
+		"test": "CONFIG=test/config.json mocha --exit"
 	},
 	"private": true,
 	"devDependencies": {
-		"eslint": "^4.19.1"
+		"eslint": "^4.19.1",
+		"mocha": "^5.1.1",
+		"chai": "^4.1.2",
+		"chai-http": "^4.0.0"
 	}
 }
