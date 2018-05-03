@@ -18,6 +18,8 @@ const sequelize = new Sequelize(sqlUri, {
     logging: false
 })
 
+const checkConnection = () => new Promise((resolve) => sequelize.authenticate().then(() => resolve()).catch(resolve))
+
 const getContestTable = () => {
     return sequelize.define('contest', model.contest, {freezeTableName: true})
 }
@@ -39,6 +41,7 @@ const getVoteTable = () => {
 }
 
 module.exports = {
+    checkConnection: checkConnection,
     transaction: sequelize.transaction.bind(sequelize),
     getContestTable,
     getContestI18nTable,
