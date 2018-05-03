@@ -18,11 +18,15 @@ const contestDeleted = () => {
 const invalidFeilds = () => {
   Vue.$toastr.error('Some feilds are invalid', 'Not saved')
 }
+const offline = () => {
+  Vue.$toastr.error('No response received from the API back-end', 'Offline')
+}
 const apiError = (error) => {
   Vue.$toastr.error(error.msg, `API error n°${error.code}`)
 }
 
 const apiErrorText = {
+  1001: {title: 'Internal server error', msg: 'The database is not reachable'},
   1017: {title: 'Not saved', msg: 'The dates are invalid'},
   1005: {title: 'Not found', msg: 'No deliverable found for this project'},
   1202: {title: 'Wrong token', msg: 'The current back-end does not accept fake users'}
@@ -44,6 +48,7 @@ export default {
   contestUpdated,
   contestCreated,
   contestDeleted,
+  offline,
   apiError,
   forApiErrorCode
 }

@@ -190,7 +190,11 @@ const apiError = e => {
   if (error && error.code) {
     if (!feedback.forApiErrorCode(error.code)) {
       feedback.apiError(error)
+      Vue.$log.error(`API error n°${error.code}: ${error.msg}`)
     }
+  } else if (e.request) {
+    feedback.offline()
+    Vue.$log.error('Connection error: back-end unreachable')
   } else {
     Vue.$log.error(e)
   }
