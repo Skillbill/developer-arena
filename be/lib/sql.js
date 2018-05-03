@@ -18,7 +18,17 @@ const sequelize = new Sequelize(sqlUri, {
     logging: false
 })
 
-const checkConnection = () => new Promise((resolve) => sequelize.authenticate().then(() => resolve()).catch(resolve))
+const checkConnection = () => new Promise((resolve, reject) => {
+    sequelize.authenticate()
+        .then(() => resolve())
+        .catch(err => {
+            if (err instanceof Sequelize.Error) {
+                resolve(err)
+            } else {
+                reject(err)
+            }
+        })
+})
 
 const getContestTable = () => {
     return sequelize.define('contest', model.contest, {freezeTableName: true})
