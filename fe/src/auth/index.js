@@ -1,4 +1,6 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+// eslint-disable-next-line no-unused-vars
+import firebaseAuth from 'firebase/auth';
 import store from '../store';
 
 const fakeUser = () => {
