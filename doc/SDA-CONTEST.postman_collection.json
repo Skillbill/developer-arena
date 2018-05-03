@@ -1,17 +1,17 @@
 {
 	"info": {
+		"_postman_id": "72d3e37f-f51a-40e7-8273-faa670b8ae01",
 		"name": "SDA-CONTEST",
-		"_postman_id": "d8a9dbe7-b6c7-617a-2a32-3125266a8f95",
-		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "admin",
+			"description": null,
 			"item": [
 				{
 					"name": "project",
-					"description": "",
+					"description": null,
 					"item": [
 						{
 							"name": "approve project",
@@ -20,14 +20,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "admin",
-										"description": "fake id"
-									},
-									{
-										"key": "Authorization",
-										"value": "Bearer {{token}}",
-										"description": "firebase token",
-										"disabled": true
+										"value": "{{authAdmin}}"
 									},
 									{
 										"key": "Content-Type",
@@ -63,14 +56,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "admin",
-										"description": "fake id"
-									},
-									{
-										"key": "Authorization",
-										"value": "Bearer {{token}}",
-										"description": "firebase token",
-										"disabled": true
+										"value": "{{authAdmin}}"
 									},
 									{
 										"key": "Content-Type",
@@ -109,14 +95,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "admin",
-								"description": "fake id"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adtoken}}",
-								"description": "firebase token (admin)",
-								"disabled": true
+								"value": "{{authAdmin}}"
 							},
 							{
 								"key": "Content-Type",
@@ -149,14 +128,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "admin",
-								"description": "fake id"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adtoken}}",
-								"description": "firebase token (admin)",
-								"disabled": true
+								"value": "{{authAdmin}}"
 							},
 							{
 								"key": "Content-Type",
@@ -188,14 +160,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "admin",
-								"description": "fake id"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adtoken}}",
-								"description": "firebase token (admin)",
-								"disabled": true
+								"value": "{{authAdmin}}"
 							}
 						],
 						"body": {
@@ -224,14 +189,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "admin",
-								"description": "fake id"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adtoken}}",
-								"description": "firebase token",
-								"disabled": true
+								"value": "{{authAdmin}}"
 							}
 						],
 						"body": {
@@ -259,14 +217,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "admin",
-								"description": "fake id"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adtoken}}",
-								"description": "firebase token",
-								"disabled": true
+								"value": "{{authAdmin}}"
 							}
 						],
 						"body": {
@@ -295,14 +246,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "admin",
-								"description": "fake id"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adtoken}}",
-								"description": "firebase token",
-								"disabled": true
+								"value": "{{authAdmin}}"
 							}
 						],
 						"body": {
@@ -327,6 +271,7 @@
 		},
 		{
 			"name": "project",
+			"description": null,
 			"item": [
 				{
 					"name": "project",
@@ -414,14 +359,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "userid",
-								"description": "fake id"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"description": "firebase token",
-								"disabled": true
+								"value": "{{auth}}"
 							}
 						],
 						"body": {
@@ -487,14 +425,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "userid",
-								"description": "fake id"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"description": "firebase token",
-								"disabled": true
+								"value": "{{auth}}"
 							}
 						],
 						"body": {
@@ -551,14 +482,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "userid",
-								"description": "fake id"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"description": "firebase token",
-								"disabled": true
+								"value": "{{auth}}"
 							}
 						],
 						"body": {
@@ -589,14 +513,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "userid",
-								"description": "fake id"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"description": "firebase token",
-								"disabled": true
+								"value": "{{auth}}"
 							}
 						],
 						"body": {
@@ -669,8 +586,7 @@
 							"query": [
 								{
 									"key": "sort",
-									"value": "trend",
-									"equals": true
+									"value": "trend"
 								}
 							]
 						}
@@ -701,8 +617,7 @@
 							"query": [
 								{
 									"key": "sort",
-									"value": "date",
-									"equals": true
+									"value": "date"
 								}
 							]
 						}

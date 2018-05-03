@@ -1,0 +1,30 @@
+{
+  "id": "43c737f3-93cb-40d4-8307-e4787bd3f5cf",
+  "values": [
+    {
+      "key": "version",
+      "value": "1.0",
+      "description": "",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "language",
+      "value": "en",
+      "description": "",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "token",
+      "value": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImQ5NGQ1ZjMyZTE4NmRjMWUxNjA0MjhiZDdhODE1NDI2ZjI3NDg4MmIifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc2RhLWNvbnRlc3QtZGV2IiwibmFtZSI6Ikd1aWxsYXVtZSBELiIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vLVhkVUlxZE1rQ1dBL0FBQUFBQUFBQUFJL0FBQUFBQUFBQUFBLzQyNTJyc2NidjVNL3Bob3RvLmpwZyIsImF1ZCI6InNkYS1jb250ZXN0LWRldiIsImF1dGhfdGltZSI6MTUyNTM1MjMzNiwidXNlcl9pZCI6IlFOb0RKcFdrMkJOZE41dFpYQ0R5TURVOEhIejEiLCJzdWIiOiJRTm9ESnBXazJCTmRONXRaWENEeU1EVThISHoxIiwiaWF0IjoxNTI1MzU2MDExLCJleHAiOjE1MjUzNTk2MTEsImVtYWlsIjoiZ3VpbGxhdW1lZHVsaXNjb3VldEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwNDI0NjMyNTA0MTgwMjYzMTg1NyJdLCJlbWFpbCI6WyJndWlsbGF1bWVkdWxpc2NvdWV0QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.uEoTbplcP9fAIT0_ieGGPLarvDE_FmFWpkS6WiweIZpDPT5-2MI0caJyJmwH4xQrFgd5ZDCW8Zo0kziU0qSCkulP8RILqBMoAcDbPykovlCW0QkvKir8s1WPduojBU1580n9XAjT29o8vUiwGY7QKKkmWQ9EySRAonMXqMTz3fL7Wv10islp93tas7eoTTnXXaPlbPgiUfeVFEOP_fhmqGsczaTFOwMy-6cXHKD97gU67So2iFDeww4hhQXSAOZihHZKX9YzNgDg4w9O4mDa8ZrsXoDlrd2kYSFS60tK4xDuaMHjlPVyjR28QCH05V5Xq5v_CO4KhbAVRR_6wMht3w",
+      "description": "",
+      "type": "text",
+      "enabled": true
+    }
+  ],
+  "name": "sda-contest Globals",
+  "_postman_variable_scope": "globals",
+  "_postman_exported_at": "2018-05-03T14:12:10.877Z",
+  "_postman_exported_using": "Postman/6.0.10"
+}
