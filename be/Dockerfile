@@ -1,9 +1,7 @@
 FROM node:carbon
 
-ENV root /be
-
-RUN mkdir $root
-COPY . $root/
-RUN cd $root && npm install --unsafe-perm
-
-CMD "/usr/local/bin/node" "$root/server.js"
+RUN mkdir /be
+COPY . /be
+WORKDIR /be
+RUN npm install --unsafe-perm
+CMD npm start
