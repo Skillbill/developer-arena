@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    <Header/>
-    <main role="main" class="container">
-      <router-view></router-view>
-    </main>
+    <Header v-if="!hideHeader"/>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -14,13 +12,11 @@ export default {
   name: 'App',
   components: {
     Header
+  },
+  computed: {
+    hideHeader: function () {
+      return this.$route.name ? this.$route.name.startsWith('signIn') : true
+    }
   }
 }
 </script>
-
-<style scoped>
-main {
-  padding-top: 70px;
-  height: 100vh;
-}
-</style>

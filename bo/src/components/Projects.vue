@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main class="container mt-3">
     <div class="mb-3" v-if="contest">
       <h2>List of the projects of contest {{contest.title}}</h2>
     </div>
@@ -20,7 +20,7 @@
       </template>
     </b-table>
     <b-pagination :total-rows="projects.length" :per-page="perPage" v-model="currentPage"/>
-  </div>
+  </main>
 </template>
 
 <script>

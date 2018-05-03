@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main class="container mt-3">
     <h3 v-if="contest && contest.id" class="mb-3">Edit contest number {{contest.id}} ({{contest.i18n['en'].title}})</h3>
     <h3 v-if="contest && !contest.id" class="mb-3">Create new contest</h3>
     <form v-if="contest" class="needs-validation" autocomplete="off"
@@ -54,7 +54,7 @@
         <button class="btn btn-danger mb-3" @click.prevent="cancel">Cancel</button>
       </div>
     </form>
-  </div>
+  </main>
 </template>
 
 <script>

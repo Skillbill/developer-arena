@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="d-flex row mb-3">
+  <main class="container mt-3">
+    <div class="row mb-2">
         <div class="mr-auto">
           <h2>List of the contests</h2>
         </div>
@@ -22,7 +22,7 @@
       </template>
     </b-table>
     <b-modal id="modalDelete" :title="toDelete ? `Delete contest ${toDelete.title}?` : ''" @ok="deleteContest"></b-modal>
-  </div>
+  </main>
 </template>
 
 <script>
