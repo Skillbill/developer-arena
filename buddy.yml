@@ -14,7 +14,7 @@
     repository: "skillbillsrl/sda-contest-be"
     trigger_condition_paths:
     - "/be"
-    trigger_condition: "ALWAYS"
+    trigger_condition: "ON_CHANGE_AT_PATH"
   - action: "[BO] Build Docker image"
     type: "DOCKERFILE"
     login: "${DOCKER_HUB_USER}"
@@ -25,7 +25,7 @@
     repository: "skillbillsrl/sda-contest-bo"
     trigger_condition_paths:
     - "/bo"
-    trigger_condition: "ALWAYS"
+    trigger_condition: "ON_CHANGE_AT_PATH"
   - action: "[DB] Build Docker image"
     type: "DOCKERFILE"
     login: "${DOCKER_HUB_USER}"
@@ -36,7 +36,7 @@
     repository: "skillbillsrl/sda-contest-db"
     trigger_condition_paths:
     - "/db"
-    trigger_condition: "ALWAYS"
+    trigger_condition: "ON_CHANGE_AT_PATH"
   - action: "[FE] Build Docker image"
     type: "DOCKERFILE"
     login: "${DOCKER_HUB_USER}"
@@ -47,7 +47,7 @@
     repository: "skillbillsrl/sda-contest-fe"
     trigger_condition_paths:
     - "/fe"
-    trigger_condition: "ALWAYS"
+    trigger_condition: "ON_CHANGE_AT_PATH"
   - action: "Upload files to server"
     type: "SFTP"
     input_type: "SCM_REPOSITORY"
