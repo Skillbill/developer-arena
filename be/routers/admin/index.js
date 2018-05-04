@@ -7,6 +7,7 @@ const router = express.Router({mergeParams: true})
 
 router.all('*', auth.middleware, adminCheck)
 router.get('/check', (req, res) => res.status(http.noContent).send())
+router.use('/user', require('./user'))
 router.use('/contest', require('./contest'))
 router.use('/contest/:contestId/project/', require('./project'))
 

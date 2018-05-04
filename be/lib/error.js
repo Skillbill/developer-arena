@@ -28,6 +28,11 @@ module.exports = {
         code: 1005,
         msg: 'deliverable_not_found'
     },
+    userNotFound: {
+        http: http.notFound,
+        code: 0,
+        msg: 'user_not_found'
+    },
     contestNotOpenForSubmission: {
         http: http.preconditionFailed,
         code: 1006,

@@ -10,6 +10,7 @@
     "project_not_found": "Project not found",
     "image_not_found": "Image not found",
     "deliverable_not_found": "Deliverable not found",
+    "user_not_found": "User not found",
     "contest_not_open_for_submission": "Contest is not open for submission",
     "contest_not_open_for_voting": "Contest is not open for voting",
     "missing_parameter": "Missing required parameter: {{parameter}}",

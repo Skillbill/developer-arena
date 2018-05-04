@@ -72,8 +72,6 @@ const fake_auth = (req, res, next) => {
     next()
 }
 
-const middleware = (req, res, next) => (fakeAuthEnabled ? fake_auth : firebase_auth)(req, res, next)
-
 const init = (config) => {
     _config = Object.assign({}, config)
     const cfg = config.firebase
@@ -95,7 +93,23 @@ const init = (config) => {
     }
 }
 
+const getUserById = (id) => new Promise((resolve, reject) => {
+    if (fakeAuthEnabled) {
+        return resolve({uid: id})
+    }
+    firebase.auth().getUser(id).then(user => resolve(user))
+        .catch(err => {
+            if (err.code == 'auth/user-not-found') {
+                return resolve()
+            }
+            reject(err)
+        })
+})
+
+const middleware = (req, res, next) => (fakeAuthEnabled ? fake_auth : firebase_auth)(req, res, next)
+
 module.exports = {
-    init: init,
-    middleware: middleware
+    init,
+    getUserById,
+    middleware
 }
