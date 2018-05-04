@@ -15,6 +15,14 @@ chai.request.Request.prototype.by = function(userId) {
     return this
 }
 
+const createProjectReq = (contestId) => {
+    return chai.request(srv).post(_(`/contest/${contestId}/project/`))
+        .type('form')
+        .field('title', mock.exampleProject.title)
+        .field('description', mock.exampleProject.description)
+        .attach('deliverable', require.resolve('@/package.json'))
+}
+
 function createContest(done) {
     if (!this.contest) {
         return this.skip()
@@ -147,9 +155,8 @@ describe('contest', () => {
                     if (!this.contest.id) {
                         return this.skip()
                     }
-                    chai.request(srv).post(_(`/contest/${this.contest.id}/project/`))
+                    createProjectReq(this.contest.id)
                         .by('user')
-                        .send()
                         .end((err, res) => {
                             expect(res).to.have.status(http.preconditionFailed)
                             done()
@@ -169,12 +176,8 @@ describe('contest', () => {
                     if (!this.contest.id) {
                         return this.skip()
                     }
-                    chai.request(srv).post(_(`/contest/${this.contest.id}/project/`))
+                    createProjectReq(this.contest.id)
                         .by('user')
-                        .type('form')
-                        .field('title', mock.exampleProject.title)
-                        .field('description', mock.exampleProject.description)
-                        .attach('deliverable', require.resolve('@/package.json'))
                         .end((err, res) => {
                             expect(res).to.have.status(http.created)
                             expect(res.body).to.be.a('object')
@@ -246,12 +249,8 @@ describe('contest', () => {
         })
         context('in VOTING', () => {
             before('prepare project', function(done) {
-                chai.request(srv).post(_(`/contest/${this.contest.id}/project/`))
+                createProjectReq(this.contest.id)
                     .by('projectOwner')
-                    .type('form')
-                    .field('title', mock.exampleProject.title)
-                    .field('description', mock.exampleProject.description)
-                    .attach('deliverable', require.resolve('@/package.json'))
                     .end((err, res) => {
                         expect(res).to.have.status(http.created)
                         expect(res.body).to.be.a('object')
@@ -272,12 +271,8 @@ describe('contest', () => {
                     if (!this.contest.id) {
                         return this.skip()
                     }
-                    chai.request(srv).post(_(`/contest/${this.contest.id}/project/`))
+                    createProjectReq(this.contest.id)
                         .by('user')
-                        .type('form')
-                        .field('title', mock.exampleProject.title)
-                        .field('description', mock.exampleProject.description)
-                        .attach('deliverable', require.resolve('@/package.json'))
                         .end((err, res) => {
                             expect(res).to.have.status(http.preconditionFailed)
                             done(err)
