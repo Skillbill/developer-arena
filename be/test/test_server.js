@@ -55,7 +55,7 @@ function deleteContest(done) {
     chai.request(srv).delete(_(`/admin/contest/${id}`))
         .by('admin')
         .end((err, res) => {
-            expect(res).to.have.status(http.ok)
+            expect(res).to.have.status(http.noContent)
             done(err)
         })
 }

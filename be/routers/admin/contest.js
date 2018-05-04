@@ -71,7 +71,7 @@ function deleteContest(req, res, next) {
         if (count == 0) {
             return next(error.contestNotFound)
         }
-        res.status(http.ok).end()
+        res.status(http.noContent).send()
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
     })
