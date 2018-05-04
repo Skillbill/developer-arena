@@ -11,7 +11,7 @@
         "password": "1234"
     },
     "i18n": {
-        "locales": [ "en", "it", "fr" ],
+        "locales": [ "en", "it"],
         "defaultLocale": "en"
     },
     "admins": [
