@@ -32,7 +32,7 @@ scripts/run.sh -B db
 ```
 cd be
 npm install
-node server.js
+npm start
 ```
 
 ##### docker:
@@ -42,7 +42,7 @@ scripts/run.sh -B be
 
 ### api doc
 
-[postman export of all apis](/doc/SDA-CONTEST.postman_collection.json)
+[postman export of all apis](/etc/postman/)
 
 ## frontend
 
