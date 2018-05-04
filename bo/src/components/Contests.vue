@@ -8,92 +8,54 @@
           <b-button variant="primary" @click="createContest">Create a new contest</b-button>
         </div>
     </div>
-    <b-table :fields="fields" :items="contestList">
-      <template slot="action" slot-scope="data">
-        <b-button variant="outline-primary" size="sm" title="edit contest" @click.stop="editContest(data.item.id)">
-          <i class="fas fa-edit"></i> Edit
-        </b-button>
-        <b-button variant="outline-secondary" size="sm" @click.stop="approveProjects(data.item.id)">
-          <i class="fas fa-list-ul"></i> Projects approval
-        </b-button>
-        <b-button variant="outline-danger" size="sm" @click.stop="toDelete = data.item" v-b-modal.modalDelete>
-          <i class="fas fa-times"></i> Delete
-        </b-button>
-      </template>
-    </b-table>
-    <b-modal id="modalDelete" :title="toDelete ? `Delete contest ${toDelete.title}?` : ''" @ok="deleteContest"></b-modal>
+    <ContestCard v-for="contest in contestList" :key="contest.id"
+                  :contest="contest"
+                  @deleteContest="askDeleteConfirmation"/>
+    <b-modal v-if="toDelete" v-model="showDeleteModal" ref="modalDelete" :title="`Delete contest ${toDelete.title}?`" @ok="deleteContest(toDelete.id)"></b-modal>
   </main>
 </template>
 
 <script>
 import api from '@/lib/api'
-import router from '@/lib/router'
 import feedback from '@/lib/feedback'
+import router from '@/lib/router'
+import ContestCard from '@/components/ContestCard'
 
 export default {
   name: 'Contests',
+  components: {
+    ContestCard
+  },
   data: function () {
     return {
       contestList: [],
       toDelete: null,
-      fields: [
-        {
-          key: 'id',
-          label: '#',
-          isRowHeader: true
-        },
-        {
-          key: 'endPresentation',
-          label: 'Start date',
-          formatter: this.formatDate
-        },
-        'title',
-        'state',
-        {
-          key: 'action',
-          label: ''
+      showDeleteModal: false
+    }
+  },
+  methods: {
+    createContest () {
+      router.push({
+        name: 'newContest'
+      })
+    },
+    deleteContest (id) {
+      api.deleteContest(id).then(response => {
+        if (response) {
+          feedback.contestDeleted()
+          this.contestList = this.contestList.filter(e => e.id !== id)
         }
-      ]
+      })
+    },
+    askDeleteConfirmation (toDelete) {
+      this.toDelete = toDelete
+      this.showDeleteModal = true
     }
   },
   created: function () {
     api.getContests().then(contestList => {
       this.contestList = contestList
     })
-  },
-  methods: {
-    editContest (id) {
-      router.push({
-        name: 'editContest',
-        params: {
-          contestId: id
-        }
-      })
-    },
-    approveProjects (id) {
-      router.push({
-        name: 'projects',
-        params: {
-          contestId: id
-        }
-      })
-    },
-    createContest () {
-      router.push({
-        name: 'newContest'
-      })
-    },
-    deleteContest () {
-      api.deleteContest(this.toDelete.id).then(response => {
-        if (response) {
-          feedback.contestDeleted()
-          this.contestList = this.contestList.filter(e => e.id !== this.toDelete.id)
-        }
-      })
-    },
-    formatDate: function (date) {
-      return new Date(date).toLocaleDateString(navigator.language)
-    }
   }
 }
 </script>
