@@ -189,6 +189,8 @@ const update = (projectId, data) => {
     })
 }
 
+const destroy = (id) => sql.getProjectTable().destroy({where: {id: id}})
+
 const vote = (project, voterId) => {
     return new Promise((resolve, reject) => {
         sql.getVoteTable().create({
@@ -228,6 +230,7 @@ module.exports = {
     findWithImage,
     submit,
     update,
+    destroy,
     vote,
     undoVote,
     setApproved

@@ -214,6 +214,19 @@ describe('contest', () => {
                             done(err)
                         })
                 })
+                describe('user', () => {
+                    it('is NOT able to vote', function(done) {
+                        if (!this.contest.id || !this.project.id) {
+                            return this.skip()
+                        }
+                        chai.request(srv).put(_(`/contest/${this.contest.id}/project/${this.project.id}/vote`))
+                            .by('user')
+                            .end((err, res) => {
+                                expect(res).to.have.status(http.preconditionFailed)
+                                done(err)
+                            })
+                    })
+                })
                 describe('admin', () => {
                     it('is able to approve', function(done) {
                         if (!this.contest.id || !this.project.id) {
@@ -231,17 +244,20 @@ describe('contest', () => {
                                     })
                             })
                     })
-                })
-                describe('user', () => {
-                    it('is NOT able to vote', function(done) {
+                    it('is able to remove', function(done) {
                         if (!this.contest.id || !this.project.id) {
                             return this.skip()
                         }
-                        chai.request(srv).put(_(`/contest/${this.contest.id}/project/${this.project.id}/vote`))
-                            .by('user')
+                        chai.request(srv).delete(_(`/admin/contest/${this.contest.id}/project/${this.project.id}`))
+                            .by('admin')
                             .end((err, res) => {
-                                expect(res).to.have.status(http.preconditionFailed)
-                                done(err)
+                                expect(res).to.have.status(http.noContent)
+                                chai.request(srv).get(_(`/contest/${this.contest.id}/project/${this.project.id}`))
+                                    .end((err, res) => {
+                                        expect(res).to.have.status(http.notFound)
+                                        delete this.project
+                                        done(err)
+                                    })
                             })
                     })
                 })
