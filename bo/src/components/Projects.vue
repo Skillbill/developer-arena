@@ -1,7 +1,7 @@
 <template>
   <main class="container mt-3">
     <div class="mb-3" v-if="contest">
-      <h2>List of the projects of contest {{contest.title}}</h2>
+      <h2>List of the projects of contest {{contest.i18n.en.title}}</h2>
     </div>
     <b-table :fields="fields" :items="projects" :current-page="currentPage" :per-page="perPage">
       <template slot="action" slot-scope="data">
