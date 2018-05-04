@@ -1,17 +1,16 @@
 {
 	"info": {
-		"_postman_id": "72d3e37f-f51a-40e7-8273-faa670b8ae01",
 		"name": "SDA-CONTEST",
+		"_postman_id": "5def7778-deba-61f8-a043-0d0a4373b1d6",
+		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "admin",
-			"description": null,
 			"item": [
 				{
 					"name": "project",
-					"description": null,
 					"item": [
 						{
 							"name": "approve project",
@@ -21,10 +20,6 @@
 									{
 										"key": "Authorization",
 										"value": "{{authAdmin}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
 									}
 								],
 								"body": {
@@ -50,17 +45,13 @@
 							"response": []
 						},
 						{
-							"name": "disapprove project",
+							"name": "undo approve project",
 							"request": {
 								"method": "DELETE",
 								"header": [
 									{
 										"key": "Authorization",
 										"value": "{{authAdmin}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
 									}
 								],
 								"body": {
@@ -80,6 +71,37 @@
 										"project",
 										"1",
 										"approve"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete project",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/contest/1/project/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"contest",
+										"1",
+										"project",
+										"1"
 									]
 								}
 							},
@@ -271,7 +293,6 @@
 		},
 		{
 			"name": "project",
-			"description": null,
 			"item": [
 				{
 					"name": "project",
