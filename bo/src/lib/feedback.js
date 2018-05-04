@@ -26,10 +26,10 @@ const apiError = (error) => {
 }
 
 const apiErrorText = {
-  1001: {title: 'Internal server error', msg: 'The database is not reachable'},
-  1017: {title: 'Not saved', msg: 'The dates are invalid'},
-  1005: {title: 'Not found', msg: 'No deliverable found for this project'},
-  1202: {title: 'Wrong token', msg: 'The current back-end does not accept fake users'}
+  5001: {title: 'Internal server error', msg: 'The database is not reachable'},
+  4306: {title: 'Not saved', msg: 'The dates are invalid'},
+  4404: {title: 'Not found', msg: 'No deliverable found for this project'},
+  4104: {title: 'Wrong token', msg: 'The current back-end does not accept fake users'}
 }
 
 const forApiErrorCode = (code) => {
