@@ -111,6 +111,42 @@
 					"_postman_isSubFolder": true
 				},
 				{
+					"name": "user",
+					"description": "",
+					"item": [
+						{
+							"name": "get user info",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/user/{{uid}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"user",
+										"{{uid}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "edit contest",
 					"request": {
 						"method": "PATCH",
