@@ -1,121 +1,131 @@
 const http = require('@/lib/http')
+const logger = require('@/lib/logger')
 
-module.exports = {
-    new: (err, args) => Object.assign({}, err, { args: args }),
-
+const errors = {
     internal: {
         http: http.internalError,
-        code: 1001,
+        code: 5001,
         msg: 'internal_server_error'
     },
     contestNotFound: {
         http: http.notFound,
-        code: 1002,
+        code: 4401,
         msg: 'contest_not_found'
     },
     projectNotFound: {
         http: http.notFound,
-        code: 1003,
+        code: 4402,
         msg: 'project_not_found'
     },
     imageNotFound: {
         http: http.notFound,
-        code: 1004,
+        code: 4403,
         msg: 'image_not_found'
     },
     deliverableNotFound: {
         http: http.notFound,
-        code: 1005,
+        code: 4404,
         msg: 'deliverable_not_found'
     },
     userNotFound: {
         http: http.notFound,
-        code: 0,
+        code: 4405,
         msg: 'user_not_found'
     },
     contestNotOpenForSubmission: {
         http: http.preconditionFailed,
-        code: 1006,
+        code: 4301,
         msg: 'contest_not_open_for_submission'
     },
     contestNotOpenForVoting: {
         http: http.preconditionFailed,
-        code: 1007,
+        code: 4302,
         msg: 'contest_not_open_for_voting'
     },
     missingParameter: {
         http: http.badRequest,
-        code: 1008,
+        code: 4001,
         msg: 'missing_parameter'
     },
     alreadySubmittedProject: {
         http: http.preconditionFailed,
-        code: 1009,
+        code: 4303,
         msg: 'already_submitted_project'
     },
     alreadyVotedProject: {
         http: http.preconditionFailed,
-        code: 1010,
+        code: 4304,
         msg: 'already_voted_project'
     },
     uidMismatch: {
         http: http.unauthorized,
-        code: 1011,
+        code: 4101,
         msg: 'uid_mismatch'
     },
     fileTooBig: {
         http: http.tooLarge,
-        code: 1012,
+        code: 4201,
         msg: 'file_too_big'
     },
     fileNoName: {
         http: http.badRequest,
-        code: 1013,
+        code: 4202,
         msg: 'file_no_name'
     },
     fileInvalidType: {
         http: http.unsupportedType,
-        code: 1014,
+        code: 4203,
         msg: 'file_invalid_type'
     },
     invalidUrl: {
         http: http.badRequest,
-        code: 1015,
+        code: 4204,
         msg: 'invalid_url'
     },
     invalidState: {
         http: http.badRequest,
-        code: 1016,
+        code: 4305,
         msg: 'invalid_state'
     },
     invalidDates: {
         http: http.badRequest,
-        code: 1017,
+        code: 4306,
         msg: 'invalid_dates'
     },
     notAdmin: {
         http: http.forbidden,
-        code: 1101,
+        code: 4102,
         msg: 'not_admin'
     },
     emailNotVerified: {
         http: http.forbidden,
-        code: 1201,
+        code: 4103,
         msg: 'email_not_verified'
     },
     tokenMissing: {
         http: http.unauthorized,
-        code: 1202,
+        code: 4104,
         msg: 'token_missing'
     },
     tokenError: {
         http: http.badRequest,
-        code: 1203,
+        code: 4105,
         msg: 'token_error'
     },
     tokenExpired: {
         http: http.badRequest,
-        code: 1204,
+        code: 4106,
         msg: 'token_expired'
     }
 }
+
+// validate error codes
+Object.values(errors).map(e => e.code).forEach((code, i, lst) => {
+    if (lst.indexOf(code) != i) {
+        logger.warn(`found duplicated error code ${code}`)
+    }
+})
+
+module.exports = Object.assign(errors, {
+    new: (err, args) => Object.assign({}, err, { args: args }),
+})
