@@ -3,20 +3,34 @@
     <div class="mb-3" v-if="contest">
       <h2>List of the projects of contest {{contest.i18n.en.title}}</h2>
     </div>
-    <b-table :fields="fields" :items="projects" :current-page="currentPage" :per-page="perPage">
+    <b-table striped
+              id="projectTable"
+              :fields="fields"
+              :items="projects"
+              :current-page="currentPage"
+              :per-page="perPage"
+              @row-clicked="showDetails"
+    >
       <template slot="action" slot-scope="data">
-        <b-button variant="outline-primary" size="sm" title="download project" @click.stop="download(data.item.id)">
-          <i class="fas fa-download"></i> Download
-        </b-button>
-        <b-button variant="outline-primary" size="sm" title="see project in the public front-end" @click.stop="redirectToFE(data.item.id)">
-          <i class="fas fa-eye"></i> See
-        </b-button>
-        <b-button v-if="!data.item.approved" variant="outline-success" size="sm" title="approve project" @click.stop="approve(data.item, true)">
-          <i class="fas fa-check"></i> Approve
-        </b-button>
-        <b-button v-else variant="outline-danger" size="sm" title="disapprove project" @click.stop="approve(data.item, false)">
-          <i class="fas fa-times"></i> Disapprove
-        </b-button>
+        <div class="d-flex justify-content-between">
+          <b-button v-if="!data.item.approved" variant="outline-success" size="sm" title="approve project" @click.stop="approve(data.item, true)">
+            <i class="fas fa-check"></i> Approve
+          </b-button>
+          <b-button v-else variant="outline-danger" size="sm" title="disapprove project" @click.stop="approve(data.item, false)">
+            <i class="fas fa-times"></i> Disapprove
+          </b-button>
+          <b-dropdown class="ml-2" variant="link" size="sm" no-caret right>
+            <template slot="button-content">
+              <i class="fas fa-ellipsis-v"></i>
+            </template>
+            <b-dd-item-btn title="download project" @click.stop="download(data.item.id)">
+              <i class="fas fa-download"></i> Download
+            </b-dd-item-btn>
+            <b-dd-item-btn title="see project in the public front-end" @click.stop="redirectToFE(data.item.id)">
+              <i class="fas fa-eye"></i> See
+            </b-dd-item-btn>
+          </b-dropdown>
+        </div>
       </template>
     </b-table>
     <b-pagination :total-rows="projects.length" :per-page="perPage" v-model="currentPage"/>
@@ -40,29 +54,41 @@ export default {
           key: 'id',
           label: '#',
           isRowHeader: true,
-          sortable: true
+          sortable: true,
+          tdClass: 'min'
         },
-        'title',
+        {
+          key: 'title',
+          tdClass: 'protect'
+        },
         {
           key: 'submitted',
           formatter: this.formatDateTime,
-          sortable: true
+          sortable: true,
+          tdClass: 'min'
         },
         {
           key: 'updated',
           formatter: this.formatDateTime,
-          sortable: true
+          sortable: true,
+          tdClass: 'min'
         },
         {
           key: 'action',
-          label: ''
+          label: 'Action',
+          tdClass: ['actions', 'min']
         }
       ],
       currentPage: 1,
-      perPage: 5
+      perPage: 10
     }
   },
   methods: {
+    showDetails (record, index, event) {
+      this.$log.info(record)
+      this.$log.info(index)
+      this.$log.info(event)
+    },
     download (projectId) {
       location.href = `${this.$config.serverAddress}/${this.$config.apiVersion}` +
         `/contest/${this.contest.id}/project/${projectId}/deliverable`
@@ -92,3 +118,29 @@ export default {
   }
 }
 </script>
+
+<style>
+#projectTable {
+  width: inherit !important;
+}
+#projectTable td, th {
+  width: auto;
+}
+#projectTable td.min,th.min {
+  width: 1px !important;
+}
+@media (min-width: 992px) {
+  #projectTable td.min,th.min {
+    white-space: nowrap !important;
+  }
+}
+#projectTable th.protect,td.protect {
+  min-width: 10rem
+}
+#projectTable td.actions {
+   padding: 0.5rem;
+}
+.btn-link {
+  color: black;
+}
+</style>
