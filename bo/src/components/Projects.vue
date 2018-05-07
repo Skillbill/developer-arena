@@ -9,7 +9,6 @@
               :items="projects"
               :current-page="currentPage"
               :per-page="perPage"
-              @row-clicked="showDetails"
     >
       <template slot="action" slot-scope="data">
         <div class="d-flex justify-content-between">
@@ -29,16 +28,21 @@
             <b-dd-item-btn title="see project in the public front-end" @click.stop="redirectToFE(data.item.id)">
               <i class="fas fa-eye"></i> See
             </b-dd-item-btn>
+            <b-dd-item-btn title="delete the project" @click.stop="askDeleteConfirmation(data.item)">
+              <i class="fas fa-times"></i> Delete
+            </b-dd-item-btn>
           </b-dropdown>
         </div>
       </template>
     </b-table>
     <b-pagination :total-rows="projects.length" :per-page="perPage" v-model="currentPage"/>
+    <b-modal v-if="toDelete" v-model="showDeleteModal" ref="modalDelete" :title="`Delete project ${toDelete.title}?`" @ok="deleteProject(toDelete.id)"></b-modal>
   </main>
 </template>
 
 <script>
 import api from '@/lib/api'
+import feedback from '@/lib/feedback'
 
 export default {
   name: 'Contests',
@@ -49,6 +53,8 @@ export default {
     return {
       contest: null,
       projects: [],
+      toDelete: null,
+      showDeleteModal: false,
       fields: [
         {
           key: 'id',
@@ -84,11 +90,6 @@ export default {
     }
   },
   methods: {
-    showDetails (record, index, event) {
-      this.$log.info(record)
-      this.$log.info(index)
-      this.$log.info(event)
-    },
     download (projectId) {
       location.href = `${this.$config.serverAddress}/${this.$config.apiVersion}` +
         `/contest/${this.contest.id}/project/${projectId}/deliverable`
@@ -103,6 +104,18 @@ export default {
           project.approved = bool
         }
       })
+    },
+    deleteProject (projectId) {
+      api.deleteProject(this.contest.id, projectId).then(response => {
+        if (response) {
+          feedback.projectDeleted()
+          this.projects = this.projects.filter(e => e.id !== projectId)
+        }
+      })
+    },
+    askDeleteConfirmation (toDelete) {
+      this.toDelete = toDelete
+      this.showDeleteModal = true
     },
     formatDateTime: function (date) {
       return (new Date(date)).toLocaleString(navigator.language)

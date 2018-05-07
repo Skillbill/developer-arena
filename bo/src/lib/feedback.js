@@ -13,7 +13,10 @@ const contestCreated = () => {
   Vue.$toastr.success('The contest has been created successfully', 'Saved')
 }
 const contestDeleted = () => {
-  Vue.$toastr.success('The contest has been deleted successfully', 'Saved')
+  Vue.$toastr.success('The contest has been deleted successfully', 'Deleted')
+}
+const projectDeleted = () => {
+  Vue.$toastr.success('The project has been deleted successfully', 'Deleted')
 }
 const invalidFeilds = () => {
   Vue.$toastr.error('Some feilds are invalid', 'Not saved')
@@ -48,6 +51,7 @@ export default {
   contestUpdated,
   contestCreated,
   contestDeleted,
+  projectDeleted,
   offline,
   apiError,
   forApiErrorCode

@@ -185,6 +185,21 @@ const setProjectApproved = (contestId, projectId, bool) => {
   })
 }
 
+const deleteProject = (contestId, projectId) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'delete',
+      url: `admin/contest/${contestId}/project/${projectId}`,
+      headers
+    })
+  }).then(response => {
+    return response
+  }).catch(e => {
+    apiError(e)
+    return null
+  })
+}
+
 const apiError = e => {
   let error = e.response && e.response.data && e.response.data.error
   if (error && error.code) {
@@ -210,5 +225,6 @@ export default {
   deleteContest,
   getProjectsByContest,
   getProjectDeliverable,
-  setProjectApproved
+  setProjectApproved,
+  deleteProject
 }
