@@ -8,6 +8,38 @@
 </template>
 
 <script>
+export default {
+  props: ['date', 'onEnd'],
+  data() {
+    return {
+      interval: null,
+      days: null,
+      countdown: '',
+      showDays: false
+    }
+  },
+  created() {
+    const calc = () => {
+      let result = getTimeRemaining(this.date);
+      this.days = result.days;
+      this.showDays = result.days > 1;
+      this.countdown = `${pad(this.showDays ? result.hours : result.hoursAll)}:${pad(result.minutes)}:${pad(result.seconds)}`;
+      if(result.time <= 0) {
+        clearInterval(this.interval);
+        if(this.onEnd) {
+          this.onEnd();
+        }
+      }
+    };
+    calc();
+    this.interval = setInterval(() => {
+      calc();
+    }, 1000);
+  },
+  destroyed() {
+    clearInterval(this.interval);
+  }
+}
 
 function getTimeRemaining(date) {
   var t = new Date(date).getTime() - new Date().getTime();
@@ -43,36 +75,4 @@ function pad(n) {
   return n;
 }
 
-export default {
-  props: ['date', 'onEnd'],
-  data() {
-    return {
-      interval: null,
-      days: null,
-      countdown: '',
-      showDays: false
-    }
-  },
-  created() {
-    const calc = () => {
-      let result = getTimeRemaining(this.date);
-      this.days = result.days;
-      this.showDays = result.days > 1;
-      this.countdown = `${pad(this.showDays ? result.hours : result.hoursAll)}:${pad(result.minutes)}:${pad(result.seconds)}`;
-      if(result.time <= 0) {
-        clearInterval(this.interval);
-        if(this.onEnd) {
-          this.onEnd();
-        }
-      }
-    };
-    calc();
-    this.interval = setInterval(() => {
-      calc();
-    }, 1000);
-  },
-  destroyed() {
-    clearInterval(this.interval);
-  }
-}
 </script>
