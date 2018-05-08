@@ -5,12 +5,20 @@ import router from '@/lib/router'
 import api from '@/lib/api'
 import feedback from '@/lib/feedback'
 
-const fakeUser = () => {
+const getFakeUid = () => {
   let uid = sessionStorage.getItem('uid')
   if (!uid) {
     uid = Math.floor(Math.random() * 1000).toString()
     sessionStorage.setItem('uid', uid)
   }
+  return uid
+}
+
+const fakeUser = (uid = null) => {
+  if (!uid) uid = getFakeUid()
+  let photoURL = 'https://randomuser.me/api/portraits/' +
+                  (((Number(uid) % 200) <= 100) ? 'men' : 'women') +
+                  '/' + (Number(uid) % 100) + '.jpg'
   return {
     isAdmin: true,
     uid,
@@ -19,13 +27,13 @@ const fakeUser = () => {
     emailVerified: true,
     isAnonymous: false,
     phoneNumber: null,
-    photoURL: '/static/graphics/assets/dummy/user.svg',
+    photoURL: photoURL,
     providerData: [
       {
         displayName: `User ${uid}`,
         email: 'fake@email.com',
         phoneNumber: null,
-        photoURL: '/static/graphics/assets/dummy/user.svg',
+        photoURL: photoURL,
         providerId: 'fake',
         uid
       }
@@ -162,7 +170,8 @@ const auth = {
       store.commit('setUser', null)
       router.push('/')
     }
-  }
+  },
+  fakeUser
 }
 
 export default auth

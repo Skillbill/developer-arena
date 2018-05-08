@@ -10,6 +10,9 @@
               :current-page="currentPage"
               :per-page="perPage"
     >
+      <template slot="userId" slot-scope="data">
+        <span v-if="userMap">{{userMap.get(data.value).displayName}}</span>
+      </template>
       <template slot="action" slot-scope="data">
         <div class="d-flex justify-content-between">
           <b-button v-if="!data.item.approved" variant="outline-success" size="sm" title="approve project" @click.stop="approve(data.item, true)">
@@ -53,6 +56,7 @@ export default {
     return {
       contest: null,
       projects: [],
+      userMap: null,
       toDelete: null,
       showDeleteModal: false,
       fields: [
@@ -66,6 +70,11 @@ export default {
         {
           key: 'title',
           tdClass: 'protect'
+        },
+        {
+          key: 'userId',
+          label: 'By',
+          tdClass: 'min'
         },
         {
           key: 'submitted',
@@ -127,6 +136,14 @@ export default {
     })
     api.getProjectsByContest(this.contestId).then(projects => {
       this.projects = projects
+      let userIds = projects.map(p => p.userId)
+      api.getUsersById(userIds).then(users => {
+        let userMap = new Map()
+        for (let i = 0; i < userIds.length; i++) {
+          userMap.set(userIds[i], users[i])
+        }
+        this.userMap = userMap
+      })
     })
   }
 }

@@ -3,6 +3,7 @@ import axios from 'axios'
 import store from '@/lib/store'
 import feedback from '@/lib/feedback'
 import * as utils from '@/lib/utils'
+import auth from './auth'
 
 let instance = null
 
@@ -200,6 +201,40 @@ const deleteProject = (contestId, projectId) => {
   })
 }
 
+const getUserById = id => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'get',
+      url: 'admin/user/' + id,
+      headers
+    }).then(response => {
+      if (Vue.$config.firebase.devMode) {
+        let matchNumId = response.data.user.uid.match(/\d+/)
+        return auth.fakeUser(matchNumId && matchNumId[0])
+      }
+      return Vue.$config.firebase.devMode ? auth.fakeUser(response.data.user.uid) : response.data.user
+    }).catch(e => {
+      apiError(e)
+      return null
+    })
+  })
+}
+
+const getUsersById = ids => {
+  return getHeaders().then(headers => {
+    let requests = []
+    ids.forEach(id => {
+      requests.push(getUserById(id))
+    })
+    return Promise.all(requests).then(responses => {
+      return responses
+    }).catch(e => {
+      apiError(e)
+      return null
+    })
+  })
+}
+
 const apiError = e => {
   let error = e.response && e.response.data && e.response.data.error
   if (error && error.code) {
@@ -226,5 +261,7 @@ export default {
   getProjectsByContest,
   getProjectDeliverable,
   setProjectApproved,
-  deleteProject
+  deleteProject,
+  getUserById,
+  getUsersById
 }
