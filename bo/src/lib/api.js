@@ -208,11 +208,13 @@ const getUserById = id => {
       url: 'admin/user/' + id,
       headers
     }).then(response => {
-      if (Vue.$config.firebase.devMode) {
-        let matchNumId = response.data.user.uid.match(/\d+/)
+      let user = response.data.user
+      if (!user.email) {
+        let matchNumId = user.uid.match(/\d+/)
         return auth.fakeUser(matchNumId && matchNumId[0])
+      } else {
+        return user
       }
-      return Vue.$config.firebase.devMode ? auth.fakeUser(response.data.user.uid) : response.data.user
     }).catch(e => {
       apiError(e)
       return null
