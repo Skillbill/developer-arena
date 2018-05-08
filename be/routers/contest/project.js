@@ -5,6 +5,9 @@ const error = require('@/lib/error')
 const persistence = require('@/lib/persistence')
 const express = require('express')
 const moment = require('moment')
+
+const setUserEmail = require('@/lib/auth').setUserEmail
+
 const router = express.Router({mergeParams: true})
 
 const mw = {
@@ -148,7 +151,15 @@ function prepareProject(req, res, next) {
             req.project.image.mtime = new Date()
         }
     }
-    next()
+    if (!req.body.email) {
+        return next(error.new(error.missingParameter, {parameter: 'email'}))
+    }
+    setUserEmail(req.user.uid, req.body.email)
+        .then(() => {
+            next()
+        }).catch(err => {
+            next(error.new(error.internal, {cause: err}))
+        })
 }
 
 function submitProject(req, res, next) {
