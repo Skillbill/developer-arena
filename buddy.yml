@@ -106,6 +106,7 @@
   trigger_mode: "MANUAL"
   ref_name: "master"
   ref_type: "BRANCH"
+  actions:
   - action: "backup and destroy database volume"
     type: "SSH_COMMAND"
     login: "root"
