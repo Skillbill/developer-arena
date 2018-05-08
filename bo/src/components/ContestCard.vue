@@ -19,11 +19,14 @@
       <b-button variant="outline-primary" size="sm" title="edit contest" @click.stop="editContest(contest.id)">
         <i class="fas fa-edit"></i> Edit
       </b-button>
-      <b-button class="ml-2" variant="outline-danger" size="sm" @click.stop="$emit('deleteContest',contest)">
+      <b-button v-if="contest.state === 'DRAFT'" class="ml-2" variant="outline-danger" size="sm" @click.stop="$emit('deleteContest',contest)">
         <i class="fas fa-times"></i> Delete
       </b-button>
-      <b-button class="ml-auto" v-if="contest.state === 'APPLYING'" variant="outline-secondary" size="sm" @click.stop="approveProjects(contest.id)">
-        <i class="fas fa-list-ul"></i> Projects approval
+      <b-button class="ml-auto"
+                v-if="contest.state !== 'DRAFT' && contest.state !== 'PRESENTATION'"
+                variant="outline-secondary" size="sm"
+                @click.stop="approveProjects(contest.id)">
+        <i class="fas fa-list-ul"></i> Manage projects
       </b-button>
     </div>
   </b-card>
