@@ -3,10 +3,23 @@
     <div class="mb-3" v-if="contest">
       <h2>List of the projects of contest {{contest.i18n.en.title}}</h2>
     </div>
-    <b-table striped
+    <b-row class="m-2">
+      <div class="col-auto my-2">Per page:</div>
+      <div class="col-auto pl-0">
+        <b-form-select :options="pageOptions" v-model="perPage" />
+      </div>
+      <div class="col-auto">
+        <b-input-group class="my-2">
+          <b-form-checkbox id="checkbox1" v-model="filterApproved">
+            Filter already approved projects
+          </b-form-checkbox>
+        </b-input-group>
+      </div>
+    </b-row>
+    <b-table striped show-empty
               id="projectTable"
               :fields="fields"
-              :items="projects"
+              :items="filteredProjects"
               :current-page="currentPage"
               :per-page="perPage"
     >
@@ -38,7 +51,7 @@
         </div>
       </template>
     </b-table>
-    <b-pagination :total-rows="projects.length" :per-page="perPage" v-model="currentPage"/>
+    <b-pagination :total-rows="filteredProjects.length" :per-page="perPage" v-model="currentPage"/>
     <b-modal v-if="toDelete" v-model="showDeleteModal" ref="modalDelete" :title="`Delete project ${toDelete.title}?`" @ok="deleteProject(toDelete.id)"></b-modal>
   </main>
 </template>
@@ -60,6 +73,7 @@ export default {
       userMap: null,
       toDelete: null,
       showDeleteModal: false,
+      filterApproved: false,
       fields: [
         {
           key: 'id',
@@ -96,7 +110,17 @@ export default {
         }
       ],
       currentPage: 1,
-      perPage: 10
+      perPage: 10,
+      pageOptions: [5, 10, 15]
+    }
+  },
+  computed: {
+    filteredProjects: function () {
+      let result = this.projects
+      if (this.filterApproved) {
+        result = result.filter(project => !project.approved)
+      }
+      return result
     }
   },
   methods: {
@@ -154,6 +178,12 @@ export default {
 </script>
 
 <style>
+@media (max-width: 767.98px) {
+  .container {
+    width: auto
+  }
+}
+
 #projectTable {
   width: inherit !important;
 }
