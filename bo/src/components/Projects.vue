@@ -87,6 +87,12 @@ export default {
           tdClass: 'protect'
         },
         {
+          key: 'votes',
+          formatter: (value) => value.length,
+          sortable: true,
+          tdClass: 'min'
+        },
+        {
           key: 'userId',
           label: 'By',
           tdClass: 'min'
