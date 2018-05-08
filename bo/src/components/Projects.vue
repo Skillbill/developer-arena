@@ -11,7 +11,7 @@
               :per-page="perPage"
     >
       <template slot="userId" slot-scope="data">
-        <span v-if="userMap">{{userMap.get(data.value).displayName}}</span>
+        <span v-if="userMap">{{getUserDisplay(userMap.get(data.value))}}</span>
       </template>
       <template slot="action" slot-scope="data">
         <div class="d-flex justify-content-between">
@@ -46,6 +46,7 @@
 <script>
 import api from '@/lib/api'
 import feedback from '@/lib/feedback'
+import * as utils from '@/lib/utils'
 
 export default {
   name: 'Contests',
@@ -128,6 +129,9 @@ export default {
     },
     formatDateTime: function (date) {
       return (new Date(date)).toLocaleString(navigator.language)
+    },
+    getUserDisplay (user) {
+      return utils.getUserDisplay(user)
     }
   },
   created: function () {

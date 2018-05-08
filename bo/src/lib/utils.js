@@ -45,3 +45,15 @@ export function getEmptyContest () {
     }
   }
 }
+
+export function getUserDisplay (user) {
+  if (user.displayName) {
+    return user.displayName
+  } else if (user.email) {
+    let regex = /(.*)@/
+    let match = regex.exec(user.email)
+    return match[0]
+  } else {
+    return user.uid
+  }
+}

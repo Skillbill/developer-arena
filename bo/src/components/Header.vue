@@ -9,7 +9,7 @@
           <b-nav-item v-if="user && user.isAdmin" to="/contests">Contests</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-text class="pr-2" v-if="user">{{user.displayName}}</b-nav-text>
+          <b-nav-text class="pr-2" v-if="user">{{getUserDisplay(user)}}</b-nav-text>
           <b-button v-if="!user" variant="primary" to="/sign-in">Sign in</b-button>
           <b-button v-if="user" variant="outline-danger" @click="signOut">signOut</b-button>
         </b-navbar-nav>
@@ -21,6 +21,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import auth from '@/lib/auth'
+import * as utils from '@/lib/utils'
 
 export default {
   name: 'Header',
@@ -32,6 +33,9 @@ export default {
   methods: {
     signOut () {
       auth.signOut()
+    },
+    getUserDisplay (user) {
+      return utils.getUserDisplay(user)
     }
   }
 }
