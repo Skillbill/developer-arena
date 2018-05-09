@@ -50,7 +50,6 @@ export default {
       this.$store.dispatch('saveProfile', {email: this.email}).then(() => {
         return this.$store.dispatch('refreshUser').then(() => {
           this.loading = false;
-          this.$store.commit('setFeedbackOk', 'profile.saved');
           if(this.$route.query.redirect) {
             this.$router.replace(this.$route.query.redirect);
           }
