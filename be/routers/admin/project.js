@@ -1,5 +1,6 @@
 const http = require('@/lib/http')
 const persistence = require('@/lib/persistence')
+const preview = require('@/lib/preview')
 const error = require('@/lib/error')
 const express = require('express')
 const router = express.Router()
@@ -7,6 +8,7 @@ const router = express.Router()
 router.delete('/:projectId', deleteProject)
 router.put('/:projectId/approve', approveProject)
 router.delete('/:projectId/approve', approveProject)
+router.put('/:projectId/preview', generatePreview)
 
 function deleteProject(req, res, next) {
     const id = req.params.projectId
@@ -30,6 +32,22 @@ function approveProject(req, res, next) {
         return persistence.setProjectApproved(id, value)
     }).then(() => {
         res.status(http.noContent).send()
+    }).catch(err => {
+        next(error.new(error.internal, {cause: err}))
+    })
+}
+
+function generatePreview(req, res, next) {
+    const id = req.params.projectId
+    persistence.getProjectWithDeliverable(id).then(project => {
+        if (!project) {
+            return next(error.projectNotFound)
+        }
+        preview.extractToFs(project.toJSON()).then(root => {
+            res.status(http.created).send({href: root})
+        }).catch(err => {
+            next(error.new(error.internal, {cause: err}))
+        })
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
     })
