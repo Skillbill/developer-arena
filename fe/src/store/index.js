@@ -10,6 +10,7 @@ const store = new Vuex.Store({
   state: {
     configuration: null,
     user: null,
+    userClaims: null,
     contest: null,
     feedback: null,
     language: null,
@@ -25,6 +26,9 @@ const store = new Vuex.Store({
     },
     setUser (state, user) {
       state.user = user;
+    },
+    setUserClaims (state, userClaims) {
+      state.userClaims = userClaims;
     },
     setContest (state, contest) {
       state.contest = contest;
@@ -218,6 +222,24 @@ const store = new Vuex.Store({
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));
       })
+    },
+    updateUser({commit}, user) {
+      commit('setUser', user);
+      if(user) {
+        return user.getIdTokenResult(true).then(result => {
+          if(process.env.NODE_ENV === 'development') {
+            console.log('User Token', result.token);
+            console.log('User Claims', result.claims);
+          }
+          commit('setUserClaims', result.claims);
+        });
+      } else {
+        commit('setUserClaims', null);
+        return Promise.resolve();
+      }
+    },
+    refreshUser({dispatch}) {
+      return dispatch('updateUser', this.state.user);
     }
   }
 })

@@ -40,6 +40,9 @@ const getSessionUser = () => {
     const user = JSON.parse(sessionItem);
     user.getIdToken = () => {
       return Promise.resolve(user.uid);
+    };
+    user.getIdTokenResult = () => {
+      return Promise.resolve({email: user.email});
     }
     return user;
   } else {
