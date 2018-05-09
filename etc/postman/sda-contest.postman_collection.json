@@ -435,12 +435,6 @@
 									"description": "required"
 								},
 								{
-									"key": "email",
-									"value": "myemail@isp.net",
-									"description": "required",
-									"type": "text"
-								},
-								{
 									"key": "repoURL",
 									"value": "github.com/username/little-project",
 									"type": "text",
@@ -461,8 +455,7 @@
 								{
 									"key": "image",
 									"value": "",
-									"type": "file",
-									"description": ""
+									"type": "file"
 								}
 							]
 						},
@@ -503,12 +496,6 @@
 								{
 									"key": "description",
 									"value": "more accurate description",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "mynewemail@isp.net",
-									"description": "",
 									"type": "text"
 								},
 								{
