@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "SDA-CONTEST",
-		"_postman_id": "5def7778-deba-61f8-a043-0d0a4373b1d6",
+		"_postman_id": "b98f350f-62b1-98ee-5e12-671480fc418c",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -112,7 +112,6 @@
 				},
 				{
 					"name": "user",
-					"description": "",
 					"item": [
 						{
 							"name": "get user info",
@@ -328,6 +327,46 @@
 			]
 		},
 		{
+			"name": "me",
+			"description": "",
+			"item": [
+				{
+					"name": "set email",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "me@isp.net",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/me/email",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"me",
+								"email"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "project",
 			"item": [
 				{
@@ -435,12 +474,6 @@
 									"description": "required"
 								},
 								{
-									"key": "email",
-									"value": "myemail@isp.net",
-									"description": "required",
-									"type": "text"
-								},
-								{
 									"key": "repoURL",
 									"value": "github.com/username/little-project",
 									"type": "text",
@@ -461,8 +494,7 @@
 								{
 									"key": "image",
 									"value": "",
-									"type": "file",
-									"description": ""
+									"type": "file"
 								}
 							]
 						},
@@ -503,12 +535,6 @@
 								{
 									"key": "description",
 									"value": "more accurate description",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "mynewemail@isp.net",
-									"description": "",
 									"type": "text"
 								},
 								{

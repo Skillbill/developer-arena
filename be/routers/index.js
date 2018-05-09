@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router({mergeParams: true})
 
+router.use('/me', require('./me'))
 router.use('/limits', require('./limits'))
 router.use('/contest', require('./contest'))
 router.use('/admin', require('./admin'))
