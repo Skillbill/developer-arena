@@ -11,7 +11,7 @@
             Sign in with an administrator account
           </h4>
           <div>
-            <div v-for="provider in providers" :key="provider.name">
+            <div v-for="provider in providers" :key="provider.id">
               <ProviderButton :provider="provider" @provider-clicked="signIn"/>
             </div>
           </div>

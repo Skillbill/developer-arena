@@ -5,7 +5,11 @@ let config = {}
 module.exports = {
     init: (filePath) => {
         logger.log(`initializing config from ${filePath}`)
-        config = JSON.parse(fs.readFileSync(filePath))
+        try {
+            config = JSON.parse(fs.readFileSync(filePath))
+        } catch (err) {
+            throw `${filePath}: ${err}`
+        }
         return config
     },
     get: () => Object.assign({}, config)

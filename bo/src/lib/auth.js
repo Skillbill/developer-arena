@@ -4,6 +4,7 @@ import store from '@/lib/store'
 import router from '@/lib/router'
 import api from '@/lib/api'
 import feedback from '@/lib/feedback'
+import * as utils from '@/lib/utils'
 
 const getFakeUid = () => {
   let uid = sessionStorage.getItem('uid')
@@ -24,7 +25,7 @@ const fakeUser = (uid = null) => {
     uid,
     displayName: `User ${uid}`,
     email: 'fake@email.com',
-    emailVerified: true,
+    emailVerified: false,
     isAnonymous: false,
     phoneNumber: null,
     photoURL: photoURL,
@@ -34,7 +35,7 @@ const fakeUser = (uid = null) => {
         email: 'fake@email.com',
         phoneNumber: null,
         photoURL: photoURL,
-        providerId: 'fake',
+        providerId: 'google.com',
         uid
       }
     ]
@@ -62,30 +63,14 @@ const getSessionUser = () => {
 }
 
 const auth = {
-  providers: {
-    google: {
-      name: 'Google',
-      providerName: 'GoogleAuthProvider',
-      style: 'google',
-      scopes: ['https://www.googleapis.com/auth/userinfo.email']
-    },
-    github: {
-      name: 'GitHub',
-      style: 'github',
-      providerName: 'GithubAuthProvider'
-    },
-    facebook: {
-      name: 'Facebook',
-      style: 'facebook',
-      providerName: 'FacebookAuthProvider'
-    },
-    twitter: {
-      name: 'Twitter',
-      style: 'twitter',
-      providerName: 'TwitterAuthProvider'
-    }
-  },
+  providers: [
+    'google.com',
+    'github.com',
+    'facebook.com',
+    'twitter.com'
+  ],
   init (config, showApp) {
+    this.providers = this.providers.map(provider => utils.getProviderInfo(provider))
     if (config.firebase.devMode) {
       let user = getSessionUser()
       Vue.$log.info('Auth initialization in devMode with:', user ? user.displayName : 'no user', 'signed in')
