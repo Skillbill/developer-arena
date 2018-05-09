@@ -3,19 +3,19 @@
     <div class="mb-3" v-if="contest">
       <h2>List of the projects of contest {{contest.i18n.en.title}}</h2>
     </div>
-    <b-row class="m-2">
-      <div class="col-auto my-2">Per page:</div>
-      <div class="col-auto pl-0">
-        <b-form-select :options="pageOptions" v-model="perPage" />
-      </div>
-      <div class="col-auto">
-        <b-input-group class="my-2">
-          <b-form-checkbox id="checkbox1" v-model="filterApproved">
-            Filter already approved projects
-          </b-form-checkbox>
-        </b-input-group>
-      </div>
-    </b-row>
+    <div class="m-3">
+      <b-form inline>
+        <label class="mr-sm-2" for="perPageSelect">Per page:</label>
+        <b-form-select class="mb-2 mr-sm-3 mb-sm-0"
+                      :options="pageOptions"
+                      v-model="perPage"
+                      id="perPageSelect">
+        </b-form-select>
+        <b-form-checkbox class="mb-2 mr-sm-2 mb-sm-0" v-model="filterApproved">
+          Filter already approved projects
+        </b-form-checkbox>
+      </b-form>
+    </div>
     <b-table striped show-empty
               id="projectTable"
               :fields="fields"
@@ -24,7 +24,7 @@
               :per-page="perPage"
     >
       <template slot="userId" slot-scope="data">
-        <span v-if="userMap">{{getUserDisplay(userMap.get(data.value))}}</span>
+        <b-link v-if="userMap" :to="`/user/${data.value}`">{{getUserDisplay(userMap.get(data.value))}}</b-link>
       </template>
       <template slot="action" slot-scope="data">
         <div class="d-flex justify-content-between">

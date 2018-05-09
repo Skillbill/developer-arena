@@ -57,3 +57,17 @@ export function getUserDisplay (user) {
     return user.uid
   }
 }
+
+export function getProviderInfo (providerId) {
+  let nameLower = providerId.replace(/([.]\w+)$/, '')
+  let name = nameLower.charAt(0).toUpperCase() + nameLower.slice(1)
+  let icon = /[.]com/.test(providerId) ? `fab fa-${nameLower}` : 'fas fa-envelope'
+  return {
+    id: providerId,
+    nameLower: nameLower,
+    name: name,
+    providerName: name + 'AuthProvider',
+    icon: icon,
+    scope: providerId === 'google.com' ? ['https://www.googleapis.com/auth/userinfo.email'] : []
+  }
+}
