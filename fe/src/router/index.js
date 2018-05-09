@@ -7,6 +7,7 @@ import SubmitEntry from '@/components/SubmitEntry'
 import Projects from '@/components/Projects'
 import Project from '@/components/Project'
 import Rules from '@/components/Rules'
+import Profile from '@/components/Profile'
 
 Vue.use(Router)
 
@@ -27,7 +28,8 @@ let router = new Router({
       name: 'SubmitEntry',
       component: SubmitEntry,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresEmail: true
       }
     },
     {
@@ -44,19 +46,36 @@ let router = new Router({
       path: '/rules',
       name: 'Rules',
       component: Rules
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  let currentUser = store.state.user;
+  const currentUser = store.state.user;
+  const currentUserClaims = store.state.userClaims;
   const providerPassword = currentUser && currentUser.providerData[0].providerId === 'password'
   const emailVerified = currentUser && currentUser.emailVerified === true
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const requiresEmail = to.matched.some(record => record.meta.requiresEmail)
 
   if (requiresAuth && (!currentUser || (currentUser && providerPassword && !emailVerified))) {
     next({
       path: '/sign-in',
+      query: {
+        redirect: to.fullPath
+      }
+    })
+  } else if(requiresEmail && currentUser && currentUserClaims && !currentUser.email && !currentUserClaims.email) {
+    next({
+      path: '/profile',
       query: {
         redirect: to.fullPath
       }

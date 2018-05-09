@@ -120,5 +120,10 @@ module.exports = {
     date: 'Data di caricamento',
     trend: 'Tendenza',
     update: 'Aggiornamento'
+  },
+  profile: {
+    title: 'Profilo',
+    send: 'Salva',
+    email: 'Email'
   }
 }
