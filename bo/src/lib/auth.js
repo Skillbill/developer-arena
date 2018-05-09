@@ -29,13 +29,16 @@ const fakeUser = (uid = null) => {
     isAnonymous: false,
     phoneNumber: null,
     photoURL: photoURL,
+    customClaims: {
+      email: 'custom@email.com'
+    },
     providerData: [
       {
         displayName: `User ${uid}`,
         email: 'fake@email.com',
         phoneNumber: null,
         photoURL: photoURL,
-        providerId: 'google.com',
+        providerId: 'password',
         uid
       }
     ]

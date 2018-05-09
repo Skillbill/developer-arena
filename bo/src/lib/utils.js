@@ -49,10 +49,10 @@ export function getEmptyContest () {
 export function getUserDisplay (user) {
   if (user.displayName) {
     return user.displayName
+  } else if (user.customClaims && user.customClaims.email) {
+    return user.customClaims.email.replace(/@.*/, '')
   } else if (user.email) {
-    let regex = /(.*)@/
-    let match = regex.exec(user.email)
-    return match[0]
+    return user.email.replace(/@.*/, '')
   } else {
     return user.uid
   }

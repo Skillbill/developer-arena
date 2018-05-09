@@ -18,7 +18,7 @@
               <tr>
                 <td>Email:</td>
                 <td>
-                  {{user.email}}
+                  {{email}}
                   <span v-if="provider.id === 'password'">
                     <i v-if="user.emailVerified" class="fas fa-check" style="color: green;" title="verified"></i>
                     <i v-else class="fas fa-times" style="color: red;" title="not verified"></i>
@@ -58,6 +58,9 @@ export default {
   computed: {
     provider: function () {
       return utils.getProviderInfo(this.user.providerData[0].providerId)
+    },
+    email: function () {
+      return (this.user.customClaims && this.user.customClaims.email) || this.user.email
     }
   },
   created: function () {
