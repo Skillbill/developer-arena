@@ -124,6 +124,7 @@ module.exports = {
   profile: {
     title: 'Profilo',
     send: 'Salva',
-    email: 'Email'
+    email: 'Email',
+    saved: 'Dati salvati con successo'
   }
 }
