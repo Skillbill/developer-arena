@@ -37,7 +37,8 @@ store.dispatch('loadConfiguration').then(() => {
   store.dispatch('loadLastContest');
   auth.initializeApp();
   auth.onAuthStateChanged(user => {
-    store.dispatch('updateUser', user);
-    initVueApp();
+    store.dispatch('updateUser', user).then(() => {
+      initVueApp();
+    });
   });
 });
