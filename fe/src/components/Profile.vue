@@ -1,16 +1,18 @@
 <template>
   <main class="profile">
     <section>
-      <h2>{{$t('profile.title')}}</h2>
-      <form action="#" method="post" class="submit-profile" v-on:submit.prevent="submit">
-        <fieldset>
-          <label for="profile-email">
-            <span>{{$t('profile.email')}} *</span>
-          </label>
-          <input type="email" name="email" id="profile-email" required v-model="email" placeholder="name@email.com">
-        </fieldset>
-        <button type="submit">{{$t('profile.send')}}</button>
-      </form>
+      <template v-if="!loading">
+        <h2>{{$t('profile.title')}}</h2>
+        <form action="#" method="post" class="submit-profile" v-on:submit.prevent="submit">
+          <fieldset>
+            <label for="profile-email">
+              <span>{{$t('profile.email')}} *</span>
+            </label>
+            <input type="email" name="email" id="profile-email" required v-model="email" placeholder="name@email.com">
+          </fieldset>
+          <button type="submit">{{$t('profile.send')}}</button>
+        </form>
+      </template>
       <div class="progress" v-if="loading"></div>
     </section>
   </main>
@@ -44,11 +46,15 @@ export default {
   },
   methods: {
     submit() {
-      this.$store.dispatch('refreshUser').then(() => {
-        if(this.$route.query.redirect) {
-          this.$router.replace(this.$route.query.redirect);
-        }
-      });
+      this.loading = true;
+      this.$store.dispatch('saveProfile', {email: this.email}).then(() => {
+        return this.$store.dispatch('refreshUser').then(() => {
+          this.loading = false;
+          if(this.$route.query.redirect) {
+            this.$router.replace(this.$route.query.redirect);
+          }
+        })
+      })
     }
   }
 }
