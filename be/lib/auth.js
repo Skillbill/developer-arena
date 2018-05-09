@@ -20,10 +20,14 @@ const get_firebase_user = (req) => {
     }
     return new Promise((resolve, reject) => {
         firebase.auth().verifyIdToken(token).then(decodedToken => {
+            let email = decodedToken.email
+            if (decodedToken.customClaims && decodedToken.customClaims.email) {
+                email = decodedToken.customClaims.email
+            }
             resolve({
                 uid: decodedToken.uid,
                 provider: decodedToken.firebase.sign_in_provider,
-                email: decodedToken.email,
+                email: email,
                 isAdmin: isAdmin(decodedToken.uid),
                 emailVerified: decodedToken.email_verified
             })
@@ -106,10 +110,18 @@ const getUserById = (id) => new Promise((resolve, reject) => {
         })
 })
 
+const setUserEmail = (uid, email) => {
+    if (fakeAuthEnabled) {
+        return Promise.resolve()
+    }
+    return firebase.auth().setCustomUserClaims(uid, {email: email})
+}
+
 const middleware = (req, res, next) => (fakeAuthEnabled ? fake_auth : firebase_auth)(req, res, next)
 
 module.exports = {
     init,
     getUserById,
+    setUserEmail,
     middleware
 }
