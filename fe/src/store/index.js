@@ -223,6 +223,18 @@ const store = new Vuex.Store({
         commit('setFeedbackError', utils.getApiErrorMessage(e));
       })
     },
+    async saveProfile({commit, dispatch}, data) {
+      const headers = await utils.getDefaultHeaders({auth: true});
+      return axios({
+        method: 'put',
+        url: utils.getApiUrl(`/me/email`),
+        headers,
+        data
+      }).catch(e => {
+        console.error(e);
+        commit('setFeedbackError', utils.getApiErrorMessage(e));
+      })
+    },
     updateUser({commit}, user) {
       commit('setUser', user);
       if(user) {
