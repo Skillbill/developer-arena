@@ -230,6 +230,8 @@ const store = new Vuex.Store({
         url: utils.getApiUrl(`/me/email`),
         headers,
         data
+      }).then(() => {
+        commit('setFeedbackOk', 'profile.saved');
       }).catch(e => {
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));
