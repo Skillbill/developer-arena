@@ -8,7 +8,8 @@ const router = express.Router()
 router.delete('/:projectId', deleteProject)
 router.put('/:projectId/approve', approveProject)
 router.delete('/:projectId/approve', approveProject)
-router.put('/:projectId/preview', generatePreview)
+router.put('/:projectId/preview', createPreview)
+router.delete('/:projectId/preview', deletePreview)
 
 function deleteProject(req, res, next) {
     const id = req.params.projectId
@@ -37,14 +38,30 @@ function approveProject(req, res, next) {
     })
 }
 
-function generatePreview(req, res, next) {
+function createPreview(req, res, next) {
     const id = req.params.projectId
     persistence.getProjectWithDeliverable(id).then(project => {
         if (!project) {
             return next(error.projectNotFound)
         }
-        preview.extractToFs(project.toJSON()).then(root => {
+        preview.create(project).then(root => {
             res.status(http.created).send({href: root})
+        }).catch(err => {
+            next(error.new(error.internal, {cause: err}))
+        })
+    }).catch(err => {
+        next(error.new(error.internal, {cause: err}))
+    })
+}
+
+function deletePreview(req, res, next) {
+    const id = req.params.projectId
+    persistence.getProjectWithDeliverable(id).then(project => {
+        if (!project) {
+            return next(error.projectNotFound)
+        }
+        preview.destroy(project).then(() => {
+            res.status(http.noContent).send()
         }).catch(err => {
             next(error.new(error.internal, {cause: err}))
         })
