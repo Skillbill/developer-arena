@@ -35,12 +35,16 @@ export function getEmptyContest () {
       en: {
         title: '',
         description: '',
-        rules: ''
+        rules: '',
+        descriptionClosed: '',
+        descriptionPast: ''
       },
       it: {
         title: '',
         description: '',
-        rules: ''
+        rules: '',
+        descriptionClosed: '',
+        descriptionPast: ''
       }
     }
   }
