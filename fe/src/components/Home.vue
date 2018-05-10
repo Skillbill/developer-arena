@@ -26,6 +26,8 @@
         </h2>
         <div class="contest" v-if="contest">
           <h2 v-md:strip.p="contest.title"></h2>
+          <div v-if="contest.state === 'PAST' && contest.descriptionPast" v-md="contest.descriptionPast" class="highlight"></div>
+          <div v-if="contest.state === 'CLOSED' && contest.descriptionClosed" v-md="contest.descriptionClosed" class="highlight"></div>
           <div v-md="contest.description"></div>
           <hr>
           <div v-md="contest.rules"></div>
