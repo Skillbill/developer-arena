@@ -28,10 +28,10 @@
       </template>
       <template slot="action" slot-scope="data">
         <div class="d-flex justify-content-between">
-          <b-button v-if="!data.item.approved" variant="outline-success" size="sm" title="approve project" @click.stop="approve(data.item, true)">
+          <b-button v-if="!data.item.approved" variant="outline-success" size="sm" title="approve project" @click.stop="approve(data.item)">
             <i class="fas fa-check"></i> Approve
           </b-button>
-          <b-button v-else variant="outline-danger" size="sm" title="disapprove project" @click.stop="approve(data.item, false)">
+          <b-button v-else variant="outline-danger" size="sm" title="disapprove project" @click.stop="disapprove(data.item)">
             <i class="fas fa-times"></i> Disapprove
           </b-button>
           <b-dropdown class="ml-2" variant="link" size="sm" no-caret right>
@@ -138,10 +138,29 @@ export default {
     redirectToFE (projectId) {
       window.open(`${this.$config.frontEndAddress}/#/contest/${this.contest.id}/project/${projectId}`, '_blank')
     },
-    approve (project, bool) {
-      api.setProjectApproved(this.contest.id, project.id, bool).then(response => {
+    approve (project) {
+      api.createProjectPreview(this.contest.id, project.id).then(response => {
+        if (!response) {
+          return null
+        }
+        feedback.projectPreviewCreated(response.href)
+        return api.setProjectApproved(this.contest.id, project.id, true)
+      }).then(response => {
         if (response) {
-          project.approved = bool
+          project.approved = true
+        }
+      })
+    },
+    disapprove (project) {
+      api.deleteProjectPreview(this.contest.id, project.id).then(response => {
+        if (!response) {
+          return null
+        }
+        feedback.projectPreviewDeleted()
+        return api.setProjectApproved(this.contest.id, project.id, false)
+      }).then(response => {
+        if (response) {
+          project.approved = false
         }
       })
     },
