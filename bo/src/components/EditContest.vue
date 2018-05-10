@@ -27,9 +27,9 @@
         </div>
       </div>
       <div class="form-row">
-        <EditDate label="End Presentation" v-model="contest.endPresentation"/>
-        <EditDate label="End Applying" v-model="contest.endApplying"/>
-        <EditDate label="End Voting" v-model="contest.endVoting"/>
+        <EditDate label="End Presentation*" v-model="contest.endPresentation"/>
+        <EditDate label="End Applying*" v-model="contest.endApplying"/>
+        <EditDate label="End Voting*" v-model="contest.endVoting"/>
       </div>
       <div class="mb-3">
         <label for="description">Description*</label>
