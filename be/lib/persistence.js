@@ -18,7 +18,7 @@ const updateProject = (projectId, data) => projectDao.update(projectId, data)
 const destroyProject = (projectId) => projectDao.destroy(projectId)
 const voteProject = (project, userId) => projectDao.vote(project, userId)
 const undoVoteProject = (project, userId) => projectDao.undoVote(project, userId)
-const setProjectApproved = (projectId, value) => projectDao.setApproved(projectId, value)
+const setProjectFlag = (projectId, flag, value) => projectDao.setFlag(projectId, flag, value)
 
 module.exports = {
     getAllContests,
@@ -38,5 +38,5 @@ module.exports = {
     destroyProject,
     voteProject,
     undoVoteProject,
-    setProjectApproved
+    setProjectFlag
 }

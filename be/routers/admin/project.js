@@ -30,7 +30,7 @@ function approveProject(req, res, next) {
         if (!project) {
             return next(error.projectNotFound)
         }
-        return persistence.setProjectApproved(id, value)
+        return persistence.setProjectFlag(id, 'approved', value)
     }).then(() => {
         res.status(http.noContent).send()
     }).catch(err => {
@@ -44,10 +44,10 @@ function createPreview(req, res, next) {
         if (!project) {
             return next(error.projectNotFound)
         }
-        preview.create(project).then(root => {
-            res.status(http.created).send({href: root})
-        }).catch(err => {
-            next(error.new(error.internal, {cause: err}))
+        return preview.create(project).then(root => {
+            return persistence.setProjectFlag(project.id, 'hasPreview').then(() => {
+                res.status(http.created).send({href: root})
+            })
         })
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
@@ -60,11 +60,8 @@ function deletePreview(req, res, next) {
         if (!project) {
             return next(error.projectNotFound)
         }
-        preview.destroy(project).then(() => {
-            res.status(http.noContent).send()
-        }).catch(err => {
-            next(error.new(error.internal, {cause: err}))
-        })
+        return preview.destroy(project).then(() => persistence.setProjectFlag(project.id, 'hasPreview', false))
+            .then(() => res.status(http.noContent).send())
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
     })

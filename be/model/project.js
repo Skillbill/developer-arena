@@ -10,5 +10,6 @@ module.exports = {
     description: {type: Sequelize.STRING, field: 'description'},
     repoURL: {type: Sequelize.STRING, field: 'repo_url'},
     video: {type: Sequelize.STRING, field: 'video'},
-    approved: {type: Sequelize.BOOLEAN, field: 'approved'}
+    approved: {type: Sequelize.BOOLEAN, field: 'approved'},
+    hasPreview: {type: Sequelize.BOOLEAN, field: 'has_preview'}
 }
