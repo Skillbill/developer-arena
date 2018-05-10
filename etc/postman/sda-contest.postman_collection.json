@@ -1,7 +1,7 @@
 {
 	"info": {
-		"name": "SDA-CONTEST",
-		"_postman_id": "b98f350f-62b1-98ee-5e12-671480fc418c",
+		"name": "SDA-CONTEST copy",
+		"_postman_id": "7f476915-0090-63d5-bb36-975797c3abbb",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -104,6 +104,72 @@
 										"1"
 									]
 								}
+							},
+							"response": []
+						},
+						{
+							"name": "create project preview",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/contest/1/project/1/preview",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"contest",
+										"1",
+										"project",
+										"1",
+										"preview"
+									]
+								},
+								"description": null
+							},
+							"response": []
+						},
+						{
+							"name": "delete project preview",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/contest/1/project/1/preview",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"contest",
+										"1",
+										"project",
+										"1",
+										"preview"
+									]
+								},
+								"description": null
 							},
 							"response": []
 						}
@@ -328,7 +394,6 @@
 		},
 		{
 			"name": "me",
-			"description": "",
 			"item": [
 				{
 					"name": "set email",
