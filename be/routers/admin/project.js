@@ -44,9 +44,9 @@ function createPreview(req, res, next) {
         if (!project) {
             return next(error.projectNotFound)
         }
-        return preview.create(project).then(root => {
+        return preview.create(project).then(result => {
             return persistence.setProjectFlag(project.id, 'hasPreview').then(() => {
-                res.status(http.created).send({href: root})
+                res.status(http.created).send(result)
             })
         })
     }).catch(err => {

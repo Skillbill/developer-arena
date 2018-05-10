@@ -1,25 +1,57 @@
 const logger = require('@/lib/logger')
 const fs = require('fs-extra')
+const fstream = require('fstream')
 const path = require('path')
-const stream = require('stream')
-const tar = require('tar')
+const untar = require('tar').extract
+const unzip = require('unzip')
 
-const approot = path.dirname(require.resolve('@/package.json'))
-const getDirname = (project) => path.join(approot, 'preview', project.contestId + '', project.id + '')
+const appRoot = path.dirname(require.resolve('@/package.json'))
+const getDirname = (project) => path.join(appRoot, 'preview', project.contestId + '', project.id + '')
 
-const extract = (file, dir) => new Promise((resolve, reject) => {
-    const ss = new stream.PassThrough()
-    ss.pipe(
-        tar.extract({
-            cwd: dir
-        })
-    )
-    ss.on('error', err => {
-        logger.error(`failed to extract: ${err}`)
-        reject(err)
+const copyToDisk = (file, dir) => new Promise((resolve, reject) => {
+    const filepath = path.join(dir, file.name)
+    fs.writeFile(filepath, file.data, err => {
+        err ? reject(err) : resolve(filepath)
     })
-    ss.on('end', () => resolve(dir))
-    ss.end(file.data)
+})
+
+const _extract = (file, mime, dir, result) => {
+    const onEntry = (entry) => {
+        if (entry.type != 'Directory') {
+            result.push(entry.path)
+        }
+    }
+    const rs = new fs.createReadStream(file)
+    switch (mime) {
+    case 'application/x-compressed':
+    case 'application/x-zip-compressed':
+    case 'application/zip':
+    case 'multipart/x-zip':
+        return rs.pipe(unzip.Parse()).on('entry', onEntry).pipe(fstream.Writer(dir || '.'))
+    default:
+        return rs.pipe(untar({C: dir})).on('entry', onEntry)
+    }
+}
+
+const extract = (file, options) => new Promise((resolve, reject) => {
+    if (!options) {
+        options = {}
+    }
+    copyToDisk(file, options.dst).then(tmpfile => {
+        let lst = []
+        _extract(tmpfile, file.mimetype, options.dst, lst)
+            .on('error', err => reject(err))
+            .on('close', () => {
+                resolve(lst)
+                if (options.cleanup) {
+                    fs.unlink(tmpfile, err => {
+                        if (err) {
+                            logger.warn(`could not delete ${tmpfile}: ${err}`)
+                        }
+                    })
+                }
+            })
+    }).catch(reject)
 })
 
 const create = (project) => new Promise((resolve, reject) => {
@@ -30,7 +62,14 @@ const create = (project) => new Promise((resolve, reject) => {
                 reject(err)
                 return
             }
-            extract(project.deliverable, dir).then(resolve).catch(reject)
+            extract(project.deliverable, {dst: dir, cleanup: true})
+                .then(files => {
+                    resolve({
+                        root: path.relative(appRoot, dir),
+                        files: files
+                    })
+                })
+                .catch(reject)
         })
     })
 })
