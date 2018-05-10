@@ -122,7 +122,7 @@ const auth = {
   afterRedirectError (error) {
     if (error.email && error.code === 'auth/account-exists-with-different-credential') {
       firebase.auth().fetchProvidersForEmail(error.email).then(providers => {
-        if (providers.length !== 1) Vue.$log.error('After firebase account exists error, ', providers.length, ' providers were found')
+        if (providers.length !== 1) Vue.$log.info('After firebase account exists error, ', providers.length, ' providers were found')
         Vue.$log.info(`Asking user "${error.email}"` +
           ` that tried to login with "${error.credential.providerId}"` +
           ` to login using his existing account at "${providers[0]}"`
