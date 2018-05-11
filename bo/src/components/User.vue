@@ -6,7 +6,7 @@
       </h6>
       <b-row>
         <b-col sm="auto">
-          <b-img width="100" rounded="circle" :src="user.photoURL || this.$config.statRes + 'blank-profile-picture.png'">
+          <b-img width="100" rounded="circle" :src="user.photoURL || this.$config.statRes + '/blank-profile-picture.png'">
           </b-img>
         </b-col>
         <b-col sm="auto">
