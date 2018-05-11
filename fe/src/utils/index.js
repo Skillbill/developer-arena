@@ -91,3 +91,7 @@ export function getProjectFile(project, kind) {
   }
   return null;
 }
+
+export function getProjectPreviewUrl(project) {
+  return `/preview/${project.contestId}/${project.id}/`;
+}

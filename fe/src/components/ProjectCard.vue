@@ -14,10 +14,11 @@
       </p>
     </div>
     <button :class="{success: isVoted, wait: sendingVote}" v-if="canVote" v-on:click="isVoted ? vote('delete') : vote('put')" :disabled="sendingVote">{{$t(voteButtonLabel)}}</button>
-    <template v-if="showDeliverable">
-      <a class="button" v-if="isApproved" download :href="deliverableUrl">{{$t('project.download')}}</a>
-      <button v-else disabled>{{$t('project.needsApprove')}}</button>
+    <template v-if="isApproved">
+      <a class="button success" v-if="showPreview && hasPreview" :href="previewUrl" target="_blank">{{$t('project.preview')}}</a>
+      <a class="button" v-if="showDeliverable" download :href="deliverableUrl">{{$t('project.download')}}</a>
     </template>
+    <button v-else disabled>{{$t('project.needsApprove')}}</button>
     <a class="button" v-if="showRepo && project.repoURL" :href="project.repoURL" target="_blank">{{$t('viewRepo')}}</a>
     <router-link class="button" v-if="canEdit" to="/submit-entry?edit=true">{{$t('project.edit')}}</router-link>
     <div class="video" v-if="showVideo && youtubeVideoCode">
@@ -27,7 +28,7 @@
   </div>
 </template>
 <script>
-import {getProjectImageUrl, getProjectDeliverableUrl, getProjectFile} from '@/utils'
+import {getProjectImageUrl, getProjectDeliverableUrl, getProjectFile, getProjectPreviewUrl} from '@/utils'
 import YoutubeVideo from '@/components/YoutubeVideo';
 
 export default {
@@ -46,7 +47,8 @@ export default {
     showRepo: Boolean,
     showEdit: Boolean,
     showDeliverable: Boolean,
-    showDefaultImage: Boolean
+    showDefaultImage: Boolean,
+    showPreview: Boolean
   },
   data() {
     return {
@@ -100,8 +102,14 @@ export default {
     isApproved() {
       return this.project && this.project.approved;
     },
+    hasPreview() {
+      return this.project && this.project.hasPreview;
+    },
     deliverableUrl() {
       return getProjectDeliverableUrl(this.project);
+    },
+    previewUrl() {
+      return getProjectPreviewUrl(this.project);
     }
   },
   methods: {

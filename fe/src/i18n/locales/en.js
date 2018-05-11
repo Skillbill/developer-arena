@@ -78,7 +78,8 @@ module.exports = {
     deliverableInvalidSize: 'File too big, max size: {size}',
     viewYour: 'View your project page',
     download: 'Download the project',
-    needsApprove: 'You\'ll be able to download the project after its approval'
+    needsApprove: 'You\'ll be able to download the project after its approval',
+    preview: 'Launch the project'
   },
   viewGitHub: 'View on GitHub',
   applyContest: 'Submit your project',
