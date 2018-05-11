@@ -20,7 +20,7 @@ img_db=${DOCKER_IMG_DB:-sda-contest-db}
 
 fe_port=8080
 be_port=3000
-bo_port=8080
+bo_port=8081
 db_port=5432
 
 usage() {
@@ -94,7 +94,6 @@ case $svc in
 	svclisten=$be_port
 	;;
     bo)
-	svc=bo
 	img=$img_bo
 	bindto=/app/static/configuration.json:ro
 	svclisten=$bo_port

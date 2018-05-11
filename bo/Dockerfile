@@ -17,4 +17,4 @@ RUN mv dist $APPDIR
 
 WORKDIR $APPDIR
 
-CMD http-server
+CMD http-server -p 8081
