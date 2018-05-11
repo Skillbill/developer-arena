@@ -1,8 +1,10 @@
 const limits = require('@/limits')
+const error = require('@/lib/error')
 const http = require('@/lib/http')
 const libContest = require('@/lib/contest')
-const error = require('@/lib/error')
+const logger = require('@/lib/logger')
 const persistence = require('@/lib/persistence')
+const preview = require('@/lib/preview')
 const express = require('express')
 const moment = require('moment')
 const router = express.Router({mergeParams: true})
@@ -135,6 +137,7 @@ function prepareProject(req, res, next) {
             req.project.deliverable = req.files.deliverable
             req.project.deliverable.mtime = new Date()
             req.project.approved = false
+            req.project.hasPreview = false
         }
         if (req.files.image) {
             req.project.image = req.files.image
@@ -207,6 +210,11 @@ function updateProject(req, res, next) {
             return next(error.uidMismatch)
         }
         persistence.updateProject(projectId, newProject).then(project => {
+            if (newProject.deliverable && currentProject.hasPreview) {
+                preview.destroy(currentProject).catch(err => {
+                    logger.error(`could not destroy old preview for project ${currentProject.id}`, err)
+                })
+            }
             res.status(http.ok).send({project: project})
         }).catch(err => {
             next(error.new(error.internal, {cause: err}))

@@ -165,7 +165,7 @@ const update = (projectId, data) => {
     return new Promise((resolve, reject) => {
         sql.transaction().then(tx => {
             return sql.getProjectTable().update(data, {
-                fields: ['title', 'description', 'updated', 'repoURL', 'video', 'approved'],
+                fields: ['title', 'description', 'updated', 'repoURL', 'video', 'approved', 'hasPreview'],
                 returning: true,
                 limit: 1,
                 where: {
