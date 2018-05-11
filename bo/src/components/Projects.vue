@@ -132,7 +132,7 @@ export default {
   methods: {
     download (projectId) {
       location.href = `${this.$config.serverAddress}/${this.$config.apiVersion}` +
-        `/contest/${this.contest.id}/project/${projectId}/deliverable`
+        `/contest/${this.contest.id}/project/${projectId}/deliverable?ts=${Date.now()}`
       // api.getProjectDeliverable(this.contest.id, projectId)
     },
     redirectToFE (projectId) {
