@@ -214,8 +214,10 @@ const undoVote = (project, voterId) => {
     })
 }
 
-const setApproved = (projectId, value) => {
-    return sql.getProjectTable().update({approved: !!value}, {
+const setFlag = (projectId, flag, value) => {
+    let obj = {}
+    obj[flag] = value === undefined ? true : !!value
+    return sql.getProjectTable().update(obj, {
         where: {
             id: projectId
         }
@@ -233,5 +235,5 @@ module.exports = {
     destroy,
     vote,
     undoVote,
-    setApproved
+    setFlag
 }

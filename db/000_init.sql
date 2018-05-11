@@ -32,7 +32,8 @@ CREATE TABLE IF NOT EXISTS project (
        description text NOT NULL,
        repo_url varchar(100),
        video varchar(64),
-       approved boolean,
+       approved boolean default false,
+       has_preview boolean default false,
        UNIQUE(contest_id, user_id)
 );
 

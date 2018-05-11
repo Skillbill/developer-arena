@@ -7,16 +7,22 @@ const notAdmin = () => {
   Vue.$toastr.warning('You are not an admin', 'Limited access')
 }
 const contestUpdated = () => {
-  Vue.$toastr.success('The contest has been modified successfully', 'Saved')
+  Vue.$toastr.success('The contest has been modified successfully', 'Contest modified')
 }
 const contestCreated = () => {
-  Vue.$toastr.success('The contest has been created successfully', 'Saved')
+  Vue.$toastr.success('The contest has been created successfully', 'Contest created')
 }
 const contestDeleted = () => {
-  Vue.$toastr.success('The contest has been deleted successfully', 'Deleted')
+  Vue.$toastr.success('The contest has been deleted successfully', 'Contest deleted')
 }
 const projectDeleted = () => {
-  Vue.$toastr.success('The project has been deleted successfully', 'Deleted')
+  Vue.$toastr.success('The project has been deleted successfully', 'Project deleted')
+}
+const projectPreviewCreated = href => {
+  Vue.$toastr.success(`The preview has been created`, 'Preview created')
+}
+const projectPreviewDeleted = () => {
+  Vue.$toastr.success('The preview has been deleted successfully', 'Preview deleted')
 }
 const invalidFeilds = () => {
   Vue.$toastr.error('Some feilds are invalid', 'Not saved')
@@ -52,6 +58,8 @@ export default {
   contestCreated,
   contestDeleted,
   projectDeleted,
+  projectPreviewCreated,
+  projectPreviewDeleted,
   offline,
   apiError,
   forApiErrorCode

@@ -10,6 +10,13 @@ services:
       - type: bind
         source: ./config/be.json
         target: /be/config.json
+      - preview:/be/preview
+  preview:
+    image: "nginx"
+    ports:
+      - 8082:80
+    volumes:
+      - preview:/usr/share/nginx/html:ro
   db:
     image: "skillbillsrl/sda-contest-db:${TAG}"
     volumes:
@@ -18,6 +25,7 @@ services:
     image: "skillbillsrl/sda-contest-fe:${TAG}"
     depends_on:
       - be
+      - preview
     ports:
       - 8080:8080
     volumes:
@@ -38,4 +46,6 @@ services:
 volumes:
     pgdata:
         external: true
+    preview:
+
 #cd be && docker build . -t skillbillsrl/sda-contest-be:local && cd .. && cd db && docker build . -t skillbillsrl/sda-contest-db:local && cd .. && cd fe && docker build . -t skillbillsrl/sda-contest-fe:local && cd .. && cd bo && docker build . -t skillbillsrl/sda-contest-bo:local && cd .. && TAG=local docker-compose up

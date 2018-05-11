@@ -237,6 +237,36 @@ const getUsersById = ids => {
   })
 }
 
+const createProjectPreview = (contestId, projectId) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'put',
+      url: `admin/contest/${contestId}/project/${projectId}/preview`,
+      headers
+    }).then(response => {
+      return response.data
+    }).catch(e => {
+      apiError(e)
+      return null
+    })
+  })
+}
+
+const deleteProjectPreview = (contestId, projectId) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'delete',
+      url: `admin/contest/${contestId}/project/${projectId}/preview`,
+      headers
+    }).then(response => {
+      return true
+    }).catch(e => {
+      apiError(e)
+      return null
+    })
+  })
+}
+
 const apiError = e => {
   let error = e.response && e.response.data && e.response.data.error
   if (error && error.code) {
@@ -265,5 +295,7 @@ export default {
   setProjectApproved,
   deleteProject,
   getUserById,
-  getUsersById
+  getUsersById,
+  createProjectPreview,
+  deleteProjectPreview
 }

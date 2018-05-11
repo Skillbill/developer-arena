@@ -1,5 +1,6 @@
 const http = require('@/lib/http')
 const persistence = require('@/lib/persistence')
+const preview = require('@/lib/preview')
 const error = require('@/lib/error')
 const express = require('express')
 const router = express.Router()
@@ -7,6 +8,8 @@ const router = express.Router()
 router.delete('/:projectId', deleteProject)
 router.put('/:projectId/approve', approveProject)
 router.delete('/:projectId/approve', approveProject)
+router.put('/:projectId/preview', createPreview)
+router.delete('/:projectId/preview', deletePreview)
 
 function deleteProject(req, res, next) {
     const id = req.params.projectId
@@ -27,9 +30,38 @@ function approveProject(req, res, next) {
         if (!project) {
             return next(error.projectNotFound)
         }
-        return persistence.setProjectApproved(id, value)
+        return persistence.setProjectFlag(id, 'approved', value)
     }).then(() => {
         res.status(http.noContent).send()
+    }).catch(err => {
+        next(error.new(error.internal, {cause: err}))
+    })
+}
+
+function createPreview(req, res, next) {
+    const id = req.params.projectId
+    persistence.getProjectWithDeliverable(id).then(project => {
+        if (!project) {
+            return next(error.projectNotFound)
+        }
+        return preview.create(project).then(result => {
+            return persistence.setProjectFlag(project.id, 'hasPreview').then(() => {
+                res.status(http.created).send(result)
+            })
+        })
+    }).catch(err => {
+        next(error.new(error.internal, {cause: err}))
+    })
+}
+
+function deletePreview(req, res, next) {
+    const id = req.params.projectId
+    persistence.getProjectWithDeliverable(id).then(project => {
+        if (!project) {
+            return next(error.projectNotFound)
+        }
+        return preview.destroy(project).then(() => persistence.setProjectFlag(project.id, 'hasPreview', false))
+            .then(() => res.status(http.noContent).send())
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
     })
