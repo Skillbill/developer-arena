@@ -38,7 +38,7 @@
             <template slot="button-content">
               <i class="fas fa-ellipsis-v"></i>
             </template>
-            <b-dd-item-btn title="download project" @click.stop="download(data.item.id)">
+            <b-dd-item-btn title="download project" @click.stop="download(data.item)">
               <i class="fas fa-download"></i> Download
             </b-dd-item-btn>
             <b-dd-item-btn title="see project in the public front-end" @click.stop="redirectToFE(data.item.id)">
@@ -130,9 +130,11 @@ export default {
     }
   },
   methods: {
-    download (projectId) {
+    download (project) {
+      let deliverableInfo = project.files.find(elem => elem.kind === 'DELIVERABLE')
+      let ts = new Date(deliverableInfo.mtime).getTime()
       location.href = `${this.$config.serverAddress}/${this.$config.apiVersion}` +
-        `/contest/${this.contest.id}/project/${projectId}/deliverable?ts=${Date.now()}`
+        `/contest/${this.contest.id}/project/${project.id}/deliverable?ts=${ts}`
       // api.getProjectDeliverable(this.contest.id, projectId)
     },
     redirectToFE (projectId) {
