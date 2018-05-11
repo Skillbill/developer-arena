@@ -26,6 +26,7 @@ axios({
   url: configurationPath
 }).then(rep => {
   let config = rep.data
+  config.statRes = location.origin + location.pathname + 'static/'
   Vue.$config = Vue.prototype.$config = config
   if (typeof Vue.$config.firebase.devMode !== 'boolean') Vue.$log.error('devMode in configuration.json should be a boolean')
   auth.init(config, showApp)

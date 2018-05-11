@@ -35,13 +35,43 @@ export function getEmptyContest () {
       en: {
         title: '',
         description: '',
-        rules: ''
+        rules: '',
+        descriptionClosed: '',
+        descriptionPast: ''
       },
       it: {
         title: '',
         description: '',
-        rules: ''
+        rules: '',
+        descriptionClosed: '',
+        descriptionPast: ''
       }
     }
+  }
+}
+
+export function getUserDisplay (user) {
+  if (user.displayName) {
+    return user.displayName
+  } else if (user.customClaims && user.customClaims.email) {
+    return user.customClaims.email.replace(/@.*/, '')
+  } else if (user.email) {
+    return user.email.replace(/@.*/, '')
+  } else {
+    return user.uid
+  }
+}
+
+export function getProviderInfo (providerId) {
+  let nameLower = providerId.replace(/([.]\w+)$/, '')
+  let name = nameLower.charAt(0).toUpperCase() + nameLower.slice(1)
+  let icon = /[.]com/.test(providerId) ? `fab fa-${nameLower}` : 'fas fa-envelope'
+  return {
+    id: providerId,
+    nameLower: nameLower,
+    name: name,
+    providerName: name + 'AuthProvider',
+    icon: icon,
+    scope: providerId === 'google.com' ? ['https://www.googleapis.com/auth/userinfo.email'] : []
   }
 }

@@ -6,6 +6,7 @@ import SignIn from '@/components/SignIn'
 import EditContest from '@/components/EditContest'
 import Contests from '@/components/Contests'
 import Projects from '@/components/Projects'
+import User from '@/components/User'
 import store from '@/lib/store'
 
 Vue.use(VueRouter)
@@ -61,6 +62,15 @@ const router = new VueRouter({
       name: 'projects',
       path: '/contest/:contestId/projects',
       component: Projects,
+      props: true,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      name: 'user',
+      path: '/user/:userId',
+      component: User,
       props: true,
       meta: {
         requiresAuth: true

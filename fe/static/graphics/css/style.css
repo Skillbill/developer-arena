@@ -354,6 +354,14 @@ small {
   bottom: 0;  
 }
 
+.highlight {
+  padding: 0.5rem;
+  margin: 1rem 0;
+  background: #f0f0f0;
+  border-right: 0.2rem solid #fa6603;
+  border-left: 0.2rem solid #fa6603;
+}
+
 /*** molecules ***/
 
 /* main-info */

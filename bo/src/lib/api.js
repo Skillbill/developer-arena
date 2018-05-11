@@ -209,7 +209,7 @@ const getUserById = id => {
       headers
     }).then(response => {
       let user = response.data.user
-      if (!user.email) {
+      if (Vue.$config.firebase.devMode) {
         let matchNumId = user.uid.match(/\d+/)
         return auth.fakeUser(matchNumId && matchNumId[0])
       } else {

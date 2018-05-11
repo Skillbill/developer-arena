@@ -13,7 +13,6 @@ let app;
 
 function initVueApp() {
   if (!app) {
-    /* eslint-disable no-new */
     app = new Vue({
       i18n,
       el: '#app',
@@ -38,12 +37,8 @@ store.dispatch('loadConfiguration').then(() => {
   store.dispatch('loadLastContest');
   auth.initializeApp();
   auth.onAuthStateChanged(user => {
-    store.commit('setUser', user);
-    if(user && process.env.NODE_ENV === 'development') {
-      user.getIdToken().then(token => {
-        console.log(`User Token: ${token}`);
-      });
-    }
-    initVueApp();
+    store.dispatch('updateUser', user).then(() => {
+      initVueApp();
+    });
   });
 });

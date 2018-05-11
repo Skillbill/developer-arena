@@ -16,11 +16,13 @@ chai.request.Request.prototype.by = function(userId) {
 }
 
 const createProjectReq = (contestId) => {
-    return chai.request(srv).post(_(`/contest/${contestId}/project/`))
+    let req = chai.request(srv).post(_(`/contest/${contestId}/project/`))
         .type('form')
-        .field('title', mock.exampleProject.title)
-        .field('description', mock.exampleProject.description)
-        .attach('deliverable', require.resolve('@/package.json'))
+    for (const k in mock.exampleProject) {
+        req.field(k, mock.exampleProject[k])
+    }
+    req.attach('deliverable', require.resolve('@/package.json'))
+    return req
 }
 
 function createContest(done) {
@@ -196,6 +198,7 @@ describe('contest', () => {
                         .type('form')
                         .field('title', 'New Title')
                         .field('description', 'New Description')
+                        .field('email', 'newmail@isp.net')
                         .end((err, res) => {
                             expect(res).to.have.status(http.ok)
                             this.project = res.body.project
@@ -303,6 +306,7 @@ describe('contest', () => {
                         .type('form')
                         .field('title', 'New Title')
                         .field('description', 'New Description')
+                        .field('email', 'newmail@isp.net')
                         .end((err, res) => {
                             expect(res).to.have.status(http.preconditionFailed)
                             done(err)

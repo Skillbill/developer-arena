@@ -120,5 +120,11 @@ module.exports = {
     date: 'Upload date',
     trend: 'Trend',
     update: 'Last update'
+  },
+  profile: {
+    title: 'Profile',
+    send: 'Save',
+    email: 'Email',
+    saved: 'Data successfully saved'
   }
 }

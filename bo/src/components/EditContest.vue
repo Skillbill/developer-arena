@@ -1,6 +1,6 @@
 <template>
   <main class="container mt-3">
-    <h3 v-if="contest && contest.id" class="mb-3">Edit contest number {{contest.id}} ({{contest.i18n['en'].title}})</h3>
+    <h3 v-if="contest && contest.id" class="mb-3">Edit contest #{{contest.id}} ({{contest.i18n['en'].title}})</h3>
     <h3 v-if="contest && !contest.id" class="mb-3">Create new contest</h3>
     <form v-if="contest" class="needs-validation" autocomplete="off"
       v-bind:class="{'was-validated': wasValidated}" novalidate @submit.prevent="validateAndSend">
@@ -11,7 +11,7 @@
       </div>
       <div class="form-row">
         <div class="col-md-10 mb-3">
-          <label for="title">Title</label>
+          <label for="title">Title*</label>
           <div class="input-group">
             <input type="text" class="form-control" id="title" v-model="contest.i18n[activeLang].title" required>
             <div class="invalid-feedback" style="width: 100%;">
@@ -20,19 +20,19 @@
           </div>
         </div>
         <div class="col-md-2 mb-3">
-          <label for="state">State:</label>
+          <label for="state">State*</label>
           <select class="custom-select" id="state" v-model="contest.state">
             <option v-for="state in ['DRAFT','ACTIVE','PAST']" v-bind:key="state">{{state}}</option>
           </select>
         </div>
       </div>
       <div class="form-row">
-        <EditDate label="End Presentation" v-model="contest.endPresentation"/>
-        <EditDate label="End Applying" v-model="contest.endApplying"/>
-        <EditDate label="End Voting" v-model="contest.endVoting"/>
+        <EditDate label="End Presentation*" v-model="contest.endPresentation"/>
+        <EditDate label="End Applying*" v-model="contest.endApplying"/>
+        <EditDate label="End Voting*" v-model="contest.endVoting"/>
       </div>
       <div class="mb-3">
-        <label for="description">Description</label>
+        <label for="description">Description*</label>
         <div class="input-group">
           <textarea rows=10 class="form-control" id="description" v-model="contest.i18n[activeLang].description" required></textarea>
           <div class="invalid-feedback" style="width: 100%;">
@@ -41,12 +41,24 @@
         </div>
       </div>
       <div class="mb-3">
-        <label for="rules">Rules</label>
+        <label for="rules">Rules*</label>
         <div class="input-group">
           <textarea rows=10 class="form-control" id="rules" v-model="contest.i18n[activeLang].rules" required></textarea>
           <div class="invalid-feedback" style="width: 100%;">
             The rules are required.
           </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="rules">Closed state page</label>
+        <div class="input-group">
+          <textarea rows=10 class="form-control" id="rules" v-model="contest.i18n[activeLang].descriptionClosed"></textarea>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="rules">Past state page</label>
+        <div class="input-group">
+          <textarea rows=10 class="form-control" id="rules" v-model="contest.i18n[activeLang].descriptionPast"></textarea>
         </div>
       </div>
       <div class="row">

@@ -4,6 +4,7 @@ import store from '@/lib/store'
 import router from '@/lib/router'
 import api from '@/lib/api'
 import feedback from '@/lib/feedback'
+import * as utils from '@/lib/utils'
 
 const getFakeUid = () => {
   let uid = sessionStorage.getItem('uid')
@@ -24,17 +25,20 @@ const fakeUser = (uid = null) => {
     uid,
     displayName: `User ${uid}`,
     email: 'fake@email.com',
-    emailVerified: true,
+    emailVerified: false,
     isAnonymous: false,
     phoneNumber: null,
     photoURL: photoURL,
+    customClaims: {
+      email: 'custom@email.com'
+    },
     providerData: [
       {
         displayName: `User ${uid}`,
         email: 'fake@email.com',
         phoneNumber: null,
         photoURL: photoURL,
-        providerId: 'fake',
+        providerId: 'password',
         uid
       }
     ]
@@ -62,30 +66,14 @@ const getSessionUser = () => {
 }
 
 const auth = {
-  providers: {
-    google: {
-      name: 'Google',
-      providerName: 'GoogleAuthProvider',
-      style: 'google',
-      scopes: ['https://www.googleapis.com/auth/userinfo.email']
-    },
-    github: {
-      name: 'GitHub',
-      style: 'github',
-      providerName: 'GithubAuthProvider'
-    },
-    facebook: {
-      name: 'Facebook',
-      style: 'facebook',
-      providerName: 'FacebookAuthProvider'
-    },
-    twitter: {
-      name: 'Twitter',
-      style: 'twitter',
-      providerName: 'TwitterAuthProvider'
-    }
-  },
+  providers: [
+    'google.com',
+    'github.com',
+    'facebook.com',
+    'twitter.com'
+  ],
   init (config, showApp) {
+    this.providers = this.providers.map(provider => utils.getProviderInfo(provider))
     if (config.firebase.devMode) {
       let user = getSessionUser()
       Vue.$log.info('Auth initialization in devMode with:', user ? user.displayName : 'no user', 'signed in')
@@ -134,7 +122,7 @@ const auth = {
   afterRedirectError (error) {
     if (error.email && error.code === 'auth/account-exists-with-different-credential') {
       firebase.auth().fetchProvidersForEmail(error.email).then(providers => {
-        if (providers.length !== 1) Vue.$log.error('After firebase account exists error, ', providers.length, ' providers were found')
+        if (providers.length !== 1) Vue.$log.info('After firebase account exists error, ', providers.length, ' providers were found')
         Vue.$log.info(`Asking user "${error.email}"` +
           ` that tried to login with "${error.credential.providerId}"` +
           ` to login using his existing account at "${providers[0]}"`

@@ -26,13 +26,6 @@ router.get('/:projectId/deliverable', getDeliverable)
 router.put('/:projectId/vote', prepareVote, voteProject)
 router.delete('/:projectId/vote', prepareVote, undoVoteProject)
 
-const missingParam = (res, param) => {
-    if (!param) {
-        param = 'required parameter'
-    }
-    res.status(http.badRequest).send({error: `missing ${param}`})
-}
-
 const voteTime = (vote) => new Date(vote.ts).getTime()
 
 const sortingModes = { // all descending
@@ -45,7 +38,7 @@ const sortingModes = { // all descending
 function getProjectByQuery(req, res, next) {
     const contestId = req.params.contestId
     if (!contestId) {
-        return missingParam(res, 'contest id')
+        return next(error.new(error.missingParameter, {parameter: 'contestId'}))
     }
     if (req.query && req.query.user) {
         const userId = req.query.user
@@ -71,7 +64,7 @@ function getProjectById(req, res, next) {
     const id = req.params.projectId
     const contestId = req.params.contestId
     if (!contestId) {
-        return missingParam(res, 'contest id')
+        return next(error.new(error.missingParameter, {parameter: 'contestId'}))
     }
     persistence.getProjectById(id).then(project => {
         if (!project || project.contestId != contestId) {
@@ -160,17 +153,16 @@ function submitProject(req, res, next) {
         if (libContest.getPublicState(contest) != libContest.publicState.applying) {
             return next(error.contestNotOpenForSubmission)
         }
-        if (!newProject.contestId) {
-            return next(error.new(error.missingParameter, {parameter: 'contest'}))
-        }
-        if (!newProject.title) {
-            return next(error.new(error.missingParameter, {parameter: 'title'}))
-        }
-        if (!newProject.description) {
-            return next(error.new(error.missingParameter, {parameter: 'description'}))
-        }
-        if (!newProject.deliverable) {
-            return next(error.new(error.missingParameter, {parameter: 'deliverable'}))
+        const required = [
+            'contestId',
+            'title',
+            'description',
+            'deliverable'
+        ]
+        for (const k of required) {
+            if (!newProject[k]) {
+                return next(error.new(error.missingParameter, {parameter: k}))
+            }
         }
         newProject.submitted = newProject.updated
         persistence.submitProject(newProject).then(project => {
@@ -192,8 +184,11 @@ function updateProject(req, res, next) {
     const projectId = req.params.projectId
     const newProject = req.project
 
-    if (!newProject.title || !newProject.description) {
-        return missingParam(res)
+    if (!newProject.title) {
+        return next(error.new(error.missingParameter, {parameter: 'title'}))
+    }
+    if (!newProject.description) {
+        return next(error.new(error.missingParameter, {parameter: 'description'}))
     }
     Promise.all([
         persistence.getContestById(contestId),

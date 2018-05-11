@@ -40,6 +40,7 @@ const draftContest = {
 const exampleProject = {
     title: 'Project Title',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec velit sit amet lectus finibus maximus.',
+    email: 'me@isp.net'
 }
 
 module.exports = {

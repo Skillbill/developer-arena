@@ -3,15 +3,28 @@
     <div class="mb-3" v-if="contest">
       <h2>List of the projects of contest {{contest.i18n.en.title}}</h2>
     </div>
-    <b-table striped
+    <div class="m-3">
+      <b-form inline>
+        <label class="mr-sm-2" for="perPageSelect">Per page:</label>
+        <b-form-select class="mb-2 mr-sm-3 mb-sm-0"
+                      :options="pageOptions"
+                      v-model="perPage"
+                      id="perPageSelect">
+        </b-form-select>
+        <b-form-checkbox class="mb-2 mr-sm-2 mb-sm-0" v-model="filterApproved">
+          Filter already approved projects
+        </b-form-checkbox>
+      </b-form>
+    </div>
+    <b-table striped show-empty
               id="projectTable"
               :fields="fields"
-              :items="projects"
+              :items="filteredProjects"
               :current-page="currentPage"
               :per-page="perPage"
     >
       <template slot="userId" slot-scope="data">
-        <span v-if="userMap">{{userMap.get(data.value).displayName}}</span>
+        <b-link v-if="userMap" :to="`/user/${data.value}`">{{getUserDisplay(userMap.get(data.value))}}</b-link>
       </template>
       <template slot="action" slot-scope="data">
         <div class="d-flex justify-content-between">
@@ -38,7 +51,7 @@
         </div>
       </template>
     </b-table>
-    <b-pagination :total-rows="projects.length" :per-page="perPage" v-model="currentPage"/>
+    <b-pagination :total-rows="filteredProjects.length" :per-page="perPage" v-model="currentPage"/>
     <b-modal v-if="toDelete" v-model="showDeleteModal" ref="modalDelete" :title="`Delete project ${toDelete.title}?`" @ok="deleteProject(toDelete.id)"></b-modal>
   </main>
 </template>
@@ -46,6 +59,7 @@
 <script>
 import api from '@/lib/api'
 import feedback from '@/lib/feedback'
+import * as utils from '@/lib/utils'
 
 export default {
   name: 'Contests',
@@ -59,6 +73,7 @@ export default {
       userMap: null,
       toDelete: null,
       showDeleteModal: false,
+      filterApproved: false,
       fields: [
         {
           key: 'id',
@@ -70,6 +85,12 @@ export default {
         {
           key: 'title',
           tdClass: 'protect'
+        },
+        {
+          key: 'votes',
+          formatter: (value) => value.length,
+          sortable: true,
+          tdClass: 'min'
         },
         {
           key: 'userId',
@@ -95,7 +116,17 @@ export default {
         }
       ],
       currentPage: 1,
-      perPage: 10
+      perPage: 10,
+      pageOptions: [5, 10, 15]
+    }
+  },
+  computed: {
+    filteredProjects: function () {
+      let result = this.projects
+      if (this.filterApproved) {
+        result = result.filter(project => !project.approved)
+      }
+      return result
     }
   },
   methods: {
@@ -128,6 +159,9 @@ export default {
     },
     formatDateTime: function (date) {
       return (new Date(date)).toLocaleString(navigator.language)
+    },
+    getUserDisplay (user) {
+      return utils.getUserDisplay(user)
     }
   },
   created: function () {
@@ -150,6 +184,12 @@ export default {
 </script>
 
 <style>
+@media (max-width: 767.98px) {
+  .container {
+    width: auto
+  }
+}
+
 #projectTable {
   width: inherit !important;
 }
