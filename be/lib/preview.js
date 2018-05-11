@@ -64,6 +64,11 @@ const create = (project) => new Promise((resolve, reject) => {
             }
             extract(project.deliverable, {dst: dir, cleanup: true})
                 .then(files => {
+                    if (files.length == 0) {
+                        resolve()
+                        destroy(project)
+                        return
+                    }
                     resolve({
                         root: path.relative(appRoot, dir),
                         files: files

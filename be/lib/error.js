@@ -116,6 +116,11 @@ const errors = {
         http: http.badRequest,
         code: 4106,
         msg: 'token_expired'
+    },
+    previewFailed: {
+        http: http.unprocessableEntity,
+        code: 4204,
+        msg: 'preview_failed'
     }
 }
 

@@ -27,5 +27,6 @@
     "email_not_verified": "email non verificata",
     "token_missing": "token d'accesso non fornito",
     "token_error": "errore nella decodifica del token: {{cause}}",
-    "token_expired": "il token di accesso è scaduto"
+    "token_expired": "il token di accesso è scaduto",
+    "preview_failed": "impossibile generare la preview"
 }

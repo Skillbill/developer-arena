@@ -27,5 +27,6 @@
     "email_not_verified": "email not verified",
     "token_missing": "no token provided",
     "token_error": "could not decode token: {{cause}}",
-    "token_expired": "access token has expired"
+    "token_expired": "access token has expired",
+    "preview_failed": "unable to generate preview"
 }
