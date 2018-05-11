@@ -78,7 +78,7 @@ module.exports = {
     deliverableInvalidSize: 'File troppo grande, dimensione massima: {size}',
     viewYour: 'Vedi la pagina del tuo progetto',
     download: 'Scarica il progetto',
-    needsApprove: 'Potrai scaricare il progetto dopo la sua approvazione',
+    needsApprove: 'Potrai vedere il progetto dopo la sua approvazione',
     preview: 'Vedi il progetto'
   },
   viewGitHub: 'Vedi su GitHub',

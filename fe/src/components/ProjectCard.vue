@@ -18,7 +18,7 @@
       <a class="button success" v-if="showPreview && hasPreview" :href="previewUrl" target="_blank">{{$t('project.preview')}}</a>
       <a class="button" v-if="showDeliverable" download :href="deliverableUrl">{{$t('project.download')}}</a>
     </template>
-    <button v-else disabled>{{$t('project.needsApprove')}}</button>
+    <button v-else-if="showPreview || showDeliverable" disabled>{{$t('project.needsApprove')}}</button>
     <a class="button" v-if="showRepo && project.repoURL" :href="project.repoURL" target="_blank">{{$t('viewRepo')}}</a>
     <router-link class="button" v-if="canEdit" to="/submit-entry?edit=true">{{$t('project.edit')}}</router-link>
     <div class="video" v-if="showVideo && youtubeVideoCode">
