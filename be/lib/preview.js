@@ -15,48 +15,55 @@ const copyToDisk = (file, dir) => new Promise((resolve, reject) => {
     })
 })
 
-const _extract = (file, mime, dir, result) => {
+const _extract = (file, mime, dir) => new Promise((resolve, reject) => {
+    let lst = []
     const onEntry = (entry) => {
         if (entry.type != 'Directory') {
-            result.push(entry.path)
+            lst.push(entry.path)
         }
     }
-    const rs = new fs.createReadStream(file)
+    let rs = new fs.createReadStream(file)
     switch (mime) {
     case 'application/x-compressed':
     case 'application/x-zip-compressed':
     case 'application/zip':
     case 'multipart/x-zip':
-        return rs.pipe(unzip.Parse()).on('entry', onEntry).pipe(fstream.Writer(dir || '.'))
+        rs = rs.pipe(unzip.Parse()).on('entry', onEntry)
+            .on('error', reject)
+            .pipe(fstream.Writer(dir || '.'))
+        break
     default:
-        return rs.pipe(untar({C: dir})).on('entry', onEntry)
+        rs = rs.pipe(untar({C: dir}))
+            .on('entry', onEntry)
+            .on('error', reject)
     }
-}
+    rs.on('close', () => resolve(lst))
+})
 
 const extract = (file, options) => new Promise((resolve, reject) => {
     if (!options) {
         options = {}
     }
     copyToDisk(file, options.dst).then(tmpfile => {
-        let lst = []
-        _extract(tmpfile, file.mimetype, options.dst, lst)
-            .on('error', err => reject(err))
-            .on('close', () => {
-                resolve(lst)
-                if (options.cleanup) {
-                    fs.unlink(tmpfile, err => {
-                        if (err) {
-                            logger.warn(`could not delete ${tmpfile}: ${err}`)
-                        }
-                    })
-                }
-            })
+        _extract(tmpfile, file.mimetype, options.dst).then(lst => {
+            resolve(lst)
+            if (options.cleanup) {
+                fs.unlink(tmpfile, err => {
+                    if (err) {
+                        logger.warn(`could not delete ${tmpfile}: ${err.message}`)
+                    }
+                })
+            }
+        }).catch(reject)
     }).catch(reject)
 })
 
 const create = (project) => new Promise((resolve, reject) => {
     const dir = getDirname(project)
-    fs.remove(dir, () => {
+    fs.remove(dir, err => {
+        if (err) {
+            logger.warn(`fs.remove ${dir}: ${err.message}`)
+        }
         fs.mkdirp(dir, err => {
             if (err) {
                 reject(err)
