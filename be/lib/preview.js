@@ -1,4 +1,5 @@
 const logger = require('@/lib/logger')
+const maxSize = require('@/limits').deliverable.maxAllowedExtractedSize
 const fs = require('fs-extra')
 const fstream = require('fstream')
 const path = require('path')
@@ -17,27 +18,42 @@ const copyToDisk = (file, dir) => new Promise((resolve, reject) => {
 
 const _extract = (file, mime, dir) => new Promise((resolve, reject) => {
     let lst = []
-    const onEntry = (entry) => {
-        if (entry.type != 'Directory') {
-            lst.push(entry.path)
+    let bcount = 0
+    let rs = new fs.createReadStream(file)
+
+    function checkSize() {
+        if (bcount > maxSize) {
+            reject(`hit maximum size (${maxSize})`)
+            this.end()
         }
     }
-    let rs = new fs.createReadStream(file)
+
     switch (mime) {
     case 'application/x-compressed':
     case 'application/x-zip-compressed':
     case 'application/zip':
     case 'multipart/x-zip':
-        rs = rs.pipe(unzip.Parse()).on('entry', onEntry)
+        rs = rs.pipe(unzip.Parse())
+            .on('entry', e => {
+                lst.push(e.path)
+                e.on('data', function (d) {
+                    bcount += d.length
+                    checkSize.call(this)
+                })
+            })
             .on('error', reject)
             .pipe(fstream.Writer(dir || '.'))
         break
     default:
         rs = rs.pipe(untar({C: dir}))
-            .on('entry', onEntry)
+            .on('entry', function(e) {
+                lst.push(e.path)
+                bcount += e.size
+                checkSize.call(this)
+            })
             .on('error', reject)
     }
-    rs.on('close', () => resolve(lst))
+    rs.on('close', () => resolve({files: lst, bytes: bcount}))
 })
 
 const extract = (file, options) => new Promise((resolve, reject) => {
@@ -45,8 +61,8 @@ const extract = (file, options) => new Promise((resolve, reject) => {
         options = {}
     }
     copyToDisk(file, options.dst).then(tmpfile => {
-        _extract(tmpfile, file.mimetype, options.dst).then(lst => {
-            resolve(lst)
+        _extract(tmpfile, file.mimetype, options.dst).then(report => {
+            resolve(report)
             if (options.cleanup) {
                 fs.unlink(tmpfile, err => {
                     if (err) {
@@ -70,16 +86,15 @@ const create = (project) => new Promise((resolve, reject) => {
                 return
             }
             extract(project.deliverable, {dst: dir, cleanup: true})
-                .then(files => {
-                    if (files.length == 0) {
+                .then(report => {
+                    if (report.bytes == 0) {
                         resolve()
                         destroy(project)
                         return
                     }
-                    resolve({
+                    resolve(Object.assign(report, {
                         root: path.relative(appRoot, dir),
-                        files: files
-                    })
+                    }))
                 })
                 .catch(reject)
         })

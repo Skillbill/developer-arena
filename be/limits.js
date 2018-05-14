@@ -7,7 +7,8 @@ module.exports = {
         ]
     },
     deliverable: {
-        maxAllowedSize: 32 * 1024 * 1024
+        maxAllowedSize: 32 * 1024 * 1024,
+        maxAllowedExtractedSize: 128 * 1024 * 1024,
     },
     repoURL: {
         acceptedRegex: '^https?://'
