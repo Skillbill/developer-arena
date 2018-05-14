@@ -119,7 +119,7 @@ const errors = {
     },
     previewFailed: {
         http: http.unprocessableEntity,
-        code: 4204,
+        code: 4205,
         msg: 'preview_failed'
     }
 }
