@@ -11,12 +11,6 @@ services:
         source: ./config/be.json
         target: /be/config.json
       - preview:/be/preview
-  preview:
-    image: "nginx"
-    ports:
-      - 8082:80
-    volumes:
-      - preview:/usr/share/nginx/html:ro
   db:
     image: "skillbillsrl/sda-contest-db:${TAG}"
     volumes:
@@ -25,7 +19,6 @@ services:
     image: "skillbillsrl/sda-contest-fe:${TAG}"
     depends_on:
       - be
-      - preview
     ports:
       - 8080:8080
     volumes:

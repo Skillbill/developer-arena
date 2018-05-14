@@ -93,5 +93,5 @@ export function getProjectFile(project, kind) {
 }
 
 export function getProjectPreviewUrl(project) {
-  return `/preview/${project.contestId}/${project.id}/`;
+  return `${store.state.configuration.serverAddress}/${store.state.configuration.apiVersion}/preview/${project.contestId}/${project.id}/`;
 }
