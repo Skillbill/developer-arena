@@ -78,21 +78,20 @@ const fake_auth = (req, res, next) => {
 
 const init = (config) => {
     _config = Object.assign({}, config)
-    const cfg = config.firebase
+    const cfg = config.auth
     if (cfg.devMode) {
         logger.warn('firebase is DISABLED: using fake auth middleware instead (dev mode)')
         fakeAuthEnabled = true
         return
     }
     try {
-        logger.info(`svc account project: ${cfg.serviceAccount.project_id}`)
-        logger.info(`svc account private: ${cfg.serviceAccount.private_key_id}`)
+        logger.info(`svc account project: ${cfg.firebase.serviceAccount.project_id}`)
+        logger.info(`svc account private: ${cfg.firebase.serviceAccount.private_key_id}`)
         firebase.initializeApp({
-            credential: firebase.credential.cert(cfg.serviceAccount),
-            databaseURL: cfg.databaseURL
+            credential: firebase.credential.cert(cfg.firebase.serviceAccount)
         })
     } catch (err) {
-        logger.error('could not initialize firebase:', JSON.stringify(err))
+        logger.error('could not initialize firebase:', err.message)
         throw 'failed to initialize auth lib'
     }
 }
