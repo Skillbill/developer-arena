@@ -11,7 +11,9 @@ module.exports = {
   footer: {
     languages: 'Languages',
     it: 'Italiano',
-    en: 'English'
+    en: 'English',
+    legalNotice: 'Legal notice',
+    info: 'Info'
   },
   firebase: {
     'generic-error': 'Oops.. an error occurred, please try again later',

@@ -8,6 +8,7 @@ import Projects from '@/components/Projects'
 import Project from '@/components/Project'
 import Rules from '@/components/Rules'
 import Profile from '@/components/Profile'
+import StaticPage from '@/components/StaticPage'
 
 Vue.use(Router)
 
@@ -53,6 +54,14 @@ let router = new Router({
       component: Profile,
       meta: {
         requiresAuth: true
+      }
+    },
+    {
+      path: '/legal-notice',
+      name: 'LegalNotice',
+      component: StaticPage,
+      meta: {
+        md: '/static/pages/[lang]/legal-notice.md'
       }
     }
   ]

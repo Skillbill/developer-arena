@@ -19,6 +19,14 @@
         </li>
       </ul>
     </div>
+    <div class="footer-links">
+      <h4>{{$t('footer.info')}}</h4>
+      <ul>
+        <li>
+          <router-link to="/legal-notice">{{$t('footer.legalNotice')}}</router-link>
+        </li>
+      </ul>
+    </div>
     <div class="footer-info">
       <p>{{$t("siteFullName")}} <br> &copy; <a href="http://www.skillbill.it/">Skillbill</a> {{new Date().getFullYear()}}</p>
       <img class="logo" src="/static/graphics/assets/logo-skillbill.png" alt="Logo Skillbill">
