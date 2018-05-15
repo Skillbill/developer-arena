@@ -25,6 +25,9 @@ services:
       - type: bind
         source: ./config/fe.json
         target: /app/static/configuration.json
+      - type: bind
+        source: ./pages
+        target: /app/static/pages
   bo:
     image: "skillbillsrl/sda-contest-bo:${TAG}"
     depends_on:
