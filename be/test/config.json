@@ -19,5 +19,24 @@
     ],
     "firebase": {
         "devMode": true
+    },
+    "limits": {
+        "image": {
+            "maxSize": 2097152,
+            "allowedTypes": [
+                "image/jpeg",
+                "image/png"
+            ]
+        },
+        "deliverable": {
+            "maxSize": 33554432,
+            "maxExtractedSize": 134217728
+        },
+        "repoURL": {
+            "acceptedRegex": "^https?://"
+        },
+        "video": {
+            "acceptedRegex": "https://(?:youtu\\.be/|(?:www\\.)?youtube\\.com/watch\\?v=)([0-9A-Za-z_-]{11})"
+        }
     }
 }

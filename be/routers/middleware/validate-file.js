@@ -1,5 +1,5 @@
 const error = require('@/lib/error')
-const limits = require('@/limits')
+const limits = require('@/lib/config').get().limits
 
 const Image = Object.assign({}, limits.image, {kind: 'image'})
 const Deliverable = Object.assign({}, limits.deliverable, {kind: 'deliverable'})
@@ -10,7 +10,7 @@ const validate = (file, req, res, next) => {
     if (!req.files || !req.files[file.kind]) {
         return next()
     }
-    if (fileSize(req.files[file.kind]) > file.maxAllowedSize) {
+    if (fileSize(req.files[file.kind]) > file.maxSize) {
         return next(error.new(error.fileTooBig, {file: file.kind}))
     }
     const {name, mimetype} = req.files[file.kind]

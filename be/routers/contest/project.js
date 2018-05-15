@@ -1,4 +1,4 @@
-const limits = require('@/limits')
+const limits = require('@/lib/config').get().limits
 const error = require('@/lib/error')
 const http = require('@/lib/http')
 const libContest = require('@/lib/contest')

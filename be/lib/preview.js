@@ -1,5 +1,5 @@
 const logger = require('@/lib/logger')
-const maxSize = require('@/limits').deliverable.maxAllowedExtractedSize
+const maxSize = require('@/lib/config').get().limits.deliverable.maxExtractedSize
 const fs = require('fs-extra')
 const fstream = require('fstream')
 const path = require('path')
