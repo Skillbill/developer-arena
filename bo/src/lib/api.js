@@ -17,14 +17,12 @@ const getHeaders = () => {
   let user = store.state.user
   if (Vue.$config.firebase.devMode) {
     return Promise.resolve({
-      'Authorization': 'admin',
-      'Content-Type': 'application/json'
+      'Authorization': 'admin'
     })
   } else if (user) {
     return user.getIdToken().then(token => {
       return {
-        'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json'
+        'Authorization': (Vue.$config.firebase.devMode ? '' : 'Bearer ') + token
       }
     })
   } else {
@@ -92,7 +90,10 @@ const patchContest = (contest) => {
       method: 'patch',
       url: '/admin/contest/' + contest.id,
       data,
-      headers
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      }
     })
   }).then(response => {
     return response
@@ -110,7 +111,10 @@ const createContest = (contest) => {
       method: 'post',
       url: '/admin/contest',
       data,
-      headers
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      }
     })
   }).then(response => {
     return response

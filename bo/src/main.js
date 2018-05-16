@@ -7,9 +7,10 @@ import api from './lib/api'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import Toastr from 'toastr'
+import 'toastr/build/toastr.min.css'
 import axios from 'axios'
 import VueLogger from 'vuejs-logger'
-import Toastr from 'toastr'
 
 Vue.config.productionTip = false
 let vm = null
