@@ -15,11 +15,7 @@ const init = (config) => {
 
 const getHeaders = () => {
   let user = store.state.user
-  if (Vue.$config.firebase.devMode) {
-    return Promise.resolve({
-      'Authorization': 'admin'
-    })
-  } else if (user) {
+  if (user) {
     return user.getIdToken().then(token => {
       return {
         'Authorization': (Vue.$config.firebase.devMode ? '' : 'Bearer ') + token
@@ -215,7 +211,7 @@ const getUserById = id => {
       let user = response.data.user
       if (Vue.$config.firebase.devMode) {
         let matchNumId = user.uid.match(/\d+/)
-        return auth.fakeUser(matchNumId && matchNumId[0])
+        return auth.getFakeUser(matchNumId && matchNumId[0])
       } else {
         return user
       }

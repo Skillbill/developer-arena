@@ -15,7 +15,7 @@ const getFakeUid = () => {
   return uid
 }
 
-const fakeUser = (uid = null) => {
+const getFakeUser = (uid = null) => {
   if (!uid) uid = getFakeUid()
   let photoURL = 'https://randomuser.me/api/portraits/' +
                   (((Number(uid) % 200) <= 100) ? 'men' : 'women') +
@@ -46,7 +46,7 @@ const fakeUser = (uid = null) => {
 }
 
 const createSessionUser = () => {
-  let user = fakeUser()
+  let user = getFakeUser()
   Vue.$log.info('Auth: created and added to session: ', user.displayName)
   sessionStorage.setItem('user', JSON.stringify(user))
   return user
@@ -56,9 +56,6 @@ const getSessionUser = () => {
   const sessionItem = sessionStorage.getItem('user')
   if (sessionItem) {
     const user = JSON.parse(sessionItem)
-    user.getIdToken = () => {
-      return Promise.resolve('admin')
-    }
     return user
   } else {
     return null
@@ -145,6 +142,9 @@ const auth = {
     } else {
       let user = getSessionUser()
       if (!user) user = createSessionUser()
+      user.getIdToken = function () {
+        return Promise.resolve(this.isAdmin ? 'admin' : 'user')
+      }
       Vue.$log.info(`SignIn with fakeUser ${user.displayName}`)
       store.commit('setUser', user)
       router.push('/contests')
@@ -159,7 +159,7 @@ const auth = {
       router.push('/')
     }
   },
-  fakeUser
+  getFakeUser
 }
 
 export default auth
