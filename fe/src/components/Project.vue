@@ -3,7 +3,7 @@
     <section>
       <div class="progress" v-if="loading"></div>
       <ProjectCard v-else :project="project" :show-video="true" :show-description="true"
-        :show-repo="true" :show-edit="true" :show-deliverable="true" :image-scale="2" :show-preview="true" />
+        :show-repo="true" :show-edit="true" :show-deliverable="true" :image-scale="2" :show-preview="true" :show-votes="contest.state !== 'PRESENTATION' && contest.state !== 'APPLYING'" />
     </section>
   </main>
 </template>
@@ -23,6 +23,9 @@ export default {
   computed: {
     project() {
       return this.$store.state.project;
+    },
+    contest() {
+      return this.$store.state.contest;
     }
   },
   created() {

@@ -6,9 +6,9 @@
     </h3>
     <router-link :to="{name: 'Project', params: {projectId: project.id}}" v-if="showImage" tabindex="-1">
       <img :src="imageUrl" :alt="$t('project.thumb')">
-      <strong v-if="project.votes.length" class="votes">{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
+      <strong v-if="showVotes && project.votes.length" class="votes">{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
     </router-link>
-    <div v-else-if="project.votes.length">
+    <div v-else-if="showVotes && project.votes.length">
       <p class="text-align-right">
         <strong>{{project.votes.length}} {{$t(project.votes.length === 1 ? "vote" : "votes")}}</strong>
       </p>
@@ -48,7 +48,8 @@ export default {
     showEdit: Boolean,
     showDeliverable: Boolean,
     showDefaultImage: Boolean,
-    showPreview: Boolean
+    showPreview: Boolean,
+    showVotes: Boolean
   },
   data() {
     return {

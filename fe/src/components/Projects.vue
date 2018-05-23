@@ -2,23 +2,29 @@
   <main class="projects">
     <section>
       <div v-show="!loading">
-        <div class="links-list" v-if="contest && projects && projects.length > 0" role="navigation">
-          <span>{{$t('sorting.label')}}</span>
-          <ul>
-            <li v-for="item in contestStorting" :key="item">
-              <router-link :to="{name: 'Projects', params: {contestId: contest.id}, query: {sort: item}}">{{$t(`sorting.${item}`)}}</router-link>
+        <template v-if="contest && contest.state === 'PRESENTATION'">
+          <div class="card">
+            <span class="text-align-center">{{$t('contest.notStarted')}} {{$d(new Date(contest.endPresentation), 'short')}}</span>
+          </div>
+        </template>
+        <template v-else>
+          <div class="links-list" v-if="contest && projects && projects.length > 0" role="navigation">
+            <span>{{$t('sorting.label')}}</span>
+            <ul>
+              <li v-for="item in contestStorting" :key="item">
+                <router-link :to="{name: 'Projects', params: {contestId: contest.id}, query: {sort: item}}">{{$t(`sorting.${item}`)}}</router-link>
+              </li>
+            </ul>
+          </div>
+          <ul class="projects-list" v-if="contest && projects && projects.length > 0">
+            <li v-for="(item, index) in projects" :key="item.id">
+              <ProjectCard :project="item" :rankPosition="isRanking ? index + 1 : null" :show-default-image="true" :show-votes="contest.state !== 'PRESENTATION' && contest.state !== 'APPLYING'"/>
             </li>
           </ul>
-        </div>
-        <ul class="projects-list" v-if="projects && projects.length > 0">
-          <li v-for="(item, index) in projects" :key="item.id">
-            <ProjectCard :project="item" :rankPosition="isRanking ? index + 1 : null" :show-default-image="true"/>
-          </li>
-        </ul>
-        <div class="card" v-else>
-          <span v-if="contest && contest.state === 'PRESENTATION'" class="text-align-center">{{$t('contest.notStarted')}} {{$d(new Date(contest.endPresentation), 'short')}}</span>
-          <span v-else class="text-align-center">{{$t('contest.noProjects')}}</span>
-        </div>
+          <div class="card" v-else>
+            <span class="text-align-center">{{$t('contest.noProjects')}}</span>
+          </div>
+        </template>
       </div>
       <div class="progress" v-show="loading"></div>
       <template v-if="contest && contest.state === 'APPLYING'">
