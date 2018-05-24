@@ -14,9 +14,12 @@
         "locales": [ "en", "it" ],
         "defaultLocale": "en"
     },
-    "admins": [
-        "admin"
-    ],
+    "admin": {
+        "policy": "uid",
+        "enabled": [
+            "admin"
+        ]
+    },
     "auth": {
         "devMode": true
     },

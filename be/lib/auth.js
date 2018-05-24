@@ -4,7 +4,14 @@ const firebase = require('firebase-admin')
 
 let _config = {}
 let fakeAuthEnabled = false
-const isAdmin = (uid) => _config.admins ? _config.admins.includes(uid) : false
+
+const adminPolicies = {
+    uid: (user) => _config.admin.enabled.includes(user.uid),
+    domain: (user) => user.emailVerified && _config.admin.enabled.includes(user.email.split('@')[1])
+}
+
+const defaultAdminPolicy = 'uid'
+let isAdmin = adminPolicies[defaultAdminPolicy]
 
 const extractToken = (req) => {
     const header = req.get('Authorization')
@@ -24,13 +31,14 @@ const get_firebase_user = (req) => {
             if (decodedToken.customClaims && decodedToken.customClaims.email) {
                 email = decodedToken.customClaims.email
             }
-            resolve({
+            let user = {
                 uid: decodedToken.uid,
                 provider: decodedToken.firebase.sign_in_provider,
                 email: email,
-                isAdmin: isAdmin(decodedToken.uid),
                 emailVerified: decodedToken.email_verified
-            })
+            }
+            user.isAdmin = isAdmin(user)
+            resolve(user)
         }).catch(err => {
             // if the token has expired, err.code is "auth/argument-error" but in the
             // message string you can find the correct one: "auth/id-token-expired".
@@ -63,7 +71,7 @@ const get_fake_user = (req) => {
     }
     return {
         uid: uid.slice(0, 32),
-        isAdmin: isAdmin(uid)
+        isAdmin: isAdmin({uid})
     }
 }
 
@@ -82,6 +90,10 @@ const init = (config) => {
     if (cfg.devMode) {
         logger.warn('firebase is DISABLED: using fake auth middleware instead (dev mode)')
         fakeAuthEnabled = true
+        isAdmin = adminPolicies.uid
+        if (_config.admin.policy && _config.admin.policy != 'uid') {
+            logger.warn(`admin policy in dev mode is forced to 'uid'. "${_config.admin.policy}" ignored`)
+        }
         return
     }
     try {
@@ -90,6 +102,13 @@ const init = (config) => {
         firebase.initializeApp({
             credential: firebase.credential.cert(cfg.firebase.serviceAccount)
         })
+        if (_config.admin.policy) {
+            isAdmin = adminPolicies[_config.admin.policy]
+            if (!isAdmin) {
+                logger.warn(`admin policy "${_config.admin.policy}" is not supported: using ${defaultAdminPolicy}`)
+                isAdmin = adminPolicies[defaultAdminPolicy]
+            }
+        }
     } catch (err) {
         logger.error('could not initialize firebase:', err.message)
         throw 'failed to initialize auth lib'
