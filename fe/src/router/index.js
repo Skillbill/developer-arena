@@ -75,6 +75,8 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const requiresEmail = to.matched.some(record => record.meta.requiresEmail)
 
+  store.commit('removeFeedback');
+
   if (requiresAuth && (!currentUser || (currentUser && providerPassword && !emailVerified))) {
     next({
       path: '/sign-in',
