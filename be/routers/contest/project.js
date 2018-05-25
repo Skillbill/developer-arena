@@ -25,6 +25,7 @@ router.get('/:projectId', getProjectById)
 router.put('/:projectId', mw.validateFile.image, mw.validateFile.deliverable, prepareProject, updateProject)
 router.get('/:projectId/image', getImage)
 router.get('/:projectId/deliverable', getDeliverable)
+router.put('/:projectId/preview', createPreview)
 router.put('/:projectId/vote', prepareVote, voteProject)
 router.delete('/:projectId/vote', prepareVote, undoVoteProject)
 
@@ -219,6 +220,37 @@ function updateProject(req, res, next) {
             res.status(http.ok).send({project: project})
         }).catch(err => {
             next(error.new(error.internal, {cause: err}))
+        })
+    }).catch(err => {
+        next(error.new(error.internal, {cause: err}))
+    })
+}
+
+function createPreview(req, res, next) {
+    const userId = req.user.uid
+    const projectId = req.params.projectId
+    const contestId = req.params.contestId
+
+    Promise.all([
+        persistence.getContestById(contestId),
+        persistence.getProjectWithDeliverable(projectId)
+    ]).then(([contest, project]) => {
+        if (!project || project.contestId != contestId) {
+            return next(error.projectNotFound)
+        }
+        if (project.userId != userId) {
+            return next(error.uidMismatch)
+        }
+        if (libContest.getPublicState(contest) != libContest.publicState.applying) {
+            return next(error.contestNotOpenForSubmission)
+        }
+        return preview.create(project).then(result => {
+            if (!result) {
+                return next(error.previewFailed)
+            }
+            return persistence.setProjectFlag(project.id, 'hasPreview').then(() => {
+                res.status(http.created).send(result)
+            })
         })
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
