@@ -621,6 +621,7 @@ main.project .card img {
 
 .feedback-message button {
   height: 2.3rem;
+  line-height: 1;
 }
 
 /* social-buttons */
