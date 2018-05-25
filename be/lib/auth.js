@@ -7,6 +7,7 @@ let fakeAuthEnabled = false
 
 const adminPolicies = {
     uid: (user) => _config.admin.enabled.includes(user.uid),
+    email: (user) => user.emailVerified && _config.admin.enabled.includes(user.email),
     domain: (user) => user.emailVerified && _config.admin.enabled.includes(user.email.split('@')[1])
 }
 
