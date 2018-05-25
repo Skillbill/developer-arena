@@ -41,12 +41,6 @@
       </template>
       <template slot="action" slot-scope="data">
         <div class="d-flex justify-content-between">
-          <b-button v-if="!data.item.approved" variant="outline-success" size="sm" title="approve project" @click.stop="approve(data.item)">
-            <i class="fas fa-check"></i> Approve
-          </b-button>
-          <b-button v-else variant="outline-danger" size="sm" title="disapprove project" @click.stop="disapprove(data.item)">
-            <i class="fas fa-times"></i> Disapprove
-          </b-button>
           <b-dropdown class="ml-2" variant="link" size="sm" no-caret right>
             <template slot="button-content">
               <i class="fas fa-ellipsis-v"></i>
@@ -143,7 +137,7 @@ export default {
         },
         {
           key: 'action',
-          label: 'Action',
+          label: '',
           tdClass: ['actions', 'min']
         }
       ],
