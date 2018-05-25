@@ -909,6 +909,13 @@ main.sign-in section.email {
   height: auto;
 }
 
+/* submit */
+
+main.submit .card {
+  margin-bottom: 1rem;
+}
+
+
 /** vue animations **/
 
 /* fade */

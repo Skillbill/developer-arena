@@ -81,7 +81,10 @@ module.exports = {
     viewYour: 'Vedi la pagina del tuo progetto',
     download: 'Scarica il progetto',
     needsApprove: 'Potrai vedere il progetto dopo la sua approvazione',
-    preview: 'Vedi il progetto'
+    preview: 'Vedi il progetto',
+    showPreview: 'Vedi preview',
+    generatePreview: 'Genera la preview',
+    previewGenerated: 'Preview generata corretamente'
   },
   viewGitHub: 'Vedi su GitHub',
   applyContest: 'Invia il tuo progetto',

@@ -2,6 +2,15 @@
   <main class="submit">
     <section>
       <div v-show="!loading && !uploading">
+        <div v-show="project" class="card">
+          <p>{{$t('project.submitted')}}</p>
+          <button v-on:click="viewProject">{{$t('project.viewYour')}}</button>
+          <template v-if="project">
+            <button v-if="!project.hasPreview" v-on:click="generatePreview">{{$t('project.generatePreview')}}</button>
+            <a v-else class="button success" :href="previewUrl" target="_blank">{{$t('project.showPreview')}}</a>
+          </template>
+          <button v-if="!edit" v-on:click="editProject">{{$t('project.edit')}}</button>
+        </div>
         <div v-show="!project || edit">
           <h2>{{$t(edit ? 'project.edit' : 'project.submit')}}</h2>
           <form action="#" method="post" class="submit-project" enctype="multipart/form-data" v-on:submit.prevent="submit">
@@ -36,11 +45,6 @@
             </fieldset>
             <button type="submit">{{$t('project.send')}}</button>
           </form>
-        </div>
-        <div v-show="project && !edit" class="card">
-          <p>{{$t('project.submitted')}}</p>
-          <button v-on:click="editProject">{{$t('project.edit')}}</button>
-          <button v-on:click="viewProject">{{$t('project.viewYour')}}</button>
         </div>
       </div>
       <div class="progress" v-if="loading"></div>
@@ -86,6 +90,9 @@ export default {
           this.$store.state.limits.image.allowedTypes && this.$store.state.limits.image.allowedTypes.length > 0) {
         return this.$store.state.limits.image.allowedTypes.join(', ');
       }
+    },
+    previewUrl() {
+      return utils.getProjectPreviewUrl(this.project);
     }
   },
   created() {
@@ -159,6 +166,12 @@ export default {
     },
     viewProject() {
       this.$router.push(`/contest/${this.project.contestId}/project/${this.project.id}`);
+    },
+    generatePreview() {
+      this.loading = true;
+      this.$store.dispatch('generatePreview', {projectId: this.project.id, contestId: this.project.contestId}).then(() => {
+        this.loading = false;
+      });
     }
   }
 }

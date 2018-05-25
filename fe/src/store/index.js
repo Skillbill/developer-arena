@@ -254,6 +254,20 @@ const store = new Vuex.Store({
     },
     refreshUser({dispatch}) {
       return dispatch('updateUser', this.state.user);
+    },
+    async generatePreview({commit, dispatch}, {contestId, projectId}) {
+      const headers = await utils.getDefaultHeaders({auth: true});
+      return axios({
+        method: 'put',
+        url: utils.getApiUrl(`/contest/${contestId}/project/${projectId}/preview`),
+        headers
+      }).then(() => {
+        commit('setFeedbackOk', 'project.previewGenerated');
+        return dispatch('loadProject', {contestId, projectId});
+      }).catch(e => {
+        console.error(e);
+        commit('setFeedbackError', utils.getApiErrorMessage(e));
+      })
     }
   }
 })
