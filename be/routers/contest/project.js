@@ -183,6 +183,7 @@ function submitProject(req, res, next) {
 }
 
 function updateProject(req, res, next) {
+    const userId = req.user.uid
     const contestId = req.params.contestId
     const projectId = req.params.projectId
     const newProject = req.project
@@ -206,7 +207,7 @@ function updateProject(req, res, next) {
         if (!currentProject || currentProject.contestId != contestId) {
             return next(error.projectNotFound)
         }
-        if (currentProject.userId != newProject.userId) {
+        if (!(userId == currentProject.userId && userId == newProject.userId)) {
             return next(error.uidMismatch)
         }
         persistence.updateProject(projectId, newProject).then(project => {
