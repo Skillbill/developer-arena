@@ -18,7 +18,7 @@ const contestDeleted = () => {
 const projectDeleted = () => {
   Vue.$toastr.success('The project has been deleted successfully', 'Project deleted')
 }
-const projectPreviewCreated = href => {
+const projectPreviewCreated = () => {
   Vue.$toastr.success(`The preview has been created`, 'Preview created')
 }
 const projectPreviewDeleted = () => {

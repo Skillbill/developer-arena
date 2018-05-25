@@ -26,6 +26,19 @@
       <template slot="userId" slot-scope="data">
         <b-link v-if="userMap" :to="`/user/${data.value}`">{{getUserDisplay(userMap.get(data.value))}}</b-link>
       </template>
+      <template slot="title" slot-scope="data">
+        <a :href="getLinkToFE(data.item.id)" target="_blank">{{data.value}}</a>
+      </template>
+      <template slot="approved" slot-scope="data">
+        <div class="d-flex justify-content-center">
+          <i v-if="data.value" class="fas fa-check"></i>
+          <i v-else class="fas fa-ban"></i>
+        </div>
+      </template>
+      <template slot="hasPreview" slot-scope="data">
+        <a v-if="data.value" :href="getLinkToPreview(data.item.id)" target="_blank">Running</a>
+        <span v-else>Off</span>
+      </template>
       <template slot="action" slot-scope="data">
         <div class="d-flex justify-content-between">
           <b-button v-if="!data.item.approved" variant="outline-success" size="sm" title="approve project" @click.stop="approve(data.item)">
@@ -41,8 +54,17 @@
             <b-dd-item-btn title="download project" @click.stop="download(data.item)">
               <i class="fas fa-download"></i> Download
             </b-dd-item-btn>
-            <b-dd-item-btn title="see project in the public front-end" @click.stop="redirectToFE(data.item.id)">
-              <i class="fas fa-eye"></i> See
+            <b-dd-item-btn v-if="data.item.approved" title="disapprove the project" @click.stop="disapprove(data.item)">
+              <i class="fas fa-ban"></i> Disapprove
+            </b-dd-item-btn>
+            <b-dd-item-btn v-else title="approve the project" @click.stop="approve(data.item)">
+              <i class="fas fa-check"></i> Approve
+            </b-dd-item-btn>
+            <b-dd-item-btn v-if="data.item.hasPreview" title="kill the preview" @click.stop="deletePreview(data.item)">
+              <i class="fas fa-skull"></i> Kill preview
+            </b-dd-item-btn>
+            <b-dd-item-btn v-else title="launch the preview" @click.stop="createPreview(data.item)">
+              <i class="fas fa-bolt"></i> Launch preview
             </b-dd-item-btn>
             <b-dd-item-btn title="delete the project" @click.stop="askDeleteConfirmation(data.item)">
               <i class="fas fa-times"></i> Delete
@@ -110,6 +132,16 @@ export default {
           tdClass: 'min'
         },
         {
+          key: 'approved',
+          label: 'Approval',
+          tdClass: 'min'
+        },
+        {
+          key: 'hasPreview',
+          label: 'Preview',
+          tdClass: 'min'
+        },
+        {
           key: 'action',
           label: 'Action',
           tdClass: ['actions', 'min']
@@ -137,33 +169,42 @@ export default {
         `/contest/${this.contest.id}/project/${project.id}/deliverable?ts=${ts}`
       // api.getProjectDeliverable(this.contest.id, projectId)
     },
-    redirectToFE (projectId) {
-      window.open(`${this.$config.frontEndAddress}/#/contest/${this.contest.id}/project/${projectId}`, '_blank')
+    getLinkToFE (projectId) {
+      return `${this.$config.frontEndAddress}/#/contest/${this.contest.id}/project/${projectId}`
+    },
+    getLinkToPreview (projectId) {
+      return `${this.$config.serverAddress}/${this.$config.apiVersion}/preview/${this.contest.id}/${projectId}`
     },
     approve (project) {
-      api.createProjectPreview(this.contest.id, project.id).then(response => {
-        if (!response) {
-          return null
-        }
-        feedback.projectPreviewCreated(response.href)
-        return api.setProjectApproved(this.contest.id, project.id, true)
-      }).then(response => {
+      api.setProjectApproved(this.contest.id, project.id, true).then(response => {
         if (response) {
           project.approved = true
         }
       })
     },
     disapprove (project) {
+      api.setProjectApproved(this.contest.id, project.id, false).then(response => {
+        if (response) {
+          project.approved = false
+        }
+      })
+    },
+    createPreview (project) {
+      api.createProjectPreview(this.contest.id, project.id).then(response => {
+        if (!response) {
+          return null
+        }
+        project.hasPreview = true
+        feedback.projectPreviewCreated()
+      })
+    },
+    deletePreview (project) {
       api.deleteProjectPreview(this.contest.id, project.id).then(response => {
         if (!response) {
           return null
         }
+        project.hasPreview = false
         feedback.projectPreviewDeleted()
-        return api.setProjectApproved(this.contest.id, project.id, false)
-      }).then(response => {
-        if (response) {
-          project.approved = false
-        }
       })
     },
     deleteProject (projectId) {
