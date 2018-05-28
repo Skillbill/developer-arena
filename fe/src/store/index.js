@@ -155,6 +155,7 @@ const store = new Vuex.Store({
       }).catch(e => {
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));
+        return Promise.reject(e);
       })
     },
     async loadContest ({commit}, {contestId}) {

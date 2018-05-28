@@ -159,6 +159,10 @@ export default {
         this.edit = false;
         this.progress = 0;
         this.generatePreview();
+      }).catch(err => {
+        this.uploading = false;
+        this.edit = false;
+        this.progress = 0;
       });
     },
     editProject() {
@@ -168,10 +172,12 @@ export default {
       this.$router.push(`/contest/${this.project.contestId}/project/${this.project.id}`);
     },
     generatePreview() {
-      this.loading = true;
-      this.$store.dispatch('generatePreview', {projectId: this.project.id, contestId: this.project.contestId}).then(() => {
-        this.loading = false;
-      });
+      if(this.project) {
+        this.loading = true;
+        this.$store.dispatch('generatePreview', {projectId: this.project.id, contestId: this.project.contestId}).then(() => {
+          this.loading = false;
+        });
+      }
     }
   }
 }
