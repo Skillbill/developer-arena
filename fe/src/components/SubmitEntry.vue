@@ -6,8 +6,7 @@
           <p>{{$t('project.submitted')}}</p>
           <button v-on:click="viewProject">{{$t('project.viewYour')}}</button>
           <template v-if="project">
-            <button v-if="!project.hasPreview" v-on:click="generatePreview">{{$t('project.generatePreview')}}</button>
-            <a v-else class="button success" :href="previewUrl" target="_blank">{{$t('project.showPreview')}}</a>
+            <a v-if="project.hasPreview" class="button success" :href="previewUrl" target="_blank">{{$t('project.showPreview')}}</a>
           </template>
           <button v-if="!edit" v-on:click="editProject">{{$t('project.edit')}}</button>
         </div>
@@ -159,6 +158,7 @@ export default {
         this.uploading = false;
         this.edit = false;
         this.progress = 0;
+        this.generatePreview();
       });
     },
     editProject() {

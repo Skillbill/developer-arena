@@ -262,7 +262,6 @@ const store = new Vuex.Store({
         url: utils.getApiUrl(`/contest/${contestId}/project/${projectId}/preview`),
         headers
       }).then(() => {
-        commit('setFeedbackOk', 'project.previewGenerated');
         return dispatch('loadProject', {contestId, projectId});
       }).catch(e => {
         console.error(e);

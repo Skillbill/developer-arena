@@ -14,11 +14,12 @@
       </p>
     </div>
     <button :class="{success: isVoted, wait: sendingVote}" v-if="canVote" v-on:click="isVoted ? vote('delete') : vote('put')" :disabled="sendingVote">{{$t(voteButtonLabel)}}</button>
-    <template v-if="isApproved">
-      <a class="button success" v-if="showPreview && hasPreview" :href="previewUrl" target="_blank">{{$t('project.preview')}}</a>
-      <a class="button" v-if="showDeliverable" download :href="deliverableUrl">{{$t('project.download')}}</a>
+    <template v-if="showPreview">
+      <button v-if="isOwn && !hasPreview" disabled>{{$t('project.noPreviewToShow')}}</button>
+      <a class="button success" v-else-if="isOwn || (hasPreview && isApproved)" :href="previewUrl" target="_blank">{{$t('project.preview')}}</a>
+      <button v-else disabled>{{$t('project.needsApprove')}}</button>
     </template>
-    <button v-else-if="showPreview || showDeliverable" disabled>{{$t('project.needsApprove')}}</button>
+    <a class="button" v-if="isApproved && showDeliverable" download :href="deliverableUrl">{{$t('project.download')}}</a>
     <a class="button" v-if="showRepo && project.repoURL" :href="project.repoURL" target="_blank">{{$t('viewRepo')}}</a>
     <router-link class="button" v-if="canEdit" to="/submit-entry?edit=true">{{$t('project.edit')}}</router-link>
     <div class="video" v-if="showVideo && youtubeVideoCode">
