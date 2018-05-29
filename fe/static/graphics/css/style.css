@@ -457,7 +457,6 @@ small {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  align-items: center;
 }
 
 .footer-info img {
@@ -466,7 +465,7 @@ small {
   height: 2rem;
   width: 2rem;
   border-radius: 0.2rem;
-  margin: 0 0.5rem;
+  margin: 0.3rem 0.5rem;
 }
 
 .footer-info p {
@@ -984,6 +983,7 @@ main.submit .card {
   footer,
   .footer-info {
     flex-direction: column;
+    align-items: center;
   }
 
   .footer-links {
