@@ -127,6 +127,12 @@ export default {
     }
   },
   created () {
+    if (this.$route.query.verified && this.$store.state.user) {
+      this.$store.state.user.getIdToken(true).then(() => {
+        this.redirectAfterSignIn(this.$store.state.user);
+      })
+      return;
+    }
     if(this.$store.state.firebaseRedirectResultConsumed) {
       return;
     }
@@ -190,38 +196,36 @@ export default {
       }
       this.loading = true;
       auth.createUserWithEmailAndPassword(this.email, this.password).then(user => {
+        this.$store.commit('setUser', user);
         this.$store.commit('setFeedbackOk', 'accountCreated');
-        let continueUrl = document.location.href;
-        if(this.$route.query.redirect) {
-          const a = document.createElement('a');
-          a.href = this.$router.resolve(this.$route.query.redirect).href;
-          continueUrl = a.protocol + '//' + a.host + a.pathname + a.search + a.hash;
-        }
-        user.sendEmailVerification({url: continueUrl});
-        this.signInSection = 'signIn';
-        this.loading = false;
+        this.sendEmailVerification().then(() => {
+          this.signInSection = 'signIn';
+          this.loading = false;
+        }).catch(error => {
+          console.error(error, error.message);
+          showFirebaseErroMessage.apply(this, [error]);
+          this.loading = false;
+        })
       }).catch(error => {
         console.error(error, error.message);
         showFirebaseErroMessage.apply(this, [error]);
         this.loading = false;
       });
     },
-    resendEmailVerification () {
+    sendEmailVerification() {
+      const c = Object.keys(this.$route.query).length === 0 ? '?' : '&';
+      return this.user.sendEmailVerification({url: location.href + `${c}verified=1`});
+    },
+    resendEmailVerification() {
       this.loading = true;
-      let continueUrl = document.location.href;
-      if(this.$route.query.redirect) {
-        const a = document.createElement('a');
-        a.href = this.$router.resolve(this.$route.query.redirect).href;
-        continueUrl = a.protocol + '//' + a.host + a.pathname + a.search + a.hash;
-      }
-      this.user.sendEmailVerification({url: continueUrl}).then(() => {
+      this.sendEmailVerification().then(() => {
         this.$store.commit('setFeedbackOk', 'verificationEmailResent');
         this.loading = false;
       }).catch(error => {
         console.error(error, error.message);
         showFirebaseErroMessage.apply(this, [error]);
         this.loading = false;
-      })
+      });
     },
     switchToSignUp() {
       this.signInSection = 'signUp';
