@@ -159,7 +159,7 @@ export default {
         this.edit = false;
         this.progress = 0;
         this.generatePreview();
-      }).catch(err => {
+      }).catch(() => {
         this.uploading = false;
         this.edit = false;
         this.progress = 0;
