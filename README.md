@@ -1,6 +1,6 @@
-# sda-contest
+# Developer Arena
 
-[![Automated by Buddy](https://assets.buddy.works/automated-blue.svg)](https://buddy.works) [![buddy pipeline](https://app.buddy.works/skillbill/sda-contest/pipelines/pipeline/133124/badge.svg?token=e2e206bc004d0c6e951d21b1626bb735ebd86eeb49d735368b5d053938f35e20 "buddy pipeline")](https://app.buddy.works/skillbill/sda-contest/pipelines/pipeline/133124)
+[![Automated by Buddy](https://assets.buddy.works/automated-blue.svg)](https://buddy.works) [![buddy pipeline](https://app.buddy.works/skillbill/developer-arena/pipelines/pipeline/133124/badge.svg?token=e2e206bc004d0c6e951d21b1626bb735ebd86eeb49d735368b5d053938f35e20 "buddy pipeline")](https://app.buddy.works/skillbill/developer-arena/pipelines/pipeline/133124)
 
 ## Run the demo:
 
