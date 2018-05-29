@@ -2,7 +2,7 @@
   trigger_mode: "ON_EVERY_PUSH"
   ref_name: "master"
   ref_type: "BRANCH"
-  target_site_url: "https://test.developer-arena.skillbill.net"
+  target_site_url: "https://test.da.skillbill.net"
   actions:
   - action: "[BE] Build Docker image"
     type: "DOCKERFILE"
