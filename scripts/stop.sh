@@ -9,7 +9,7 @@ docker_ps() {
 which="$1"
 (
     if [ -z $which ]; then
-	docker_ps | awk '$2 ~ /sda-contest-/ {print}' | xargs docker stop
+	docker_ps | awk '$2 ~ /developer-arena-/ {print}' | xargs docker stop
     else
 	docker_ps | awk '$3 == "'"$which"'" {print}'  | xargs docker stop
     fi

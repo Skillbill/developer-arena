@@ -1,7 +1,7 @@
 {
   "name": "bo",
   "version": "1.0.0",
-  "description": "SDA contest backoffice",
+  "description": "Developer Arena backoffice",
   "author": "Skillbill",
   "private": true,
   "scripts": {

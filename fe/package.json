@@ -1,7 +1,7 @@
 {
   "name": "fe",
   "version": "1.0.0",
-  "description": "SDA contest frontend",
+  "description": "Developer Arena frontend",
   "author": "Skillbill",
   "private": true,
   "scripts": {

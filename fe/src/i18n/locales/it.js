@@ -1,6 +1,5 @@
 module.exports = {
-  siteName: 'SDA Contest',
-  siteFullName: 'Skillbill Developer Arena Contest',
+  siteName: 'Developer Arena',
   menu: {
     home: 'Home',
     projects: 'Progetti',
@@ -36,7 +35,7 @@ module.exports = {
     3: 'Gli autori dei primi **15 progetti** della classifica verranno invitati a partecipare all\'evento pubblico del Contest',
     4: 'Ogni partecipante avrà **30 minuti** di tempo per presentare il proprio progetto',
     5: 'Una giuria composta da **tre persone** voterà il tuo progetto: ogni **giurato** potrà dare un voto da **1 a 10**. Il voto non sarà sindacabile in nessun modo',
-    6: 'I **primi tre** progetti vincitori rimarranno in evidenza nel sito SDA Contest'
+    6: 'I **primi tre** progetti vincitori rimarranno in evidenza nel sito Developer Arena'
   },
   contestBanner: {
     contest: 'Il Contest',

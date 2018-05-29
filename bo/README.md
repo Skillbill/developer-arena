@@ -1,6 +1,6 @@
 # bo
 
-> SDA contest backoffice
+> Developer Arena backoffice
 
 ## Build Setup
 

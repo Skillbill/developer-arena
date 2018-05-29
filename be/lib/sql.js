@@ -9,7 +9,7 @@ const model = {
     vote: require('../model/vote')
 }
 
-const sqlUri = `postgresql://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/sda-contest`
+const sqlUri = `postgresql://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.database}`
 const sequelize = new Sequelize(sqlUri, {
     operatorsAliases: Sequelize.Op,
     define: {

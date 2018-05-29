@@ -13,10 +13,10 @@ root="$LIB/../../"
 tag=${TAG:-latest}
 network=${DOCKER_NETWORK:-host}
 namespace=${DOCKER_NAMESPACE:-skillbillsrl}
-img_fe=${DOCKER_IMG_FE:-sda-contest-fe}
-img_be=${DOCKER_IMG_BE:-sda-contest-be}
-img_bo=${DOCKER_IMG_BO:-sda-contest-bo}
-img_db=${DOCKER_IMG_DB:-sda-contest-db}
+img_fe=${DOCKER_IMG_FE:-developer-arena-fe}
+img_be=${DOCKER_IMG_BE:-developer-arena-be}
+img_bo=${DOCKER_IMG_BO:-developer-arena-bo}
+img_db=${DOCKER_IMG_DB:-developer-arena-db}
 
 fe_port=8080
 be_port=3000

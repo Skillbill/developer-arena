@@ -2,7 +2,7 @@ FROM postgres:10-alpine
 
 ENV POSTGRES_USER postgres
 ENV POSTGRES_PASSWORD 1234
-ENV POSTGRES_DB sda-contest
+ENV POSTGRES_DB developer-arena
 
 
 ADD 000_init.sql  /docker-entrypoint-initdb.d/

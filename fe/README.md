@@ -1,6 +1,6 @@
 # fe
 
-> SDA contest frontend
+> Developer Arena frontend
 
 ## Build Setup
 

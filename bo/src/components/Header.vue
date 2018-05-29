@@ -3,7 +3,7 @@
     <div style="height: 56px"></div>
     <b-navbar id="my-nav" class="fixed-top" toggleable="md">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-      <b-navbar-brand to="/">SDA Contest Back Office</b-navbar-brand>
+      <b-navbar-brand to="/">Developer Arena Back Office</b-navbar-brand>
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
           <b-nav-item v-if="user && user.isAdmin" to="/contests">Contests</b-nav-item>

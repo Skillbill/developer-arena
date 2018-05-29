@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# sda-contest demo
+# developer-arena demo
 #
 
 set -efC

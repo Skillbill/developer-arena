@@ -15,7 +15,7 @@
       <h4>{{$t('contacts')}}</h4>
       <ul>
         <li>
-          <a href="mailto:sda-contest@skillbill.it?subject=[SDA Contest]">sda-contest@skillbill.it</a>
+          <a href="mailto:developer-arena@skillbill.it?subject=[Developer Arena]">developer-arena@skillbill.it</a>
         </li>
       </ul>
     </div>
@@ -28,7 +28,7 @@
       </ul>
     </div>
     <div class="footer-info">
-      <p>{{$t("siteFullName")}} <br> &copy; <a href="http://www.skillbill.it/">Skillbill</a> {{new Date().getFullYear()}}</p>
+      <p>{{$t("siteName")}} <br> &copy; <a href="http://www.skillbill.it/">Skillbill</a> {{new Date().getFullYear()}}</p>
       <img class="logo" src="/static/graphics/assets/logo-skillbill.png" alt="Logo Skillbill">
     </div>
   </footer>

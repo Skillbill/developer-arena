@@ -1,7 +1,7 @@
 version: "2.3"
 services:
   be:
-    image: "skillbillsrl/sda-contest-be:${TAG}"
+    image: "skillbillsrl/developer-arena-be:${TAG}"
     depends_on:
       - db
     ports:
@@ -12,11 +12,11 @@ services:
         target: /be/config.json
       - preview:/be/preview
   db:
-    image: "skillbillsrl/sda-contest-db:${TAG}"
+    image: "skillbillsrl/developer-arena-db:${TAG}"
     volumes:
       - pgdata:/var/lib/postgresql/data
   fe:
-    image: "skillbillsrl/sda-contest-fe:${TAG}"
+    image: "skillbillsrl/developer-arena-fe:${TAG}"
     depends_on:
       - be
     ports:
@@ -29,7 +29,7 @@ services:
         source: ./pages
         target: /app/static/pages
   bo:
-    image: "skillbillsrl/sda-contest-bo:${TAG}"
+    image: "skillbillsrl/developer-arena-bo:${TAG}"
     depends_on:
       - be
     ports:
@@ -44,4 +44,4 @@ volumes:
         external: true
     preview:
 
-#cd be && docker build . -t skillbillsrl/sda-contest-be:local && cd .. && cd db && docker build . -t skillbillsrl/sda-contest-db:local && cd .. && cd fe && docker build . -t skillbillsrl/sda-contest-fe:local && cd .. && cd bo && docker build . -t skillbillsrl/sda-contest-bo:local && cd .. && TAG=local docker-compose up
+#cd be && docker build . -t skillbillsrl/developer-arena-be:local && cd .. && cd db && docker build . -t skillbillsrl/developer-arena-db:local && cd .. && cd fe && docker build . -t skillbillsrl/developer-arena-fe:local && cd .. && cd bo && docker build . -t skillbillsrl/developer-arena-bo:local && cd .. && TAG=local docker-compose up

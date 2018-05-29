@@ -25,7 +25,7 @@
         </li>
       </ul>
     </nav>
-    <a href="https://github.com/Skillbill/sda-contest" class="github-link" :title="$t('viewGitHub')">{{$t("viewGitHub")}}</a>
+    <a href="https://github.com/Skillbill/developer-arena" class="github-link" :title="$t('viewGitHub')">{{$t("viewGitHub")}}</a>
   </header>
 </template>
 
