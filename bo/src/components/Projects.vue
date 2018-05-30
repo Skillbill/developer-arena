@@ -24,7 +24,7 @@
               :per-page="perPage"
     >
       <template slot="userId" slot-scope="data">
-        <b-link v-if="userMap" :to="`/user/${data.value}`">{{getUserDisplay(userMap.get(data.value))}}</b-link>
+        <b-link v-if="userMap && userMap.get(data.value)" :to="`/user/${data.value}`">{{getUserDisplay(userMap.get(data.value))}}</b-link>
       </template>
       <template slot="title" slot-scope="data">
         <a :href="getLinkToFE(data.item.id)" target="_blank">{{data.value}}</a>
