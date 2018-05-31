@@ -4,7 +4,7 @@
   trigger_mode: "ON_EVERY_PUSH"
   ref_name: "master"
   ref_type: "BRANCH"
-  target_site_url: "https://${HOSTNAME_TEST}"
+  target_site_url: "https://test.da.skillbill.net"
   actions:
   - action: "[BE] Build Docker image"
     type: "DOCKERFILE"
@@ -114,9 +114,9 @@
 
 - pipeline: "Deploy to PRE"
   trigger_mode: "ON_EVERY_PUSH"
-  ref_name: "refs/tags/v*-rc*"
+  ref_name: "(refs/tags/.+-rc[0-9]+)"
   ref_type: "WILDCARD"
-  target_site_url: "https://${HOSTNAME_PRE}"
+  target_site_url: "https://pre.da.skillbill.net"
   actions:
   - action: "[BE] Build Docker image"
     type: "DOCKERFILE"
@@ -201,7 +201,7 @@
     channel: "C9F0C1G64"
     channel_name: "developer-arena"
     attachments:
-    - "{\"fallback\":\"${execution.pipeline.name} execution #${execution.id}\",\"color\":\"good\",\"fields\":[{\"title\":\"Successful execution\",\"value\":\"<${execution.html_url}|Execution #${execution.id} ${execution.comment}>\",\"short\":true},{\"title\":\"Pipeline\",\"value\":\"<${execution.pipeline.html_url}|${execution.pipeline.name}>\",\"short\":true},{\"title\":\"Branch\",\"value\":\"${execution.branch.name}\",\"short\":true},{\"title\":\"Project\",\"value\":\"<${project.html_url}|${project.name}>\",\"short\":true}]}"
+    - "{\"fallback\":\"${execution.pipeline.name} execution #${execution.id}\",\"color\":\"good\",\"fields\":[{\"title\":\"Successful execution\",\"value\":\"<${execution.html_url}|Execution #${execution.id} ${execution.comment}>\",\"short\":true},{\"title\":\"Pipeline\",\"value\":\"<${execution.pipeline.html_url}|${execution.pipeline.name}>\",\"short\":true},{\"title\":\"Tag\",\"value\":\"${execution.tag.name}\",\"short\":true},{\"title\":\"Project\",\"value\":\"<${project.html_url}|${project.name}>\",\"short\":true}]}"
     trigger_condition: "ALWAYS"
     integration_id: 30804
   - action: "Send notification to developer-arena channel"
@@ -211,7 +211,7 @@
     channel: "C9F0C1G64"
     channel_name: "developer-arena"
     attachments:
-    - "{\"fallback\":\"${execution.pipeline.name} execution #${execution.id}\",\"color\":\"danger\",\"fields\":[{\"title\":\"Failed execution\",\"value\":\"<${execution.html_url}|Execution #${execution.id} ${execution.comment}>\",\"short\":true},{\"title\":\"Pipeline\",\"value\":\"<${execution.pipeline.html_url}|${execution.pipeline.name}>\",\"short\":true},{\"title\":\"Branch\",\"value\":\"${execution.branch.name}\",\"short\":true},{\"title\":\"Project\",\"value\":\"<${project.html_url}|${project.name}>\",\"short\":true}]}"
+    - "{\"fallback\":\"${execution.pipeline.name} execution #${execution.id}\",\"color\":\"danger\",\"fields\":[{\"title\":\"Failed execution\",\"value\":\"<${execution.html_url}|Execution #${execution.id} ${execution.comment}>\",\"short\":true},{\"title\":\"Pipeline\",\"value\":\"<${execution.pipeline.html_url}|${execution.pipeline.name}>\",\"short\":true},{\"title\":\"Tag\",\"value\":\"${execution.tag.name}\",\"short\":true},{\"title\":\"Project\",\"value\":\"<${project.html_url}|${project.name}>\",\"short\":true}]}"
     trigger_condition: "ALWAYS"
     integration_id: 30811
 
