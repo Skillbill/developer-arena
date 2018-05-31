@@ -4,6 +4,7 @@
     <Feedback/>
     <router-view :key="`${$i18n.locale}:${$route.fullPath}`"/>
     <Footer/>
+    <CookiePolicy/>
   </div>
 </template>
 
@@ -11,12 +12,14 @@
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import Feedback from '@/components/Feedback.vue'
+import CookiePolicy from '@/components/CookiePolicy.vue'
 
 export default {
   components: {
     Header,
     Feedback,
-    Footer
+    Footer,
+    CookiePolicy
   }
 }
 </script>

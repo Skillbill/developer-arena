@@ -115,6 +115,9 @@ module.exports = {
   waiting: 'Attendere...',
   viewRepo: 'Vai al repository',
   contacts: 'Contacts',
+  cookiePolicyMessage: 'utilizza cookie tecnici, di navigazione e analitici per offrirti una migliore esperienza nella fruizione del sito. Continuando a navigare accetti l’utilizzo dei cookie.',
+  accept: 'Accetta',
+  readMore: 'Leggi di più',
   contest: {
     notStarted: 'Il contest non è ancora partito. Accedi alla sezione "progetti" dopo il',
     noProjects: 'Non ci sono ancora progetti da vedere'

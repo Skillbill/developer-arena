@@ -747,6 +747,27 @@ div.progressbar span.bar {
   color: #222;
 }
 
+/* cookie policy */
+
+.cookie-policy-banner {
+  position: fixed;
+  position: sticky;
+  display: flex;
+  flex-wrap: wrap;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background-color:#003363;
+  color: #f0f0f0;
+  border: 0.5rem solid #fa6603;
+}
+
+.cookie-policy-banner .buttons {
+  width: 100%;
+}
+
+
 /*** organisms ***/
 
 /* main-header */
