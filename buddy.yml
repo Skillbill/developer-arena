@@ -4,7 +4,7 @@
   trigger_mode: "ON_EVERY_PUSH"
   ref_name: "master"
   ref_type: "BRANCH"
-  target_site_url: "https://${HOSTNAME_TEST}"
+  target_site_url: "https://test.da.skillbill.net"
   actions:
   - action: "[BE] Build Docker image"
     type: "DOCKERFILE"
@@ -116,7 +116,7 @@
   trigger_mode: "ON_EVERY_PUSH"
   ref_name: "refs/tags/v*-rc*"
   ref_type: "WILDCARD"
-  target_site_url: "https://${HOSTNAME_PRE}"
+  target_site_url: "https://pre.da.skillbill.net"
   actions:
   - action: "[BE] Build Docker image"
     type: "DOCKERFILE"
