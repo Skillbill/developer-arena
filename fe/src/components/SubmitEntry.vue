@@ -135,8 +135,8 @@ export default {
               this.$store.state.limits[field].allowedTypes.indexOf(file.type) === -1) {
             this.$store.commit('setFeedbackError', {message: `project.${field}InvalidType`, args: {types: utils.getTypesString(this.$store.state.limits[field].allowedTypes)}});
             valid = false;
-          } else if(this.$store.state.limits[field].maxAllowedSize > 0 && file.size > this.$store.state.limits[field].maxAllowedSize) {
-            this.$store.commit('setFeedbackError', {message: `project.${field}InvalidSize`, args: {size: utils.getFileSizeString(this.$store.state.limits[field].maxAllowedSize)}});
+          } else if(this.$store.state.limits[field].maxSize > 0 && file.size > this.$store.state.limits[field].maxSize) {
+            this.$store.commit('setFeedbackError', {message: `project.${field}InvalidSize`, args: {size: utils.getFileSizeString(this.$store.state.limits[field].maxSize)}});
             valid = false;
           }
         }
