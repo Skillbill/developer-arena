@@ -38,6 +38,7 @@
               <input type="file" name="image" id="project-thumbnail" :accept="acceptedImageTypes">
               <label for="project-file">
                 <span>{{$t('project.file')}} {{edit? '' : '*'}}</span>
+                <small class="hint">{{$t('project.fileHint', {maxDeliverableSize})}}</small>
               </label>
               <input type="file" name="deliverable" id="project-file" :required=!edit :accept="acceptedDeliverableTypes">
               <p class="text-align-right">* {{$t('project.requiredFields')}}</p>
@@ -92,6 +93,11 @@ export default {
     },
     previewUrl() {
       return utils.getProjectPreviewUrl(this.project);
+    },
+    maxDeliverableSize() {
+      if(this.$store.state.limits && this.$store.state.limits.deliverable) {
+        return utils.getFileSizeString(this.$store.state.limits.deliverable.maxSize);
+      }
     }
   },
   created() {

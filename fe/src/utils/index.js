@@ -48,7 +48,7 @@ export function getTypesString(mimeTypesArray) {
 }
 
 export function getFileSizeString(bytesNumber) {
-  return Math.floor(bytesNumber / 1024 / 1024) + 'MB';
+  return Math.floor(bytesNumber / 1024 / 1024) + ' MB';
 }
 
 export function getProjectImageUrl(project, {width, height}) {
