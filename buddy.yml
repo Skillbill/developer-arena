@@ -114,7 +114,7 @@
 
 - pipeline: "Deploy to PRE"
   trigger_mode: "ON_EVERY_PUSH"
-  ref_name: "refs/tags/v*-rc*"
+  ref_name: "(refs/tags/v.+-rc[0-9]+)"
   ref_type: "WILDCARD"
   target_site_url: "https://pre.da.skillbill.net"
   actions:
