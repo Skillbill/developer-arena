@@ -63,6 +63,14 @@ let router = new Router({
       meta: {
         md: '/static/pages/[lang]/legal-notice.md'
       }
+    },
+    {
+      path: '/cookie-policy',
+      name: 'CoockiePolicy',
+      component: StaticPage,
+      meta: {
+        md: '/static/pages/[lang]/cookie-policy.md'
+      }
     }
   ]
 })

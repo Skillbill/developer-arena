@@ -2,7 +2,7 @@
   <div class="container">
     <Header/>
     <Feedback/>
-    <router-view :key="$i18n.locale"/>
+    <router-view :key="`${$i18n.locale}:${$route.fullPath}`"/>
     <Footer/>
   </div>
 </template>

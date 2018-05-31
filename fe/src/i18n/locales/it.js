@@ -12,7 +12,8 @@ module.exports = {
     it: 'Italiano',
     en: 'English',
     legalNotice: 'Note legali',
-    info: 'Info'
+    info: 'Info',
+    cookiePolicy: 'Cookie policy'
   },
   firebase: {
     'generic-error': 'Oops.. si è verificato un errore, riprova più tardi',

@@ -25,6 +25,9 @@
         <li>
           <router-link to="/legal-notice">{{$t('footer.legalNotice')}}</router-link>
         </li>
+        <li>
+          <router-link to="/cookie-policy">{{$t('footer.cookiePolicy')}}</router-link>
+        </li>
       </ul>
     </div>
     <div class="footer-info">
