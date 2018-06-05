@@ -33,7 +33,7 @@ module.exports = {
     0: 'You can work on your project locally but submission (even for update it) will be possible after the **starting** of the **Contest**',
     1: 'After the **start** of the **Contest** you can submit your changes for two weeks until the start of the **voting** phase',
     2: 'The **voting** phase will be of two weeks, after that, projects will be classified on the amount of reveived **likes**',
-    3: 'The authors of the first **15** projects at the top of the ranking will be invited to participate at the **public event** related to the **Contest**',
+    3: 'The authors of the first **10** projects at the top of the ranking will be invited to participate at the **public event** related to the **Contest**',
     4: 'Each attendee will have **30 minutes** to expose its project',
     5: 'A jury composed by **three people** will vote on your project: each **juror** can give a vote from **1 to 10**. That vote cannot be impugned in any way',
     6: 'The **first three** winning projects will be put on the Developer Arena website'
