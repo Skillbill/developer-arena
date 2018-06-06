@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import i18n from '../i18n'
+import Confit from '../lib/confit'
 import * as utils from '../utils'
 
 Vue.use(Vuex)
@@ -78,15 +79,16 @@ const store = new Vuex.Store({
   },
   actions: {
     loadConfiguration({commit}) {
-      return axios({
-        method: 'get',
-        url: '/static/configuration.json'
-      }).then(response => {
-        commit('setConfiguration', response.data);
+      return new Confit({
+        repoId: 'f7ca505d-a32f-4909-aab3-a28b4f1c4ee8'
+      }).getConf(location.hostname + '-fe', {
+        alias: true
+      }).then(config => {
+        commit('setConfiguration', config);
       }).catch(e => {
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));
-      })
+      });
     },
     chooseLanguage ({commit, dispatch, state}, language) {
       if (state.language === language) {
