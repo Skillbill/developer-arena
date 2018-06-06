@@ -48,9 +48,9 @@ Confit.prototype.getConf = function (rsc, options) {
     relpath += `/alias/${rsc}`
   } else {
     relpath += `/path/${rsc}`
-    if (options.ref) {
-      relpath += '?' + qs.stringify({ref: options.ref})
-    }
+  }
+  if (options.ref) {
+    relpath += '?' + qs.stringify({ref: options.ref})
   }
   return this._getConf(relpath)
 }
