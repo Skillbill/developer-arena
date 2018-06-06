@@ -115,7 +115,7 @@ module.exports = {
   alreadyVoted: 'Project voted',
   waiting: 'Please wait...',
   viewRepo: 'View the repository',
-  contacts: 'Contatti',
+  contacts: 'Contacts',
   cookiePolicyMessage: 'uses technical, browsing and analytics cookies to offer you a better experience when using the site. By continuing to browse you are agreeing to our use of cookies.',
   accept: 'Accept',
   readMore: 'Read more',
