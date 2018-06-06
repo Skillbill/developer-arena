@@ -115,7 +115,7 @@ module.exports = {
   alreadyVoted: 'Hai votato il progetto',
   waiting: 'Attendere...',
   viewRepo: 'Vai al repository',
-  contacts: 'Contacts',
+  contacts: 'Contatti',
   cookiePolicyMessage: 'utilizza cookie tecnici, di navigazione e analitici per offrirti una migliore esperienza nella fruizione del sito. Continuando a navigare accetti l’utilizzo dei cookie.',
   accept: 'Accetta',
   readMore: 'Leggi di più',
