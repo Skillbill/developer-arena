@@ -72,8 +72,9 @@ export default {
   methods: {
     loadProjects() {
       this.loading = true;
-      this.$store.dispatch('loadContest', {contestId: this.$route.params.contestId}).then(() => {
-        return this.$store.dispatch('loadProjects', {contestId: this.$route.params.contestId, sort: this.$route.query.sort});
+      const {contestId, sort} = this.$route.params;
+      this.$store.dispatch('loadContest', {contestId}).then(() => {
+        return this.$store.dispatch('loadProjects', {contestId, sort});
       }).then(() => {
         this.loading = false;
       });
