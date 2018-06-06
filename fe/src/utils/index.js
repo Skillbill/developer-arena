@@ -21,7 +21,7 @@ export function getDefaultHeaders({auth} = {}) {
 export function getApiErrorMessage(error) {
   if(error.message === 'Network Error') {
     return 'api.errors.network';
-  } else if(error.response && error.response.status !== 500 && error.response.data && error.response.data.error && error.response.data.error.msg) {
+  } else if(error.response && error.response.status < 500 && error.response.data && error.response.data.error && error.response.data.error.msg) {
     return error.response.data.error.msg;
   }
   return 'api.errors.generic';
