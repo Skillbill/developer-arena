@@ -29,9 +29,6 @@ services:
       - CONFIT_REPOID=${CONFIT_REPOID}
     volumes:
       - type: bind
-        source: ./config/fe.json
-        target: /app/static/configuration.json
-      - type: bind
         source: ./pages
         target: /app/static/pages
   bo:
@@ -42,10 +39,6 @@ services:
       - 8081:8081
     environment:
       - CONFIT_REPOID=${CONFIT_REPOID}
-    volumes:
-      - type: bind
-        source: ./config/bo.json
-        target: /app/static/configuration.json
 
 volumes:
     pgdata:
