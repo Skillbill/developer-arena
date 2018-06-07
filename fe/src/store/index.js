@@ -4,6 +4,7 @@ import axios from 'axios'
 import i18n from '../i18n'
 import Confit from 'confit-client'
 import * as utils from '../utils'
+import localConfig from '../../configuration.json'
 
 Vue.use(Vuex)
 
@@ -79,11 +80,29 @@ const store = new Vuex.Store({
   },
   actions: {
     loadConfiguration({commit}) {
-      return new Confit({
-        repoId: 'f7ca505d-a32f-4909-aab3-a28b4f1c4ee8'
-      }).getConf(location.hostname + '-fe', {
-        alias: true
+      let confitPath = location.origin + location.pathname + 'static/confitRepoId'
+      return axios({
+        method: 'get',
+        url: confitPath
+      }).then(rep => {
+        return new Confit({
+          repoId: rep.data
+        }).getConf(location.hostname + '-fe', {
+          alias: true
+        })
+      }).catch(e => {
+        if (e.response && e.response.status === 404) {
+          if(process.env.NODE_ENV === 'development') {
+            console.log('Using the local configuration file');
+          }
+          return localConfig
+        } else {
+          return Promise.reject(e)
+        }
       }).then(config => {
+        if(process.env.NODE_ENV === 'development') {
+          console.log('Config used:', config);
+        }
         commit('setConfiguration', config);
       }).catch(e => {
         console.error(e);
