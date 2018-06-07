@@ -14,6 +14,7 @@ WORKDIR $TMPDIR
 RUN npm run build
 
 RUN mv dist $APPDIR
+RUN rm -rf $TMPDIR
 
 WORKDIR $APPDIR
 
