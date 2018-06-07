@@ -11,6 +11,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Toastr from 'toastr'
 import 'toastr/build/toastr.min.css'
 import VueLogger from 'vuejs-logger'
+import axios from 'axios'
+import localConfig from '../configuration.json'
 
 Vue.config.productionTip = false
 let vm = null
@@ -18,14 +20,27 @@ Vue.use(BootstrapVue)
 Vue.use(VueLogger, {logLevel: 'info', showConsoleColors: true, showLogLevel: true})
 Vue.$toastr = Vue.prototype.$toastr = Toastr
 
+let confitPath = location.origin + location.pathname + 'static/confitRepoId'
 Vue.$log.info(`Protocol: ${location.protocol}, Host: ${location.hostname}, Path: ${location.pathname}, Port: ${location.port}`)
 
-new Confit({
-  repoId: 'f7ca505d-a32f-4909-aab3-a28b4f1c4ee8'
-}).getConf(location.hostname + '-bo', {
-  alias: true
+axios({
+  method: 'get',
+  url: confitPath
+}).then(rep => {
+  return new Confit({
+    repoId: rep.data
+  }).getConf(location.hostname + '-bo', {
+    alias: true
+  })
+}).catch(e => {
+  if (e.response && e.response.status === 404) {
+    Vue.$log.info('Using the local configuration file')
+    return localConfig
+  } else {
+    return Promise.reject(e)
+  }
 }).then(config => {
-  Vue.$log.info('Retreived config from confit:', config)
+  Vue.$log.info('Config used:', config)
   config.statRes = location.origin + location.pathname + 'static'
   Vue.$config = Vue.prototype.$config = config
   auth.init(config, showApp)

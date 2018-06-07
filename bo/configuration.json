@@ -1,0 +1,14 @@
+{
+  "serverAddress": "http://127.0.0.1:3000",
+  "apiVersion": "1.0",
+  "frontEndAddress": "http://127.0.0.1:8080",
+  "firebase": {
+    "devMode": true,
+    "apiKey": "",
+    "authDomain": "",
+    "databaseURL": "",
+    "projectId": "",
+    "storageBucket": "",
+    "messagingSenderId": ""
+  }
+}
