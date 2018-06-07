@@ -25,6 +25,8 @@ services:
       - be
     ports:
       - 8080:8080
+    environment:
+      - CONFIT_REPOID=${CONFIT_REPOID}
     volumes:
       - type: bind
         source: ./config/fe.json
@@ -38,6 +40,8 @@ services:
       - be
     ports:
       - 8081:8081
+    environment:
+      - CONFIT_REPOID=${CONFIT_REPOID}
     volumes:
       - type: bind
         source: ./config/bo.json

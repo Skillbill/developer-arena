@@ -18,4 +18,5 @@ RUN rm -rf $TMPDIR
 
 WORKDIR $APPDIR
 
-CMD http-server
+COPY ./docker-entrypoint.sh /
+CMD /docker-entrypoint.sh

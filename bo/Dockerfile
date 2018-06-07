@@ -17,4 +17,5 @@ RUN mv dist $APPDIR
 
 WORKDIR $APPDIR
 
-CMD http-server -p 8081
+COPY ./docker-entrypoint.sh /
+CMD /docker-entrypoint.sh
