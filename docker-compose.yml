@@ -6,6 +6,10 @@ services:
       - db
     ports:
       - 3000:3000
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - CONFIT_REPOID=${CONFIT_REPOID}
+      - CONFIT_TOKEN=${CONFIT_TOKEN_BE}
     volumes:
       - type: bind
         source: ./config/be.json
