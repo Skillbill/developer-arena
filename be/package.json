@@ -24,7 +24,7 @@
 		"postinstall": "ln -sfn ../ node_modules/@",
 		"lint": "eslint --ext .js .",
 		"lint-fix": "eslint --fix --ext .js .",
-		"test": "CONFIG=test/config.json mocha --exit"
+		"test": "CONFIT_REPOID='' CONFIG=test/config.json mocha --exit"
 	},
 	"private": true,
 	"devDependencies": {
