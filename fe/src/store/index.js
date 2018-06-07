@@ -110,6 +110,10 @@ const store = new Vuex.Store({
       });
     },
     chooseLanguage ({commit, dispatch, state}, language) {
+      utils.gtag('event', 'change_language', {
+        'event_category': 'browse',
+        'event_label': language
+      });
       if (state.language === language) {
         return;
       }

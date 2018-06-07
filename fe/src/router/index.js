@@ -9,6 +9,7 @@ import Project from '@/components/Project'
 import Rules from '@/components/Rules'
 import Profile from '@/components/Profile'
 import StaticPage from '@/components/StaticPage'
+import {gtag} from '@/utils'
 
 Vue.use(Router)
 
@@ -103,5 +104,12 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
+
+router.afterEach((to, from) => {
+  gtag('config', store.state.configuration.googleAnalyticsKey, {
+    'page_title': to.name,
+    'page_path': to.path
+  });
+});
 
 export default router

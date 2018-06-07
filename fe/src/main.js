@@ -7,6 +7,7 @@ import store from './store'
 import i18n from './i18n'
 import auth from './auth'
 import {register as registerDirectives} from './directives'
+import {gtag} from './utils'
 
 Vue.config.productionTip = false;
 let app;
@@ -32,6 +33,12 @@ function initVueApp() {
 registerDirectives();
 
 store.dispatch('loadConfiguration').then(() => {
+  const gaKey = store.state.configuration.googleAnalyticsKey;
+  if(gaKey) {
+    window.dataLayer = window.dataLayer || [];
+    gtag('config', gaKey, {'send_page_view': false});
+  }
+
   store.dispatch('chooseLanguage', localStorage.getItem('language'));
   store.dispatch('loadLimits');
   store.dispatch('loadLastContest');

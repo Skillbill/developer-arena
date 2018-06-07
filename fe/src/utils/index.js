@@ -95,3 +95,9 @@ export function getProjectFile(project, kind) {
 export function getProjectPreviewUrl(project) {
   return `${store.state.configuration.serverAddress}/${store.state.configuration.apiVersion}/preview/${project.contestId}/${project.id}/`;
 }
+
+export function gtag() {
+  if(store.state.configuration.googleAnalyticsKey) {
+    window.dataLayer.push(arguments);
+  }
+}
