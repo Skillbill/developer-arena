@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import i18n from '../i18n'
-import Confit from '../lib/confit'
+import Confit from 'confit-client'
 import * as utils from '../utils'
 
 Vue.use(Vuex)
