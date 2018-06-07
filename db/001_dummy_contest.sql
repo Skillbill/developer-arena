@@ -4,9 +4,9 @@ INSERT INTO "public" . contest(
        end_voting,
        state
 ) VALUES(
-  '2018-04-22',
-  '2018-04-29',
-  '2018-05-13',
+  '2018-06-22',
+  '2018-07-22',
+  '2018-08-22',
   'ACTIVE'
 );
 
@@ -19,7 +19,7 @@ INSERT INTO "public" . contest_i18n(
     1,
     'title',
     'en',
-    '**Avengers** WEB application'
+    'Example Contest'
 );
 
 INSERT INTO "public" . contest_i18n(
@@ -31,17 +31,7 @@ INSERT INTO "public" . contest_i18n(
     1,
     'description',
     'en',
-    'The theme of this competition is the development of an animated and / or interactive  **HTML5** application inspired by the **Marvel** world, more specifically for the new upcoming movie **“Avengers Infinity War”**.
-![poster](https://s3-eu-west-1.amazonaws.com/sda-static/3367434-aiw_master-1-960x540.jpg)
-Following some ideas :
-
-- an animation inspired by the movie scenes using the original characters
-- a visualization of a awesome genetic algorithm that pilots the Iron Man''s bullets
-- a transformation of Banner into HULK based on the speed of mouse clicks
-- take all the gems of Infinity by playing a rhythm game
-
-but ideas can be so many so the limit is only your imagination.
-You can use any web technique.'
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur interdum sagittis mi non **pharetra**. In turpis elit, eleifend sit amet risus sed, volutpat rutrum neque. Curabitur eget sollicitudin enim. Donec libero lorem, bibendum non sollicitudin sed, sagittis tempor diam. Aenean porttitor varius odio in posuere. *Curabitur interdum viverra libero vel consequat.* Nulla congue ultricies ante, eget rhoncus nisi mollis eget. Duis blandit libero sed diam elementum finibus. Proin faucibus nisi ut elit molestie auctor id at ante. Donec auctor commodo diam ut consectetur.'
 );
 
 INSERT INTO "public" . contest_i18n(
@@ -53,7 +43,7 @@ INSERT INTO "public" . contest_i18n(
     1,
     'title',
     'it',
-    'Applicazione WEB **Avengers**'
+    'Contest d''esempio'
 );
 
 INSERT INTO "public" . contest_i18n(
@@ -65,17 +55,7 @@ INSERT INTO "public" . contest_i18n(
     1,
     'description',
     'it',
-    'Il tema di questa gara è lo sviluppo di un programma **HTML5** animato e/o interattivo ispirato al mondo **Marvel** più specificatamente al nuovo film in arrivo **“Avengers Infinity War”**.
-![poster](https://s3-eu-west-1.amazonaws.com/sda-static/3367434-aiw_master-1-960x540.jpg)
-Ecco alcuni esempi :
-
- - una animazione ispirata al film con i vari personaggi
- - la visualizzazione di un algoritmo genetico per pilotare i proiettili sparati da Iron Man
- - la trasformazione di Banner in HULK basata sulla velocità dei click del mouse
- - prendere tutte le gemme dell’Infinito giocando un rhythm game
-
-le idee possono essere davvero tante e il limite è quindi solo la tua immaginazione.
-Potrai usare qualsiasi tecnica web.'
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vehicula tortor dui. Donec sit amet condimentum magna. Mauris ac dictum velit. Mauris ante magna, mollis at bibendum eget, laoreet sit amet libero. Vestibulum at lobortis risus. Nullam pharetra eget turpis consectetur suscipit. Proin bibendum nisi mauris, at hendrerit diam ultrices eu. Aliquam non lorem mattis, dictum felis vitae, placerat elit. Sed id dolor auctor, congue erat sed, consequat **magna**. Aenean ullamcorper dolor quis eros sodales aliquet. Nulla sit amet tempus neque. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam vestibulum nisi mauris, eget pharetra orci facilisis et. Aenean vitae augue auctor, scelerisque odio et, tempor elit. *Nam a lectus sed metus varius elementum.*'
 );
 
 INSERT INTO "public" . contest_i18n(
@@ -87,8 +67,8 @@ INSERT INTO "public" . contest_i18n(
     1,
     'rules',
     'it',
-    '1. Il tuo programma verrà aperto nel browser **Chrome** ‘Official Build’ 64 bit versione >= 65
-2. Il browser sarà ospitato in una macchina **VirtualBOX** avente **8GB** di RAM, **4** core cpu, impostazione di rete **offline** e con sistema operativo**Xubuntu 16.04 LTS 64 bit** appena installato ([qui](https://s3-eu-west-1.amazonaws.com/sda-static/xubuntu.ova) c’è export VirtualBox della macchina). I file del tuo progetto verranno caricati con la condivisione delle cartelle verso il sitema VirtualBOX HOST'
+    '1. prima regola
+2. seconda regola'
 );
 
 INSERT INTO "public" . contest_i18n(
@@ -100,6 +80,6 @@ INSERT INTO "public" . contest_i18n(
     1,
     'rules',
     'en',
-    '1. Your program will run in the browser ** Chrome ** ‘Official Build’ 64 bit version> = 65
-2. The target computer will be a **VirtualBOX** machine with **8GB** of RAM, **4** cpu core, network setting **offline** and a fresh installazion of the operating system **Xubuntu 16.04 LTS 64 bit** ([here](https://s3-eu-west-1.amazonaws.com/sda-static/xubuntu.ova) you can download and use the exported VirtualBOX appliance ). Your project will be loaded inside the virtual machine using the sharing folder feature with the VirtualBOX HOST'
+    '1. first rule
+2. second rule'
 );
