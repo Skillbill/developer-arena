@@ -11,9 +11,6 @@ services:
       - CONFIT_REPOID=${CONFIT_REPOID}
       - CONFIT_TOKEN=${CONFIT_TOKEN_BE}
     volumes:
-      - type: bind
-        source: ./config/be.json
-        target: /be/config.json
       - preview:/be/preview
   db:
     image: "skillbillsrl/developer-arena-db:${TAG}"
