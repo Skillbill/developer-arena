@@ -20,34 +20,7 @@ Vue.use(BootstrapVue)
 Vue.use(VueLogger, {logLevel: 'info', showConsoleColors: true, showLogLevel: true})
 Vue.$toastr = Vue.prototype.$toastr = Toastr
 
-let confitPath = location.origin + location.pathname + 'static/confitRepoId'
 Vue.$log.info(`Protocol: ${location.protocol}, Host: ${location.hostname}, Path: ${location.pathname}, Port: ${location.port}`)
-
-axios({
-  method: 'get',
-  url: confitPath
-}).then(rep => {
-  return new Confit({
-    repoId: rep.data
-  }).getConf(location.hostname + '-bo', {
-    alias: true
-  })
-}).catch(e => {
-  if (e.response && e.response.status === 404) {
-    Vue.$log.info('Using the local configuration file')
-    return localConfig
-  } else {
-    return Promise.reject(e)
-  }
-}).then(config => {
-  Vue.$log.info('Config used:', config)
-  config.statRes = location.origin + location.pathname + 'static'
-  Vue.$config = Vue.prototype.$config = config
-  auth.init(config, showApp)
-  api.init(config)
-}).catch(e => {
-  Vue.$log.error(e)
-})
 
 const showApp = () => {
   if (!vm) {
@@ -60,3 +33,40 @@ const showApp = () => {
     })
   }
 }
+
+const getConfig = async () => {
+  let confitPath = location.origin + location.pathname + 'static/confitRepoId'
+  let repoId = null
+  let config = null
+  try {
+    repoId = process.env.CONFIT_REPOID || (await axios.get(confitPath)).data
+    config = await new Confit({
+      repoId: repoId
+    }).getConf(location.hostname + '-bo', {
+      alias: true
+    })
+    if (process.env.NODE_ENV === 'development') {
+      Vue.$log.info('Using the confit configuration file')
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      if (process.env.NODE_ENV === 'development') {
+        Vue.$log.info('Using the local configuration file')
+      }
+    } else {
+      Vue.$log.error('Fallback to local configuration file because trying to use confit gave an error:\n', error.message)
+    }
+    config = localConfig
+  }
+  return config
+}
+
+getConfig().then(config => {
+  Vue.$log.info('Config used:', config)
+  config.statRes = location.origin + location.pathname + 'static'
+  Vue.$config = Vue.prototype.$config = config
+  auth.init(config, showApp)
+  api.init(config)
+}).catch(e => {
+  Vue.$log.error(e)
+})

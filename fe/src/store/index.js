@@ -79,35 +79,34 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    loadConfiguration({commit}) {
-      let confitPath = location.origin + location.pathname + 'static/confitRepoId'
-      return axios({
-        method: 'get',
-        url: confitPath
-      }).then(rep => {
-        return new Confit({
-          repoId: rep.data
+    async loadConfiguration({commit}) {
+      let confitPath = location.origin + location.pathname + 'static/confitRepoId';
+      let repoId = null;
+      let config = null;
+      try {
+        repoId = process.env.CONFIT_REPOID || (await axios.get(confitPath)).data;
+        config = await new Confit({
+          repoId: repoId
         }).getConf(location.hostname + '-fe', {
           alias: true
-        })
-      }).catch(e => {
-        if (e.response && e.response.status === 404) {
+        });
+        if(process.env.NODE_ENV === 'development') {
+          console.log('Using the confit configuration file');
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
           if(process.env.NODE_ENV === 'development') {
             console.log('Using the local configuration file');
           }
-          return localConfig
         } else {
-          return Promise.reject(e)
+          console.error('Fallback to local configuration file because trying to use confit gave an error:\n', error.message);
         }
-      }).then(config => {
-        if(process.env.NODE_ENV === 'development') {
-          console.log('Config used:', config);
-        }
-        commit('setConfiguration', config);
-      }).catch(e => {
-        console.error(e);
-        commit('setFeedbackError', utils.getApiErrorMessage(e));
-      });
+        config = localConfig;
+      }
+      if(process.env.NODE_ENV === 'development') {
+        console.log('Config used:', config);
+      }
+      commit('setConfiguration', config);
     },
     chooseLanguage ({commit, dispatch, state}, language) {
       utils.gtag('event', 'change_language', {
