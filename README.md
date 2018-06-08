@@ -17,6 +17,8 @@ scripts/stop.sh
 
 ## backend
 
+[![Known Vulnerabilities](https://snyk.io/test/github/Skillbill/developer-arena/badge.svg?targetFile=be%2Fpackage.json)](https://snyk.io/test/github/Skillbill/developer-arena?targetFile=be%2Fpackage.json)
+
 ### how to run
 #### database:
 ```
@@ -44,7 +46,13 @@ scripts/run.sh -B be
 
 [postman export of all apis](/etc/postman/)
 
+## back-office
+
+[![Known Vulnerabilities](https://snyk.io/test/github/Skillbill/developer-arena/badge.svg?targetFile=bo%2Fpackage.json)](https://snyk.io/test/github/Skillbill/developer-arena?targetFile=bo%2Fpackage.json)
+
 ## frontend
+
+[![Known Vulnerabilities](https://snyk.io/test/github/Skillbill/developer-arena/badge.svg?targetFile=fe%2Fpackage.json)](https://snyk.io/test/github/Skillbill/developer-arena?targetFile=fe%2Fpackage.json)
 
 #### dev mode:
 
