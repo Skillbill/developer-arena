@@ -17,7 +17,11 @@ import localConfig from '../configuration.json'
 Vue.config.productionTip = false
 let vm = null
 Vue.use(BootstrapVue)
-Vue.use(VueLogger, {logLevel: 'info', showConsoleColors: true, showLogLevel: true})
+Vue.use(VueLogger, {
+  logLevel: process.env.NODE_ENV === 'production' ? 'error' : 'info',
+  showConsoleColors: true,
+  showLogLevel: true
+})
 Vue.$toastr = Vue.prototype.$toastr = Toastr
 
 Vue.$log.info(`Protocol: ${location.protocol}, Host: ${location.hostname}, Path: ${location.pathname}, Port: ${location.port}`)
