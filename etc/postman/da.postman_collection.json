@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "Developer Arena",
-		"_postman_id": "b93bf747-9381-bafb-575d-3297db9657b6",
+		"_postman_id": "5463d6bb-9ebc-5701-b485-fa04c1fc2d39",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -210,155 +210,478 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "edit contest",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{authAdmin}}"
+					"name": "contest",
+					"item": [
+						{
+							"name": "edit contest",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"endPresentation\": \"2018-02-21T16:00:00.000Z\",\n        \"endApplying\": \"2018-04-28T16:00:00.000Z\",\n        \"endVoting\": \"2018-05-12T16:00:00.000Z\",\n        \"state\": \"ACTIVE\",\n        \"i18n\": [\n            {\n                \"attribute\": \"title\",\n                \"language\": \"it\",\n                \"text\": \"Nuovo Titolo\"\n            },\n            {\n                \"attribute\": \"description\",\n                \"language\": \"it\",\n                \"text\": \"Nuova Descrizione\"\n            },\n\t\t\t{\n                \"attribute\": \"rules\",\n                \"language\": \"it\",\n                \"text\": \"Nuove Regole\"\n            },\n            {\n                \"attribute\": \"title\",\n                \"language\": \"en\",\n                \"text\": \"New Title\"\n            },\n            {\n                \"attribute\": \"description\",\n                \"language\": \"en\",\n                \"text\": \"New Description\"\n            },\n\t\t\t{\n                \"attribute\": \"rules\",\n                \"language\": \"en\",\n                \"text\": \"New Rules\"\n            }    \n\t]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/contest/2",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"contest",
+										"2"
+									]
+								}
 							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n        \"endPresentation\": \"2018-02-21T16:00:00.000Z\",\n        \"endApplying\": \"2018-04-28T16:00:00.000Z\",\n        \"endVoting\": \"2018-05-12T16:00:00.000Z\",\n        \"state\": \"ACTIVE\",\n        \"i18n\": [\n            {\n                \"attribute\": \"title\",\n                \"language\": \"it\",\n                \"text\": \"Nuovo Titolo\"\n            },\n            {\n                \"attribute\": \"description\",\n                \"language\": \"it\",\n                \"text\": \"Nuova Descrizione\"\n            },\n\t\t\t{\n                \"attribute\": \"rules\",\n                \"language\": \"it\",\n                \"text\": \"Nuove Regole\"\n            },\n            {\n                \"attribute\": \"title\",\n                \"language\": \"en\",\n                \"text\": \"New Title\"\n            },\n            {\n                \"attribute\": \"description\",\n                \"language\": \"en\",\n                \"text\": \"New Description\"\n            },\n\t\t\t{\n                \"attribute\": \"rules\",\n                \"language\": \"en\",\n                \"text\": \"New Rules\"\n            }    \n\t]\n}"
+							"response": []
 						},
-						"url": {
-							"raw": "{{host}}/{{version}}/admin/contest/2",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"{{version}}",
-								"admin",
-								"contest",
-								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create contest",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{authAdmin}}"
+						{
+							"name": "create contest",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"endPresentation\": \"2018-02-21T16:00:00.000Z\",\n        \"endApplying\": \"2018-04-28T16:00:00.000Z\",\n        \"endVoting\": \"2018-05-12T16:00:00.000Z\",\n        \"state\": \"DRAFT\",\n        \"i18n\": [\n            {\n                \"attribute\": \"title\",\n                \"language\": \"it\",\n                \"text\": \"Titolo\"\n            },\n            {\n                \"attribute\": \"description\",\n                \"language\": \"it\",\n                \"text\": \"Descrizione\"\n            },\n\t\t\t{\n                \"attribute\": \"rules\",\n                \"language\": \"it\",\n                \"text\": \"Regole\"\n            },\n            {\n                \"attribute\": \"title\",\n                \"language\": \"en\",\n                \"text\": \"Title\"\n            },\n            {\n                \"attribute\": \"description\",\n                \"language\": \"en\",\n                \"text\": \"Description\"\n            },\n\t\t\t{\n                \"attribute\": \"rules\",\n                \"language\": \"en\",\n                \"text\": \"Rules\"\n            }    \n\t]\n}\n"
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/contest",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"contest"
+									]
+								}
 							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n        \"endPresentation\": \"2018-02-21T16:00:00.000Z\",\n        \"endApplying\": \"2018-04-28T16:00:00.000Z\",\n        \"endVoting\": \"2018-05-12T16:00:00.000Z\",\n        \"state\": \"DRAFT\",\n        \"i18n\": [\n            {\n                \"attribute\": \"title\",\n                \"language\": \"it\",\n                \"text\": \"Titolo\"\n            },\n            {\n                \"attribute\": \"description\",\n                \"language\": \"it\",\n                \"text\": \"Descrizione\"\n            },\n\t\t\t{\n                \"attribute\": \"rules\",\n                \"language\": \"it\",\n                \"text\": \"Regole\"\n            },\n            {\n                \"attribute\": \"title\",\n                \"language\": \"en\",\n                \"text\": \"Title\"\n            },\n            {\n                \"attribute\": \"description\",\n                \"language\": \"en\",\n                \"text\": \"Description\"\n            },\n\t\t\t{\n                \"attribute\": \"rules\",\n                \"language\": \"en\",\n                \"text\": \"Rules\"\n            }    \n\t]\n}\n"
+							"response": []
 						},
-						"url": {
-							"raw": "{{host}}/{{version}}/admin/contest",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"{{version}}",
-								"admin",
-								"contest"
-							]
+						{
+							"name": "delete contest",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/contest/2",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"contest",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "contest list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/contest",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"contest"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "contest by id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/contest/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"contest",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add judge to jury",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/contest/1/jury/?judgeId=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"contest",
+										"1",
+										"jury",
+										""
+									],
+									"query": [
+										{
+											"key": "judgeId",
+											"value": "1",
+											"equals": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove judge from jury",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/contest/1/jury/?judgeId=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"contest",
+										"1",
+										"jury",
+										""
+									],
+									"query": [
+										{
+											"key": "judgeId",
+											"value": "1",
+											"equals": true
+										}
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					],
+					"_postman_isSubFolder": true
 				},
 				{
-					"name": "delete contest",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{authAdmin}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
+					"name": "judge",
+					"description": "",
+					"item": [
+						{
+							"name": "create judge",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Johnn Cloaca",
+											"description": "required",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tempor vestibulum nisi, sed condimentum nunc.",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "johnny@example.net",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "twitter",
+											"value": "@cloaca",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "site",
+											"value": "http://cloaca.example.net",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"value": "",
+											"description": "",
+											"type": "file",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/judge",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"judge"
+									]
+								}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{host}}/{{version}}/admin/contest/2",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"{{version}}",
-								"admin",
-								"contest",
-								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "contest list",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{authAdmin}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
+						{
+							"name": "edit judge",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "New Name",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "newmail@example.net",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "twitter",
+											"value": "@test",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "site",
+											"value": "",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/judge/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"judge",
+										"1"
+									]
+								}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{host}}/{{version}}/admin/contest",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"{{version}}",
-								"admin",
-								"contest"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "contest by id",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{authAdmin}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
+						{
+							"name": "delete judge",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Johnny Cloaca\",\n\t\"email\": \"johnny@isp.net\",\n\t\"twitter\": \"@cloaca\",\n\t\"site\": \"http://jonnhy.net\"\n}\n"
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/judge/25",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"judge",
+										"25"
+									]
+								}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{host}}/{{version}}/admin/contest/1",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"{{version}}",
-								"admin",
-								"contest",
-								"1"
-							]
+						{
+							"name": "update judge image",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"description": "",
+											"type": "file",
+											"src": "nfsboot.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/judge/1/image",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"judge",
+										"1",
+										"image"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete judge image",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/judge/1/image",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"judge",
+										"1",
+										"image"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					],
+					"_postman_isSubFolder": true
 				},
 				{
 					"name": "check",
@@ -842,82 +1165,173 @@
 			]
 		},
 		{
-			"name": "contest list",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
+			"name": "contest",
+			"description": "",
+			"item": [
+				{
+					"name": "contest list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest"
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/{{version}}/contest",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"{{version}}",
-						"contest"
-					]
+				{
+					"name": "last contest",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/last",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"last"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "contest id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "last contest",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept-Language",
-						"value": "{{language}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
+			"name": "judge",
+			"description": "",
+			"item": [
+				{
+					"name": "judge id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/judge/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"judge",
+								"1"
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/{{version}}/contest/last",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"{{version}}",
-						"contest",
-						"last"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "contest id",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept-Language",
-						"value": "{{language}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
+				{
+					"name": "judge image",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/judge/1/image",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"judge",
+								"1",
+								"image"
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/{{version}}/contest/1",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"{{version}}",
-						"contest",
-						"1"
-					]
+				{
+					"name": "judge list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/judge",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"judge"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
 			"name": "limits",
@@ -993,6 +1407,28 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "48ebb93c-a6cc-41c5-86d2-712da81f9156",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "47f24f31-9df3-4dac-b808-4ce47c1abca0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
