@@ -4,14 +4,24 @@ const Op = require('sequelize').Op
 
 const Contest = sql.getContestTable()
 const I18n = sql.getContestI18nTable()
+const Jury = sql.getJuryTable()
 
 Contest.hasMany(I18n, { as: 'i18n', foreignKey: 'contestId'})
+Contest.hasMany(Jury, { as: 'jury', foreignKey: 'contestId'})
 
 const _i18n = (language) => ({
     model: I18n,
     as: 'i18n',
     required: false,
     where: language ? {language: language} : {}
+})
+
+const _jury = (contestId) => ({
+    model: Jury,
+    as: 'jury',
+    required: false,
+    attributes: ['judgeId'],
+    where: { contestId }
 })
 
 const findAll = (language) => Contest.findAll({
@@ -22,18 +32,15 @@ const findById = (id, language) => Contest.findOne({
     where:{
         id: id
     },
-    include: _i18n(language)
+    include: [ _i18n(language), _jury(id) ]
 })
 
-const findLast = (language) => Contest.findOne({
-    order: [['id', 'DESC']],
-    where:{
+const findLast = () => Contest.max('id', {
+    where: {
         state: {
             [Op.ne]: libContest.state.draft
         }
-    },
-    include: _i18n(language)
-})
+    }}).then(id => id ? findById(id) : Promise.resolve())
 
 const _create_i18n = (contestId, lst, tx) => Promise.all(lst.map(el => I18n.create(Object.assign(el, {contestId: contestId}), {transaction: tx})))
 
@@ -106,11 +113,25 @@ const update = (id, data) => new Promise((resolve, reject) => {
 
 const destroy = (id) => Contest.destroy({where: {id: id}})
 
+const addJudge = (contestId, judgeId) => Jury.create({
+    contestId,
+    judgeId
+})
+
+const removeJudge = (contestId, judgeId) => Jury.destroy({
+    where: {
+        contestId,
+        judgeId
+    }
+})
+
 module.exports = {
     findAll,
     findById,
     findLast,
     create,
     update,
-    destroy
+    destroy,
+    addJudge,
+    removeJudge
 }

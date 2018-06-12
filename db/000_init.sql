@@ -40,6 +40,13 @@ CREATE TABLE IF NOT EXISTS judge (
        image_id int REFERENCES judge_image(id) ON DELETE SET NULL
 );
 
+CREATE TABLE IF NOT EXISTS jury (
+       id serial NOT NULL,
+       contest_id int REFERENCES contest(id) ON DELETE CASCADE,
+       judge_id int REFERENCES judge(id) ON DELETE CASCADE,
+       UNIQUE(contest_id, judge_id)
+);
+
 CREATE TABLE IF NOT EXISTS project (
        id serial NOT NULL PRIMARY KEY,
        contest_id int REFERENCES contest(id) ON DELETE CASCADE,
