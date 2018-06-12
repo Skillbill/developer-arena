@@ -6,7 +6,9 @@ const model = {
     contestI18n: require('../model/contest-i18n'),
     project: require('../model/project'),
     file: require('../model/file'),
-    vote: require('../model/vote')
+    vote: require('../model/vote'),
+    judge: require('../model/judge'),
+    judge_image: require('../model/judge_image')
 }
 
 const sqlUri = `postgresql://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.database}`
@@ -50,6 +52,14 @@ const getVoteTable = () => {
     return sequelize.define('vote', model.vote, {freezeTableName: true})
 }
 
+const getJudgeTable = () => {
+    return sequelize.define('judge', model.judge, {freezeTableName: true})
+}
+
+const getJudgeImageTable = () => {
+    return sequelize.define('judge_image', model.judge_image, {freezeTableName: true})
+}
+
 module.exports = {
     checkConnection: checkConnection,
     transaction: sequelize.transaction.bind(sequelize),
@@ -57,5 +67,7 @@ module.exports = {
     getContestI18nTable,
     getProjectTable,
     getFileTable,
-    getVoteTable
+    getVoteTable,
+    getJudgeTable,
+    getJudgeImageTable,
 }

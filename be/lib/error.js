@@ -32,6 +32,11 @@ const errors = {
         code: 4405,
         msg: 'user_not_found'
     },
+    judgeNotFound: {
+        http: http.notFound,
+        code: 4406,
+        msg: 'judge_not_found'
+    },
     contestNotOpenForSubmission: {
         http: http.preconditionFailed,
         code: 4301,
