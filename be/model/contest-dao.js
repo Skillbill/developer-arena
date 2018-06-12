@@ -1,65 +1,45 @@
 const libContest = require('@/lib/contest')
 const sql = require('@/lib/sql')
-
 const Op = require('sequelize').Op
 
-const getTableWithI18n = (includes, language) => {
-    const contest = sql.getContestTable()
-    const i18n = sql.getContestI18nTable()
-    contest.hasMany(i18n, { as: 'i18n', foreignKey: 'contestId' })
-    let filter = {}
-    if (language) {
-        filter = { language: language }
-    }
-    includes.push({
-        model: i18n,
-        as: 'i18n',
-        required: false,
-        where: filter
-    })
-    return contest
-}
+const Contest = sql.getContestTable()
+const I18n = sql.getContestI18nTable()
 
-const findAll = (language) => {
-    let includes = []
-    const table = getTableWithI18n(includes, language)
-    includes[0].where.attribute = 'title'
-    return table.findAll({ include: includes })
-}
+Contest.hasMany(I18n, { as: 'i18n', foreignKey: 'contestId'})
 
-const findById = (id, language) => {
-    let includes = []
-    const table = getTableWithI18n(includes, language)
-    return table.findOne({
-        where:{
-            id: id
-        },
-        include: includes
-    })
-}
+const _i18n = (language) => ({
+    model: I18n,
+    as: 'i18n',
+    required: false,
+    where: language ? {language: language} : {}
+})
 
-const findLast = (language) => {
-    let includes = []
-    const table = getTableWithI18n(includes, language)
-    return table.findOne({
-        order: [['id', 'DESC']],
-        where:{
-            state: {
-                [Op.ne]: libContest.state.draft
-            }
-        },
-        include: includes
-    })
-}
+const findAll = (language) => Contest.findAll({
+    include: _i18n(language)
+})
 
-const _create_i18n = (contestId, lst, tx) => {
-    const table = sql.getContestI18nTable()
-    return Promise.all(lst.map(el => table.create(Object.assign(el, {contestId: contestId}), {transaction: tx})))
-}
+const findById = (id, language) => Contest.findOne({
+    where:{
+        id: id
+    },
+    include: _i18n(language)
+})
+
+const findLast = (language) => Contest.findOne({
+    order: [['id', 'DESC']],
+    where:{
+        state: {
+            [Op.ne]: libContest.state.draft
+        }
+    },
+    include: _i18n(language)
+})
+
+const _create_i18n = (contestId, lst, tx) => Promise.all(lst.map(el => I18n.create(Object.assign(el, {contestId: contestId}), {transaction: tx})))
 
 const create = (data) => new Promise((resolve, reject) => {
     sql.transaction().then(tx => {
-        sql.getContestTable().create(data, {
+        Contest.create(data, {
             transaction: tx
         }).then(contest => {
             return Promise.all([
@@ -76,18 +56,15 @@ const create = (data) => new Promise((resolve, reject) => {
     })
 })
 
-const _replace_i18n = (contestId, lst, tx) => {
-    const table = sql.getContestI18nTable()
-    return table.destroy({
-        where: {
-            contestId: contestId
-        },
-        transaction: tx
-    }).then(() => lst ? _create_i18n(contestId, lst, tx) : Promise.resolve({}))
-}
+const _replace_i18n = (contestId, lst, tx) => I18n.destroy({
+    where: {
+        contestId: contestId
+    },
+    transaction: tx
+}).then(() => lst ? _create_i18n(contestId, lst, tx) : Promise.resolve({}))
 
 const _update_contest = (id, data, tx) => new Promise((resolve, reject) => {
-    sql.getContestTable().update(data, {
+    Contest.update(data, {
         fields: [
             'endPresentation',
             'endApplying',
@@ -118,14 +95,16 @@ const update = (id, data) => new Promise((resolve, reject) => {
                 contest: contest,
                 i18n: i18n
             })
-        }).catch (err => {
+        }).catch(err => {
             tx.rollback()
             reject(err)
         })
+    }).catch(err => {
+        reject(err)
     })
 })
 
-const destroy = (id) => sql.getContestTable().destroy({where: {id: id}})
+const destroy = (id) => Contest.destroy({where: {id: id}})
 
 module.exports = {
     findAll,
