@@ -11,6 +11,8 @@ router.post('/', createContest)
 router.get('/:contestId', getContest)
 router.patch('/:contestId', patchContest)
 router.delete('/:contestId', deleteContest)
+router.put('/:contestId/jury', editJury)
+router.delete('/:contestId/jury', editJury)
 
 function getContestList(req, res, next) {
     persistence.getAllContests(req.language).then(lst => {
@@ -74,6 +76,24 @@ function deleteContest(req, res, next) {
         res.status(http.noContent).send()
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
+    })
+}
+
+function editJury(req, res, next) {
+    const id = req.params.contestId
+    const judgeId = req.query.judgeId
+
+    if (!judgeId) {
+        return next(error.new(error.missingParameter, {parameter: 'judgeId'}))
+    }
+    (req.method == 'PUT' ? persistence.addJudge(id, judgeId) : persistence.removeJudge(id, judgeId)).then(() => {
+        res.status(http.noContent).send()
+    }).catch(err => {
+        if (err.name && err.name === 'SequelizeUniqueConstraintError') {
+            res.status(http.noContent).send()
+        } else {
+            next(error.new(error.internal, {cause: err}))
+        }
     })
 }
 

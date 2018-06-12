@@ -8,7 +8,8 @@ const model = {
     file: require('../model/file'),
     vote: require('../model/vote'),
     judge: require('../model/judge'),
-    judge_image: require('../model/judge_image')
+    judge_image: require('../model/judge_image'),
+    jury: require('../model/jury'),
 }
 
 const sqlUri = `postgresql://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.database}`
@@ -60,6 +61,10 @@ const getJudgeImageTable = () => {
     return sequelize.define('judge_image', model.judge_image, {freezeTableName: true})
 }
 
+const getJuryTable = () => {
+    return sequelize.define('jury', model.jury, {freezeTableName: true})
+}
+
 module.exports = {
     checkConnection: checkConnection,
     transaction: sequelize.transaction.bind(sequelize),
@@ -70,4 +75,5 @@ module.exports = {
     getVoteTable,
     getJudgeTable,
     getJudgeImageTable,
+    getJuryTable
 }

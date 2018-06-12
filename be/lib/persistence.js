@@ -8,6 +8,8 @@ const getLastContest = (language) => contestDao.findLast(language)
 const createContest = (contest) => contestDao.create(contest)
 const updateContest = (id, data) => contestDao.update(id, data)
 const destroyContest = (id) => contestDao.destroy(id)
+const addJudge = (contestId, judgeId) => contestDao.addJudge(contestId, judgeId)
+const removeJudge = (contestId, judgeId) => contestDao.removeJudge(contestId, judgeId)
 
 const getAllJudges = () => judgeDao.findAll()
 const getJudgeById = (judgeId) => judgeDao.findById(judgeId)
@@ -36,6 +38,8 @@ module.exports = {
     createContest,
     updateContest,
     destroyContest,
+    addJudge,
+    removeJudge,
 
     getAllJudges,
     getJudgeById,
