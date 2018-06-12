@@ -5,8 +5,8 @@ const libContest = require('@/lib/contest')
 const logger = require('@/lib/logger')
 const persistence = require('@/lib/persistence')
 const preview = require('@/lib/preview')
+const sendfile = require('@/lib/sendfile')
 const express = require('express')
-const moment = require('moment')
 const router = express.Router({mergeParams: true})
 
 const mw = {
@@ -77,16 +77,6 @@ function getProjectById(req, res, next) {
     }).catch(err => {
         next(error.new(error.internal, {cause: err}))
     })
-}
-
-const sendfile = (res, file, inline) => {
-    const mtime = moment(file.mtime).format('ddd, DD MMM YYYY HH:mm:ss') + ' GMT' // rfc7232, section 2.2
-    res.set('Content-Type', file.mimetype)
-    res.set('Last-Modified', mtime)
-    if (!inline) {
-        res.set('Content-Disposition', `attachment; filename="${file.name}"`)
-    }
-    res.status(http.ok).send(file.data)
 }
 
 function getImage(req, res, next) {
