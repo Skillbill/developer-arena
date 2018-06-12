@@ -22,6 +22,24 @@ CREATE TABLE IF NOT EXISTS contest_i18n (
        text text NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS judge_image (
+       id serial NOT NULL PRIMARY KEY,
+       mimetype varchar(32) NOT NULL,
+       mtime timestamp NOT NULL,
+       name varchar(100) NOT NULL,
+       data bytea NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS judge (
+       id serial NOT NULL PRIMARY KEY,
+       name varchar(100) NOT NULL,
+       email varchar(20),
+       twitter varchar(20),
+       site varchar(100),
+       description text,
+       image_id int REFERENCES judge_image(id) ON DELETE SET NULL
+);
+
 CREATE TABLE IF NOT EXISTS project (
        id serial NOT NULL PRIMARY KEY,
        contest_id int REFERENCES contest(id) ON DELETE CASCADE,

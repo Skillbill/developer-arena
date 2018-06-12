@@ -9,6 +9,7 @@ router.all('*', auth.middleware, adminCheck)
 router.get('/check', (req, res) => res.status(http.noContent).send())
 router.use('/user', require('./user'))
 router.use('/contest', require('./contest'))
+router.use('/judge', require('./judge'))
 router.use('/contest/:contestId/project/', require('./project'))
 
 function adminCheck(req, res, next) {

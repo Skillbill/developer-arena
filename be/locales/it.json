@@ -11,6 +11,7 @@
     "image_not_found": "Immagine non trovata",
     "deliverable_not_found": "Deliverable non trovato",
     "user_not_found": "Utente non trovato",
+    "judge_not_found": "Giudice non trovato",
     "contest_not_open_for_submission": "Il contest non è aperto a sottomissioni",
     "contest_not_open_for_voting": "Il contest non è aperto a votazioni",
     "missing_parameter": "Parametro obbligatorio mancante: {{parameter}}",
