@@ -14,6 +14,8 @@
     dockerfile_path: "be/Dockerfile"
     context_path: "be"
     repository: "skillbillsrl/developer-arena-be"
+    build_args:
+    - "version=${TAG}"
     trigger_condition_paths:
     - "/be"
     trigger_condition: "ON_CHANGE_AT_PATH"
