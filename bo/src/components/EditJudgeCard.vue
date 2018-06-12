@@ -27,7 +27,7 @@
 import * as utils from '@/lib/utils'
 
 export default {
-  name: 'EditJurorCard',
+  name: 'EditJudgeCard',
   props: [
     'name',
     'email',

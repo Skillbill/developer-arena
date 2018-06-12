@@ -3,7 +3,7 @@
     <div class="row mb-2">
       <h2>Jury</h2>
     </div>
-    <EditJurorCard v-for="(v, index) in $v.jury.$each.$iter" :key="index"
+    <EditJudgeCard v-for="(v, index) in $v.jury.$each.$iter" :key="index"
                   v-bind.sync="jury[index]" :v="v"/>
     <div class="row">
       <b-button variant="primary mb-3 mr-3" @click="save">Save</b-button>
@@ -18,13 +18,13 @@ import { required, minLength, email } from 'vuelidate/lib/validators'
 import api from '@/lib/api'
 import router from '@/lib/router'
 import feedback from '@/lib/feedback'
-import EditJurorCard from '@/components/EditJurorCard'
+import EditJudgeCard from '@/components/EditJudgeCard'
 
 export default {
   name: 'EditJury',
   mixins: [validationMixin],
   components: {
-    EditJurorCard
+    EditJudgeCard
   },
   props: [
     'contestId'
@@ -63,9 +63,9 @@ export default {
   },
   created: function () {
     api.getJuryById(this.contestId).then(jury => {
-      jury = jury.map(juror => {
-        juror.newImage = null
-        return juror
+      jury = jury.map(judge => {
+        judge.newImage = null
+        return judge
       })
       this.jury = jury
     })
