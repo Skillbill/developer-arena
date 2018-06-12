@@ -50,6 +50,28 @@ export function getEmptyContest () {
   }
 }
 
+export function getFakeJury () {
+  let jury = []
+  for (let i = 0; i < 3; i++) {
+    let uid = Math.floor(Math.random() * 1000)
+    jury.push({
+      name: 'blabla ' + i,
+      email: 'user' + uid + '@gmail.com',
+      imageFile: (uid % 2) === 0 ? null : {
+        name: uid + '.png',
+        mTime: '2018-04-24T10:24:47.479Z'
+      }
+    })
+  }
+  return jury
+}
+
+export function getFakeImageURL (uid) {
+  return 'https://randomuser.me/api/portraits/' +
+  (((uid % 200) <= 100) ? 'men' : 'women') +
+  '/' + (uid % 100) + '.jpg'
+}
+
 export function getUserDisplay (user) {
   if (user.displayName) {
     return user.displayName

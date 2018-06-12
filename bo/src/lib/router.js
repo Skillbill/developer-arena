@@ -7,6 +7,7 @@ import EditContest from '@/components/EditContest'
 import Contests from '@/components/Contests'
 import Projects from '@/components/Projects'
 import User from '@/components/User'
+import EditJury from '@/components/EditJury'
 import store from '@/lib/store'
 
 Vue.use(VueRouter)
@@ -71,6 +72,15 @@ const router = new VueRouter({
       name: 'user',
       path: '/user/:userId',
       component: User,
+      props: true,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      name: 'editJury',
+      path: '/edit-jury/:contestId',
+      component: EditJury,
       props: true,
       meta: {
         requiresAuth: true

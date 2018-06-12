@@ -24,6 +24,9 @@ const projectPreviewCreated = () => {
 const projectPreviewDeleted = () => {
   Vue.$toastr.success('The preview has been deleted successfully', 'Preview deleted')
 }
+const juryUpdated = () => {
+  Vue.$toastr.success('The jury has been modified successfully', 'Jury modified')
+}
 const invalidFeilds = () => {
   Vue.$toastr.error('Some feilds are invalid', 'Not saved')
 }
@@ -60,6 +63,7 @@ export default {
   projectDeleted,
   projectPreviewCreated,
   projectPreviewDeleted,
+  juryUpdated,
   offline,
   apiError,
   forApiErrorCode

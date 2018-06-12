@@ -122,7 +122,6 @@ export default {
           })
         }
       }).catch(() => {
-        console.info('KO no patch')
         feedback.invalidFeilds()
       })
     },

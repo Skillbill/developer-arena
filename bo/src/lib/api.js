@@ -78,6 +78,22 @@ const getContestById = id => {
   })
 }
 
+const getJuryById = id => {
+  return Promise.resolve(utils.getFakeJury())
+  // return getHeaders().then(headers => {
+  //   return instance({
+  //     method: 'get',
+  //     url: 'admin/jury/' + id,
+  //     headers
+  //   }).then(response => {
+  //     return response.data.jury
+  //   }).catch(e => {
+  //     apiError(e)
+  //     return null
+  //   })
+  // })
+}
+
 const patchContest = (contest) => {
   let data = Object.assign({}, contest)
   data.i18n = utils.toI18n(data.i18n)
@@ -287,6 +303,7 @@ export default {
   checkAdmin,
   getContests,
   getContestById,
+  getJuryById,
   patchContest,
   createContest,
   deleteContest,
