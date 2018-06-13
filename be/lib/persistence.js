@@ -8,15 +8,16 @@ const getLastContest = (language) => contestDao.findLast(language)
 const createContest = (contest) => contestDao.create(contest)
 const updateContest = (id, data) => contestDao.update(id, data)
 const destroyContest = (id) => contestDao.destroy(id)
-const addJudge = (contestId, judgeId) => contestDao.addJudge(contestId, judgeId)
-const removeJudge = (contestId, judgeId) => contestDao.removeJudge(contestId, judgeId)
 
 const getAllJudges = () => judgeDao.findAll()
 const getJudgeById = (judgeId) => judgeDao.findById(judgeId)
+const getJury = (contestId) => judgeDao.findByContestId(contestId)
 const getJudgeWithImage = (judgeId) => judgeDao.findByIdWithImage(judgeId)
 const createJudge = (judge) => judgeDao.create(judge)
 const updateJudge = (judgeId, data) => judgeDao.update(judgeId, data)
 const updateJudgeImage = (judgeId, image) => judgeDao.updateImage(judgeId, image)
+const addJudgeToJury = (judgeId, contestId) => judgeDao.addToJury(judgeId, contestId)
+const removeJudgeFromJury = (judgeId, contestId) => judgeDao.removeFromJury(judgeId, contestId)
 const destroyJudge = (judgeId) => judgeDao.destroy(judgeId)
 
 const getProjectById = (id) => projectDao.findById(id)
@@ -38,15 +39,16 @@ module.exports = {
     createContest,
     updateContest,
     destroyContest,
-    addJudge,
-    removeJudge,
 
     getAllJudges,
     getJudgeById,
+    getJury,
     getJudgeWithImage,
     createJudge,
     updateJudge,
     updateJudgeImage,
+    addJudgeToJury,
+    removeJudgeFromJury,
     destroyJudge,
 
     getProjectById,

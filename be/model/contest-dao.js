@@ -113,25 +113,11 @@ const update = (id, data) => new Promise((resolve, reject) => {
 
 const destroy = (id) => Contest.destroy({where: {id: id}})
 
-const addJudge = (contestId, judgeId) => Jury.create({
-    contestId,
-    judgeId
-})
-
-const removeJudge = (contestId, judgeId) => Jury.destroy({
-    where: {
-        contestId,
-        judgeId
-    }
-})
-
 module.exports = {
     findAll,
     findById,
     findLast,
     create,
     update,
-    destroy,
-    addJudge,
-    removeJudge
+    destroy
 }
