@@ -3,7 +3,7 @@
     <div class="mb-3" v-if="contest">
       <h2>List of the projects of contest {{contest.i18n.en.title}}</h2>
     </div>
-    <div class="m-3">
+    <div class="m-3" v-if="contest">
       <b-form inline>
         <label class="mr-sm-2" for="perPageSelect">Per page:</label>
         <b-form-select class="mb-2 mr-sm-3 mb-sm-0"
