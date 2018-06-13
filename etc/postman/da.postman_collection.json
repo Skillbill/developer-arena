@@ -364,6 +364,36 @@
 							"response": []
 						},
 						{
+							"name": "contest jury",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/contest/1/jury",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"contest",
+										"1",
+										"jury"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "add judge to jury",
 							"request": {
 								"method": "PUT",
@@ -1219,7 +1249,7 @@
 					"response": []
 				},
 				{
-					"name": "contest id",
+					"name": "contest by id",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1241,6 +1271,35 @@
 								"{{version}}",
 								"contest",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "contest jury",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/{{version}}/contest/1/jury",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{version}}",
+								"contest",
+								"1",
+								"jury"
 							]
 						}
 					},
