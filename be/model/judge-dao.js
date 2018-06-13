@@ -1,8 +1,11 @@
 const sql = require('@/lib/sql')
 
 const Judge = sql.getJudgeTable()
+const Jury = sql.getJuryTable()
 const Image = sql.getJudgeImageTable()
+
 Judge.belongsTo(Image, {as: 'image', targetKey: 'id'})
+Judge.hasMany(Jury, {as: 'jury', foreignKey: 'judgeId'})
 
 const findAll = () => Judge.findAll({
     include: {
@@ -26,6 +29,24 @@ const findById = (id) => {
         }
     })
 }
+
+const findByContestId = (contestId) => Judge.findAll({
+    include: [
+        {
+            model: Jury,
+            as: 'jury',
+            where: {
+                contestId
+            },
+            attributes: []
+        },
+        {
+            model: Image,
+            as: 'image',
+            attributes: ['mtime']
+        }
+    ]
+})
 
 const findByIdWithImage = (id) => {
     return Judge.findOne({
@@ -102,6 +123,18 @@ const updateImage = (id, data) => new Promise((resolve, reject) => {
     }).catch(reject)
 })
 
+const addToJury = (judgeId, contestId) => Jury.create({
+    contestId,
+    judgeId
+})
+
+const removeFromJury = (judgeId, contestId) => Jury.destroy({
+    where: {
+        contestId,
+        judgeId
+    }
+})
+
 const destroy = (id) => new Promise((resolve, reject) => {
     findById(id).then(judge => {
         if (!judge) {
@@ -125,9 +158,12 @@ const destroy = (id) => new Promise((resolve, reject) => {
 module.exports = {
     findAll,
     findById,
+    findByContestId,
     findByIdWithImage,
     create,
     update,
     updateImage,
+    addToJury,
+    removeFromJury,
     destroy
 }

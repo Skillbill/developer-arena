@@ -7,6 +7,7 @@ const router = express.Router({mergeParams: true})
 
 router.get('/', getContestList)
 router.get('/:contestId', getContest)
+router.get('/:contestId/jury', getContestJury)
 
 function getContestList(req, res, next) {
     persistence.getAllContests(req.language).then(lst => {
@@ -26,6 +27,21 @@ function getContest(req, res, next) {
                 return next(error.contestNotFound)
             }
             res.status(http.ok).send({contest: libContest.fmt(contest)})
+        }).catch(err => {
+            next(error.new(error.internal, {cause: err}))
+        })
+}
+
+function getContestJury(req, res, next) {
+    const id = req.params.contestId;
+    ((id == 'last') ? persistence.getLastContest() : persistence.getContestById(id))
+        .then(contest => {
+            if (!contest || contest.state == libContest.state.draft) {
+                return next(error.contestNotFound)
+            }
+            return persistence.getJury(id).then(jury => {
+                res.status(http.ok).send({jury})
+            })
         }).catch(err => {
             next(error.new(error.internal, {cause: err}))
         })

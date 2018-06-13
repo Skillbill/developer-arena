@@ -1,7 +1,6 @@
 const http = require('@/lib/http')
 const libContest = require('@/lib/contest')
 const persistence = require('@/lib/persistence')
-//const logger = require('@/lib/logger')
 const error = require('@/lib/error')
 const express = require('express')
 const router = express.Router({mergeParams: true})
@@ -11,6 +10,7 @@ router.post('/', createContest)
 router.get('/:contestId', getContest)
 router.patch('/:contestId', patchContest)
 router.delete('/:contestId', deleteContest)
+router.get('/:contestId/jury', getJury)
 router.put('/:contestId/jury', editJury)
 router.delete('/:contestId/jury', editJury)
 
@@ -79,6 +79,15 @@ function deleteContest(req, res, next) {
     })
 }
 
+function getJury(req, res, next) {
+    const id = req.params.contestId
+    persistence.getJury(id).then(jury => {
+        res.status(http.ok).send({jury})
+    }).catch(err => {
+        next(error.new(error.internal, {cause: err}))
+    })
+}
+
 function editJury(req, res, next) {
     const id = req.params.contestId
     const judgeId = req.query.judgeId
@@ -86,7 +95,7 @@ function editJury(req, res, next) {
     if (!judgeId) {
         return next(error.new(error.missingParameter, {parameter: 'judgeId'}))
     }
-    (req.method == 'PUT' ? persistence.addJudge(id, judgeId) : persistence.removeJudge(id, judgeId)).then(() => {
+    (req.method == 'PUT' ? persistence.addJudgeToJury(judgeId, id) : persistence.removeJudgeFromJury(judgeId, id)).then(() => {
         res.status(http.noContent).send()
     }).catch(err => {
         if (err.name && err.name === 'SequelizeUniqueConstraintError') {
