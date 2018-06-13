@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS judge_image (
 CREATE TABLE IF NOT EXISTS judge (
        id serial NOT NULL PRIMARY KEY,
        name varchar(100) NOT NULL,
-       email varchar(20),
+       email varchar(50),
        twitter varchar(20),
        site varchar(100),
        description text,
