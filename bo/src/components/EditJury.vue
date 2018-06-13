@@ -26,9 +26,9 @@ export default {
   components: {
     EditJudgeCard
   },
-  props: [
-    'contestId'
-  ],
+  props: {
+    contestId: Number
+  },
   data: function () {
     return {
       jury: []

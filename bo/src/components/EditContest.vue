@@ -83,9 +83,9 @@ export default {
   components: {
     EditDate
   },
-  props: [
-    'contestId'
-  ],
+  props: {
+    contestId: Number
+  },
   data: function () {
     return {
       contest: null,

@@ -11,6 +11,19 @@ import EditJury from '@/components/EditJury'
 import store from '@/lib/store'
 
 Vue.use(VueRouter)
+
+function ensureNumberProp (params, propNames) {
+  let res = {}
+  Object.keys(params).forEach(key => {
+    if (propNames.includes(key) && typeof params[key] === 'string') {
+      res[key] = Number(params[key])
+    } else {
+      res[key] = params[key]
+    }
+  })
+  return res
+}
+
 const router = new VueRouter({
   routes: [
     {
@@ -38,7 +51,7 @@ const router = new VueRouter({
       name: 'editContest',
       path: '/edit-contest/:contestId',
       component: EditContest,
-      props: true,
+      props: route => ensureNumberProp(route.params, 'contestId'),
       meta: {
         requiresAuth: true
       }
@@ -63,7 +76,7 @@ const router = new VueRouter({
       name: 'projects',
       path: '/contest/:contestId/projects',
       component: Projects,
-      props: true,
+      props: route => ensureNumberProp(route.params, 'contestId'),
       meta: {
         requiresAuth: true
       }
@@ -81,7 +94,7 @@ const router = new VueRouter({
       name: 'editJury',
       path: '/edit-jury/:contestId',
       component: EditJury,
-      props: true,
+      props: route => ensureNumberProp(route.params, 'contestId'),
       meta: {
         requiresAuth: true
       }
