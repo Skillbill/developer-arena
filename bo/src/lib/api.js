@@ -214,16 +214,14 @@ const getUserById = id => {
 }
 
 const getUsersById = ids => {
-  return getHeaders().then(headers => {
-    let requests = []
-    ids.forEach(id => {
-      requests.push(getUserById(id).catch(e => {
-        Vue.$log.error(`Could not get user ${id}: ${e}`)
-      }))
-    })
-    return Promise.all(requests).then(responses => {
-      return responses
-    })
+  let requests = []
+  ids.forEach(id => {
+    requests.push(getUserById(id).catch(e => {
+      Vue.$log.error(`Could not get user ${id}: ${e}`)
+    }))
+  })
+  return Promise.all(requests).then(responses => {
+    return responses
   })
 }
 
@@ -247,6 +245,132 @@ const deleteProjectPreview = (contestId, projectId) => {
   })
 }
 
+const getJudges = () => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'get',
+      url: 'judge',
+      headers
+    }).then(response => {
+      let judges = response.data.judges
+      judges.sort((a, b) => a.id > b.id)
+      return judges
+    })
+  })
+}
+
+const getJudgeImage = id => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'get',
+      url: 'judge/' + id + '/image',
+      headers
+    }).then(response => {
+      return response.data
+    }).catch(e => {
+      if (errorRes(e) && errorRes(e).code === 4403) { // resolve even if the judge does not have an image
+        return null
+      }
+      Promise.reject(e)
+    })
+  })
+}
+
+const getJudgesImage = ids => {
+  let requests = []
+  ids.forEach(id => {
+    requests.push(getJudgeImage(id).catch(e => {
+      Vue.$log.error(`Could not get judge ${id} image: ${e}`)
+    }))
+  })
+  return Promise.all(requests).then(responses => {
+    return responses
+  })
+}
+
+const createJudge = (judge) => {
+  let data = new FormData()
+  Object.keys(judge).forEach(key => {
+    data.append(key, judge[key])
+  })
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'post',
+      url: '/admin/judge',
+      data,
+      headers
+    })
+  })
+}
+
+const patchJudge = (judge) => {
+  let data = new FormData()
+  Object.keys(judge).forEach(key => {
+    if (key !== 'id') data.append(key, judge[key])
+  })
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'patch',
+      url: '/admin/judge/' + judge.id,
+      data,
+      headers
+    })
+  })
+}
+
+const deleteJudge = (id) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'delete',
+      url: '/admin/judge/' + id,
+      headers
+    })
+  })
+}
+
+const putJudgeImage = (id, file) => {
+  let data = new FormData()
+  data.append('image', file)
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'post',
+      url: '/admin/judge/' + id + '/image',
+      data,
+      headers
+    })
+  })
+}
+
+const deleteJudgeImage = (id) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'delete',
+      url: '/admin/judge/' + id + '/image',
+      headers
+    })
+  })
+}
+
+const addJudgeToJury = (contestId, judgeId) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'put',
+      url: `/admin/contest/${contestId}/jury/?judgeId=${judgeId}`,
+      headers
+    })
+  })
+}
+
+const removeJudgeFromJury = (contestId, judgeId) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'delete',
+      url: `/admin/contest/${contestId}/jury/?judgeId=${judgeId}`,
+      headers
+    })
+  })
+}
+
 export default {
   init,
   apiError,
@@ -264,5 +388,15 @@ export default {
   getUserById,
   getUsersById,
   createProjectPreview,
-  deleteProjectPreview
+  deleteProjectPreview,
+  getJudges,
+  getJudgeImage,
+  getJudgesImage,
+  createJudge,
+  patchJudge,
+  deleteJudge,
+  putJudgeImage,
+  deleteJudgeImage,
+  addJudgeToJury,
+  removeJudgeFromJury
 }
