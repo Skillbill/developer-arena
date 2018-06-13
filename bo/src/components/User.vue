@@ -67,6 +67,8 @@ export default {
   created: function () {
     api.getUserById(this.userId).then(user => {
       this.user = user
+    }).catch(e => {
+      api.apiError(e)
     })
   }
 }

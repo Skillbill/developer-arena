@@ -13,6 +13,25 @@ const init = (config) => {
   })
 }
 
+const apiError = e => {
+  let error = errorRes(e)
+  if (error) {
+    if (!feedback.forApiErrorCode(error.code)) {
+      feedback.apiError(error)
+      Vue.$log.error(`API error n°${error.code}: ${error.msg}`)
+    }
+  } else if (e.request) {
+    feedback.offline()
+    Vue.$log.error('Connection error: back-end unreachable')
+  } else {
+    Vue.$log.error(e)
+  }
+}
+
+const errorRes = e => {
+  return e.response && e.response.data && e.response.data.error
+}
+
 const getHeaders = () => {
   let user = store.state.user
   if (user) {
@@ -36,11 +55,10 @@ const checkAdmin = () => {
   }).then(response => {
     return true
   }).catch(e => {
-    if (e.response && e.response.status === 403) {
+    if (errorRes(e) && errorRes(e).code === 4102) { // resolve even if the user is not admin
       return false
     }
-    apiError(e)
-    return null
+    Promise.reject(e)
   })
 }
 
@@ -54,9 +72,6 @@ const getContests = () => {
       let contests = response.data.contests
       contests.sort((a, b) => a.id > b.id)
       return contests
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
@@ -71,9 +86,6 @@ const getContestById = id => {
       let contest = response.data.contest
       contest.i18n = utils.fromI18n(contest.i18n)
       return contest
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
@@ -83,13 +95,10 @@ const getJuryById = id => {
   // return getHeaders().then(headers => {
   //   return instance({
   //     method: 'get',
-  //     url: 'admin/jury/' + id,
+  //     url: 'admin/contest/' + id,
   //     headers
   //   }).then(response => {
-  //     return response.data.jury
-  //   }).catch(e => {
-  //     apiError(e)
-  //     return null
+  //     return response.data.constest.jury
   //   })
   // })
 }
@@ -107,11 +116,6 @@ const patchContest = (contest) => {
         'Content-Type': 'application/json'
       }
     })
-  }).then(response => {
-    return response
-  }).catch(e => {
-    apiError(e)
-    return null
   })
 }
 
@@ -128,11 +132,6 @@ const createContest = (contest) => {
         'Content-Type': 'application/json'
       }
     })
-  }).then(response => {
-    return response
-  }).catch(e => {
-    apiError(e)
-    return null
   })
 }
 
@@ -143,11 +142,6 @@ const deleteContest = (id) => {
       url: '/admin/contest/' + id,
       headers
     })
-  }).then(response => {
-    return response
-  }).catch(e => {
-    apiError(e)
-    return null
   })
 }
 
@@ -161,9 +155,6 @@ const getProjectsByContest = (contestId) => {
       let projects = response.data.projects
       projects.sort((a, b) => a.submitted < b.submitted)
       return projects
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
@@ -181,9 +172,6 @@ const getProjectDeliverable = (contestId, projectId) => {
     link.setAttribute('download', 'file')
     document.body.appendChild(link)
     link.click()
-  }).catch(e => {
-    apiError(e)
-    return null
   })
 }
 
@@ -193,11 +181,6 @@ const setProjectApproved = (contestId, projectId, bool) => {
       method: bool ? 'put' : 'delete',
       url: `admin/contest/${contestId}/project/${projectId}/approve`,
       headers
-    }).then(response => {
-      return true
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
@@ -209,11 +192,6 @@ const deleteProject = (contestId, projectId) => {
       url: `admin/contest/${contestId}/project/${projectId}`,
       headers
     })
-  }).then(response => {
-    return response
-  }).catch(e => {
-    apiError(e)
-    return null
   })
 }
 
@@ -231,9 +209,6 @@ const getUserById = id => {
       } else {
         return user
       }
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
@@ -242,13 +217,12 @@ const getUsersById = ids => {
   return getHeaders().then(headers => {
     let requests = []
     ids.forEach(id => {
-      requests.push(getUserById(id))
+      requests.push(getUserById(id).catch(e => {
+        Vue.$log.error(`Could not get user ${id}: ${e}`)
+      }))
     })
     return Promise.all(requests).then(responses => {
       return responses
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
@@ -259,11 +233,6 @@ const createProjectPreview = (contestId, projectId) => {
       method: 'put',
       url: `admin/contest/${contestId}/project/${projectId}/preview`,
       headers
-    }).then(response => {
-      return response.data
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
@@ -274,32 +243,13 @@ const deleteProjectPreview = (contestId, projectId) => {
       method: 'delete',
       url: `admin/contest/${contestId}/project/${projectId}/preview`,
       headers
-    }).then(response => {
-      return true
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
 
-const apiError = e => {
-  let error = e.response && e.response.data && e.response.data.error
-  if (error && error.code) {
-    if (!feedback.forApiErrorCode(error.code)) {
-      feedback.apiError(error)
-      Vue.$log.error(`API error n°${error.code}: ${error.msg}`)
-    }
-  } else if (e.request) {
-    feedback.offline()
-    Vue.$log.error('Connection error: back-end unreachable')
-  } else {
-    Vue.$log.error(e)
-  }
-}
-
 export default {
   init,
+  apiError,
   checkAdmin,
   getContests,
   getContestById,

@@ -68,6 +68,8 @@ export default {
         return judge
       })
       this.jury = jury
+    }).catch(e => {
+      api.apiError(e)
     })
   }
 }

@@ -40,11 +40,11 @@ export default {
       })
     },
     deleteContest (id) {
-      api.deleteContest(id).then(response => {
-        if (response) {
-          feedback.contestDeleted()
-          this.contestList = this.contestList.filter(e => e.id !== id)
-        }
+      api.deleteContest(id).then(() => {
+        feedback.contestDeleted()
+        this.contestList = this.contestList.filter(e => e.id !== id)
+      }).catch(e => {
+        api.apiError(e)
       })
     },
     askDeleteConfirmation (toDelete) {
@@ -55,6 +55,8 @@ export default {
   created: function () {
     api.getContests().then(contestList => {
       this.contestList = contestList
+    }).catch(e => {
+      api.apiError(e)
     })
   }
 }
