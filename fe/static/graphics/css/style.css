@@ -887,6 +887,42 @@ main.home > section {
   padding: 0;
 }
 
+/* jury */
+
+ul.jury-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.judge {
+  flex-flow: row wrap;
+  padding: 1rem;
+  justify-content: center;
+}
+
+.judge-photo {
+  padding-top: 1rem;
+}
+
+.judge-photo > img {
+  width: 150px;
+  height: 150px;
+}
+
+.judge-summary {
+   max-width: 25rem;
+   min-width: 4rem;
+   flex-grow: 1;
+}
+
+.judge-attr {
+  float: right;
+  clear: right;
+  font-size: 80%;
+  color: #444;
+}
+
 /* projects */
 
 main.projects ul.projects-list {

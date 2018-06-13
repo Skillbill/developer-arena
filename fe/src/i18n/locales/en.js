@@ -3,6 +3,7 @@ module.exports = {
   menu: {
     home: 'Home',
     projects: 'Projects',
+    jury: 'Jury',
     rules: 'Rules',
     signIn: 'Sign In',
     signOut: 'Sign Out'

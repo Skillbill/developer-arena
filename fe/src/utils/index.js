@@ -61,6 +61,13 @@ export function getProjectImageUrl(project, {width, height}) {
   return getImageUrl(imageUrl, params);
 }
 
+export function getJudgeImageUrl(judge, {width, height}) {
+  let params = {resizeType: 'cover', width, height, enlarge: true};
+  let imageUrl = `/${store.state.configuration.apiVersion}/judge/${judge.id}/image`;
+  params.ts = new Date(judge.image.mtime).getTime();
+  return getImageUrl(imageUrl, params);
+}
+
 export function getImageUrl(url, params = {}) {
   let basePath = store.state.configuration.serverAddress;
   if(store.state.configuration.tinyPictures && store.state.configuration.tinyPictures.enabled) {
