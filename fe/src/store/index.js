@@ -176,6 +176,10 @@ const store = new Vuex.Store({
       }).then(response => {
         commit('setProject', response.data.project);
         store.commit('setFeedbackOk', edit ? 'project.editOk' : 'project.submitOk');
+        utils.gtag('event', 'project', {
+          'event_category': 'browse',
+          'event_label': edit ? 'edit' : 'submit'
+        });
       }).catch(e => {
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));
@@ -242,6 +246,10 @@ const store = new Vuex.Store({
         url: utils.getApiUrl(`/contest/${contestId}/project/${projectId}/vote`),
         headers
       }).then(response => {
+        utils.gtag('event', 'project', {
+          'event_category': 'browse',
+          'event_label': 'vote'
+        });
         return Promise.all([dispatch('loadProjects', {contestId}), dispatch('loadProject', {contestId, projectId})]);
       }).catch(e => {
         console.error(e);

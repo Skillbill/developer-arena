@@ -87,6 +87,7 @@
 <script>
 import auth from '@/auth'
 import ProviderButton from '@/components/ProviderButton'
+import {gtag} from '@/utils'
 
 function showFirebaseErroMessage(error) {
   if(auth.isDevMode()) {
@@ -159,6 +160,10 @@ export default {
     signIn(providerName, scopes = []) {
       this.$store.commit('removeFeedback');
       this.loading = true;
+      gtag('event', 'signIn', {
+        'event_category': 'browse',
+        'event_label': providerName
+      });
       if(providerName === 'email') {
         auth.signInWithEmailAndPassword(this.email, this.password).then((result) => {
           this.loading = false;
@@ -195,6 +200,10 @@ export default {
         return;
       }
       this.loading = true;
+      gtag('event', 'signUp', {
+        'event_category': 'browse',
+        'event_label': 'email'
+      });
       auth.createUserWithEmailAndPassword(this.email, this.password).then(user => {
         this.$store.commit('setUser', user);
         this.$store.commit('setFeedbackOk', 'accountCreated');
