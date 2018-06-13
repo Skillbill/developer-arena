@@ -6,6 +6,7 @@ import SignIn from '@/components/SignIn'
 import SubmitEntry from '@/components/SubmitEntry'
 import Projects from '@/components/Projects'
 import Project from '@/components/Project'
+import Jury from '@/components/Jury'
 import Rules from '@/components/Rules'
 import Profile from '@/components/Profile'
 import StaticPage from '@/components/StaticPage'
@@ -43,6 +44,11 @@ let router = new Router({
       path: '/contest/:contestId/project/:projectId',
       name: 'Project',
       component: Project
+    },
+    {
+      path: '/contest/:contestId/jury',
+      name: 'Jury',
+      component: Jury
     },
     {
       path: '/rules',

@@ -14,6 +14,9 @@
         <li v-if="contest">
           <router-link :to="{name: 'Projects', params: {contestId: contest.id}, query: {sort: contestStorting[0]}}">{{$t("menu.projects")}}</router-link>
         </li>
+        <li v-if="contest && contest.jury.length">
+          <router-link :to="{name: 'Jury', params: {contestId: contest.id}}">{{$t("menu.jury")}}</router-link>
+        </li>
         <li>
           <router-link to="/rules">{{$t("menu.rules")}}</router-link>
         </li>

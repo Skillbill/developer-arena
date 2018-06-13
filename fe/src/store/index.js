@@ -47,6 +47,9 @@ const store = new Vuex.Store({
     setLanguage (state, language) {
       state.language = language;
     },
+    setJury (state, jury) {
+      state.jury = jury;
+    },
     setProject (state, project) {
       state.project = project;
     },
@@ -194,6 +197,19 @@ const store = new Vuex.Store({
         headers
       }).then(response => {
         commit('setContest', response.data.contest);
+      }).catch(e => {
+        console.error(e);
+        commit('setFeedbackError', utils.getApiErrorMessage(e));
+      })
+    },
+    async loadJury ({commit}, {contestId}) {
+      const headers = await utils.getDefaultHeaders();
+      return axios({
+        method: 'get',
+        url: utils.getApiUrl(`/contest/${contestId}/jury`),
+        headers
+      }).then(response => {
+        commit('setJury', response.data.jury.sort((a, b) => a.id - b.id));
       }).catch(e => {
         console.error(e);
         commit('setFeedbackError', utils.getApiErrorMessage(e));
