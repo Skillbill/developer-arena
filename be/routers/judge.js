@@ -5,17 +5,8 @@ const sendfile = require('@/lib/sendfile')
 const express = require('express')
 const router = express.Router()
 
-router.get('/', getAllJudges)
 router.get('/:judgeId', getJudge)
 router.get('/:judgeId/image', getJudgeImage)
-
-function getAllJudges(req, res, next) {
-    persistence.getAllJudges().then(lst => {
-        res.status(http.ok).send({judges: lst})
-    }).catch(err => {
-        next(error.new(error.internal, {cause: err}))
-    })
-}
 
 function getJudge(req, res, next) {
     const id = req.params.judgeId

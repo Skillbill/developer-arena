@@ -27,8 +27,14 @@ CREATE TABLE IF NOT EXISTS judge (
        name varchar(100) NOT NULL,
        email varchar(50),
        twitter varchar(20),
-       site varchar(100),
-       description text
+       site varchar(100)
+);
+
+CREATE TABLE IF NOT EXISTS judge_bio (
+       id serial NOT NULL PRIMARY KEY,
+       judge_id int REFERENCES judge(id) ON DELETE CASCADE,
+       language varchar(2) NOT NULL,
+       text text NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS judge_image (

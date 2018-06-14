@@ -8,6 +8,7 @@ const model = {
     file: require('../model/file'),
     vote: require('../model/vote'),
     judge: require('../model/judge'),
+    judge_bio: require('../model/judge_bio'),
     judge_image: require('../model/judge_image'),
     jury: require('../model/jury'),
 }
@@ -57,6 +58,10 @@ const getJudgeTable = () => {
     return sequelize.define('judge', model.judge, {freezeTableName: true})
 }
 
+const getJudgeBioTable = () => {
+    return sequelize.define('judge_bio', model.judge_bio, {freezeTableName: true})
+}
+
 const getJudgeImageTable = () => {
     return sequelize.define('judge_image', model.judge_image, {freezeTableName: true})
 }
@@ -74,6 +79,7 @@ module.exports = {
     getFileTable,
     getVoteTable,
     getJudgeTable,
+    getJudgeBioTable,
     getJudgeImageTable,
     getJuryTable
 }

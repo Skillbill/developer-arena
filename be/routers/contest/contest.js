@@ -32,6 +32,14 @@ function getContest(req, res, next) {
         })
 }
 
+function judge_fmt(judge) {
+    const json  = judge.toJSON ? judge.toJSON() : judge
+    if (json.bio.length) {
+        json.bio = json.bio[0].text
+    }
+    return json
+}
+
 function getContestJury(req, res, next) {
     const id = req.params.contestId;
     ((id == 'last') ? persistence.getLastContest() : persistence.getContestById(id))
@@ -39,8 +47,10 @@ function getContestJury(req, res, next) {
             if (!contest || contest.state == libContest.state.draft) {
                 return next(error.contestNotFound)
             }
-            return persistence.getJury(id).then(jury => {
-                res.status(http.ok).send({jury})
+            return persistence.getJury(id, req.language).then(jury => {
+                res.status(http.ok).send({
+                    jury: jury.map(judge_fmt)
+                })
             })
         }).catch(err => {
             next(error.new(error.internal, {cause: err}))
