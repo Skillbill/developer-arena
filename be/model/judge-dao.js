@@ -4,7 +4,7 @@ const Judge = sql.getJudgeTable()
 const Jury = sql.getJuryTable()
 const Image = sql.getJudgeImageTable()
 
-Judge.belongsTo(Image, {as: 'image', targetKey: 'id'})
+Judge.hasOne(Image, {as: 'image', foreignKey: 'judgeId'})
 Judge.hasMany(Jury, {as: 'jury', foreignKey: 'judgeId'})
 
 const findAll = () => Judge.findAll({
@@ -19,7 +19,7 @@ const findAll = () => Judge.findAll({
 const findById = (id) => {
     return Judge.findOne({
         where: {
-            id: id
+            id
         },
         include: {
             model: Image,
@@ -51,7 +51,7 @@ const findByContestId = (contestId) => Judge.findAll({
 const findByIdWithImage = (id) => {
     return Judge.findOne({
         where: {
-            id: id
+            id
         },
         include: {
             model: Image,
@@ -64,14 +64,14 @@ const findByIdWithImage = (id) => {
 const create = (data) => new Promise((resolve, reject) => {
     sql.transaction().then(tx => {
         Judge.create(data, { transaction: tx }).then(judge => {
-            return Promise.all([
-                Promise.resolve(judge),
-                data.image ? Image.create(data.image, { transaction: tx }) : Promise.resolve(null)
-            ]).then(([judge, image]) => {
-                if (image) {
-                    judge.set('imageId', image.id)
-                    judge.save()
-                }
+            let p
+            if (data.image) {
+                data.image.judgeId = judge.id
+                p = Image.create(data.image, { transaction: tx })
+            } else {
+                p = Promise.resolve()
+            }
+            p.then(() => {
                 tx.commit()
                 resolve(judge)
             }).catch(err => {
@@ -100,28 +100,24 @@ const update = (id, data) => new Promise((resolve, reject) => {
     })
 })
 
-const updateImage = (id, data) => new Promise((resolve, reject) => {
-    findById(id).then(judge => {
+const updateImage = (judgeId, data) => {
+    if (!data) {
+        return Image.destroy({where: {judgeId}})
+    }
+    return findById(judgeId).then(judge => {
         if (!judge) {
-            return reject('judge not found')
+            return Promise.reject('judge not found')
         }
+        data.judgeId = judgeId
         let p
-        if (data) {
-            if (!judge.imageId) {
-                p = Image.create(data).then(image => {
-                    judge.set('imageId', image.id)
-                    judge.save()
-                    return Promise.resolve()
-                }).catch(err => Promise.reject(err))
-            } else {
-                p = Image.update(data, { where: {id: judge.imageId} })
-            }
+        if (!judge.image) {
+            p = Image.create(data)
         } else {
-            p = Image.destroy({ where: {id: judge.imageId} })
+            p = Image.update(data, { where: {judgeId} })
         }
-        p.then(resolve).catch(reject)
-    }).catch(reject)
-})
+        return p
+    })
+}
 
 const addToJury = (judgeId, contestId) => Jury.create({
     contestId,
@@ -135,25 +131,7 @@ const removeFromJury = (judgeId, contestId) => Jury.destroy({
     }
 })
 
-const destroy = (id) => new Promise((resolve, reject) => {
-    findById(id).then(judge => {
-        if (!judge) {
-            return resolve(0)
-        }
-        sql.transaction().then(tx => {
-            Promise.all([
-                Judge.destroy({where: {id: id}, transaction: tx}),
-                judge.imageId ? Image.destroy({where: {id: judge.imageId}, transaction: tx}) : Promise.resolve(0)
-            ]).then(([count]) => {
-                tx.commit()
-                resolve(count)
-            }).catch(err => {
-                tx.rollback()
-                reject(err)
-            })
-        }).catch(reject)
-    }).catch(reject)
-})
+const destroy = (id) => Judge.destroy({where: {id}})
 
 module.exports = {
     findAll,

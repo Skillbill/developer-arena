@@ -40,7 +40,6 @@ function patchJudge(req, res, next) {
             return next(error.judgeNotFound)
         }
         delete patch.id
-        delete patch.imageId
         const newJudge = Object.assign(judge.toJSON(), patch)
         return persistence.updateJudge(id, newJudge).then(updated => {
             res.status(http.ok).send(updated)
