@@ -16,9 +16,7 @@
     repository: "skillbillsrl/developer-arena-be"
     build_args:
     - "version=${BUDDY_EXECUTION_REVISION}"
-    trigger_condition_paths:
-    - "/be"
-    trigger_condition: "ON_CHANGE_AT_PATH"
+    trigger_condition: "ALWAYS"
   - action: "[BO] Build Docker image"
     type: "DOCKERFILE"
     login: "${DOCKER_HUB_USER}"
