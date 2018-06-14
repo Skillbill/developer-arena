@@ -4,21 +4,38 @@ const error = require('@/lib/error')
 const express = require('express')
 const router = express.Router()
 
+router.get('/', getAllJudges)
 router.post('/', createJudge)
+router.get('/:judgeId', getJudge)
 router.patch('/:judgeId', patchJudge)
 router.delete('/:judgeId', deleteJudge)
 router.put('/:judgeId/image', updateJudgeImage)
 router.delete('/:judgeId/image', updateJudgeImage)
 
+function getAllJudges(req, res, next) {
+    persistence.getAllJudges().then(judges => {
+        res.status(http.ok).send({judges})
+    }).catch(err => {
+        next(error.new(error.internal, {cause: err}))
+    })
+}
+
+function getJudge(req, res, next) {
+    const id = req.params.judgeId
+    persistence.getJudgeById(id).then(judge => {
+        if (!judge) {
+            return next(error.judgeNotFound)
+        }
+        res.status(http.ok).send({judge})
+    }).catch(err => {
+        next(error.new(error.internal, {cause: err}))
+    })
+}
+
 function createJudge(req, res, next) {
     const judge = req.body
-
     if (!judge.name) {
         return next(error.new(error.missingParameter, {parameter: 'name'}))
-    }
-    if (req.files && req.files.image) {
-        judge.image = req.files.image
-        judge.image.mtime = new Date()
     }
     persistence.createJudge(judge).then(created => {
         res.status(http.created).send(created)
@@ -31,10 +48,6 @@ function patchJudge(req, res, next) {
     const id = req.params.judgeId
     const patch = req.body
 
-    if (req.files && req.files.image) {
-        patch.image = req.files.image
-        patch.image.mtime = new Date()
-    }
     persistence.getJudgeById(id).then(judge => {
         if (!judge) {
             return next(error.judgeNotFound)

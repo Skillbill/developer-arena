@@ -11,7 +11,7 @@ const destroyContest = (id) => contestDao.destroy(id)
 
 const getAllJudges = () => judgeDao.findAll()
 const getJudgeById = (judgeId) => judgeDao.findById(judgeId)
-const getJury = (contestId) => judgeDao.findByContestId(contestId)
+const getJury = (contestId, language) => judgeDao.findByContestId(contestId, language)
 const getJudgeWithImage = (judgeId) => judgeDao.findByIdWithImage(judgeId)
 const createJudge = (judge) => judgeDao.create(judge)
 const updateJudge = (judgeId, data) => judgeDao.update(judgeId, data)
