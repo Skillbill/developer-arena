@@ -15,7 +15,7 @@
     context_path: "be"
     repository: "skillbillsrl/developer-arena-be"
     build_args:
-    - "version=${TAG}"
+    - "version=${BUDDY_EXECUTION_REVISION}"
     trigger_condition_paths:
     - "/be"
     trigger_condition: "ON_CHANGE_AT_PATH"
@@ -130,6 +130,8 @@
     docker_image_tag: "${execution.tag.name}"
     dockerfile_path: "be/Dockerfile"
     context_path: "be"
+    build_args:
+    - "version=${BUDDY_EXECUTION_TAG}"
     repository: "skillbillsrl/developer-arena-be"
     trigger_condition: "ALWAYS"
   - action: "[BO] Build Docker image"
@@ -238,6 +240,8 @@
     docker_image_tag: "${execution.tag.name}"
     dockerfile_path: "be/Dockerfile"
     context_path: "be"
+    build_args:
+    - "version=${BUDDY_EXECUTION_TAG}"
     repository: "skillbillsrl/developer-arena-be"
     trigger_condition: "ALWAYS"
   - action: "[BO] Build Docker image"
