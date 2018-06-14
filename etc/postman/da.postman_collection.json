@@ -478,6 +478,63 @@
 					"description": "",
 					"item": [
 						{
+							"name": "judge list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/judge",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"judge"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "judge by id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/{{version}}/admin/judge/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{version}}",
+										"admin",
+										"judge",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "create judge",
 							"request": {
 								"method": "POST",
@@ -488,50 +545,12 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/x-www-form-urlencoded"
+										"value": "application/json"
 									}
 								],
 								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "name",
-											"value": "Johnn Cloaca",
-											"description": "required",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tempor vestibulum nisi, sed condimentum nunc.",
-											"description": "",
-											"type": "text"
-										},
-										{
-											"key": "email",
-											"value": "johnny@example.net",
-											"description": "",
-											"type": "text"
-										},
-										{
-											"key": "twitter",
-											"value": "@cloaca",
-											"description": "",
-											"type": "text"
-										},
-										{
-											"key": "site",
-											"value": "http://cloaca.example.net",
-											"description": "",
-											"type": "text"
-										},
-										{
-											"key": "image",
-											"value": "",
-											"description": "",
-											"type": "file",
-											"disabled": true
-										}
-									]
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Johnny Cloaca\",\n    \"email\": \"tizio@example.net\",\n    \"twitter\": \"@jcloaca\",\n    \"site\": \"cloaca.example.com\",\n    \"bio\": [\n    \t{\n    \t\t\"language\": \"it\",\n    \t\t\"text\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit.\"\n    \t},\n      \t{\n    \t\t\"language\": \"en\",\n    \t\t\"text\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit.\"\n    \t}\n    ]\n}"
 								},
 								"url": {
 									"raw": "{{host}}/{{version}}/admin/judge",
@@ -614,18 +633,14 @@
 									{
 										"key": "Authorization",
 										"value": "{{authAdmin}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"name\": \"Johnny Cloaca\",\n\t\"email\": \"johnny@isp.net\",\n\t\"twitter\": \"@cloaca\",\n\t\"site\": \"http://jonnhy.net\"\n}\n"
+									"raw": ""
 								},
 								"url": {
-									"raw": "{{host}}/{{version}}/admin/judge/25",
+									"raw": "{{host}}/{{version}}/admin/judge/1",
 									"host": [
 										"{{host}}"
 									],
@@ -633,14 +648,14 @@
 										"{{version}}",
 										"admin",
 										"judge",
-										"25"
+										"1"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "update judge image",
+							"name": "set judge image",
 							"request": {
 								"method": "PUT",
 								"header": [
@@ -660,7 +675,7 @@
 											"key": "image",
 											"description": "",
 											"type": "file",
-											"src": "nfsboot.png"
+											"src": "1249612149123.jpg"
 										}
 									]
 								},
@@ -1363,28 +1378,6 @@
 								"judge",
 								"1",
 								"image"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "judge list",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{host}}/{{version}}/judge",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"{{version}}",
-								"judge"
 							]
 						}
 					},
