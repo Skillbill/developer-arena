@@ -1,8 +1,7 @@
 {
 	"info": {
 		"name": "Developer Arena",
-		"_postman_id": "5463d6bb-9ebc-5701-b485-fa04c1fc2d39",
-		"description": "",
+		"_postman_id": "244f0670-831f-c65c-55c6-0e9decea3504",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -407,7 +406,10 @@
 										"value": "application/x-www-form-urlencoded"
 									}
 								],
-								"body": {},
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "{{host}}/{{version}}/admin/contest/1/jury/?judgeId=1",
 									"host": [
@@ -475,7 +477,6 @@
 				},
 				{
 					"name": "judge",
-					"description": "",
 					"item": [
 						{
 							"name": "judge list",
@@ -550,7 +551,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Johnny Cloaca\",\n    \"email\": \"tizio@example.net\",\n    \"twitter\": \"@jcloaca\",\n    \"site\": \"cloaca.example.com\",\n    \"bio\": [\n    \t{\n    \t\t\"language\": \"it\",\n    \t\t\"text\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit.\"\n    \t},\n      \t{\n    \t\t\"language\": \"en\",\n    \t\t\"text\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit.\"\n    \t}\n    ]\n}"
+									"raw": "{\n    \"name\": \"Johnny Cloaca\",\n    \"email\": \"cloaca@example.com\",\n    \"twitter\": \"@jcloaca\",\n    \"site\": \"https://cloaca.example.com\",\n    \"bio\": [\n    \t{\n    \t\t\"language\": \"it\",\n    \t\t\"text\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit.\"\n    \t},\n      \t{\n    \t\t\"language\": \"en\",\n    \t\t\"text\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit.\"\n    \t}\n    ]\n}"
 								},
 								"url": {
 									"raw": "{{host}}/{{version}}/admin/judge",
@@ -577,38 +578,12 @@
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/x-www-form-urlencoded"
+										"value": "application/json"
 									}
 								],
 								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "name",
-											"value": "New Name",
-											"description": "",
-											"type": "text"
-										},
-										{
-											"key": "email",
-											"value": "newmail@example.net",
-											"description": "",
-											"type": "text"
-										},
-										{
-											"key": "twitter",
-											"value": "@test",
-											"description": "",
-											"type": "text"
-										},
-										{
-											"key": "site",
-											"value": "",
-											"description": "",
-											"type": "text",
-											"disabled": true
-										}
-									]
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"New Name\",\n    \"email\": \"new.johnny@example.com\",\n    \"twitter\": \"@jcloaca\",\n    \"site\": \"https://new.cloaca.example.com\",\n    \"bio\": [\n    \t{\n    \t\t\"language\": \"it\",\n    \t\t\"text\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit.\"\n    \t},\n      \t{\n    \t\t\"language\": \"en\",\n    \t\t\"text\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit.\"\n    \t}\n    ]\n}"
 								},
 								"url": {
 									"raw": "{{host}}/{{version}}/admin/judge/1",
@@ -673,9 +648,7 @@
 									"formdata": [
 										{
 											"key": "image",
-											"description": "",
-											"type": "file",
-											"src": "1249612149123.jpg"
+											"type": "file"
 										}
 									]
 								},
@@ -1211,7 +1184,6 @@
 		},
 		{
 			"name": "contest",
-			"description": "",
 			"item": [
 				{
 					"name": "contest list",
@@ -1324,7 +1296,6 @@
 		},
 		{
 			"name": "judge",
-			"description": "",
 			"item": [
 				{
 					"name": "judge id",
