@@ -24,6 +24,25 @@ export function toI18n (obj) {
   return resI18n
 }
 
+export function bioFromI18n (arr) {
+  let resObj = {}
+  arr.forEach(elem => {
+    resObj[elem.language] = elem.text
+  })
+  return resObj
+}
+
+export function bioToI18n (obj) {
+  let resArr = []
+  Object.keys(obj).forEach(key => {
+    resArr.push({
+      language: key,
+      text: obj[key]
+    })
+  })
+  return resArr
+}
+
 export function getEmptyContest () {
   return {
     id: null,
@@ -55,6 +74,10 @@ export function getEmptyJudge () {
     id: null,
     name: '',
     email: '',
+    bio: {
+      en: '',
+      it: ''
+    },
     image: ''
   }
 }

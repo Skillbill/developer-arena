@@ -236,7 +236,7 @@ const getJudges = () => {
   return getHeaders().then(headers => {
     return instance({
       method: 'get',
-      url: 'judge',
+      url: 'admin/judge',
       headers
     }).then(response => {
       let judges = response.data.judges
@@ -253,13 +253,15 @@ const getJudgeById = id => {
       url: 'judge/' + id,
       headers
     }).then(response => {
-      return response.data.judge
+      let judge = response.data.judge
+      judge.bio = utils.bioFromI18n(judge.bio)
+      return judge
     })
   })
 }
 
 const getJudgeImageUrl = judge => {
-  if (judge.imageId) {
+  if (judge.image) {
     let ts = new Date(judge.image.mtime).getTime()
     return `${Vue.$config.serverAddress}/${Vue.$config.apiVersion}/judge/${judge.id}/image/?ts=${ts}`
   } else {
@@ -268,17 +270,20 @@ const getJudgeImageUrl = judge => {
 }
 
 const createJudge = (judge) => {
-  let data = new FormData()
-  console.log(JSON.stringify(judge))
-  Object.keys(judge).forEach(key => {
-    if (key !== 'id' && key !== 'image') data.append(key, judge[key])
-  })
+  let data = Object.assign({}, judge)
+  data.id = undefined
+  data.image = undefined
+  data.bio = utils.bioToI18n(data.bio)
+  Vue.$log.info('create judge: ' + JSON.stringify(data))
   return getHeaders().then(headers => {
     return instance({
       method: 'post',
       url: '/admin/judge',
       data,
-      headers
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      }
     })
   }).then(response => {
     return response.data
@@ -286,16 +291,20 @@ const createJudge = (judge) => {
 }
 
 const patchJudge = (judge) => {
-  let data = new FormData()
-  Object.keys(judge).forEach(key => {
-    if (key !== 'id') data.append(key, judge[key])
-  })
+  let data = Object.assign({}, judge)
+  data.id = undefined
+  data.image = undefined
+  data.bio = utils.bioToI18n(data.bio)
+  Vue.$log.info('patch judge: ' + JSON.stringify(data))
   return getHeaders().then(headers => {
     return instance({
       method: 'patch',
       url: '/admin/judge/' + judge.id,
       data,
-      headers
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      }
     })
   })
 }

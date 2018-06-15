@@ -20,6 +20,13 @@
 
         <label for="image" class="mt-2">Image</label>
         <b-form-file id="image" :value="newImage" @change="setImage($event.target.files[0])"></b-form-file>
+
+        <b-form-group label="Description" class="mt-2">
+          <b-form-radio-group id="langRadio" buttons v-model="lang" :options="['en', 'it']" name="langRadio">
+          </b-form-radio-group>
+          <b-form-textarea id="description" class="mt-2" :rows="3" v-model="judge.bio[lang]"></b-form-textarea>
+        </b-form-group>
+
       </b-col>
     </b-row>
     <b-button variant="primary mb-3 mr-3" @click="validateAndSend">Save</b-button>
@@ -45,7 +52,8 @@ export default {
     return {
       judge: null,
       newImage: null,
-      newImageURL: null
+      newImageURL: null,
+      lang: 'en'
     }
   },
   validations: {
@@ -74,6 +82,7 @@ export default {
   },
   methods: {
     setImage (file) {
+      if (!file) return
       let reader = new FileReader()
       reader.onload = () => {
         this.newImage = file
