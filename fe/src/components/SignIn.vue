@@ -43,7 +43,7 @@
                     </div>
                   </fieldset>
                 </form>
-                <form v-if="signInSection === 'signUp'" v-on:submit.prevent="signUp" key="sign-up-form">
+                <form v-if="signInSection === 'signUp'" v-on:submit.prevent="preSignUp" key="sign-up-form">
                   <fieldset>
                     <legend>{{$t('signUp')}}</legend>
                     <label for="signup-email">{{$t('email')}}</label>
@@ -53,7 +53,8 @@
                     <label for="signup-password-confirm">{{$t('passwordConfirm')}}</label>
                     <input type="password" id="signup-password-confirm" v-model="passwordConfirm" required>
                     <div class="buttons end">
-                      <button type="submit">{{ $t('submit') }}</button>
+                      <Recaptcha ref="recaptcha" :siteKey="recaptchaSiteKey" eventVerify="rc_signup" @rc_signup="signUp"></ReCaptcha>
+                      <button> {{ $t('submit') }} </button>
                     </div>
                   </fieldset>
                 </form>
@@ -87,6 +88,7 @@
 <script>
 import auth from '@/auth'
 import ProviderButton from '@/components/ProviderButton'
+import Recaptcha from '@/components/Recaptcha'
 import {gtag} from '@/utils'
 
 function showFirebaseErroMessage(error) {
@@ -114,7 +116,8 @@ export default {
     }
   },
   components: {
-    ProviderButton
+    ProviderButton,
+    Recaptcha
   },
   computed: {
     user() {
@@ -125,6 +128,9 @@ export default {
     },
     emailVerified() {
       return this.user && this.user.emailVerified === true
+    },
+    recaptchaSiteKey() {
+      return this.$store.state.configuration.recaptchaSiteKey || '';
     }
   },
   created () {
@@ -192,13 +198,16 @@ export default {
         this.loading = false;
       });
     },
-    signUp () {
+    preSignUp() {
       this.$store.commit('removeFeedback');
       if(this.password !== this.passwordConfirm) {
         this.$store.commit('setFeedbackError', 'wrongPasswordConfirm');
         this.$el.querySelector('#signup-password-confirm').focus();
         return;
       }
+      this.$refs.recaptcha.execute();
+    },
+    signUp () {
       this.loading = true;
       gtag('event', 'signUp', {
         'event_category': 'browse',
