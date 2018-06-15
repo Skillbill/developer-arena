@@ -1,3 +1,4 @@
+import Vue from 'vue'
 
 export function fromI18n (i18n) {
   let resObj = {}
@@ -80,6 +81,10 @@ export function getEmptyJudge () {
     },
     image: ''
   }
+}
+
+export function getBlankProfilePicUrl () {
+  return Vue.$config.statRes + '/blank-profile-picture.png'
 }
 
 export function getFakeJury () {

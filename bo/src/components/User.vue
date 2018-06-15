@@ -6,7 +6,7 @@
       </h6>
       <b-row>
         <b-col sm="auto">
-          <b-img width="100" rounded="circle" :src="user.photoURL || this.$config.statRes + '/blank-profile-picture.png'">
+          <b-img width="100" rounded="circle" :src="imageURL">
           </b-img>
         </b-col>
         <b-col sm="auto">
@@ -57,6 +57,9 @@ export default {
     }
   },
   computed: {
+    imageURL: function () {
+      return this.user.photoURL || utils.getBlankProfilePicUrl()
+    },
     provider: function () {
       return utils.getProviderInfo(this.user.providerData[0].providerId)
     },

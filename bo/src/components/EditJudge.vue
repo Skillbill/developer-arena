@@ -71,13 +71,9 @@ export default {
   },
   computed: {
     imageURL () {
-      if (this.newImageURL) {
-        return this.newImageURL
-      } else if (this.judge.image) {
-        return this.judge.image
-      } else {
-        return null
-      }
+      return this.newImageURL ||
+            this.judge.image ||
+            utils.getBlankProfilePicUrl()
     }
   },
   methods: {

@@ -13,6 +13,7 @@
 <script>
 import api from '@/lib/api'
 import feedback from '@/lib/feedback'
+import * as utils from '@/lib/utils'
 import JudgeCard from '@/components/JudgeCard'
 
 export default {
@@ -61,7 +62,7 @@ export default {
       return api.getJudges()
     }).then(judges => {
       judges.forEach(judge => {
-        judge.image = api.getJudgeImageUrl(judge)
+        judge.image = api.getJudgeImageUrl(judge) || utils.getBlankProfilePicUrl()
         judge.selected = this.contest.jury.map(o => o.judgeId).includes(judge.id)
       })
       this.judges = judges
