@@ -1,73 +1,70 @@
 <template>
   <main class="container mt-3">
-    <div class="row mb-2">
-      <h2>Jury</h2>
+    <div class="mb-2">
+      <h3 v-if="contest" class="mb-3">Edit jury of contest #{{contest.id}} ({{contest.i18n['en'].title}})</h3>
     </div>
-    <EditJudgeCard v-for="(v, index) in $v.jury.$each.$iter" :key="index"
-                  v-bind.sync="jury[index]" :v="v"/>
-    <div class="row">
-      <b-button variant="primary mb-3 mr-3" @click="save">Save</b-button>
-      <b-button variant="danger mb-3" @click="cancel">Cancel</b-button>
-    </div>
+    <b-card-group deck class="m-3">
+      <JudgeCard v-for="judge in judges" :key="judge.id" :judge="judge" @remove="remove(judge.id)" @select="select(judge.id)"></JudgeCard>
+    </b-card-group>
+    <b-button variant="primary mb-3" @click="create">Create</b-button>
   </main>
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, minLength, email } from 'vuelidate/lib/validators'
 import api from '@/lib/api'
-import router from '@/lib/router'
 import feedback from '@/lib/feedback'
-import EditJudgeCard from '@/components/EditJudgeCard'
+import JudgeCard from '@/components/JudgeCard'
 
 export default {
   name: 'EditJury',
-  mixins: [validationMixin],
   components: {
-    EditJudgeCard
+    JudgeCard
   },
   props: {
     contestId: Number
   },
   data: function () {
     return {
-      jury: []
-    }
-  },
-  validations: {
-    jury: {
-      $each: {
-        name: {
-          required,
-          minLength: minLength(2)
-        },
-        email: {
-          required,
-          email
-        }
-      }
+      contest: null,
+      judges: []
     }
   },
   methods: {
-    save () {
-      if (this.$v.$invalid) {
-        feedback.invalidFeilds()
+    create () {
+      this.$router.push({
+        name: 'newJudge'
+      })
+    },
+    select (id, value) {
+      if (value) {
+        api.addJudgeToJury(this.contestId, id).catch(e => {
+          api.apiError(e)
+        })
       } else {
-        feedback.juryUpdated()
-        router.push('/contests')
+        api.removeJudgeFromJury(this.contestId, id).catch(e => {
+          api.apiError(e)
+        })
       }
     },
-    cancel () {
-      router.go(-1)
+    remove (id) {
+      api.deleteJudge(id).then(() => {
+        this.judges = this.judges.filter(judge => judge.id !== id)
+        feedback.judgeDeleted()
+      }).catch(e => {
+        api.apiError(e)
+      })
     }
   },
   created: function () {
-    api.getJuryById(this.contestId).then(jury => {
-      jury = jury.map(judge => {
-        judge.newImage = null
-        return judge
+    api.getContestById(this.contestId).then(contest => {
+      this.contest = contest
+      return api.getJudges()
+    }).then(judges => {
+      judges.forEach(judge => {
+        judge.image = api.getJudgeImageUrl(judge)
+        judge.selected = this.contest.jury.map(o => o.judgeId).includes(judge.id)
       })
-      this.jury = jury
+      this.judges = judges
     }).catch(e => {
       api.apiError(e)
     })

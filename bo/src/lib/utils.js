@@ -50,6 +50,15 @@ export function getEmptyContest () {
   }
 }
 
+export function getEmptyJudge () {
+  return {
+    id: null,
+    name: '',
+    email: '',
+    image: ''
+  }
+}
+
 export function getFakeJury () {
   let jury = []
   for (let i = 0; i < 3; i++) {

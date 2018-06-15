@@ -24,8 +24,14 @@ const projectPreviewCreated = () => {
 const projectPreviewDeleted = () => {
   Vue.$toastr.success('The preview has been deleted successfully', 'Preview deleted')
 }
-const juryUpdated = () => {
-  Vue.$toastr.success('The jury has been modified successfully', 'Jury modified')
+const judgeUpdated = () => {
+  Vue.$toastr.success('The judge has been modified successfully', 'Judge modified')
+}
+const judgeCreated = () => {
+  Vue.$toastr.success('The judge has been created successfully', 'Judge created')
+}
+const judgeDeleted = () => {
+  Vue.$toastr.success('The judge has been deleted successfully', 'Judge deleted')
 }
 const invalidFeilds = () => {
   Vue.$toastr.error('Some feilds are invalid', 'Not saved')
@@ -63,7 +69,9 @@ export default {
   projectDeleted,
   projectPreviewCreated,
   projectPreviewDeleted,
-  juryUpdated,
+  judgeUpdated,
+  judgeCreated,
+  judgeDeleted,
   offline,
   apiError,
   forApiErrorCode

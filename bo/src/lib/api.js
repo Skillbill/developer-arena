@@ -90,19 +90,6 @@ const getContestById = id => {
   })
 }
 
-const getJuryById = id => {
-  return Promise.resolve(utils.getFakeJury())
-  // return getHeaders().then(headers => {
-  //   return instance({
-  //     method: 'get',
-  //     url: 'admin/contest/' + id,
-  //     headers
-  //   }).then(response => {
-  //     return response.data.constest.jury
-  //   })
-  // })
-}
-
 const patchContest = (contest) => {
   let data = Object.assign({}, contest)
   data.i18n = utils.toI18n(data.i18n)
@@ -259,39 +246,32 @@ const getJudges = () => {
   })
 }
 
-const getJudgeImage = id => {
+const getJudgeById = id => {
   return getHeaders().then(headers => {
     return instance({
       method: 'get',
-      url: 'judge/' + id + '/image',
+      url: 'judge/' + id,
       headers
     }).then(response => {
-      return response.data
-    }).catch(e => {
-      if (errorRes(e) && errorRes(e).code === 4403) { // resolve even if the judge does not have an image
-        return null
-      }
-      Promise.reject(e)
+      return response.data.judge
     })
   })
 }
 
-const getJudgesImage = ids => {
-  let requests = []
-  ids.forEach(id => {
-    requests.push(getJudgeImage(id).catch(e => {
-      Vue.$log.error(`Could not get judge ${id} image: ${e}`)
-    }))
-  })
-  return Promise.all(requests).then(responses => {
-    return responses
-  })
+const getJudgeImageUrl = judge => {
+  if (judge.imageId) {
+    let ts = new Date(judge.image.mtime).getTime()
+    return `${Vue.$config.serverAddress}/${Vue.$config.apiVersion}/judge/${judge.id}/image/?ts=${ts}`
+  } else {
+    return null
+  }
 }
 
 const createJudge = (judge) => {
   let data = new FormData()
+  console.log(JSON.stringify(judge))
   Object.keys(judge).forEach(key => {
-    data.append(key, judge[key])
+    if (key !== 'id' && key !== 'image') data.append(key, judge[key])
   })
   return getHeaders().then(headers => {
     return instance({
@@ -300,6 +280,8 @@ const createJudge = (judge) => {
       data,
       headers
     })
+  }).then(response => {
+    return response.data
   })
 }
 
@@ -333,7 +315,7 @@ const putJudgeImage = (id, file) => {
   data.append('image', file)
   return getHeaders().then(headers => {
     return instance({
-      method: 'post',
+      method: 'put',
       url: '/admin/judge/' + id + '/image',
       data,
       headers
@@ -377,7 +359,6 @@ export default {
   checkAdmin,
   getContests,
   getContestById,
-  getJuryById,
   patchContest,
   createContest,
   deleteContest,
@@ -390,8 +371,8 @@ export default {
   createProjectPreview,
   deleteProjectPreview,
   getJudges,
-  getJudgeImage,
-  getJudgesImage,
+  getJudgeById,
+  getJudgeImageUrl,
   createJudge,
   patchJudge,
   deleteJudge,

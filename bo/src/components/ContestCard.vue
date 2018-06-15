@@ -15,7 +15,7 @@
       <li>End applying: {{contest.endApplying | formatDate}}</li>
       <li>End voting: {{contest.endVoting | formatDate}}</li>
     </ul>
-    <div class="row mx-2">
+    <b-row class="mx-0">
       <b-button variant="outline-primary" size="sm" title="edit contest" @click.stop="editContest(contest.id)">
         <i class="fas fa-edit"></i> Edit contest
       </b-button>
@@ -31,7 +31,7 @@
                 @click.stop="approveProjects(contest.id)">
         <i class="fas fa-list-ul"></i> Manage projects
       </b-button>
-    </div>
+    </b-row>
   </b-card>
 </template>
 
