@@ -274,7 +274,6 @@ const createJudge = (judge) => {
   data.id = undefined
   data.image = undefined
   data.bio = utils.bioToI18n(data.bio)
-  Vue.$log.info('create judge: ' + JSON.stringify(data))
   return getHeaders().then(headers => {
     return instance({
       method: 'post',
@@ -295,7 +294,6 @@ const patchJudge = (judge) => {
   data.id = undefined
   data.image = undefined
   data.bio = utils.bioToI18n(data.bio)
-  Vue.$log.info('patch judge: ' + JSON.stringify(data))
   return getHeaders().then(headers => {
     return instance({
       method: 'patch',
