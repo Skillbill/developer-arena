@@ -7,16 +7,22 @@
         <b-img fluid :src="imageURL"></b-img>
       </b-col>
       <b-col md="9">
-        <label for="name">Name</label>
+        <label for="name">Name*</label>
         <b-form-input id="name" :state="!$v.judge.name.$error ? null : false" v-model="$v.judge.name.$model"></b-form-input>
         <b-form-invalid-feedback v-if="!$v.judge.name.required">This feild is required.</b-form-invalid-feedback>
         <b-form-invalid-feedback v-if="!$v.judge.name.minLength">Name must have at least {{ $v.judge.name.$params.minLength.min }} letters.</b-form-invalid-feedback>
 
-        <label for="email" class="mt-2">Email</label>
+        <label for="email" class="mt-2">Email*</label>
         <b-form-input id="email" :state="!$v.judge.email.$error ? null : false" v-model="$v.judge.email.$model"></b-form-input>
         <b-form-invalid-feedback v-if="!$v.judge.email.required">This feild is required.</b-form-invalid-feedback>
         <b-form-invalid-feedback v-if="!$v.judge.email.email">Please enter a valid email.</b-form-invalid-feedback>
         <b-form-invalid-feedback v-if="!$v.judge.email.maxLength">Name must have less than {{ $v.judge.email.$params.maxLength.max }} letters.</b-form-invalid-feedback>
+
+        <label for="twitter" class="mt-2">Twitter</label>
+        <b-form-input id="twitter" v-model="judge.twitter"></b-form-input>
+
+        <label for="site" class="mt-2">Web site</label>
+        <b-form-input id="site" v-model="judge.site"></b-form-input>
 
         <label for="image" class="mt-2">Image</label>
         <b-form-file id="image" :value="newImage" @change="setImage($event.target.files[0])"></b-form-file>

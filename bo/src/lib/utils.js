@@ -75,6 +75,8 @@ export function getEmptyJudge () {
     id: null,
     name: '',
     email: '',
+    twitter: '',
+    site: '',
     bio: {
       en: '',
       it: ''
