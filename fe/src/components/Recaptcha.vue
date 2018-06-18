@@ -35,7 +35,8 @@ export default {
         size: 'invisible',
         badge: 'inline',
         sitekey: this.siteKey,
-        callback: this.callback
+        callback: this.callback,
+        hl: this.$store.state.language
       });
     }
   }
