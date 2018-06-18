@@ -89,6 +89,11 @@ const auth = {
       return firebase.auth().getRedirectResult();
     }
   },
+  getRecaptchaVerifier(elementId, options) {
+    if (!this.isDevMode()) {
+      return new firebase.auth.RecaptchaVerifier(elementId, options)
+    }
+  },
   fetchProvidersForEmail(email) {
     if(this.isDevMode()) {
       return Promise.resolve();

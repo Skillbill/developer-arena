@@ -1,10 +1,11 @@
 <template>
-  <div id="g-recaptcha" class="g-recaptcha" :data-sitekey="siteKey"></div>
+  <div :id="containerId" class="g-recaptcha"></div>
 </template>
 <script>
+import auth from '@/auth';
 export default {
   props: {
-    siteKey: {
+    containerId: {
       type: String,
       required: true
     },
@@ -14,15 +15,13 @@ export default {
     }
   },
   methods: {
-    execute() {
-      if (this.siteKey) {
-        window.grecaptcha.execute();
-      } else {
-        this.callback();
-      }
+    verify() {
+      window.recaptchaVerifier ? window.recaptchaVerifier.verify() : this.callback();
     },
     reset() {
-      window.grecaptcha.reset();
+      if (window.recaptchaVerifier) {
+        window.recaptchaVerifier.reset();
+      }
     },
     callback(token) {
       this.$emit(this.eventVerify, token);
@@ -30,14 +29,14 @@ export default {
     }
   },
   mounted () {
-    if (this.siteKey !== '') {
-      window.grecaptcha.render('g-recaptcha', {
-        size: 'invisible',
-        badge: 'inline',
-        sitekey: this.siteKey,
-        callback: this.callback,
-        hl: this.$store.state.language
-      });
+    window.recaptchaVerifier = auth.getRecaptchaVerifier(this.containerId, {
+      size: 'invisible',
+      badge: 'inline',
+      callback: this.callback,
+      hl: this.$store.state.language
+    });
+    if (window.recaptchaVerifier) {
+      window.recaptchaVerifier.render();
     }
   }
 }

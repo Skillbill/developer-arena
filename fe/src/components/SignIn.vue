@@ -53,8 +53,8 @@
                     <label for="signup-password-confirm">{{$t('passwordConfirm')}}</label>
                     <input type="password" id="signup-password-confirm" v-model="passwordConfirm" required>
                     <div class="buttons end">
-                      <Recaptcha ref="recaptcha" :siteKey="recaptchaSiteKey" eventVerify="rc_signup" @rc_signup="signUp"></ReCaptcha>
-                      <button> {{ $t('submit') }} </button>
+                      <Recaptcha ref="recaptcha" containerId="cnt-recaptcha" eventVerify="rc_signup" @rc_signup="signUp"></ReCaptcha>
+                      <button id="btn-signup"> {{ $t('submit') }} </button>
                     </div>
                   </fieldset>
                 </form>
@@ -128,9 +128,6 @@ export default {
     },
     emailVerified() {
       return this.user && this.user.emailVerified === true
-    },
-    recaptchaSiteKey() {
-      return this.$store.state.configuration.recaptchaSiteKey || '';
     }
   },
   created () {
@@ -205,7 +202,7 @@ export default {
         this.$el.querySelector('#signup-password-confirm').focus();
         return;
       }
-      this.$refs.recaptcha.execute();
+      this.$refs.recaptcha.verify();
     },
     signUp () {
       this.loading = true;
