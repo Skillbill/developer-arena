@@ -83,9 +83,9 @@ export default {
   components: {
     EditDate
   },
-  props: [
-    'contestId'
-  ],
+  props: {
+    contestId: Number
+  },
   data: function () {
     return {
       contest: null,
@@ -107,22 +107,21 @@ export default {
       }).then(() => {
         this.activeLang = oldLang
         if (this.contest.id) {
-          api.patchContest(this.contest).then(response => {
-            if (response) {
-              feedback.contestUpdated()
-              router.push('/contests')
-            }
+          api.patchContest(this.contest).then(() => {
+            feedback.contestUpdated()
+            router.push('/contests')
+          }).catch(e => {
+            api.apiError(e)
           })
         } else {
-          api.createContest(this.contest).then(response => {
-            if (response) {
-              feedback.contestCreated()
-              router.push('/contests')
-            }
+          api.createContest(this.contest).then(() => {
+            feedback.contestCreated()
+            router.push('/contests')
+          }).catch(e => {
+            api.apiError(e)
           })
         }
       }).catch(() => {
-        console.info('KO no patch')
         feedback.invalidFeilds()
       })
     },
@@ -146,6 +145,8 @@ export default {
     if (this.contestId) {
       api.getContestById(this.contestId).then(contest => {
         if (contest) this.contest = contest
+      }).catch(e => {
+        api.apiError(e)
       })
     } else {
       this.contest = utils.getEmptyContest()

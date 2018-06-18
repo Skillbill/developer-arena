@@ -92,16 +92,18 @@ const auth = {
     store.commit('setUser', user)
     if (user) {
       api.checkAdmin().then(isAdmin => {
-        if (isAdmin === true) {
+        if (isAdmin) {
           feedback.isAdmin()
           Vue.set(user, 'isAdmin', true)
           router.push('contests')
-        } else if (isAdmin === false) {
+        } else {
           feedback.notAdmin()
           router.push('/')
-        } else {
-          this.signOut()
         }
+      }).catch(e => {
+        api.apiError(e)
+        this.signOut()
+      }).then(() => {
         showApp()
       })
     } else {

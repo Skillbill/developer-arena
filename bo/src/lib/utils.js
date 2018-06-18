@@ -1,3 +1,4 @@
+import Vue from 'vue'
 
 export function fromI18n (i18n) {
   let resObj = {}
@@ -24,6 +25,25 @@ export function toI18n (obj) {
   return resI18n
 }
 
+export function bioFromI18n (arr) {
+  let resObj = {}
+  arr.forEach(elem => {
+    resObj[elem.language] = elem.text
+  })
+  return resObj
+}
+
+export function bioToI18n (obj) {
+  let resArr = []
+  Object.keys(obj).forEach(key => {
+    resArr.push({
+      language: key,
+      text: obj[key]
+    })
+  })
+  return resArr
+}
+
 export function getEmptyContest () {
   return {
     id: null,
@@ -48,6 +68,47 @@ export function getEmptyContest () {
       }
     }
   }
+}
+
+export function getEmptyJudge () {
+  return {
+    id: null,
+    name: '',
+    email: '',
+    twitter: '',
+    site: '',
+    bio: {
+      en: '',
+      it: ''
+    },
+    image: ''
+  }
+}
+
+export function getBlankProfilePicUrl () {
+  return Vue.$config.statRes + '/blank-profile-picture.png'
+}
+
+export function getFakeJury () {
+  let jury = []
+  for (let i = 0; i < 3; i++) {
+    let uid = Math.floor(Math.random() * 1000)
+    jury.push({
+      name: 'blabla ' + i,
+      email: 'user' + uid + '@gmail.com',
+      imageFile: (uid % 2) === 0 ? null : {
+        name: uid + '.png',
+        mTime: '2018-04-24T10:24:47.479Z'
+      }
+    })
+  }
+  return jury
+}
+
+export function getFakeImageURL (uid) {
+  return 'https://randomuser.me/api/portraits/' +
+  (((uid % 200) <= 100) ? 'men' : 'women') +
+  '/' + (uid % 100) + '.jpg'
 }
 
 export function getUserDisplay (user) {

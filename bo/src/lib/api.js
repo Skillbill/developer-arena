@@ -13,6 +13,25 @@ const init = (config) => {
   })
 }
 
+const apiError = e => {
+  let error = errorRes(e)
+  if (error) {
+    if (!feedback.forApiErrorCode(error.code)) {
+      feedback.apiError(error)
+      Vue.$log.error(`API error n°${error.code}: ${error.msg}`)
+    }
+  } else if (e.request) {
+    feedback.offline()
+    Vue.$log.error('Connection error: back-end unreachable')
+  } else {
+    Vue.$log.error(e)
+  }
+}
+
+const errorRes = e => {
+  return e.response && e.response.data && e.response.data.error
+}
+
 const getHeaders = () => {
   let user = store.state.user
   if (user) {
@@ -36,11 +55,10 @@ const checkAdmin = () => {
   }).then(response => {
     return true
   }).catch(e => {
-    if (e.response && e.response.status === 403) {
+    if (errorRes(e) && errorRes(e).code === 4102) { // resolve even if the user is not admin
       return false
     }
-    apiError(e)
-    return null
+    Promise.reject(e)
   })
 }
 
@@ -54,9 +72,6 @@ const getContests = () => {
       let contests = response.data.contests
       contests.sort((a, b) => a.id > b.id)
       return contests
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
@@ -71,9 +86,6 @@ const getContestById = id => {
       let contest = response.data.contest
       contest.i18n = utils.fromI18n(contest.i18n)
       return contest
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
@@ -91,11 +103,6 @@ const patchContest = (contest) => {
         'Content-Type': 'application/json'
       }
     })
-  }).then(response => {
-    return response
-  }).catch(e => {
-    apiError(e)
-    return null
   })
 }
 
@@ -112,11 +119,6 @@ const createContest = (contest) => {
         'Content-Type': 'application/json'
       }
     })
-  }).then(response => {
-    return response
-  }).catch(e => {
-    apiError(e)
-    return null
   })
 }
 
@@ -127,11 +129,6 @@ const deleteContest = (id) => {
       url: '/admin/contest/' + id,
       headers
     })
-  }).then(response => {
-    return response
-  }).catch(e => {
-    apiError(e)
-    return null
   })
 }
 
@@ -145,9 +142,6 @@ const getProjectsByContest = (contestId) => {
       let projects = response.data.projects
       projects.sort((a, b) => a.submitted < b.submitted)
       return projects
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
@@ -165,9 +159,6 @@ const getProjectDeliverable = (contestId, projectId) => {
     link.setAttribute('download', 'file')
     document.body.appendChild(link)
     link.click()
-  }).catch(e => {
-    apiError(e)
-    return null
   })
 }
 
@@ -177,11 +168,6 @@ const setProjectApproved = (contestId, projectId, bool) => {
       method: bool ? 'put' : 'delete',
       url: `admin/contest/${contestId}/project/${projectId}/approve`,
       headers
-    }).then(response => {
-      return true
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
@@ -193,11 +179,6 @@ const deleteProject = (contestId, projectId) => {
       url: `admin/contest/${contestId}/project/${projectId}`,
       headers
     })
-  }).then(response => {
-    return response
-  }).catch(e => {
-    apiError(e)
-    return null
   })
 }
 
@@ -215,25 +196,19 @@ const getUserById = id => {
       } else {
         return user
       }
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
 
 const getUsersById = ids => {
-  return getHeaders().then(headers => {
-    let requests = []
-    ids.forEach(id => {
-      requests.push(getUserById(id))
-    })
-    return Promise.all(requests).then(responses => {
-      return responses
-    }).catch(e => {
-      apiError(e)
-      return null
-    })
+  let requests = []
+  ids.forEach(id => {
+    requests.push(getUserById(id).catch(e => {
+      Vue.$log.error(`Could not get user ${id}: ${e}`)
+    }))
+  })
+  return Promise.all(requests).then(responses => {
+    return responses
   })
 }
 
@@ -243,11 +218,6 @@ const createProjectPreview = (contestId, projectId) => {
       method: 'put',
       url: `admin/contest/${contestId}/project/${projectId}/preview`,
       headers
-    }).then(response => {
-      return response.data
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
@@ -258,32 +228,141 @@ const deleteProjectPreview = (contestId, projectId) => {
       method: 'delete',
       url: `admin/contest/${contestId}/project/${projectId}/preview`,
       headers
-    }).then(response => {
-      return true
-    }).catch(e => {
-      apiError(e)
-      return null
     })
   })
 }
 
-const apiError = e => {
-  let error = e.response && e.response.data && e.response.data.error
-  if (error && error.code) {
-    if (!feedback.forApiErrorCode(error.code)) {
-      feedback.apiError(error)
-      Vue.$log.error(`API error n°${error.code}: ${error.msg}`)
-    }
-  } else if (e.request) {
-    feedback.offline()
-    Vue.$log.error('Connection error: back-end unreachable')
+const getJudges = () => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'get',
+      url: 'admin/judge',
+      headers
+    }).then(response => {
+      let judges = response.data.judges
+      judges.sort((a, b) => a.id > b.id)
+      return judges
+    })
+  })
+}
+
+const getJudgeById = id => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'get',
+      url: 'judge/' + id,
+      headers
+    }).then(response => {
+      let judge = response.data.judge
+      judge.bio = utils.bioFromI18n(judge.bio)
+      return judge
+    })
+  })
+}
+
+const getJudgeImageUrl = judge => {
+  if (judge.image) {
+    let ts = new Date(judge.image.mtime).getTime()
+    return `${Vue.$config.serverAddress}/${Vue.$config.apiVersion}/judge/${judge.id}/image/?ts=${ts}`
   } else {
-    Vue.$log.error(e)
+    return null
   }
+}
+
+const createJudge = (judge) => {
+  let data = Object.assign({}, judge)
+  data.id = undefined
+  data.image = undefined
+  data.bio = utils.bioToI18n(data.bio)
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'post',
+      url: '/admin/judge',
+      data,
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      }
+    })
+  }).then(response => {
+    return response.data
+  })
+}
+
+const patchJudge = (judge) => {
+  let data = Object.assign({}, judge)
+  data.id = undefined
+  data.image = undefined
+  data.bio = utils.bioToI18n(data.bio)
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'patch',
+      url: '/admin/judge/' + judge.id,
+      data,
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      }
+    })
+  })
+}
+
+const deleteJudge = (id) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'delete',
+      url: '/admin/judge/' + id,
+      headers
+    })
+  })
+}
+
+const putJudgeImage = (id, file) => {
+  let data = new FormData()
+  data.append('image', file)
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'put',
+      url: '/admin/judge/' + id + '/image',
+      data,
+      headers
+    })
+  })
+}
+
+const deleteJudgeImage = (id) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'delete',
+      url: '/admin/judge/' + id + '/image',
+      headers
+    })
+  })
+}
+
+const addJudgeToJury = (contestId, judgeId) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'put',
+      url: `/admin/contest/${contestId}/jury/?judgeId=${judgeId}`,
+      headers
+    })
+  })
+}
+
+const removeJudgeFromJury = (contestId, judgeId) => {
+  return getHeaders().then(headers => {
+    return instance({
+      method: 'delete',
+      url: `/admin/contest/${contestId}/jury/?judgeId=${judgeId}`,
+      headers
+    })
+  })
 }
 
 export default {
   init,
+  apiError,
   checkAdmin,
   getContests,
   getContestById,
@@ -297,5 +376,15 @@ export default {
   getUserById,
   getUsersById,
   createProjectPreview,
-  deleteProjectPreview
+  deleteProjectPreview,
+  getJudges,
+  getJudgeById,
+  getJudgeImageUrl,
+  createJudge,
+  patchJudge,
+  deleteJudge,
+  putJudgeImage,
+  deleteJudgeImage,
+  addJudgeToJury,
+  removeJudgeFromJury
 }

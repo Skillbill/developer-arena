@@ -15,9 +15,12 @@
       <li>End applying: {{contest.endApplying | formatDate}}</li>
       <li>End voting: {{contest.endVoting | formatDate}}</li>
     </ul>
-    <div class="row mx-2">
+    <b-row class="mx-0">
       <b-button variant="outline-primary" size="sm" title="edit contest" @click.stop="editContest(contest.id)">
-        <i class="fas fa-edit"></i> Edit
+        <i class="fas fa-edit"></i> Edit contest
+      </b-button>
+      <b-button class="ml-2" variant="outline-primary" size="sm" title="edit jury" @click.stop="editJury(contest.id)">
+        <i class="fas fa-edit"></i> Edit jury
       </b-button>
       <b-button v-if="contest.state === 'DRAFT'" class="ml-2" variant="outline-danger" size="sm" @click.stop="$emit('deleteContest',contest)">
         <i class="fas fa-times"></i> Delete
@@ -28,7 +31,7 @@
                 @click.stop="approveProjects(contest.id)">
         <i class="fas fa-list-ul"></i> Manage projects
       </b-button>
-    </div>
+    </b-row>
   </b-card>
 </template>
 
@@ -80,6 +83,14 @@ export default {
     editContest (id) {
       router.push({
         name: 'editContest',
+        params: {
+          contestId: id
+        }
+      })
+    },
+    editJury (id) {
+      router.push({
+        name: 'editJury',
         params: {
           contestId: id
         }

@@ -11,7 +11,7 @@
     <ContestCard v-for="contest in contestList" :key="contest.id"
                   :contest="contest"
                   @deleteContest="askDeleteConfirmation"/>
-    <b-modal v-if="toDelete" v-model="showDeleteModal" ref="modalDelete" :title="`Delete contest ${toDelete.title}?`" @ok="deleteContest(toDelete.id)"></b-modal>
+    <b-modal v-if="toDelete" v-model="showDeleteModal" :title="`Delete contest ${toDelete.title}?`" @ok="deleteContest(toDelete.id)"></b-modal>
   </main>
 </template>
 
@@ -40,11 +40,11 @@ export default {
       })
     },
     deleteContest (id) {
-      api.deleteContest(id).then(response => {
-        if (response) {
-          feedback.contestDeleted()
-          this.contestList = this.contestList.filter(e => e.id !== id)
-        }
+      api.deleteContest(id).then(() => {
+        feedback.contestDeleted()
+        this.contestList = this.contestList.filter(e => e.id !== id)
+      }).catch(e => {
+        api.apiError(e)
       })
     },
     askDeleteConfirmation (toDelete) {
@@ -55,6 +55,8 @@ export default {
   created: function () {
     api.getContests().then(contestList => {
       this.contestList = contestList
+    }).catch(e => {
+      api.apiError(e)
     })
   }
 }

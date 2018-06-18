@@ -161,7 +161,6 @@ export default {
       let ts = new Date(deliverableInfo.mtime).getTime()
       location.href = `${this.$config.serverAddress}/${this.$config.apiVersion}` +
         `/contest/${this.contest.id}/project/${project.id}/deliverable?ts=${ts}`
-      // api.getProjectDeliverable(this.contest.id, projectId)
     },
     getLinkToFE (projectId) {
       return `${this.$config.frontEndAddress}/#/contest/${this.contest.id}/project/${projectId}`
@@ -170,43 +169,41 @@ export default {
       return `${this.$config.serverAddress}/${this.$config.apiVersion}/preview/${this.contest.id}/${projectId}`
     },
     approve (project) {
-      api.setProjectApproved(this.contest.id, project.id, true).then(response => {
-        if (response) {
-          project.approved = true
-        }
+      api.setProjectApproved(this.contest.id, project.id, true).then(() => {
+        project.approved = true
+      }).catch(e => {
+        api.apiError(e)
       })
     },
     disapprove (project) {
-      api.setProjectApproved(this.contest.id, project.id, false).then(response => {
-        if (response) {
-          project.approved = false
-        }
+      api.setProjectApproved(this.contest.id, project.id, false).then(() => {
+        project.approved = false
+      }).catch(e => {
+        api.apiError(e)
       })
     },
     createPreview (project) {
-      api.createProjectPreview(this.contest.id, project.id).then(response => {
-        if (!response) {
-          return null
-        }
+      api.createProjectPreview(this.contest.id, project.id).then(() => {
         project.hasPreview = true
         feedback.projectPreviewCreated()
+      }).catch(e => {
+        api.apiError(e)
       })
     },
     deletePreview (project) {
-      api.deleteProjectPreview(this.contest.id, project.id).then(response => {
-        if (!response) {
-          return null
-        }
+      api.deleteProjectPreview(this.contest.id, project.id).then(() => {
         project.hasPreview = false
         feedback.projectPreviewDeleted()
+      }).catch(e => {
+        api.apiError(e)
       })
     },
     deleteProject (projectId) {
-      api.deleteProject(this.contest.id, projectId).then(response => {
-        if (response) {
-          feedback.projectDeleted()
-          this.projects = this.projects.filter(e => e.id !== projectId)
-        }
+      api.deleteProject(this.contest.id, projectId).then(() => {
+        feedback.projectDeleted()
+        this.projects = this.projects.filter(e => e.id !== projectId)
+      }).catch(e => {
+        api.apiError(e)
       })
     },
     askDeleteConfirmation (toDelete) {
@@ -223,17 +220,22 @@ export default {
   created: function () {
     api.getContestById(this.contestId).then(contest => {
       this.contest = contest
+    }).catch(e => {
+      api.apiError(e)
     })
+    let userIds
     api.getProjectsByContest(this.contestId).then(projects => {
       this.projects = projects
-      let userIds = projects.map(p => p.userId)
-      api.getUsersById(userIds).then(users => {
-        let userMap = new Map()
-        for (let i = 0; i < userIds.length; i++) {
-          userMap.set(userIds[i], users[i])
-        }
-        this.userMap = userMap
-      })
+      userIds = projects.map(p => p.userId)
+      return api.getUsersById(userIds)
+    }).then(users => {
+      let userMap = new Map()
+      for (let i = 0; i < userIds.length; i++) {
+        userMap.set(userIds[i], users[i])
+      }
+      this.userMap = userMap
+    }).catch(e => {
+      api.apiError(e)
     })
   }
 }
