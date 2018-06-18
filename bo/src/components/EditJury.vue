@@ -4,9 +4,10 @@
       <h3 v-if="contest" class="mb-3">Edit jury of contest #{{contest.id}} ({{contest.i18n['en'].title}})</h3>
     </div>
     <b-card-group deck class="m-3">
-      <JudgeCard v-for="judge in judges" :key="judge.id" :judge="judge" @remove="remove(judge.id)" @select="value => select(judge.id, value)"></JudgeCard>
+      <JudgeCard v-for="judge in judges" :key="judge.id" :judge="judge" @remove="askDeleteConfirmation(judge)" @select="value => select(judge.id, value)"></JudgeCard>
     </b-card-group>
     <b-button variant="primary mb-3" @click="create">Create</b-button>
+    <b-modal v-if="toDelete" v-model="showDeleteModal" :title="`Delete judge ${toDelete.name}?`" @ok="remove(toDelete.id)"></b-modal>
   </main>
 </template>
 
@@ -27,7 +28,9 @@ export default {
   data: function () {
     return {
       contest: null,
-      judges: []
+      judges: [],
+      toDelete: null,
+      showDeleteModal: false
     }
   },
   methods: {
@@ -54,6 +57,10 @@ export default {
       }).catch(e => {
         api.apiError(e)
       })
+    },
+    askDeleteConfirmation (toDelete) {
+      this.toDelete = toDelete
+      this.showDeleteModal = true
     }
   },
   created: function () {

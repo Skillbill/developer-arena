@@ -11,7 +11,7 @@
     <ContestCard v-for="contest in contestList" :key="contest.id"
                   :contest="contest"
                   @deleteContest="askDeleteConfirmation"/>
-    <b-modal v-if="toDelete" v-model="showDeleteModal" ref="modalDelete" :title="`Delete contest ${toDelete.title}?`" @ok="deleteContest(toDelete.id)"></b-modal>
+    <b-modal v-if="toDelete" v-model="showDeleteModal" :title="`Delete contest ${toDelete.title}?`" @ok="deleteContest(toDelete.id)"></b-modal>
   </main>
 </template>
 
