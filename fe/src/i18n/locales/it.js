@@ -4,7 +4,7 @@ module.exports = {
     home: 'Home',
     projects: 'Progetti',
     jury: 'Giuria',
-    rules: 'Regolamento',
+    rules: 'Regole',
     signIn: 'Accedi',
     signOut: 'Esci'
   },
