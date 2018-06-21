@@ -35,12 +35,12 @@ const findById = (id, language) => Contest.findOne({
     include: [ _i18n(language), _jury(id) ]
 })
 
-const findLast = () => Contest.max('id', {
+const findLast = (language) => Contest.max('id', {
     where: {
         state: {
             [Op.ne]: libContest.state.draft
         }
-    }}).then(id => id ? findById(id) : Promise.resolve())
+    }}).then(id => id ? findById(id, language) : Promise.resolve())
 
 const _create_i18n = (contestId, lst, tx) => Promise.all(lst.map(el => I18n.create(Object.assign(el, {contestId: contestId}), {transaction: tx})))
 
