@@ -1,15 +1,17 @@
 {
 	"info": {
+		"_postman_id": "3e4c84bd-b662-482a-91f8-b6022cfd0cf0",
 		"name": "Developer Arena",
-		"_postman_id": "244f0670-831f-c65c-55c6-0e9decea3504",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "admin",
+			"description": null,
 			"item": [
 				{
 					"name": "project",
+					"description": null,
 					"item": [
 						{
 							"name": "approve project",
@@ -175,6 +177,7 @@
 				},
 				{
 					"name": "user",
+					"description": null,
 					"item": [
 						{
 							"name": "get user info",
@@ -210,6 +213,7 @@
 				},
 				{
 					"name": "contest",
+					"description": null,
 					"item": [
 						{
 							"name": "edit contest",
@@ -426,8 +430,7 @@
 									"query": [
 										{
 											"key": "judgeId",
-											"value": "1",
-											"equals": true
+											"value": "1"
 										}
 									]
 								}
@@ -464,8 +467,7 @@
 									"query": [
 										{
 											"key": "judgeId",
-											"value": "1",
-											"equals": true
+											"value": "1"
 										}
 									]
 								}
@@ -477,6 +479,7 @@
 				},
 				{
 					"name": "judge",
+					"description": null,
 					"item": [
 						{
 							"name": "judge list",
@@ -648,7 +651,8 @@
 									"formdata": [
 										{
 											"key": "image",
-											"type": "file"
+											"type": "file",
+											"value": ""
 										}
 									]
 								},
@@ -733,6 +737,7 @@
 		},
 		{
 			"name": "me",
+			"description": null,
 			"item": [
 				{
 					"name": "set email",
@@ -772,6 +777,7 @@
 		},
 		{
 			"name": "project",
+			"description": null,
 			"item": [
 				{
 					"name": "project",
@@ -1184,6 +1190,7 @@
 		},
 		{
 			"name": "contest",
+			"description": null,
 			"item": [
 				{
 					"name": "contest list",
@@ -1296,6 +1303,7 @@
 		},
 		{
 			"name": "judge",
+			"description": null,
 			"item": [
 				{
 					"name": "judge id",
@@ -1439,7 +1447,53 @@
 				"id": "48ebb93c-a6cc-41c5-86d2-712da81f9156",
 				"type": "text/javascript",
 				"exec": [
-					""
+					"const echoPostRequest = {",
+					"  url: 'https://securetoken.googleapis.com/v1/token?key=' + pm.variables.get('da-firebase-apiKey'),",
+					"  method: 'POST',",
+					"  header: 'Content-Type:application/x-www-form-urlencoded',",
+					"  body: {",
+					"    mode: 'urlencoded',",
+					"    urlencoded: [",
+					"      {key: 'grant_type', value: 'refresh_token'},",
+					"      {key: 'refresh_token', value: pm.variables.get('da-firebase-refreshToken')}",
+					"    ]",
+					"  }",
+					"};",
+					"",
+					"var getToken = true;",
+					"",
+					"if (pm.variables.get('no-token')) {",
+					"  getToken = false;",
+					"  console.log('No token needed')",
+					"} else if (!pm.variables.get('da-firebase-token') || ",
+					"  !pm.variables.get('da-firebase-token-exp')) {",
+					"  console.log('Token or expiry date are missing')",
+					"} else if (pm.variables.get('da-firebase-token-exp') <= (new Date()).getTime()) {",
+					"  console.log('Token is expired')",
+					"} else {",
+					"  getToken = false;",
+					"  console.log('Token and expiry date are all good');",
+					"}",
+					"",
+					"if (getToken === true) {",
+					"  if (!pm.variables.get('da-firebase-refreshToken') ||",
+					"    !pm.variables.get('da-firebase-apiKey')) {",
+					"    throw new Error('The globals \"da-firebase-refreshToken\" and \"da-firebase-apiKey\" are required to refresh the token')",
+					"  } else {",
+					"    pm.sendRequest(echoPostRequest, function (err, res) {",
+					"      console.log(err ? err : res.json());",
+					"      if (err === null) {",
+					"        console.log('Saving the token and expiry date')",
+					"        var responseJson = res.json();",
+					"        pm.globals.set('da-firebase-token', responseJson.access_token)",
+					"  ",
+					"        var expiryDate = new Date();",
+					"        expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in/60);",
+					"        pm.globals.set('da-firebase-token-exp', expiryDate.getTime());",
+					"      }",
+					"    });",
+					"  }",
+					"}"
 				]
 			}
 		},
