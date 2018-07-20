@@ -9,7 +9,7 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - CONFIT_REPO_ID=${CONFIT_REPO_ID}
-      - CONFIT_REPO_SECRET=${CONFIT_REPO_SECRET_BE}
+      - CONFIT_REPO_SECRET=${CONFIT_REPO_SECRET}
     volumes:
       - preview:/be/preview
   db:
