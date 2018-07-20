@@ -6,7 +6,7 @@
 		"basic-auth": "^1.1.0",
 		"body-parser": "^1.18.3",
 		"colors": "^1.2.1",
-		"confit-client": "^0.1.1",
+		"confit-client": "^0.2.1",
 		"cors": "^2.8.3",
 		"express": "^4.16.0",
 		"express-fileupload": "^0.0.6",
@@ -24,7 +24,7 @@
 		"postinstall": "ln -sfn ../ node_modules/@",
 		"lint": "eslint --ext .js .",
 		"lint-fix": "eslint --fix --ext .js .",
-		"test": "CONFIT_REPOID='' CONFIG=test/config.json mocha --exit"
+		"test": "CONFIT_REPO_ID='' CONFIG=test/config.json mocha --exit"
 	},
 	"private": true,
 	"devDependencies": {

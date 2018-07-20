@@ -7,18 +7,16 @@ const bodyParser = require('body-parser')
 const i18n = require('i18n')
 const fileUpload = require('express-fileupload')
 const cors = require('cors')
-const Confit = require('confit-client')
 
 async function init(app) {
     logger.log('starting server')
     try {
-        const cfgpath = process.env.CONFIG || require.resolve('@/config.json')
-        let confit
-        if (process.env.CONFIT_TOKEN && process.env.CONFIT_REPOID) {
-            confit = new Confit()
-            logger.info(`confit repoId: ${confit.repoId}`)
+        let config
+        if (process.env.CONFIT_REPO_SECRET && process.env.CONFIT_REPO_ID) {
+            config = await libconfig.initWithConfit()
+        } else {
+            config = await libconfig.initFromPath()
         }
-        const config = await libconfig.init(confit || cfgpath)
         auth.init(config)
         i18n.configure(Object.assign({
             queryParameter: 'lang',

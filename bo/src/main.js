@@ -4,7 +4,7 @@ import router from './lib/router'
 import store from './lib/store'
 import auth from './lib/auth'
 import api from './lib/api'
-import Confit from 'confit-client'
+import confit from 'confit-client'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -43,11 +43,10 @@ const getConfig = async () => {
   let repoId = null
   let config = null
   try {
-    repoId = process.env.CONFIT_REPOID || (await axios.get(confitPath)).data
-    config = await new Confit({
-      repoId: repoId
-    }).getConf(location.hostname + '-bo', {
-      alias: true
+    repoId = process.env.CONFIT_REPO_ID || (await axios.get(confitPath)).data
+    config = await confit.load({
+      repoId: repoId,
+      alias: location.hostname + '-bo'
     })
     if (process.env.NODE_ENV === 'development') {
       Vue.$log.info('Using the confit configuration file')

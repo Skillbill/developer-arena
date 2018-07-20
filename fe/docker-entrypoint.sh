@@ -1,7 +1,7 @@
 #!/bin/sh
 
-if [ -n "$CONFIT_REPOID" ];then
-    echo -n $CONFIT_REPOID >static/confitRepoId
+if [ -n "$CONFIT_REPO_ID" ];then
+    echo -n $CONFIT_REPO_ID >static/confitRepoId
 fi
 
 http-server

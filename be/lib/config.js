@@ -1,11 +1,13 @@
 const logger = require('@/lib/logger')
 const fs = require('fs')
+const confit = require('confit-client')
 
 let config = {}
 
-const initFromPath = (filePath) => new Promise((resolve, reject) => {
-    logger.log(`initializing config from ${filePath}`)
-    fs.readFile(filePath, (err, data) => {
+const initFromPath = () => new Promise((resolve, reject) => {
+    const cfgpath = process.env.CONFIG || require.resolve('@/config.json')
+    logger.log(`initializing config from ${cfgpath}`)
+    fs.readFile(cfgpath, (err, data) => {
         if (err) {
             return reject(err)
         }
@@ -13,38 +15,26 @@ const initFromPath = (filePath) => new Promise((resolve, reject) => {
             config = JSON.parse(data)
             resolve(config)
         } catch (err) {
-            reject(`${filePath}: ${err}`)
+            reject(`${cfgpath}: ${err}`)
         }
     })
 })
 
-const initWithConfit = (client) => new Promise((resolve, reject) => {
+const initWithConfit = () => new Promise((resolve, reject) => {
     const env = process.env.NODE_ENV
     if (!env) {
         return reject('confit error: NODE_ENV not set')
     }
     const path = `/${env}/be.json`
     logger.log(`initializing with Confit from ${path}`)
-    client.getConf(path).then(obj => {
+    confit.load({ path }).then(obj => {
         config = obj
         resolve(config)
     }).catch(reject)
 })
 
-function init(resource) {
-    switch (typeof resource) {
-    case 'string':
-        return initFromPath(resource)
-
-    case 'object':
-        return initWithConfit(resource)
-
-    default:
-        return Promise.reject('unexpected resource type: ' + typeof resource)
-    }
-}
-
 module.exports = {
-    init,
+    initWithConfit,
+    initFromPath,
     get: () => Object.assign({}, config)
 }
