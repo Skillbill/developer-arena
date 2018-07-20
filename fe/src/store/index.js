@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import i18n from '../i18n'
-import Confit from 'confit-client'
+import confit from 'confit-client'
 import * as utils from '../utils'
 import localConfig from '../../configuration.json'
 
@@ -87,12 +87,11 @@ const store = new Vuex.Store({
       let repoId = null;
       let config = null;
       try {
-        repoId = process.env.CONFIT_REPOID || (await axios.get(confitPath)).data;
-        config = await new Confit({
-          repoId: repoId
-        }).getConf(location.hostname + '-fe', {
-          alias: true
-        });
+        repoId = process.env.CONFIT_REPO_ID || (await axios.get(confitPath)).data;
+        config = await confit.load({
+          repoId: repoId,
+          alias: location.hostname + '-fe'
+        })
         if(process.env.NODE_ENV === 'development') {
           console.log('Using the confit configuration file');
         }
