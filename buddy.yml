@@ -28,17 +28,6 @@
     trigger_condition_paths:
     - "/bo"
     trigger_condition: "ON_CHANGE_AT_PATH"
-  - action: "[DB] Build Docker image"
-    type: "DOCKERFILE"
-    login: "${DOCKER_HUB_USER}"
-    password: "${DOCKER_HUB_PASSWORD}"
-    docker_image_tag: "${TAG}"
-    dockerfile_path: "db/Dockerfile"
-    context_path: "db"
-    repository: "skillbillsrl/developer-arena-db"
-    trigger_condition_paths:
-    - "/db"
-    trigger_condition: "ON_CHANGE_AT_PATH"
   - action: "[FE] Build Docker image"
     type: "DOCKERFILE"
     login: "${DOCKER_HUB_USER}"
@@ -90,6 +79,20 @@
     - "docker-compose pull"
     - "docker-compose down --remove-orphans"
     - "docker-compose up -d"
+    run_as_script: true
+    shell: "BASH"
+    trigger_condition: "ALWAYS"
+  - action: "update db"
+    type: "SSH_COMMAND"
+    working_directory: "${WORKDIR}"
+    login: "root"
+    host: "${HOSTNAME_TEST}"
+    port: "22"
+    env_key: "test_rsa"
+    authentication_mode: "ENV_KEY"
+    commands:
+    - "set -e"
+    - "docker run -it -v `pwd`/db/liquibase/drivers:/drivers -v `pwd`/db/liquibase/liquibase.yml:/liquibase.yml --link some-postgres:postgres -e "LIQUIBASE_URL=jdbc:postgresql://postgres/developer-arena" -e "LIQUIBASE_USERNAME=postgres" -e "LIQUIBASE_PASSWORD=1234" skillbillsrl/liquibase update"
     run_as_script: true
     shell: "BASH"
     trigger_condition: "ALWAYS"

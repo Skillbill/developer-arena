@@ -13,6 +13,14 @@ services:
     volumes:
       - preview:/be/preview
   db:
+    image: "postgres:10-alpine"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=developer-arena
+    volumes:
+      - pgdata:/var/lib/postgresql/lbdata
+  db:
     image: "skillbillsrl/developer-arena-db:${TAG}"
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -41,5 +49,3 @@ volumes:
     pgdata:
         external: true
     preview:
-
-#cd be && docker build . -t skillbillsrl/developer-arena-be:local && cd .. && cd db && docker build . -t skillbillsrl/developer-arena-db:local && cd .. && cd fe && docker build . -t skillbillsrl/developer-arena-fe:local && cd .. && cd bo && docker build . -t skillbillsrl/developer-arena-bo:local && cd .. && TAG=local docker-compose up

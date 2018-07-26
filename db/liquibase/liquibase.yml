@@ -1,0 +1,405 @@
+databaseChangeLog:
+- changeSet:
+    id: tables
+    author: toto
+    changes:
+    - sql: 
+        CREATE TYPE contest_status AS ENUM (
+            'DRAFT',
+            'ACTIVE',
+            'PAST'
+        );
+    - sql:
+        CREATE TYPE file_kind AS ENUM (
+            'IMAGE',
+            'DELIVERABLE'
+        );
+    - sql:
+        CREATE DOMAIN userid AS varchar(32);
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: contest_pkey
+            name: id
+            type: SERIAL
+        - column:
+            constraints:
+              nullable: false
+            name: end_presentation
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: end_applying
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: end_voting
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: state
+            type: CONTEST_STATUS
+        tableName: contest
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: contest_i18n_pkey
+            name: id
+            type: SERIAL
+        - column:
+            name: contest_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: attribute
+            type: VARCHAR(20)
+        - column:
+            constraints:
+              nullable: false
+            name: language
+            type: VARCHAR(2)
+        - column:
+            constraints:
+              nullable: false
+            name: text
+            type: TEXT
+        tableName: contest_i18n
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: file_pkey
+            name: id
+            type: SERIAL
+        - column:
+            name: project_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: kind
+            type: FILE_KIND
+        - column:
+            constraints:
+              nullable: false
+            name: mimetype
+            type: VARCHAR(32)
+        - column:
+            constraints:
+              nullable: false
+            name: mtime
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(100)
+        - column:
+            constraints:
+              nullable: false
+            name: data
+            type: BYTEA
+        tableName: file
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: judge_pkey
+            name: id
+            type: SERIAL
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(100)
+        - column:
+            name: email
+            type: VARCHAR(50)
+        - column:
+            name: twitter
+            type: VARCHAR(20)
+        - column:
+            name: site
+            type: VARCHAR(100)
+        tableName: judge
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: judge_bio_pkey
+            name: id
+            type: SERIAL
+        - column:
+            name: judge_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: language
+            type: VARCHAR(2)
+        - column:
+            constraints:
+              nullable: false
+            name: text
+            type: TEXT
+        tableName: judge_bio
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: judge_image_pkey
+            name: id
+            type: SERIAL
+        - column:
+            name: judge_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: mimetype
+            type: VARCHAR(32)
+        - column:
+            constraints:
+              nullable: false
+            name: mtime
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(100)
+        - column:
+            constraints:
+              nullable: false
+            name: data
+            type: BYTEA
+        tableName: judge_image
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+            name: id
+            type: SERIAL
+        - column:
+            name: contest_id
+            type: INTEGER
+        - column:
+            name: judge_id
+            type: INTEGER
+        tableName: jury
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: project_pkey
+            name: id
+            type: SERIAL
+        - column:
+            name: contest_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: user_id
+            type: USERID
+        - column:
+            constraints:
+              nullable: false
+            name: submitted
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: updated
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: title
+            type: VARCHAR(50)
+        - column:
+            constraints:
+              nullable: false
+            name: description
+            type: TEXT
+        - column:
+            name: repo_url
+            type: VARCHAR(100)
+        - column:
+            name: video
+            type: VARCHAR(64)
+        - column:
+            defaultValueBoolean: false
+            name: approved
+            type: BOOLEAN
+        - column:
+            defaultValueBoolean: false
+            name: has_preview
+            type: BOOLEAN
+        tableName: project
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+            name: id
+            type: SERIAL
+        - column:
+            name: contest_id
+            type: INTEGER
+        - column:
+            name: project_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: voter_id
+            type: USERID
+        - column:
+            constraints:
+              nullable: false
+            name: ts
+            type: TIMESTAMP WITHOUT TIME ZONE
+        tableName: vote
+- changeSet:
+    id: unique-constraints
+    author: toto
+    changes:
+    - addUniqueConstraint:
+        columnNames: contest_id, judge_id
+        constraintName: jury_contest_id_judge_id_key
+        tableName: jury
+    - addUniqueConstraint:
+        columnNames: contest_id, user_id
+        constraintName: project_contest_id_user_id_key
+        tableName: project
+    - addUniqueConstraint:
+        columnNames: contest_id, project_id, voter_id
+        constraintName: vote_contest_id_project_id_voter_id_key
+        tableName: vote
+- changeSet:
+    id: foreign-keys
+    author: toto
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: contest_id
+        baseTableName: contest_i18n
+        constraintName: contest_i18n_contest_id_fkey
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: contest
+        validate: true
+    - addForeignKeyConstraint:
+        baseColumnNames: project_id
+        baseTableName: file
+        constraintName: file_project_id_fkey
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: project
+        validate: true
+    - addForeignKeyConstraint:
+        baseColumnNames: judge_id
+        baseTableName: judge_bio
+        constraintName: judge_bio_judge_id_fkey
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: judge
+        validate: true
+    - addForeignKeyConstraint:
+        baseColumnNames: judge_id
+        baseTableName: judge_image
+        constraintName: judge_image_judge_id_fkey
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: judge
+        validate: true
+    - addForeignKeyConstraint:
+        baseColumnNames: contest_id
+        baseTableName: jury
+        constraintName: jury_contest_id_fkey
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: contest
+        validate: true
+    - addForeignKeyConstraint:
+        baseColumnNames: judge_id
+        baseTableName: jury
+        constraintName: jury_judge_id_fkey
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: judge
+        validate: true
+    - addForeignKeyConstraint:
+        baseColumnNames: contest_id
+        baseTableName: project
+        constraintName: project_contest_id_fkey
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: contest
+        validate: true
+    - addForeignKeyConstraint:
+        baseColumnNames: contest_id
+        baseTableName: vote
+        constraintName: vote_contest_id_fkey
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: contest
+        validate: true
+    - addForeignKeyConstraint:
+        baseColumnNames: project_id
+        baseTableName: vote
+        constraintName: vote_project_id_fkey
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: project
+        validate: true
