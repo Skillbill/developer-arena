@@ -82,7 +82,7 @@
     run_as_script: true
     shell: "BASH"
     trigger_condition: "ALWAYS"
-  - action: "update db"
+  - action: "[DB] versioning"
     type: "SSH_COMMAND"
     working_directory: "${WORKDIR}"
     login: "root"
