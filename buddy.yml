@@ -92,7 +92,7 @@
     authentication_mode: "ENV_KEY"
     commands:
     - "set -e"
-    - "docker run -it -v `pwd`/db/liquibase/drivers:/drivers -v `pwd`/db/liquibase/liquibase.yml:/liquibase.yml --link some-postgres:postgres -e "LIQUIBASE_URL=jdbc:postgresql://postgres/developer-arena" -e "LIQUIBASE_USERNAME=postgres" -e "LIQUIBASE_PASSWORD=1234" skillbillsrl/liquibase update"
+    - "docker run -v `pwd`/db/liquibase/drivers:/drivers -v `pwd`/db/liquibase/liquibase.yml:/liquibase.yml --link buddy_db_1:postgres --net buddy_default -e "LIQUIBASE_URL=jdbc:postgresql://postgres/developer-arena" -e "LIQUIBASE_USERNAME=postgres" -e "LIQUIBASE_PASSWORD=1234" skillbillsrl/liquibase update"
     run_as_script: true
     shell: "BASH"
     trigger_condition: "ALWAYS"
