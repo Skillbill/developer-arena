@@ -20,10 +20,6 @@ services:
       - POSTGRES_DB=developer-arena
     volumes:
       - pgdata:/var/lib/postgresql/lbdata
-  db:
-    image: "skillbillsrl/developer-arena-db:${TAG}"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
   fe:
     image: "skillbillsrl/developer-arena-fe:${TAG}"
     depends_on:
