@@ -19,7 +19,7 @@ services:
       - POSTGRES_PASSWORD=1234
       - POSTGRES_DB=developer-arena
     volumes:
-      - pgdata:/var/lib/postgresql/lbdata
+      - lbpgdata:/var/lib/postgresql/data
   fe:
     image: "skillbillsrl/developer-arena-fe:${TAG}"
     depends_on:
@@ -42,6 +42,6 @@ services:
       - CONFIT_REPO_ID=${CONFIT_REPO_ID}
 
 volumes:
-    pgdata:
+    lbpgdata:
         external: true
     preview:
