@@ -3,7 +3,7 @@
 set -ex
 
 user=${DBUSER:-'postgres'}
-database=${DATABASE:-'developer-arena'}
+container=${CONTAINER:-'buddy_db'}
 dump=$1
 
 if [ -z "$1" ]; then
@@ -11,5 +11,5 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-docker_id=`docker ps | grep developer-arena-db | awk '{print $1}'`
+docker_id=`docker ps | awk "/$container/"'{print $1}'`
 gzip -d < $dump | docker exec -i $docker_id psql -U $user
