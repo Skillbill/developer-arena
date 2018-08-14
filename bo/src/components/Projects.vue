@@ -166,7 +166,7 @@ export default {
       return `${this.$config.frontEndAddress}/#/contest/${this.contest.id}/project/${projectId}`
     },
     getLinkToPreview (projectId) {
-      return `${this.$config.serverAddress}/${this.$config.apiVersion}/preview/${this.contest.id}/${projectId}`
+      return `${this.$config.serverAddress}/${this.$config.apiVersion}/preview/${this.contest.id}/${projectId}/`
     },
     approve (project) {
       api.setProjectApproved(this.contest.id, project.id, true).then(() => {
