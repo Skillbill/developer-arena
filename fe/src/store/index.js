@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import i18n from '../i18n'
-import confit from 'confit-client'
+import confit from 'confit-client/dist/confit-client.es.min.js'
 import * as utils from '../utils'
 import localConfig from '../../configuration.json'
 
