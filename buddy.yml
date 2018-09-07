@@ -180,7 +180,7 @@
     login: "root"
     host: "${HOSTNAME_PRE}"
     port: "22"
-    env_key: "test_rsa"
+    env_key: "pre_rsa"
     authentication_mode: "ENV_KEY"
     commands:
     - "set -e"
@@ -295,7 +295,7 @@
     login: "root"
     host: "${HOSTNAME_PROD}"
     port: "22"
-    env_key: "test_rsa"
+    env_key: "prod_rsa"
     authentication_mode: "ENV_KEY"
     commands:
     - "set -e"
