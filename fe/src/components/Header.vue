@@ -3,7 +3,7 @@
     <h1>
       <router-link to="/">
         <img src="/static/graphics/assets/logo.svg" alt="Logo">
-        <span>{{$t("siteName")}}</span>
+        <span>{{$t("siteName")}}AA</span>
       </router-link>
     </h1>
     <nav class="main-nav">
