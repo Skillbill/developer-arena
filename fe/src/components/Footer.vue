@@ -15,7 +15,7 @@
       <h4>{{$t('contacts')}}</h4>
       <ul>
         <li>
-          <a href="mailto:developer-arena@skillbill.it?subject=[Developer Arena]">CIAO developer-arena@skillbill.it</a>
+          <a href="mailto:developer-arena@skillbill.it?subject=[Developer Arena]">developer-arena@skillbill.it</a>
         </li>
       </ul>
     </div>
