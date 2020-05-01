@@ -1,36 +1,40 @@
 {
-	"name": "developer-arena-be",
-	"version": "1.0.0",
-	"description": "Developer Arena Backend",
-	"dependencies": {
-		"basic-auth": "^1.1.0",
-		"body-parser": "^1.18.3",
-		"colors": "^1.2.1",
-		"confit-client": "^0.4.0",
-		"cors": "^2.8.3",
-		"express": "^4.16.0",
-		"express-fileupload": "^0.0.6",
-		"firebase-admin": "^5.12.0",
-		"fs-extra": "^6.0.0",
-		"fstream": "^1.0.11",
-		"i18n": "^0.8.3",
-		"moment": "^2.22.0",
-		"pg": "^7.4.1",
-		"sequelize": "^4.37.10",
-		"tar": "^4.4.2",
-		"unzip": "^0.1.11"
-	},
-	"scripts": {
-		"postinstall": "ln -sfn ../ node_modules/@",
-		"lint": "eslint --ext .js .",
-		"lint-fix": "eslint --fix --ext .js .",
-		"test": "CONFIT_REPO_ID='' CONFIG=test/config.json mocha --exit"
-	},
-	"private": true,
-	"devDependencies": {
-		"eslint": "^4.19.1",
-		"mocha": "^5.1.1",
-		"chai": "^4.1.2",
-		"chai-http": "^4.0.0"
-	}
+  "name": "developer-arena-be",
+  "version": "1.0.0",
+  "description": "Developer Arena Backend",
+  "dependencies": {
+    "basic-auth": "^1.1.0",
+    "body-parser": "^1.18.3",
+    "colors": "^1.2.1",
+    "confit-client": "^0.4.0",
+    "cors": "^2.8.3",
+    "express": "^4.16.0",
+    "express-fileupload": "^0.0.6",
+    "firebase-admin": "^5.12.0",
+    "fs-extra": "^6.0.0",
+    "fstream": "^1.0.11",
+    "i18n": "^0.8.3",
+    "moment": "^2.22.0",
+    "pg": "^7.4.1",
+    "sequelize": "^4.37.10",
+    "tar": "^4.4.2",
+    "unzip": "^0.1.11",
+    "snyk": "^1.316.1"
+  },
+  "scripts": {
+    "postinstall": "ln -sfn ../ node_modules/@",
+    "lint": "eslint --ext .js .",
+    "lint-fix": "eslint --fix --ext .js .",
+    "test": "CONFIT_REPO_ID='' CONFIG=test/config.json mocha --exit",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "private": true,
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "mocha": "^5.1.1",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0"
+  },
+  "snyk": true
 }
