@@ -9,7 +9,7 @@
 		"confit-client": "^0.4.0",
 		"cors": "^2.8.3",
 		"express": "^4.16.0",
-		"express-fileupload": "^0.0.6",
+		"express-fileupload": "^1.1.9",
 		"firebase-admin": "^5.12.0",
 		"fs-extra": "^6.0.0",
 		"fstream": "^1.0.11",
